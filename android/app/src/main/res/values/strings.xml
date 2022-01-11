@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CasperDash</string>
+    <string name="default_notification_channel_id">CasperDash_channel</string>
+    <string name="CodePushDeploymentKey" moduleConfig="true">C6lTVsZZi7yBvd_Cnjr8fvQm9qy9kRTejeWy7</string>
+</resources>
