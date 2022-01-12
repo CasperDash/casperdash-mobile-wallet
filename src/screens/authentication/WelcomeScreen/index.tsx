@@ -9,6 +9,18 @@ import IntroItem from "screens/authentication/WelcomeScreen/IntroItem";
 
 const introDescription = 'Casper Dash is a platform that aims to build a new creative economy.';
 
+const translatePreset = {
+    duration: 300,
+    create: {
+        type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity,
+    },
+    update: {
+        type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity,
+    }
+};
+
 function WelcomeScreen() {
     const insets = useSafeAreaInsets();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -19,17 +31,6 @@ function WelcomeScreen() {
         if (currentIndex === 0 && n === -1 || currentIndex === 2 && n === 1) {
             return;
         }
-        const translatePreset = {
-            duration: 300,
-            create: {
-                type: LayoutAnimation.Types.linear,
-                property: LayoutAnimation.Properties.opacity,
-            },
-            update: {
-                type: LayoutAnimation.Types.linear,
-                property: LayoutAnimation.Properties.opacity,
-            }
-        };
         LayoutAnimation.configureNext(translatePreset);
         setCurrentIndex(i => i + n);
     };
@@ -39,8 +40,24 @@ function WelcomeScreen() {
         flatListRef.current?.scrollToOffset({offset: offset, animated: true});
     }, [currentIndex]);
 
+    const onMomentumScrollEnd = (e: any) => {
+        let x = e.nativeEvent.contentOffset.x;
+        x = Math.round(x);
+        const index = arrayImgSlider.indexOf(x);
+        if (index > -1) {
+            LayoutAnimation.configureNext(translatePreset);
+            setCurrentIndex(index);
+        }
+    };
+
+    const openCreateNewWallet = () => {
+        //TODO: navigate to next screen
+    };
+
     const _renderGetStarted = () => {
-        return <CButton style={styles.btnGetStarted}>
+        return <CButton
+            onPress={openCreateNewWallet}
+            style={styles.btnGetStarted}>
             <Text style={styles.sub1}>Get started now</Text>
         </CButton>
     };
@@ -60,7 +77,9 @@ function WelcomeScreen() {
     return (
         <View style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom}]}>
             <Row.LR px={24} pt={20} mb={40} style={{alignItems: 'center'}}>
-                <CButton style={styles.btnSkip}>
+                <CButton
+                    onPress={openCreateNewWallet}
+                    style={styles.btnSkip}>
                     <Text style={styles.txtSkip}>Skip</Text>
                 </CButton>
                 <CPaginationDot
@@ -83,13 +102,13 @@ function WelcomeScreen() {
                 data={ListIntro}
                 extraData={ListIntro}
                 horizontal={true}
-                scrollEnabled={false}
-                scrollEventThrottle={16}
+                scrollEventThrottle={1}
                 decelerationRate={'fast'}
                 style={{
                     flexGrow: 0
                 }}
                 snapToOffsets={arrayImgSlider}
+                onMomentumScrollEnd={onMomentumScrollEnd}
                 getItemLayout={(data, index) => (
                     {length: scale(375), offset: scale(375) * index, index}
                 )}

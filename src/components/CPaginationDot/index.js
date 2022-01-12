@@ -13,7 +13,7 @@ class CPaginationDot extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.active !== nextProps.active) {
             this.setState({
                 activeIndex: nextProps.active ? nextProps.active : 0
