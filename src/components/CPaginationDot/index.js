@@ -13,7 +13,7 @@ class CPaginationDot extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.active !== nextProps.active) {
             this.setState({
                 activeIndex: nextProps.active ? nextProps.active : 0
@@ -131,7 +131,7 @@ class CPaginationDot extends Component {
         } = this.props;
         const {activeIndex} = this.state;
         return (
-            <View style={[styles.container, style, {height: length > 1 ? scale(30) : scale(0),}]}>
+            <View style={[styles.container, {height: length > 1 ? scale(30) : scale(0)}, style]}>
                 {
                     length > 1 && Array.apply(null, {length: length ? length : 0}).map((_, i) => i).map((item, index) => {
                         if (activeIndex === index) {
