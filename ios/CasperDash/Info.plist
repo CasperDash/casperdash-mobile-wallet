@@ -69,9 +69,6 @@
 	<string>$(PRODUCT_NAME) use to upload your avatar</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Nunito_Bold.ttf</string>
-		<string>Nunito_ExtraBold.ttf</string>
-		<string>Nunito_Regular.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
@@ -88,36 +85,6 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>Nunito_SemiBold.ttf</string>
-		<string>Nunito-Bold.ttf</string>
-		<string>Nunito-Regular.ttf</string>
-		<string>Nunito-SemiBold.ttf</string>
-		<string>Montserrat-Black.ttf</string>
-		<string>Montserrat-BlackItalic.ttf</string>
-		<string>Montserrat-Bold.ttf</string>
-		<string>Montserrat-BoldItalic.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
-		<string>Alice-Regular.ttf</string>
-		<string>JosefinSans-Bold.ttf</string>
-		<string>JosefinSans-Regular.ttf</string>
-		<string>JosefinSans-SemiBold.ttf</string>
-		<string>Inter-Bold.ttf</string>
-		<string>Inter-Regular.ttf</string>
-		<string>Inter-SemiBold.ttf</string>
-		<string>AvenirNextLTPro-Regular.otf</string>
-		<string>AvenirNextLTPro-Bold.otf</string>
-		<string>AvenirNextLTPro-Medium.otf</string>
-		<string>JosefinSans-BoldItalic.ttf</string>
-		<string>JosefinSans-ExtraLight.ttf</string>
-		<string>JosefinSans-ExtraLightItalic.ttf</string>
-		<string>JosefinSans-Italic.ttf</string>
-		<string>JosefinSans-Light.ttf</string>
-		<string>JosefinSans-LightItalic.ttf</string>
-		<string>JosefinSans-Medium.ttf</string>
-		<string>JosefinSans-MediumItalic.ttf</string>
-		<string>JosefinSans-SemiBoldItalic.ttf</string>
-		<string>JosefinSans-Thin.ttf</string>
-		<string>JosefinSans-ThinItalic.ttf</string>
 		<string>Poppins-Black.ttf</string>
 		<string>Poppins-BlackItalic.ttf</string>
 		<string>Poppins-Bold.ttf</string>
@@ -142,6 +109,16 @@
 		<string>DMSans-Medium.ttf</string>
 		<string>DMSans-MediumItalic.ttf</string>
 		<string>DMSans-Regular.ttf</string>
+		<string>Lato-Black.ttf</string>
+		<string>Lato-BlackItalic.ttf</string>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-BoldItalic.ttf</string>
+		<string>Lato-Italic.ttf</string>
+		<string>Lato-Light.ttf</string>
+		<string>Lato-LightItalic.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>Lato-Thin.ttf</string>
+		<string>Lato-ThinItalic.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

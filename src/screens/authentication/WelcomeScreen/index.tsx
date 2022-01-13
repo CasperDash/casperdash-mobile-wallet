@@ -6,6 +6,8 @@ import {ListIntro} from "screens/authentication/data/data";
 import {colors, fonts, IconArrowLeft, IconArrowRight, textStyles} from "assets";
 import {scale} from "device";
 import IntroItem from "screens/authentication/WelcomeScreen/IntroItem";
+import {useNavigation} from "@react-navigation/native";
+import AuthenticationRouter from "navigation/AuthenticationNavigation/AuthenticationRouter";
 
 const introDescription = 'Casper Dash is a platform that aims to build a new creative economy.';
 
@@ -26,6 +28,7 @@ function WelcomeScreen() {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [arrayImgSlider, setArrayImgSlider] = useState(Array.from({length: ListIntro.length}, (_, i) => (i * scale(375))));
     const flatListRef = useRef<any>(null);
+    const navigation = useNavigation();
 
     const navigate = (n: number) => {
         if (currentIndex === 0 && n === -1 || currentIndex === 2 && n === 1) {
@@ -51,7 +54,7 @@ function WelcomeScreen() {
     };
 
     const openCreateNewWallet = () => {
-        //TODO: navigate to next screen
+        navigation.navigate(AuthenticationRouter.CREATE_NEW_WALLET)
     };
 
     const _renderGetStarted = () => {

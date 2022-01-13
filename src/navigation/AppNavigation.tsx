@@ -8,6 +8,8 @@ import {isReadyRef, navigationRef} from 'navigation/RootNavigation';
 import MainStack from './stack/MainStack';
 import AuthenticationNavigation from './AuthenticationNavigation';
 import {useSelector} from 'react-redux';
+import AuthenticationRouter from "navigation/AuthenticationNavigation/AuthenticationRouter";
+import CreateNewWalletNavigation from "navigation/CreateNewWalletNavigation";
 
 const Stack = createStackNavigator();
 
@@ -46,10 +48,16 @@ export default function AppNavigation() {
                 {
                     token ? <Stack.Screen name="MainStack" component={MainStack}/>
                         :
-                        <Stack.Screen
-                            name="AuthenticationStack"
-                            component={AuthenticationNavigation}
-                        />
+                        <>
+                            <Stack.Screen
+                                name="AuthenticationStack"
+                                component={AuthenticationNavigation}
+                            />
+                            <Stack.Screen
+                                name={AuthenticationRouter.CREATE_NEW_WALLET}
+                                component={CreateNewWalletNavigation}
+                            />
+                        </>
                 }
             </Stack.Navigator>
         </NavigationContainer>
