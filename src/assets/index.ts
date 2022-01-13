@@ -12,9 +12,14 @@ import IconMenuMarket from './images/ic_menu_market.svg';
 import IconMenuMarketActive from './images/ic_menu_market_active.svg';
 import IconMenuSetting from './images/ic_menu_setting.svg';
 import IconMenuSettingActive from './images/ic_menu_setting_active.svg';
+import IconArrowLeft from './images/ic_arrow_left.svg';
+import IconArrowRight from './images/ic_arrow_right.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
+    intro1: require('./images/intro1.png'),
+    intro2: require('./images/intro2.png'),
+    intro3: require('./images/intro3.png'),
 };
 
 const colors = {
@@ -22,6 +27,7 @@ const colors = {
     cFFFFFF: '#FFFFFF',
     c26273C: '#26273C',
     cB2B2B2: '#B2B2B2',
+    cE0E0E0: '#E0E0E0',
 
     N1: '#000000',
     N2: '#353945',
@@ -43,6 +49,11 @@ const colors = {
 
     B1: '#3772FF',
     B2: '#D7E3FF',
+
+    Neutrals2: '#23262F',
+    Neutrals8: '#FCFCFD',
+
+    gray6: '#F2F2F2'
 };
 
 const fonts = {
@@ -50,6 +61,7 @@ const fonts = {
         bold: 'Poppins-Bold',
         regular: 'Poppins-Regular',
         medium: 'Poppins-Medium',
+        semiBold: 'Poppins-SemiBold'
     },
     DMSans: {
         bold: 'DMSans-Bold',
@@ -81,7 +93,7 @@ const textStyles = StyleSheet.create({
         color: colors.c000000
     },
     Sub2: {
-        fontFamily: fonts.Poppins.bold,
+        fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(14),
         fontStyle: 'normal',
@@ -95,21 +107,21 @@ const textStyles = StyleSheet.create({
         color: colors.c000000
     },
     H3: {
-        fontFamily: fonts.Poppins.regular,
+        fontFamily: fonts.Poppins.semiBold,
         fontWeight: '600',
         fontSize: scale(32),
         fontStyle: 'normal',
         color: colors.c000000
     },
     H5: {
-        fontFamily: fonts.Poppins.bold,
+        fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(24),
         fontStyle: 'normal',
         color: colors.c000000
     },
     H6: {
-        fontFamily: fonts.Poppins.bold,
+        fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(20),
         fontStyle: 'normal',
@@ -132,5 +144,7 @@ export {
     IconMenuMarket,
     IconMenuMarketActive,
     IconMenuSetting,
-    IconMenuSettingActive
+    IconMenuSettingActive,
+    IconArrowLeft,
+    IconArrowRight,
 };
