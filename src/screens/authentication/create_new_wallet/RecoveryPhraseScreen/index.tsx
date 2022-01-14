@@ -1,32 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
-import {CLayout} from "components";
-import CHeader from "components/CHeader";
+import {View, StyleSheet, ScrollView} from 'react-native';
+import {CLayout, CHeader} from "components";
 import {colors} from "assets";
 import {scale} from "device";
 import {PhraseItem} from "../components";
-import {Col, Row} from 'components';
+import {Row} from 'components';
 
+// @ts-ignore
 import Phrase from '../../data/phrase.json';
 import CButton2 from "components/CButton2";
 import {useNavigation} from "@react-navigation/native";
 import CreateNewWalletRouter from "navigation/CreateNewWalletNavigation/CreateNewWalletRouter";
+import {StackNavigationProp} from "@react-navigation/stack";
 
 const RecoveryPhraseScreen = () => {
 
+    const {navigate} = useNavigation<StackNavigationProp<any>>();
+
     const [listLeft, setListLeft] = useState([]);
     const [listRight, setListRight] = useState([]);
-    const {navigate} = useNavigation();
+    const [data, setData] = useState<any>(Phrase);
 
     useEffect(() => {
-        const left = Phrase.slice(0, Math.round(Phrase.length / 2));
-        const right = Phrase.slice(left.length, Phrase.length);
+        const left = data.slice(0, Math.round(data.length / 2));
+        const right = data.slice(left.length, data.length);
         setListLeft(left);
         setListRight(right);
     }, []);
 
     const openDoubleCheckIt = () => {
-        navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {data: Phrase});
+        navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {data: JSON.parse(JSON.stringify(data))});
     }
 
     return (
@@ -35,9 +38,9 @@ const RecoveryPhraseScreen = () => {
                 title={'Recovery Phrase'}/>
             <View style={styles.container}>
                 <ScrollView
-                    alwaysBounceVertical={false}
+                    showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.contentContainerStyle}>
-                    <Row.LR pt={16} px={16} mb={72} style={styles.body}>
+                    <Row.LR pt={16} px={16} style={styles.body}>
                         <View style={styles.flex}>
                             {
                                 listLeft.map((item, index) => {
@@ -53,11 +56,12 @@ const RecoveryPhraseScreen = () => {
                             }
                         </View>
                     </Row.LR>
-                    <CButton2
-                        onPress={openDoubleCheckIt}
-                        text={'Next'}
-                    />
                 </ScrollView>
+                <CButton2
+                    style={styles.btnNext}
+                    onPress={openDoubleCheckIt}
+                    text={'Next'}
+                />
             </View>
         </CLayout>
     );
@@ -81,6 +85,10 @@ const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         alignItems: 'center',
-        paddingTop: scale(25)
+        paddingVertical: scale(25),
+    },
+    btnNext: {
+        alignSelf: 'center',
+        marginVertical: scale(20)
     }
 })
