@@ -89,56 +89,56 @@ const textStyles = StyleSheet.create({
         fontWeight: '400',
         fontSize: scale(16),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Body2: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '400',
         fontSize: scale(14),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Sub1: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '500',
         fontSize: scale(16),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Sub2: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(14),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Cap2: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '400',
         fontSize: scale(10),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     H3: {
         fontFamily: fonts.Poppins.semiBold,
         fontWeight: '600',
         fontSize: scale(32),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     H5: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(24),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     H6: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(20),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     }
 });
 

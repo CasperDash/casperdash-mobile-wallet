@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {CreateNewWalletMenu} from "screens/authentication/data/data";
-import {Row, Col, CButton} from 'components';
+import {Row, CButton} from 'components';
 import {scale} from "device";
 import {colors, fonts} from "assets";
 
