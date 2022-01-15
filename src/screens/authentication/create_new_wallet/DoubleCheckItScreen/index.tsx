@@ -10,7 +10,7 @@ import {useNavigation} from "@react-navigation/native";
 import {CheckItem} from "screens/authentication/create_new_wallet/components";
 import {StackNavigationProp} from "@react-navigation/stack";
 
-const numberOfRandom = 6;
+const numberOfRandom = 8;
 
 // @ts-ignore
 const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN>> = ({route}) => {
@@ -21,7 +21,9 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
     const {navigate} = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
-        const randomList = _.sampleSize(data, numberOfRandom);
+        const numberOfWords = Math.floor(data.length / 3);
+
+        const randomList = _.sampleSize(data, numberOfWords);
         let restList = getArrayNotInArray(data, randomList);
         restList = _.shuffle(restList);
 

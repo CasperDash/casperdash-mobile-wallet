@@ -14,7 +14,7 @@ interface CheckItemProps {
 const CheckItem = ({data, keyWords, onPress, rowIndex}: CheckItemProps) => {
     return (
         <Col px={16} mb={20}>
-            <Text style={styles.title}>{`Select word #${keyWords.index}`}</Text>
+            <Text style={styles.title}>{`Select word #${keyWords.id}`}</Text>
             <Row mt={16} style={styles.row}>
                 {
                     data.length > 0 && data.map((item: any, index: number) => {
