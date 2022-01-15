@@ -5,31 +5,43 @@ import {colors} from "assets";
 import {scale} from "device";
 import {PhraseItem} from "../components";
 import {Row} from 'components';
-
-// @ts-ignore
-import Phrase from '../../data/phrase.json';
 import CButton2 from "components/CButton2";
 import {useNavigation} from "@react-navigation/native";
 import CreateNewWalletRouter from "navigation/CreateNewWalletNavigation/CreateNewWalletRouter";
 import {StackNavigationProp} from "@react-navigation/stack";
+import {Phrase} from "screens/authentication/data/data";
+
+const phraseString = 'House Ego Assits Repair Respond Attitude Different Difficult Opposition Resident Populate Inhabit Situated Problem Failed Name Octupus Doctor Strange Ironman Capital Dimondhand Flash Vision';
 
 const RecoveryPhraseScreen = () => {
 
     const {navigate} = useNavigation<StackNavigationProp<any>>();
 
-    const [listLeft, setListLeft] = useState([]);
-    const [listRight, setListRight] = useState([]);
-    const [data, setData] = useState<any>(Phrase);
+    const [listLeft, setListLeft] = useState<Array<Phrase>>([]);
+    const [listRight, setListRight] = useState<Array<Phrase>>([]);
+    const [data, setData] = useState<Array<Phrase>>([]);
 
     useEffect(() => {
-        const left = data.slice(0, Math.round(data.length / 2));
-        const right = data.slice(left.length, data.length);
-        setListLeft(left);
-        setListRight(right);
+        const arrayData = phraseString.split(/\s+/).map((word, index) => {
+            return {
+                id: index + 1,
+                word: word
+            }
+        });
+        if (arrayData && arrayData.length > 0) {
+            setData(arrayData);
+            const left = arrayData.slice(0, Math.round(arrayData.length / 2));
+            const right = arrayData.slice(left.length, arrayData.length);
+
+            setListLeft(left);
+            setListRight(right);
+        }
     }, []);
 
     const openDoubleCheckIt = () => {
-        navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {data: JSON.parse(JSON.stringify(data))});
+        if (data && data.length > 0) {
+            navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {data: JSON.parse(JSON.stringify(data))});
+        }
     }
 
     return (

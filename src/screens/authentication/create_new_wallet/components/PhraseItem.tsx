@@ -12,7 +12,7 @@ interface PhraseItemProps {
 const PhraseItem = ({data, index}: PhraseItemProps) => {
     return (
         <Row mb={16} style={styles.container}>
-            <Text numberOfLines={1} style={styles.title}>{data.index}</Text>
+            <Text numberOfLines={1} style={styles.title}>{data.id}</Text>
             <Text numberOfLines={1} style={styles.title2}>{data?.word}</Text>
         </Row>
     );

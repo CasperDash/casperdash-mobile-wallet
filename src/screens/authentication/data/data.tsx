@@ -60,6 +60,11 @@ const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
     }
 ];
 
+export interface Phrase {
+    id: number,
+    word: string
+}
+
 export {
     ListIntro,
     ListCreateNewWalletMenu,
