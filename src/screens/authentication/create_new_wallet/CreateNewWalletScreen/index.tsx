@@ -7,8 +7,8 @@ import {
 import {scale} from "device";
 import {Col} from 'components'
 import {ListCreateNewWalletMenu} from "screens/authentication/data/data";
-import ListItem from "./ListItem";
 import {useNavigation} from "@react-navigation/native";
+import {ListItem} from "screens/authentication/create_new_wallet/components";
 
 function CreateNewWalletScreen(){
 

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.polidea.reactnativeble.BlePackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
