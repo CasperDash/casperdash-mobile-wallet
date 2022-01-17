@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {colors, textStyles} from "assets";
-import {scale} from "device";
+import {colors, textStyles} from 'assets';
+import {scale} from 'device';
 
 interface Props {
     text?: string,
@@ -16,7 +16,7 @@ const defaultProps = {
     onPress: () => console.log('KIEM TRA'),
 };
 
-const CButton2 = ({disabled = false, style, icon, text, textStyle, type = 'default', ...rest}: Props) => {
+const CTextButton = ({disabled = false, style, icon, text, textStyle, type = 'default', ...rest}: Props) => {
     return (
         <TouchableOpacity
             {...rest}
@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
     title: {
         ...textStyles.Sub1,
         fontSize: scale(16),
-        color: colors.W1
+        color: colors.W1,
     },
     textDisabled: {
-        color: colors.N2
+        color: colors.N2,
     },
     border: {
         borderWidth: scale(1),
@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
     },
     textBorder: {
         color: colors.R1,
-    }
+    },
 });
 
-CButton2.defaultProps = defaultProps;
+CTextButton.defaultProps = defaultProps;
 
-export default CButton2;
+export default CTextButton;

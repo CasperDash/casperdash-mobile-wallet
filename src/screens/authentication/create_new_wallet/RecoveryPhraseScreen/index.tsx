@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {CLayout, CHeader} from "components";
-import {colors} from "assets";
-import {scale} from "device";
-import {PhraseItem} from "../components";
+import {CLayout, CHeader} from 'components';
+import {colors} from 'assets';
+import {scale} from 'device';
+import {PhraseItem} from '../components';
 import {Row} from 'components';
-import CButton2 from "components/CButton2";
-import {useNavigation} from "@react-navigation/native";
-import CreateNewWalletRouter from "navigation/CreateNewWalletNavigation/CreateNewWalletRouter";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {Phrase} from "screens/authentication/data/data";
+import CButton2 from 'components/CTextButton';
+import {useNavigation} from '@react-navigation/native';
+import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {Phrase} from '../../data/data';
+import {Config} from 'utils';
 
 const phraseString = 'House Ego Assits Repair Respond Attitude Different Difficult Opposition Resident Populate Inhabit Situated Problem Failed Name Octupus Doctor Strange Ironman Capital Dimondhand Flash Vision';
 
@@ -17,32 +18,22 @@ const RecoveryPhraseScreen = () => {
 
     const {navigate} = useNavigation<StackNavigationProp<any>>();
 
-    const [listLeft, setListLeft] = useState<Array<Phrase>>([]);
-    const [listRight, setListRight] = useState<Array<Phrase>>([]);
-    const [data, setData] = useState<Array<Phrase>>([]);
-
-    useEffect(() => {
-        const arrayData = phraseString.split(/\s+/).map((word, index) => {
-            return {
-                id: index + 1,
-                word: word
-            }
-        });
-        if (arrayData && arrayData.length > 0) {
-            setData(arrayData);
-            const left = arrayData.slice(0, Math.round(arrayData.length / 2));
-            const right = arrayData.slice(left.length, arrayData.length);
-
-            setListLeft(left);
-            setListRight(right);
-        }
+    const [data, listLeft, listRight] = useMemo(() => {
+        const listWords: Array<Phrase> = phraseString ? phraseString.split(/\s+/).map((word, index) => ({id: index + 1, word: word})) : [];
+        const left: Array<Phrase> = listWords.length > 0 ? listWords.slice(0, Math.round(listWords.length / 2)) : [];
+        const right: Array<Phrase> = listWords.length > 0 && left.length > 0 ? listWords.slice(left.length, listWords.length) : [];
+        return [listWords, left, right];
     }, []);
 
     const openDoubleCheckIt = () => {
-        if (data && data.length > 0) {
-            navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {data: JSON.parse(JSON.stringify(data))});
+        try {
+            if (data && data.length > 0) {
+                navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {data: JSON.parse(JSON.stringify(data))});
+            }
+        } catch (e) {
+            Config.alertMess(e);
         }
-    }
+    };
 
     return (
         <CLayout>
@@ -56,14 +47,14 @@ const RecoveryPhraseScreen = () => {
                         <View style={styles.flex}>
                             {
                                 listLeft.map((item, index) => {
-                                    return <PhraseItem data={item} key={index} index={index}/>
+                                    return <PhraseItem data={item} key={index} index={index}/>;
                                 })
                             }
                         </View>
                         <View style={styles.flex}>
                             {
                                 listRight.map((item, index) => {
-                                    return <PhraseItem data={item} key={index} index={listRight.length + index}/>
+                                    return <PhraseItem data={item} key={index} index={listRight.length + index}/>;
                                 })
                             }
                         </View>
@@ -101,6 +92,6 @@ const styles = StyleSheet.create({
     },
     btnNext: {
         alignSelf: 'center',
-        marginVertical: scale(20)
-    }
-})
+        marginVertical: scale(20),
+    },
+});

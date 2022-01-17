@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
-import TransportBLE from "@ledgerhq/react-native-hw-transport-ble";
-import {CHeader, CLayout} from "components";
-import {DeviceSelectionScreen, ShowAddressScreen} from "screens";
+import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
+import {CHeader, CLayout} from 'components';
+import {DeviceSelectionScreen, ShowAddressScreen} from 'screens';
 
 const ConnectLedgerScreen = () => {
 
@@ -10,7 +9,7 @@ const ConnectLedgerScreen = () => {
 
     const onSelectDevice = async (device: any) => {
         const transport = await TransportBLE.open(device);
-        transport.on("disconnect", () => {
+        transport.on('disconnect', () => {
             setTransport(null);
         });
         setTransport(transport);
