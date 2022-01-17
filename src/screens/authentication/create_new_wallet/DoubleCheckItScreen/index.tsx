@@ -37,18 +37,19 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
 
     const onSelectWords = (rowIndex: number, id: any) => {
         if (listData && listData[rowIndex]) {
-            const listDataTemp = [...listData];
             const listDataSelectedTemp = [...listDataSelected];
-
-            listDataTemp[rowIndex].forEach((item: any, index: number) => {
-                listDataTemp[rowIndex][index].isSelected = item.id === id;
-                if (item.id === id) {
-                    if (item.isKey) {
-                        listDataSelectedTemp[rowIndex] = item.word;
-                    } else {
-                        listDataSelectedTemp[rowIndex] = null;
-                    }
+            const listDataTemp = listData.map((row: any, rowIdx: number) => {
+                if (rowIdx === rowIndex) {
+                    return row.map((item: any) => {
+                        const isSelected = item.id === id;
+                        item.isSelected = isSelected;
+                        if (isSelected) {
+                            listDataSelectedTemp[rowIndex] = item.isKey ? item.word : null;
+                        }
+                        return item;
+                    });
                 }
+                return row;
             });
             setListDataSelected(listDataSelectedTemp);
             setListData(listDataTemp);
