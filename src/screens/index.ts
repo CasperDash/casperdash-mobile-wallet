@@ -27,3 +27,8 @@ export {default as ImportPhraseScreen} from './authentication/import_wallet/Impo
 //choose pin
 export {default as ChoosePinScreen} from './authentication/choose_pin/ChoosePinScreen';
 export {default as ConfirmPinScreen} from './authentication/choose_pin/ConfirmPinScreen';
+
+//connect ledger
+export {default as DeviceSelectionScreen} from './authentication/create_new_wallet/DeviceSelectionScreen';
+export {default as ShowAddressScreen} from './authentication/create_new_wallet/ShowAdressScreen';
+export {default as ConnectLedgerScreen} from './authentication/create_new_wallet/ConnectLedgerScreen';
