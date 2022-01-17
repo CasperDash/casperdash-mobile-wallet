@@ -1,33 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {ScreenProps} from "navigation/ScreenProps";
+import {ScreenProps} from 'navigation/ScreenProps';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 import _ from 'lodash';
-import {CLayout, CHeader} from "components";
-import {scale} from "device";
-import CButton2 from "components/CButton2";
-import {useNavigation} from "@react-navigation/native";
-import {CheckItem} from "screens/authentication/create_new_wallet/components";
-import {StackNavigationProp} from "@react-navigation/stack";
-
-const numberOfRandom = 8;
+import {CLayout, CHeader} from 'components';
+import {scale} from 'device';
+import CButton2 from 'components/CTextButton';
+import {useNavigation} from '@react-navigation/native';
+import {CheckItem} from 'screens/authentication/create_new_wallet/components';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {getArrayNotInArray} from 'utils/collections';
 
 // @ts-ignore
 const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN>> = ({route}) => {
-    const {data} = route.params;
     const [listData, setListData] = useState<any>([]);
     const [listDataSelected, setListDataSelected] = useState<any>([]);
-
+    const numberOfWords = Math.floor(route.params.data.length / 3);
     const {navigate} = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
-        const numberOfWords = Math.floor(data.length / 3);
-
+        const {data} = route.params;
         const randomList = _.sampleSize(data, numberOfWords);
         let restList = getArrayNotInArray(data, randomList);
         restList = _.shuffle(restList);
 
-        const list = randomList.map((item, index) => {
+        const list = randomList.map((item) => {
             let listWords = [{...item, isKey: true}];
             const randomWords = _.sampleSize(restList, 2);
             restList = getArrayNotInArray(restList, randomWords);
@@ -36,13 +33,7 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
             return listWords;
         });
         setListData(list);
-    }, []);
-
-    const getArrayNotInArray = (source: any, sample: any) => {
-        return source.filter((i: any) => {
-            return sample.indexOf(i) === -1;
-        })
-    };
+    }, [numberOfWords, route.params]);
 
     const onSelectWords = (rowIndex: number, id: any) => {
         if (listData && listData[rowIndex]) {
@@ -58,20 +49,19 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
                         listDataSelectedTemp[rowIndex] = null;
                     }
                 }
-
-            })
+            });
             setListDataSelected(listDataSelectedTemp);
             setListData(listDataTemp);
         }
     };
 
     const openChoosePin = () => {
-        navigate(CreateNewWalletRouter.CHOOSE_PIN_SCREEN)
-    }
+        navigate(CreateNewWalletRouter.CHOOSE_PIN_SCREEN);
+    };
 
     return (
         <CLayout>
-            <CHeader title={`Let's double check it`}/>
+            <CHeader title={'Let\'s double check it'}/>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{paddingVertical: scale(20)}}>
@@ -83,14 +73,14 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
                             keyWords={keyWords}
                             key={rowIdx}
                             onPress={onSelectWords}
-                            rowIndex={rowIdx}/>
+                            rowIndex={rowIdx}/>;
                     })
                 }
             </ScrollView>
             <CButton2
                 onPress={openChoosePin}
                 style={styles.btnNext}
-                disabled={listDataSelected.filter((i: any) => !!i).length !== numberOfRandom}
+                disabled={listDataSelected.filter((i: any) => !!i).length !== numberOfWords}
                 text={'Next'}
             />
         </CLayout>
@@ -102,6 +92,6 @@ export default DoubleCheckItScreen;
 const styles = StyleSheet.create({
     btnNext: {
         alignSelf: 'center',
-        marginVertical: scale(20)
-    }
-})
+        marginVertical: scale(20),
+    },
+});

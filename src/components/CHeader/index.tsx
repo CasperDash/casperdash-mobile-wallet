@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         maxWidth: scale(375 - 25 * 2 - 20 * 2),
-        paddingTop: scale(2)
+        paddingTop: scale(2),
     },
     titleHeader: {
         ...textStyles.H5,
