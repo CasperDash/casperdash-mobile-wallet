@@ -37,7 +37,7 @@ static void InitializeFlipper(UIApplication *application) {
   [client start];
 }
 #endif
-@import Firebase;
+//@import Firebase;
 @implementation AppDelegate
 
 

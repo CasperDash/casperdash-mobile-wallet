@@ -56,7 +56,7 @@ const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
         id: 2,
         icon: () => <IconConnectLedger width={scale(23)} height={scale(23)}/>,
         title: 'Connect Ledger',
-        screen: '' //TODO: add this screen
+        screen: CreateNewWalletRouter.CONNECT_LEDGER_SCREEN
     }
 ];
 

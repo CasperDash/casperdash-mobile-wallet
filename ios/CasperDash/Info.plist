@@ -62,11 +62,13 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) use to save image to your library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) use to upload your avatar</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+  <string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
