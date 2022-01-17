@@ -7,10 +7,6 @@ import { store } from 'redux_manager';
 import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
 
-YellowBox.ignoreWarnings([
-  'VirtualizedLists should never be nested', // TODO: Remove when fixed
-]);
-
 import CodePush from 'react-native-code-push';
 
 const CODE_PUSH_OPTIONS = {
