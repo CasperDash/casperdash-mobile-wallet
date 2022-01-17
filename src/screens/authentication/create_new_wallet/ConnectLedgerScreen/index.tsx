@@ -14,7 +14,6 @@ const ConnectLedgerScreen = () => {
             setTransport(null);
         });
         setTransport(transport);
-        console.log('transport', transport)
     };
 
     return (
