@@ -1,14 +1,14 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
-import {CLayout} from "components";
+import {CLayout} from 'components';
 import {
     images,
-} from "assets";
-import {scale} from "device";
-import {Col} from 'components'
-import {ListCreateNewWalletMenu} from "screens/authentication/data/data";
-import {useNavigation} from "@react-navigation/native";
-import {ListItem} from "screens/authentication/create_new_wallet/components";
+} from 'assets';
+import {scale} from 'device';
+import {Col} from 'components';
+import {ListCreateNewWalletMenu} from 'screens/authentication/data/data';
+import {useNavigation} from '@react-navigation/native';
+import {ListItem} from 'screens/authentication/create_new_wallet/components';
 
 function CreateNewWalletScreen(){
 
@@ -23,7 +23,7 @@ function CreateNewWalletScreen(){
                 <Col.T style={styles.flex}>
                     {
                         ListCreateNewWalletMenu.map((item, index) => {
-                            return <ListItem data={item} key={index} onPress={navigate}/>
+                            return <ListItem data={item} key={index} onPress={navigate}/>;
                         })
                     }
                 </Col.T>
@@ -45,5 +45,5 @@ const styles = StyleSheet.create({
     },
     flex: {
         flex: 1,
-    }
-})
+    },
+});
