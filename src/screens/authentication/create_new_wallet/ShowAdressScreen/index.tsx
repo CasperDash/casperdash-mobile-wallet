@@ -18,19 +18,22 @@ const ShowAddressScreen = ({transport}: Props) => {
     const unmountRef = useRef<boolean>(false);
 
     useEffect(() => {
-        while (!address) {
-            if (unmountRef.current) {
-                return;
-            }
-            fetchAddress(false);
-            delay(500);
-        }
-        fetchAddress(true);
-
+        setupFetchAddress();
         return () => {
             unmountRef.current = true;
         };
     }, []);
+
+    const setupFetchAddress = async () => {
+        while (!address) {
+            if (unmountRef.current) {
+                return;
+            }
+            await fetchAddress(false);
+            await delay(700);
+        }
+        await fetchAddress(true);
+    };
 
     const fetchAddress = async (verify: boolean) => {
         try {

@@ -19,7 +19,8 @@ target 'CasperDash' do
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-
+  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
+  
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
