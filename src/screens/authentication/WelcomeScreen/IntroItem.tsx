@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {Intro} from "screens/authentication/data/data";
-import {scale} from "device";
-import {colors, textStyles} from "assets";
+import {Intro} from 'screens/authentication/data/data';
+import {scale} from 'device';
+import {colors, textStyles} from 'assets';
 
 const IntroItem = (data: Intro) => {
     return (
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     introContainer: {
         width: scale(375),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     introImage: {
         width: scale(280),
@@ -29,5 +29,5 @@ const styles = StyleSheet.create({
         ...textStyles.H3,
         color: colors.N2,
         textAlign: 'center',
-    }
-})
+    },
+});
