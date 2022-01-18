@@ -9,9 +9,7 @@ import {DeviceItem} from 'screens/authentication/create_new_wallet/components';
 import {scale} from 'device';
 import {textStyles} from 'assets';
 
-const deviceAddition = (device: any) => ({devices}: any) => ({
-    devices: devices.some((i: any) => i.id === device.id) ? devices : devices.concat(device),
-});
+const deviceAddition = (device: any, devices: any) => (devices.some((i: any) => i.id === device.id) ? devices : devices.concat(device));
 
 interface Props {
     onSelectDevice: (device: any) => void
@@ -60,7 +58,8 @@ const DeviceSelectionScreen = ({onSelectDevice}: Props) => {
             },
             next: (e: Subscription) => {
                 if (e.type === 'add') {
-                    setDevices(deviceAddition(e.descriptor));
+                    setRefreshing(false);
+                    setDevices(deviceAddition(e.descriptor, devices));
                 }
             },
             error: error => {
