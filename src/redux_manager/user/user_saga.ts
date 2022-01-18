@@ -1,13 +1,13 @@
-import {put, takeLatest, take, cancel, delay} from 'redux-saga/effects';
+import {put, takeLatest, take, cancel} from 'redux-saga/effects';
 import {types} from './user_action';
 import {apis} from 'services';
 
-export function* login(data: any) {
+export function* getAccountInformation(data: any) {
     try {
         // @ts-ignore
-        const response = yield apis.login(data.params);
+        const response = yield apis.getAccountInformation(data.params);
         if (response) {
-            yield put({type: types.LOGIN + '_SUCCESS', payload: response.user});
+            yield put({type: types.GET_ACCOUNT_INFORMATION + '_SUCCESS', payload: response});
             data.cb && data.cb(null, response);
         } else {
             data.cb && data.cb(true, null);
@@ -21,71 +21,10 @@ export function* login(data: any) {
     }
 }
 
-export function* watchLogin() {
+export function* watchGetAccountInformation() {
     while (true) {
         // @ts-ignore
-        const watcher = yield takeLatest(types.LOGIN, login);
-        yield take(['LOGOUT', 'NETWORK']);
-        yield cancel(watcher);
-    }
-}
-
-export function* register(data: any) {
-    try {
-        // @ts-ignore
-        const response = yield apis.register(data.params);
-        if (response) {
-            yield put({type: types.REGISTER + '_SUCCESS', payload: response});
-            data.cb && data.cb(null, response);
-        } else {
-            data.cb && data.cb(true, null);
-        }
-    } catch (error: any) {
-        if (error && error.data) {
-            data.cb && data.cb(error.data, null);
-        } else {
-            data.cb && data.cb(error, null);
-        }
-    }
-}
-
-export function* watchRegister() {
-    while (true) {
-        // @ts-ignore
-        const watcher = yield takeLatest(types.REGISTER, register);
-        yield take(['LOGOUT', 'NETWORK']);
-        yield cancel(watcher);
-    }
-}
-
-export function* getInformation(data: any) {
-    try {
-        yield delay(300);
-        // @ts-ignore
-        const response = yield apis.getInformation();
-        if (response) {
-            yield put({type: types.GET_INFORMATION + '_SUCCESS', payload: response});
-            data.cb && data.cb(null, response);
-        } else {
-            data.cb && data.cb(true, null);
-        }
-    } catch (error: any) {
-        if (error && error.data) {
-            if (error.data.statusCode && error.data.statusCode === 403) {
-                yield put({type: 'TOKEN_EXPIRE'});
-                return;
-            }
-            data.cb && data.cb(error.data, null);
-        } else {
-            data.cb && data.cb(error, null);
-        }
-    }
-}
-
-export function* watchGetInformation() {
-    while (true) {
-        // @ts-ignore
-        const watcher = yield takeLatest(types.GET_INFORMATION, getInformation);
+        const watcher = yield takeLatest(types.GET_ACCOUNT_INFORMATION, getAccountInformation);
         yield take(['LOGOUT', 'NETWORK']);
         yield cancel(watcher);
     }

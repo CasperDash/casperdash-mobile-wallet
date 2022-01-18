@@ -8,16 +8,16 @@ const ConnectLedgerScreen = () => {
     const [transport, setTransport] = useState<any>();
 
     const onSelectDevice = async (device: any) => {
-        const transport = await TransportBLE.open(device);
-        transport.on('disconnect', () => {
+        const tp = await TransportBLE.open(device);
+        tp.on('disconnect', () => {
             setTransport(null);
         });
-        setTransport(transport);
+        setTransport(tp);
     };
 
     return (
         <CLayout>
-            <CHeader title={''}/>
+            <CHeader title={'Connect Ledger'}/>
             {
                 !transport ? <DeviceSelectionScreen onSelectDevice={onSelectDevice}/> :
                     <ShowAddressScreen transport={transport}/>
