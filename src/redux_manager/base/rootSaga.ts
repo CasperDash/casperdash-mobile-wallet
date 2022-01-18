@@ -1,12 +1,9 @@
 import {all} from 'redux-saga/effects';
 import {
-    watchLogin,
-    watchRegister,
-    watchGetInformation,
+    watchGetAccountInformation,
 } from '../user/user_saga';
 
 import {
-    watchTokenExpire,
 } from '../main/main_saga';
 
 import {
@@ -20,12 +17,9 @@ import {
 export default function* rootSaga() {
     yield all([
         //user
-        watchLogin(),
-        watchRegister(),
-        watchGetInformation(),
+        watchGetAccountInformation(),
 
         // main
-        watchTokenExpire(),
 
         //home
 
