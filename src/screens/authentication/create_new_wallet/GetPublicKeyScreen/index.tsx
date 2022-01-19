@@ -1,8 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-
 import AppEth from '@ledgerhq/hw-app-eth';
-import QRCode from 'react-native-qrcode-svg';
 import {scale} from 'device';
 import {textStyles} from 'assets';
 import {useDispatch} from 'react-redux';
@@ -10,19 +8,19 @@ import {allActions} from 'redux_manager';
 import {Config} from 'utils';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
-import {CLoading} from 'components';
+import Keys from 'utils/keys';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
-    transport: any
+    transport: any,
+    setTransport: (transport: any) => void
 }
 
-const ShowAddressScreen = ({transport}: Props) => {
+const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
     const [error, setError] = useState<any>();
-    const [address, setAddress] = useState<any>(null);
-    const [isLoading, setLoading] = useState<boolean>(false);
+    const [publicKey, setPublicKey] = useState<any>(null);
 
     const unmountRef = useRef<boolean>(false);
     const dispatch = useDispatch();
@@ -36,7 +34,7 @@ const ShowAddressScreen = ({transport}: Props) => {
     }, []);
 
     const setupFetchAddress = async () => {
-        while (!address) {
+        while (!publicKey) {
             if (unmountRef.current) {
                 return;
             }
@@ -50,14 +48,18 @@ const ShowAddressScreen = ({transport}: Props) => {
         try {
             const eth = new AppEth(transport);
             const path = "44'/60'/0'/0/0"; // HD derivation path
-            const {address, publicKey} = await eth.getAddress(path, verify);
+            const address = await eth.getAddress(path, verify);
             if (unmountRef.current) {
                 return;
             }
-            if (address && publicKey) {
+            if (address && address.publicKey) {
+                setError(null);
+                setPublicKey(address.publicKey);
                 unmountRef.current = true;
-                setAddress(address);
-                getAccountInformation(publicKey);
+                getAccountInformation(address.publicKey);
+            }
+            else {
+                setTransport(null);
             }
         } catch (err) {
             if (unmountRef.current) {
@@ -69,7 +71,6 @@ const ShowAddressScreen = ({transport}: Props) => {
     };
 
     const getAccountInformation = (publicKey: string) => {
-        setLoading(true);
         dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, data: any) => {
             if (data) {
                 const info = {
@@ -77,13 +78,11 @@ const ShowAddressScreen = ({transport}: Props) => {
                     loginOptions: {
                         connectionType: 'ledger',
                     },
-                    data: data,
                 };
-                await Config.saveItem('casperdash', info);
-                setLoading(false);
-                replace(CreateNewWalletRouter.CHOOSE_PIN_SCREEN, {publicKey});
+                await Config.saveItem(Keys.casperdash, info);
+                replace(AuthenticationRouter.CHOOSE_PIN);
             } else {
-                setLoading(false);
+                setTransport(null);
                 Config.alertMess(err);
             }
         }));
@@ -91,30 +90,20 @@ const ShowAddressScreen = ({transport}: Props) => {
 
     return (
         <View style={styles.ShowAddressScreen}>
-            {!address ? (
-                <>
-                    <Text style={styles.loading}>Loading your Ethereum address...</Text>
-                    {error ? (
-                        <Text style={styles.error}>
-                            A problem occurred, make sure to open the Ethereum application
-                            on your Ledger Nano X. (
-                            {String((error && error.message) || error)})
-                        </Text>
-                    ) : null}
-                </>
-            ) : (
-                <>
-                    <Text style={styles.title}>Ledger Live Ethereum Account</Text>
-                    <QRCode value={address} size={300}/>
-                    <Text style={styles.address}>{address}</Text>
-                </>
-            )}
-            {isLoading && <CLoading/>}
+            {!error && <Text style={styles.loading}>Loading your account</Text>}
+            {
+                !publicKey && error &&
+                <Text style={styles.error}>
+                    A problem occurred, make sure to open the Ethereum application
+                    on your Ledger Nano X. (
+                    {String((error && error.message) || error)})
+                </Text>
+            }
         </View>
     );
 };
 
-export default ShowAddressScreen;
+export default GetPublicKeyScreen;
 
 const styles = StyleSheet.create({
     ShowAddressScreen: {

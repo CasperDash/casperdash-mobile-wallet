@@ -1,22 +1,22 @@
 import React from 'react';
-import {CreateNewWalletScreens} from './CreateNewWalletScreens';
+import {ChoosePinScreens} from './ChoosePinScreens';
 import {createStackNavigator} from '@react-navigation/stack';
 import {ScreenParams} from 'navigation/ScreenProps';
 
 const Stack = createStackNavigator<ScreenParams>();
 
-const CreateNewWalletNavigation = () => {
+const ChoosePinNavigation = () => {
     return (
         <Stack.Navigator
             screenOptions={{
                 headerShown: false,
             }}>
-            {Object.keys(CreateNewWalletScreens).map((elem: any, index) => (
+            {Object.keys(ChoosePinScreens).map((elem: any, index) => (
                 <Stack.Screen
                     name={elem}
-                    component={CreateNewWalletScreens[elem].screen}
+                    component={ChoosePinScreens[elem].screen}
                     options={{
-                        title: CreateNewWalletScreens[elem].title,
+                        title: ChoosePinScreens[elem].title,
                     }}
                     key={index}
                 />
@@ -25,4 +25,4 @@ const CreateNewWalletNavigation = () => {
     );
 };
 
-export default CreateNewWalletNavigation;
+export default ChoosePinNavigation;
