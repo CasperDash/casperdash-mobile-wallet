@@ -4,6 +4,7 @@ import {apis} from 'services';
 
 export function* getAccountInformation(data: any) {
     try {
+        yield put({type: types.GET_ACCOUNT_INFORMATION + '_SUCCESS', payload: null});
         // @ts-ignore
         const response = yield apis.getAccountInformation(data.params);
         if (response) {
