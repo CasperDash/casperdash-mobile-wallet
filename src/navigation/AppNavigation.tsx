@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
     createStackNavigator,
@@ -8,8 +8,6 @@ import {isReadyRef, navigationRef} from 'navigation/RootNavigation';
 import MainStack from './stack/MainStack';
 import AuthenticationNavigation from './AuthenticationNavigation';
 import {useSelector} from 'react-redux';
-import AuthenticationRouter from "navigation/AuthenticationNavigation/AuthenticationRouter";
-import CreateNewWalletNavigation from "navigation/CreateNewWalletNavigation";
 
 const Stack = createStackNavigator();
 
@@ -52,10 +50,6 @@ export default function AppNavigation() {
                             <Stack.Screen
                                 name="AuthenticationStack"
                                 component={AuthenticationNavigation}
-                            />
-                            <Stack.Screen
-                                name={AuthenticationRouter.CREATE_NEW_WALLET}
-                                component={CreateNewWalletNavigation}
                             />
                         </>
                 }

@@ -7,9 +7,7 @@ export type ScreenParams = {
     DOUBLE_CHECK_IT_SCREEN: {
         data: any
     },
-    CHOOSE_PIN_SCREEN: {
-        publicKey: string,
-    }
+    CHOOSE_PIN_SCREEN: undefined
 };
 
 type ScreenNavigationProp<T extends keyof ScreenParams> = StackNavigationProp<ScreenParams, T>;
