@@ -29,6 +29,5 @@ export {default as ChoosePinScreen} from './authentication/choose_pin/ChoosePinS
 export {default as ConfirmPinScreen} from './authentication/choose_pin/ConfirmPinScreen';
 
 //connect ledger
-export {default as DeviceSelectionScreen} from './authentication/create_new_wallet/DeviceSelectionScreen';
-export {default as ShowAddressScreen} from './authentication/create_new_wallet/ShowAdressScreen';
+export {default as GetPublicKeyScreen} from './authentication/create_new_wallet/GetPublicKeyScreen';
 export {default as ConnectLedgerScreen} from './authentication/create_new_wallet/ConnectLedgerScreen';
