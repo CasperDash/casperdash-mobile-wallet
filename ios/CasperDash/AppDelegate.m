@@ -2,7 +2,7 @@
 
 #if RCT_DEV
  #import <React/RCTDevLoadingView.h>
- #endif
+#endif
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -13,6 +13,9 @@
 #import <CodePush/CodePush.h>
 //#import <FBSDKCoreKit/FBSDKCoreKit.h>
 //#import <RNGoogleSignin/RNGoogleSignin.h>
+#import "Orientation.h"
+#import "RNSplashScreen.h"
+//@import Firebase;
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -21,9 +24,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-#import "Orientation.h"
-
-#import "RNSplashScreen.h"  // here
 
 
 
@@ -37,13 +37,12 @@ static void InitializeFlipper(UIApplication *application) {
   [client start];
 }
 #endif
-//@import Firebase;
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
- 
+
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -68,11 +67,11 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+
 //  [FIRApp configure];
 //  [[FBSDKApplicationDelegate sharedInstance] application:application
 //                            didFinishLaunchingWithOptions:launchOptions];
-  
+
   // Define UNUserNotificationCenter
    UNUserNotificationCenter *center =
        [UNUserNotificationCenter currentNotificationCenter];
