@@ -5,6 +5,13 @@ import AppEth from '@ledgerhq/hw-app-eth';
 import QRCode from 'react-native-qrcode-svg';
 import {scale} from 'device';
 import {textStyles} from 'assets';
+import {useDispatch} from 'react-redux';
+import {allActions} from 'redux_manager';
+import {Config} from 'utils';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
+import {CLoading} from 'components';
 
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
@@ -15,40 +22,71 @@ interface Props {
 const ShowAddressScreen = ({transport}: Props) => {
     const [error, setError] = useState<any>();
     const [address, setAddress] = useState<any>(null);
+    const [isLoading, setLoading] = useState<boolean>(false);
+
     const unmountRef = useRef<boolean>(false);
+    const dispatch = useDispatch();
+    const {replace} = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
-        while (!address) {
-            if (unmountRef.current) {
-                return;
-            }
-            fetchAddress(false);
-            delay(500);
-        }
-        fetchAddress(true);
-
+        setupFetchAddress();
         return () => {
             unmountRef.current = true;
         };
     }, []);
 
+    const setupFetchAddress = async () => {
+        while (!address) {
+            if (unmountRef.current) {
+                return;
+            }
+            await fetchAddress(false);
+            await delay(700);
+        }
+        await fetchAddress(true);
+    };
+
     const fetchAddress = async (verify: boolean) => {
         try {
             const eth = new AppEth(transport);
             const path = "44'/60'/0'/0/0"; // HD derivation path
-            const {address} = await eth.getAddress(path, verify);
+            const {address, publicKey} = await eth.getAddress(path, verify);
             if (unmountRef.current) {
                 return;
             }
-            setAddress(address);
-        } catch (error) {
-            // in this case, user is likely not on Ethereum app
+            if (address && publicKey) {
+                unmountRef.current = true;
+                setAddress(address);
+                getAccountInformation(publicKey);
+            }
+        } catch (err) {
             if (unmountRef.current) {
                 return;
             }
-            setError(error);
+            setError(err);
             return null;
         }
+    };
+
+    const getAccountInformation = (publicKey: string) => {
+        setLoading(true);
+        dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, data: any) => {
+            if (data) {
+                const info = {
+                    publicKey: publicKey,
+                    loginOptions: {
+                        connectionType: 'ledger',
+                    },
+                    data: data,
+                };
+                await Config.saveItem('casperdash', info);
+                setLoading(false);
+                replace(CreateNewWalletRouter.CHOOSE_PIN_SCREEN, {publicKey});
+            } else {
+                setLoading(false);
+                Config.alertMess(err);
+            }
+        }));
     };
 
     return (
@@ -71,6 +109,7 @@ const ShowAddressScreen = ({transport}: Props) => {
                     <Text style={styles.address}>{address}</Text>
                 </>
             )}
+            {isLoading && <CLoading/>}
         </View>
     );
 };

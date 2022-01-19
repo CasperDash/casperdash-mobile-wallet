@@ -1,9 +1,7 @@
-/* eslint-disable prettier/prettier */
 import {types} from './user_action';
 
 const initialState = {
-    profile: null,
-    token: false,
+    info: null,
 };
 
 export default function (
@@ -11,15 +9,10 @@ export default function (
     action = {type: '', payload: ''},
 ) {
     switch (action.type) {
-        case types.GET_INFORMATION_SUCCESS:
+        case types.GET_ACCOUNT_INFORMATION_SUCCESS:
             return {
                 ...state,
-                profile: action.payload,
-            };
-        case types.LOGIN_SUCCESS:
-            return {
-                ...state,
-                profile: action.payload,
+                info: action.payload,
             };
         default:
             return state;
