@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity, Platform, ViewStyle, TextStyle} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {colors, fonts, IconBack, IconBackDark, textStyles} from 'assets';
+import {colors, IconBack, textStyles} from 'assets';
 import {scale} from 'device';
 
 type Props = {
@@ -60,31 +60,32 @@ const styles = StyleSheet.create({
     },
     btnGoBack: {
         position: 'absolute',
-        left: scale(16),
+        left: scale(25),
+        zIndex: 1,
     },
     icon: {},
     titleHeaderContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        maxWidth: scale(375 - 16 * 2 - 20 * 2),
-        paddingTop: scale(2)
+        maxWidth: scale(375 - 25 * 2 - 20 * 2),
+        paddingTop: scale(2),
     },
     titleHeader: {
         ...textStyles.H5,
         textAlign: 'center',
         paddingRight: 0,
-        fontSize: scale(20),
+        fontSize: scale(24),
         color: colors.N2,
     },
     emptyView: {
-        width: scale(24),
+        width: scale(52),
         height: 10,
     },
     btnRight: {
         width: scale(45),
         height: scale(56),
-        right: scale(16),
+        right: scale(25),
         position: 'absolute',
         top: 0,
         justifyContent: 'center',

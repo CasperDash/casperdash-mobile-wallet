@@ -1,11 +1,14 @@
-import React, {useState, useRef, useContext, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, FlatList, LayoutAnimation} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {View, Text, StyleSheet, FlatList, LayoutAnimation} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Row, Col, CButton, CPaginationDot} from 'components';
-import {ListIntro} from "screens/authentication/data/data";
-import {colors, fonts, IconArrowLeft, IconArrowRight, textStyles} from "assets";
-import {scale} from "device";
-import IntroItem from "screens/authentication/WelcomeScreen/IntroItem";
+import {ListIntro} from 'screens/authentication/data/data';
+import {colors, fonts, IconArrowLeft, IconArrowRight, textStyles} from 'assets';
+import {scale} from 'device';
+import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
+import {useNavigation} from '@react-navigation/native';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 const introDescription = 'Casper Dash is a platform that aims to build a new creative economy.';
 
@@ -18,14 +21,15 @@ const translatePreset = {
     update: {
         type: LayoutAnimation.Types.linear,
         property: LayoutAnimation.Properties.opacity,
-    }
+    },
 };
 
 function WelcomeScreen() {
     const insets = useSafeAreaInsets();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [arrayImgSlider, setArrayImgSlider] = useState(Array.from({length: ListIntro.length}, (_, i) => (i * scale(375))));
+    const arrayImgSlider = Array.from({length: ListIntro.length}, (_, i) => (i * scale(375)));
     const flatListRef = useRef<any>(null);
+    const navigation = useNavigation<StackNavigationProp<any>>();
 
     const navigate = (n: number) => {
         if (currentIndex === 0 && n === -1 || currentIndex === 2 && n === 1) {
@@ -51,7 +55,7 @@ function WelcomeScreen() {
     };
 
     const openCreateNewWallet = () => {
-        //TODO: navigate to next screen
+        navigation.replace(AuthenticationRouter.CREATE_NEW_WALLET);
     };
 
     const _renderGetStarted = () => {
@@ -59,7 +63,7 @@ function WelcomeScreen() {
             onPress={openCreateNewWallet}
             style={styles.btnGetStarted}>
             <Text style={styles.sub1}>Get started now</Text>
-        </CButton>
+        </CButton>;
     };
 
     const _renderNavigatorButton = () => {
@@ -71,7 +75,7 @@ function WelcomeScreen() {
             <CButton style={styles.btnArrow} onPress={() => navigate(+1)}>
                 <IconArrowRight width={scale(14)} height={scale(9)}/>
             </CButton>
-        </Col>
+        </Col>;
     };
 
     return (
@@ -105,7 +109,7 @@ function WelcomeScreen() {
                 scrollEventThrottle={1}
                 decelerationRate={'fast'}
                 style={{
-                    flexGrow: 0
+                    flexGrow: 0,
                 }}
                 snapToOffsets={arrayImgSlider}
                 onMomentumScrollEnd={onMomentumScrollEnd}
@@ -114,7 +118,7 @@ function WelcomeScreen() {
                 )}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => {
-                    return <IntroItem {...item} key={index}/>
+                    return <IntroItem {...item} key={index}/>;
                 }}
                 keyExtractor={(item, index) => `${index}-${item.id ? item.id : ''}`}
             />
@@ -151,7 +155,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 'auto',
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     body2: {
         ...textStyles.Body2,
@@ -160,13 +164,13 @@ const styles = StyleSheet.create({
         marginTop: scale(16),
         width: scale(375 - 64),
         alignSelf: 'center',
-        lineHeight: 26
+        lineHeight: 26,
     },
     footer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingBottom: scale(20)
+        paddingBottom: scale(20),
     },
     navigatorContainer: {
         width: scale(154),
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
         borderColor: colors.gray6,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     btnArrow: {
         width: scale(76),
@@ -197,11 +201,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.R1,
         borderRadius: scale(90),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     sub1: {
         ...textStyles.Sub1,
         color: colors.Neutrals8,
-        marginTop: scale(2)
-    }
-})
+        marginTop: scale(2),
+    },
+});
