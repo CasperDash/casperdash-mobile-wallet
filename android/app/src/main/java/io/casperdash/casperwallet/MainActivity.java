@@ -1,4 +1,4 @@
-package io.wallet.casperdash;
+package io.casperdash.casperwallet;
 
 import android.os.Bundle; // here
 
