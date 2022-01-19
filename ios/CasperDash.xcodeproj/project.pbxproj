@@ -682,7 +682,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.wallet.casperdash;
+				PRODUCT_BUNDLE_IDENTIFIER = io.casperdash.casperwallet;
 				PRODUCT_NAME = CasperDash;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -710,7 +710,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.wallet.casperdash;
+				PRODUCT_BUNDLE_IDENTIFIER = io.casperdash.casperwallet;
 				PRODUCT_NAME = CasperDash;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
