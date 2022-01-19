@@ -1,10 +1,10 @@
-import React, {Component, useState} from "react";
+import React, {useState} from 'react';
 import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    ActivityIndicator
-} from "react-native";
+    ActivityIndicator,
+} from 'react-native';
 
 interface DeviceItemProps {
     device: any
@@ -29,10 +29,10 @@ const DeviceItem = ({device, onSelect}: DeviceItemProps) => {
             onPress={onPress}
             disabled={pending}>
             <Text style={styles.deviceName}>{device.name}</Text>
-            {pending ? <ActivityIndicator/> : null}
+            {pending ? <ActivityIndicator size={'small'}/> : null}
         </TouchableOpacity>
     );
-}
+};
 
 export default DeviceItem;
 
@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         marginVertical: 8,
         marginHorizontal: 16,
-        borderColor: "#ccc",
+        borderColor: '#ccc',
         borderWidth: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     deviceName: {
         fontSize: 20,
-        fontWeight: "bold"
-    }
+        fontWeight: 'bold',
+    },
 });
