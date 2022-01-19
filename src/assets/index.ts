@@ -14,12 +14,16 @@ import IconMenuSetting from './images/ic_menu_setting.svg';
 import IconMenuSettingActive from './images/ic_menu_setting_active.svg';
 import IconArrowLeft from './images/ic_arrow_left.svg';
 import IconArrowRight from './images/ic_arrow_right.svg';
+import IconPlusCircle from './images/ic_plus_circle.svg';
+import IconConnectLedger from './images/ic_connect_ledger.svg';
+import IconImportPhrase from './images/ic_import_phrase.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
     intro1: require('./images/intro1.png'),
     intro2: require('./images/intro2.png'),
     intro3: require('./images/intro3.png'),
+    logo: require('./images/logo.png'),
 };
 
 const colors = {
@@ -28,6 +32,7 @@ const colors = {
     c26273C: '#26273C',
     cB2B2B2: '#B2B2B2',
     cE0E0E0: '#E0E0E0',
+    c828489: '#828489',
 
     N1: '#000000',
     N2: '#353945',
@@ -49,6 +54,9 @@ const colors = {
 
     B1: '#3772FF',
     B2: '#D7E3FF',
+    B3: '#0021A5',
+
+    P1: '#9F9DF3',
 
     Neutrals2: '#23262F',
     Neutrals8: '#FCFCFD',
@@ -68,6 +76,11 @@ const fonts = {
         regular: 'DMSans-Regular',
         medium: 'DMSans-Medium',
     },
+    Lato: {
+        light: 'Lato-Light',
+        bold: 'Lato-Bold',
+        regular: 'Lato-Regular'
+    }
 };
 
 const textStyles = StyleSheet.create({
@@ -76,56 +89,56 @@ const textStyles = StyleSheet.create({
         fontWeight: '400',
         fontSize: scale(16),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Body2: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '400',
         fontSize: scale(14),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Sub1: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '500',
         fontSize: scale(16),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Sub2: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(14),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     Cap2: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '400',
         fontSize: scale(10),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     H3: {
         fontFamily: fonts.Poppins.semiBold,
         fontWeight: '600',
         fontSize: scale(32),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     H5: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(24),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     },
     H6: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(20),
         fontStyle: 'normal',
-        color: colors.c000000
+        color: colors.N2
     }
 });
 
@@ -147,4 +160,7 @@ export {
     IconMenuSettingActive,
     IconArrowLeft,
     IconArrowRight,
+    IconImportPhrase,
+    IconPlusCircle,
+    IconConnectLedger
 };

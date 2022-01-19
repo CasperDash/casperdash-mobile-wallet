@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text } from 'react-native'
+import {View, Text, Platform} from 'react-native'
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification, { Importance } from 'react-native-push-notification';
@@ -68,7 +68,7 @@ export default function Notification() {
 			 * - if you are not using remote notification or do not have Firebase installed, use this:
 			 *     requestPermissions: Platform.OS === 'ios'
 			 */
-			requestPermissions: true,
+			requestPermissions: Platform.OS === 'ios',
 		});
 
 	}, []);

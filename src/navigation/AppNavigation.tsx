@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
     createStackNavigator,
@@ -46,10 +46,12 @@ export default function AppNavigation() {
                 {
                     token ? <Stack.Screen name="MainStack" component={MainStack}/>
                         :
-                        <Stack.Screen
-                            name="AuthenticationStack"
-                            component={AuthenticationNavigation}
-                        />
+                        <>
+                            <Stack.Screen
+                                name="AuthenticationStack"
+                                component={AuthenticationNavigation}
+                            />
+                        </>
                 }
             </Stack.Navigator>
         </NavigationContainer>

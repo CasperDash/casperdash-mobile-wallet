@@ -3,9 +3,8 @@ import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {
     HomeScreen
 } from 'screens';
-import {StackParamList} from "navigation/ScreenProps";
 
-const Stack = createStackNavigator<StackParamList>();
+const Stack = createStackNavigator();
 
 export default function HomeStack() {
     return (
