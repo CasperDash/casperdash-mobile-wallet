@@ -39,6 +39,7 @@ const ChoosePinScreen: React.FC<ScreenProps<CreateNewWalletRouter.CHOOSE_PIN_SCR
                     value={pin}
                     codeLength={pinLength}
                     cellSpacing={0}
+                    restrictToNumbers
                     cellStyleFocused={null}
                     onTextChange={setPin}
                     textStyle={styles.textStyle}

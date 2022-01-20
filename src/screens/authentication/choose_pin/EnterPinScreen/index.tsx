@@ -22,7 +22,7 @@ const EnterPinScreen = () => {
         if (Platform.OS === 'android'){
             setTimeout(() => {
                 inputRef.current?.focus();
-            }, 2000);
+            }, 1000);
         }
     }, []);
 
@@ -64,6 +64,7 @@ const EnterPinScreen = () => {
                     value={pin}
                     codeLength={pinLength}
                     cellSpacing={0}
+                    restrictToNumbers
                     cellStyleFocused={null}
                     onTextChange={setPink}
                     textStyle={styles.textStyle}
