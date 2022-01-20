@@ -7,19 +7,23 @@ import {
 import {isReadyRef, navigationRef} from 'navigation/RootNavigation';
 import MainStack from './stack/MainStack';
 import AuthenticationNavigation from './AuthenticationNavigation';
-import {useSelector} from 'react-redux';
+import {SplashScreen} from 'screens';
 
 const Stack = createStackNavigator();
 
 export default function AppNavigation() {
-
-    const {token} = useSelector((state: any) => state && state.user);
 
     useEffect(() => {
         return () => {
             isReadyRef.current = false;
         };
     }, []);
+
+    const fadeAnim = ({ current } : any) => ({
+        cardStyle: {
+            opacity: current.progress,
+        },
+    });
 
     return (
         <NavigationContainer
@@ -42,17 +46,11 @@ export default function AppNavigation() {
                 screenOptions={{
                     headerShown: false,
                     gestureEnabled: false,
+                    cardStyleInterpolator: fadeAnim,
                 }}>
-                {
-                    token ? <Stack.Screen name="MainStack" component={MainStack}/>
-                        :
-                        <>
-                            <Stack.Screen
-                                name="AuthenticationStack"
-                                component={AuthenticationNavigation}
-                            />
-                        </>
-                }
+                <Stack.Screen name="SplashScreen" component={SplashScreen}/>
+                <Stack.Screen name="MainStack" component={MainStack}/>
+                <Stack.Screen name="AuthenticationStack" component={AuthenticationNavigation}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

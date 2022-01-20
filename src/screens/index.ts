@@ -1,5 +1,6 @@
 // Authentication
 export {default as WelcomeScreen} from './authentication/WelcomeScreen';
+export {default as SplashScreen} from './splash_screen/SplashScreen';
 
 // Home
 export {default as HomeScreen} from './home/HomeScreen';

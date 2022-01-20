@@ -9,6 +9,7 @@ import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
 import {useNavigation} from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Config, Keys} from "utils";
 
 const introDescription = 'Casper Dash is a platform that aims to build a new creative economy.';
 
@@ -54,7 +55,8 @@ function WelcomeScreen() {
         }
     };
 
-    const openCreateNewWallet = () => {
+    const openCreateNewWallet = async () => {
+        await Config.saveItem(Keys.overview, 1);
         navigation.replace(AuthenticationRouter.CREATE_NEW_WALLET);
     };
 
