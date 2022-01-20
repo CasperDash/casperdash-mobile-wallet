@@ -48,6 +48,7 @@ const ConfirmPinScreen: React.FC<ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>
                     value={pinConfirm}
                     codeLength={pinLength}
                     cellSpacing={0}
+                    restrictToNumbers
                     cellStyleFocused={null}
                     onTextChange={setPinConfirm}
                     textStyle={styles.textStyle}
