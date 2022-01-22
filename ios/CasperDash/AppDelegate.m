@@ -1,4 +1,6 @@
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"  // here
+#import "Orientation.h"
 
 #if RCT_DEV
  #import <React/RCTDevLoadingView.h>
@@ -21,9 +23,7 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-#import "Orientation.h"
 
-#import "RNSplashScreen.h"  // here
 
 
 
