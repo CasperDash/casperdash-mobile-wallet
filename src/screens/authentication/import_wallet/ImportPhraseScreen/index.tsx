@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import {CHeader, CLayout, CLoading, Row} from 'components';
-import {colors} from 'assets';
+import {colors, textStyles} from 'assets';
 import {scale} from 'device';
 import CTextButton from 'components/CTextButton';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -21,6 +21,7 @@ const ImportPhraseScreen = () => {
     const numberOfPhrases = 24;
     const [isLoading, setLoading] = useState<boolean>(false);
     const {replace} = useNavigation<StackNavigationProp<any>>();
+    const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
 
     const [listLeft, setListLeft] = useState<Array<Phrase>>(
         Array.from({length: numberOfPhrases / 2}, (_, idx) => ({
@@ -36,6 +37,9 @@ const ImportPhraseScreen = () => {
     );
 
     const onChangeText = (text: string, index: number, listIndex: number) => {
+        if (isWrongPhrase){
+            setWrongPhrase(false);
+        }
         if (listIndex === 1) {
             setListLeft(getList(text, listLeft, index));
         }
@@ -103,12 +107,15 @@ const ImportPhraseScreen = () => {
                 replace(AuthenticationRouter.CHOOSE_PIN);
             } else {
                 setLoading(false);
-                Config.alertMess(err);
+                setWrongPhrase(true);
             }
         }));
     };
 
     const onCancel = () => {
+        if (isWrongPhrase){
+            setWrongPhrase(false);
+        }
         setListLeft(Array.from({length: numberOfPhrases / 2}, (_, idx) => ({
             id: idx,
             word: '',
@@ -150,6 +157,7 @@ const ImportPhraseScreen = () => {
                             }
                         </View>
                     </Row.LR>
+                    {isWrongPhrase && <Text style={styles.txtError}>Wrong Phrase</Text>}
                 </KeyboardAwareScrollView>
                 <Row.C>
                     <CTextButton
@@ -195,5 +203,12 @@ const styles = StyleSheet.create({
         width: scale(164),
         alignSelf: 'center',
         marginVertical: scale(20),
+    },
+    txtError: {
+        ...textStyles.Body2,
+        color: colors.R3,
+        marginTop: scale(8),
+        alignSelf: 'flex-start',
+        marginLeft: scale(16),
     },
 });
