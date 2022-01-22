@@ -1,4 +1,4 @@
-import React, {useState, useRef, useContext} from 'react';
+import React from 'react';
 import {Text, StyleSheet, TextInput} from 'react-native';
 import {Row} from 'components';
 import {scale} from 'device';
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         flex: 1,
         color: colors.N2,
         borderBottomWidth: scale(1),
-        borderBottomColor: colors.N5
+        borderBottomColor: colors.N5,
+        paddingVertical: 0,
     },
 });

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {CHeader, CLayout, Row} from 'components';
+import {CHeader, CLayout, CLoading, Row} from 'components';
 import {colors} from 'assets';
 import {scale} from 'device';
 import CTextButton from 'components/CTextButton';
@@ -8,11 +8,20 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Phrase} from 'screens/authentication/data/data';
 import {PhraseInputItem} from 'screens/authentication/import_wallet/components';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Toast from 'react-native-toast-message';
-import CNotificationModal from 'components/CNotificationModal';
+import {allActions} from 'redux_manager';
+import { useDispatch } from 'react-redux';
+import {Config} from 'utils';
+import Keys from '../../../../utils/keys';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 const ImportPhraseScreen = () => {
+    const dispatch = useDispatch();
     const numberOfPhrases = 24;
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const {replace} = useNavigation<StackNavigationProp<any>>();
+
     const [listLeft, setListLeft] = useState<Array<Phrase>>(
         Array.from({length: numberOfPhrases / 2}, (_, idx) => ({
             id: idx,
@@ -69,10 +78,34 @@ const ImportPhraseScreen = () => {
             }
         } else {
             //import phrase
-            Toast.show({
-                type: 'info',
-            })
+            importPhrase();
         }
+    };
+
+    const importPhrase = () => {
+        const phrasesLeft = listLeft.reduce((previous: string, current: Phrase) => previous + current.word + ' ', '');
+        const phrasesRight = listRight.reduce((previous: string, current: Phrase) => previous + current.word + ' ', '');
+        const phrases = (phrasesLeft + phrasesRight).trim();
+        const publicKey = '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'; //TODO: get publicKey from phrases string
+        setLoading(true);
+
+        dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, res: any) => {
+            if (res) {
+                setLoading(false);
+                const info = {
+                    publicKey: publicKey,
+                    loginOptions: {
+                        connectionType: 'passphase',
+                        passphase: phrases,
+                    },
+                };
+                await Config.saveItem(Keys.casperdash, info);
+                replace(AuthenticationRouter.CHOOSE_PIN);
+            } else {
+                setLoading(false);
+                Config.alertMess(err);
+            }
+        }));
     };
 
     const onCancel = () => {
@@ -132,6 +165,7 @@ const ImportPhraseScreen = () => {
                     />
                 </Row.C>
             </View>
+            {isLoading && <CLoading/>}
         </CLayout>
     );
 };
