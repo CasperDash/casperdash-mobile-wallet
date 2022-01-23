@@ -1,5 +1,5 @@
-import {scale} from "device";
-import {StyleSheet} from "react-native";
+import {scale} from 'device';
+import {StyleSheet} from 'react-native';
 
 import IconBack from './images/ic_back.svg';
 import IconMenuHome from './images/ic_menu_home.svg';
@@ -17,6 +17,9 @@ import IconArrowRight from './images/ic_arrow_right.svg';
 import IconPlusCircle from './images/ic_plus_circle.svg';
 import IconConnectLedger from './images/ic_connect_ledger.svg';
 import IconImportPhrase from './images/ic_import_phrase.svg';
+import IconMessageSuccess from './images/ic_message_success.svg';
+import IconMessageWarning from './images/ic_message_warning.svg';
+import IconMessageError from './images/ic_message_error.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
@@ -61,7 +64,7 @@ const colors = {
     Neutrals2: '#23262F',
     Neutrals8: '#FCFCFD',
 
-    gray6: '#F2F2F2'
+    gray6: '#F2F2F2',
 };
 
 const fonts = {
@@ -69,7 +72,7 @@ const fonts = {
         bold: 'Poppins-Bold',
         regular: 'Poppins-Regular',
         medium: 'Poppins-Medium',
-        semiBold: 'Poppins-SemiBold'
+        semiBold: 'Poppins-SemiBold',
     },
     DMSans: {
         bold: 'DMSans-Bold',
@@ -79,8 +82,8 @@ const fonts = {
     Lato: {
         light: 'Lato-Light',
         bold: 'Lato-Bold',
-        regular: 'Lato-Regular'
-    }
+        regular: 'Lato-Regular',
+    },
 };
 
 const textStyles = StyleSheet.create({
@@ -89,57 +92,57 @@ const textStyles = StyleSheet.create({
         fontWeight: '400',
         fontSize: scale(16),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     Body2: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '400',
         fontSize: scale(14),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     Sub1: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '500',
         fontSize: scale(16),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     Sub2: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(14),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     Cap2: {
         fontFamily: fonts.Poppins.regular,
         fontWeight: '400',
         fontSize: scale(10),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     H3: {
         fontFamily: fonts.Poppins.semiBold,
         fontWeight: '600',
         fontSize: scale(32),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     H5: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(24),
         fontStyle: 'normal',
-        color: colors.N2
+        color: colors.N2,
     },
     H6: {
         fontFamily: fonts.Poppins.medium,
         fontWeight: '600',
         fontSize: scale(20),
         fontStyle: 'normal',
-        color: colors.N2
-    }
+        color: colors.N2,
+    },
 });
 
 export {
@@ -162,5 +165,8 @@ export {
     IconArrowRight,
     IconImportPhrase,
     IconPlusCircle,
-    IconConnectLedger
+    IconConnectLedger,
+    IconMessageSuccess,
+    IconMessageWarning,
+    IconMessageError,
 };
