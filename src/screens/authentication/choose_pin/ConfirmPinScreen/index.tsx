@@ -10,13 +10,16 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Config, Keys} from 'utils';
+import {useDispatch} from 'react-redux';
+import {allActions} from 'redux_manager';
+import {MessageType} from 'components/CMessge/types';
 
 // @ts-ignore
 const ConfirmPinScreen: React.FC<ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>> = ({route}) => {
     const {pin} = route.params;
     const [pinConfirm, setPinConfirm] = useState<string>();
     const navigation = useNavigation<StackNavigationProp<any>>();
-
+    const dispatch = useDispatch();
     const pinLength = 6;
 
     useEffect(() => {
@@ -29,6 +32,11 @@ const ConfirmPinScreen: React.FC<ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>
                     }],
                 }),
             );
+            const message = {
+                message: 'Logged in successfully',
+                type: MessageType.success,
+            };
+            dispatch(allActions.main.showMessage(message));
         }
     }, [pinConfirm, pin]);
 
