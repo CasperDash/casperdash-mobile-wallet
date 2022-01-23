@@ -62,10 +62,10 @@ const ImportPhraseScreen = () => {
             //paste phrase
             const phraseString = await Clipboard.getString();
             if (phraseString && phraseString.length > 0) {
-                let listWords: Array<Phrase> = phraseString ? phraseString.split(/\s+/).map((word, index) => ({
+                let listWords: Array<Phrase> = phraseString.split(/\s+/).map((word, index) => ({
                     id: index,
                     word: word,
-                })) : [];
+                }));
                 if (listWords.length < numberOfPhrases) {
                     const lastEmptyList = Array.from({length: numberOfPhrases - listWords.length}, (_, idx) => ({
                         id: listWords.length + idx,
