@@ -32,7 +32,6 @@ const CMessage = () => {
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}>
             <Row.TL
-                renderToHardwareTextureAndroid={false}
                 style={[styles.body, !CMessageData && {opacity: 0}]}>
                 {Type && Type.icon}
                 <Col pl={16}>
