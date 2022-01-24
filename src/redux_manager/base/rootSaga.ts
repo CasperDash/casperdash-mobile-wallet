@@ -4,6 +4,7 @@ import {
 } from '../user/user_saga';
 
 import {
+    watchShowMessage,
 } from '../main/main_saga';
 
 import {
@@ -20,6 +21,7 @@ export default function* rootSaga() {
         watchGetAccountInformation(),
 
         // main
+        watchShowMessage(),
 
         //home
 

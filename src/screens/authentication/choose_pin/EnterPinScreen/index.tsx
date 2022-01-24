@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {ScreenProps} from 'navigation/ScreenProps';
-import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import {CHeader, CLayout, Col} from 'components';
 import {colors, fonts, textStyles} from 'assets';
 import {scale} from 'device';
@@ -10,67 +8,76 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Config, Keys} from 'utils';
-import {useDispatch} from 'react-redux';
-import {allActions} from 'redux_manager';
-import {MessageType} from 'components/CMessge/types';
 
 // @ts-ignore
-const ConfirmPinScreen: React.FC<ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>> = ({route}) => {
-    const {pin} = route.params;
-    const [pinConfirm, setPinConfirm] = useState<string>();
+const EnterPinScreen = () => {
+
+    const [pin, setPink] = useState<string>();
     const navigation = useNavigation<StackNavigationProp<any>>();
-    const dispatch = useDispatch();
     const pinLength = 6;
+    const [error, setError] = useState<boolean>(false);
+    const inputRef = useRef<any>();
 
     useEffect(() => {
-        if (pinConfirm && pin && pin === pinConfirm) {
-            Config.saveItem(Keys.pinCode, pinConfirm);
-            navigation.dispatch(
-                CommonActions.reset({
-                    routes: [{
-                        name: 'MainStack',
-                    }],
-                }),
-            );
-            const message = {
-                message: 'Logged in successfully',
-                type: MessageType.success,
-            };
-            dispatch(allActions.main.showMessage(message));
+        if (Platform.OS === 'android'){
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 1000);
         }
-    }, [pinConfirm, pin]);
+    }, []);
+
+
+    useEffect(() => {
+        if (pin && pin.length === pinLength) {
+            Config.getItem(Keys.pinCode).then((savePin: string) => {
+                if (savePin !== pin) {
+                    setError(savePin !== pin);
+                    return;
+                }
+                navigation.dispatch(
+                    CommonActions.reset({
+                        routes: [{
+                            name: 'MainStack',
+                        }],
+                    }),
+                );
+            });
+        } else if (error) {
+            setError(false);
+        }
+    }, [pin]);
 
     return (
         <CLayout>
-            <CHeader title={'Confirm PIN'}/>
+            <CHeader title={'Enter PIN'} showBack={false}/>
             <Col.C mt={78}>
-                <Text style={styles.title}>Confirm security PIN</Text>
+                <Text style={styles.title}>Enter security PIN</Text>
                 <SmoothPinCodeInput
                     placeholder={<View style={styles.pinPlaceholder}/>}
                     mask={<View style={[styles.pinPlaceholder, {backgroundColor: colors.R1}]}/>}
                     maskDelay={500}
                     password
+                    ref={inputRef}
                     cellStyle={null}
                     keyboardType={'number-pad'}
                     autoFocus
-                    value={pinConfirm}
+                    value={pin}
                     codeLength={pinLength}
                     cellSpacing={0}
                     restrictToNumbers
                     cellStyleFocused={null}
-                    onTextChange={setPinConfirm}
+                    onTextChange={setPink}
                     textStyle={styles.textStyle}
                 />
                 {
-                    !!pinConfirm && !!pin && pinConfirm.length === 6 && pinConfirm !== pin &&
-                    <Text style={[styles.title, {color: colors.R1, marginTop: scale(20)}]}>Incorrect PIN code</Text>
+                    error && <Text style={[styles.title, {color: colors.R1, marginTop: scale(20)}]}>Incorrect PIN code</Text>
                 }
             </Col.C>
         </CLayout>
     );
 };
 
-export default ConfirmPinScreen;
+export default EnterPinScreen;
 
 const styles = StyleSheet.create({
     title: {

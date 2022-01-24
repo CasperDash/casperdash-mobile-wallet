@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     introImage: {
         width: scale(280),
         height: scale(280),
+        resizeMode: 'contain',
     },
     title: {
         ...textStyles.H3,

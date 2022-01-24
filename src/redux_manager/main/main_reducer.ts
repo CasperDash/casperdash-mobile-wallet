@@ -1,15 +1,20 @@
-/* eslint-disable prettier/prettier */
 import {types} from './main_action';
-import {Animated} from "react-native";
-import {device} from "device";
 
-const initialState = {};
+const initialState = {
+    CMessageData: null,
+};
 
 export default function (
     state = initialState,
     action = {type: '', payload: ''},
 ) {
     switch (action.type) {
+        case types.SHOW_MESSAGE_SUCCESS:{
+            return {
+                ...state,
+                CMessageData: action.payload,
+            };
+        }
         default:
             return state;
     }
