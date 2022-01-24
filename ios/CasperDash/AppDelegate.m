@@ -4,7 +4,7 @@
 
 #if RCT_DEV
  #import <React/RCTDevLoadingView.h>
- #endif
+#endif
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -15,6 +15,9 @@
 #import <CodePush/CodePush.h>
 //#import <FBSDKCoreKit/FBSDKCoreKit.h>
 //#import <RNGoogleSignin/RNGoogleSignin.h>
+#import "Orientation.h"
+#import "RNSplashScreen.h"
+//@import Firebase;
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -23,7 +26,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-
 
 
 
@@ -37,13 +39,12 @@ static void InitializeFlipper(UIApplication *application) {
   [client start];
 }
 #endif
-//@import Firebase;
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
- 
+
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -68,17 +69,34 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+
 //  [FIRApp configure];
 //  [[FBSDKApplicationDelegate sharedInstance] application:application
 //                            didFinishLaunchingWithOptions:launchOptions];
-  
+
   // Define UNUserNotificationCenter
    UNUserNotificationCenter *center =
-       [UNUserNotificationCenter currentNotificationCenter];
-   center.delegate = self;
+  [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
 
-    [RNSplashScreen show];  // here
+  //this code clear stored information in keychain when using react-native-sensitive-info (uninstall app and reinstall, stored information remained)
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HAS_RUN_BEFORE"] == NO) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HAS_RUN_BEFORE"];
+    NSArray *secItemClasses = [NSArray arrayWithObjects:
+                               (__bridge id)kSecClassGenericPassword,
+                               (__bridge id)kSecClassInternetPassword,
+                               (__bridge id)kSecClassCertificate,
+                               (__bridge id)kSecClassKey,
+                               (__bridge id)kSecClassIdentity,
+                               nil];
+    for (id secItemClass in secItemClasses) {
+      NSDictionary *spec = @{(__bridge id)kSecClass: secItemClass};
+      SecItemDelete((__bridge CFDictionaryRef)spec);
+    }
+  }
+
+  [RNSplashScreen show];
+
   return YES;
 }
 

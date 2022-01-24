@@ -23,7 +23,7 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
     const [listDataSelected, setListDataSelected] = useState<any>([]);
     const [isLoading, setLoading] = useState<boolean>(false);
     const numberOfWords = Math.floor(route.params.data.length / 3);
-    const {replace} = useNavigation<StackNavigationProp<any>>();
+    const {navigate} = useNavigation<StackNavigationProp<any>>();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -80,7 +80,7 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
-                replace(AuthenticationRouter.CHOOSE_PIN);
+                navigate(AuthenticationRouter.CHOOSE_PIN);
             } else {
                 setLoading(false);
                 Config.alertMess(err);

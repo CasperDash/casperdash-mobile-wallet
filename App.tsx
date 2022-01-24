@@ -13,9 +13,7 @@ const CODE_PUSH_OPTIONS = {
   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
 };
 let App = () => {
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
+
   return (
     <Provider store={store}>
       <AppNavigation />
