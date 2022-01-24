@@ -74,10 +74,27 @@ static void InitializeFlipper(UIApplication *application) {
 
   // Define UNUserNotificationCenter
    UNUserNotificationCenter *center =
-       [UNUserNotificationCenter currentNotificationCenter];
-   center.delegate = self;
+  [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
 
-    [RNSplashScreen show];  // here
+  //this code clear stored information in keychain when using react-native-sensitive-info (uninstall app and reinstall, stored information remained)
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HAS_RUN_BEFORE"] == NO) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HAS_RUN_BEFORE"];
+    NSArray *secItemClasses = [NSArray arrayWithObjects:
+                               (__bridge id)kSecClassGenericPassword,
+                               (__bridge id)kSecClassInternetPassword,
+                               (__bridge id)kSecClassCertificate,
+                               (__bridge id)kSecClassKey,
+                               (__bridge id)kSecClassIdentity,
+                               nil];
+    for (id secItemClass in secItemClasses) {
+      NSDictionary *spec = @{(__bridge id)kSecClass: secItemClass};
+      SecItemDelete((__bridge CFDictionaryRef)spec);
+    }
+  }
+
+  [RNSplashScreen show];
+
   return YES;
 }
 

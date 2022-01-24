@@ -1,14 +1,15 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList, LayoutAnimation} from 'react-native';
+import {View, Text, StyleSheet, FlatList, LayoutAnimation, ScrollView} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Row, Col, CButton, CPaginationDot} from 'components';
 import {ListIntro} from 'screens/authentication/data/data';
 import {colors, fonts, IconArrowLeft, IconArrowRight, textStyles} from 'assets';
-import {scale} from 'device';
+import {device, scale} from 'device';
 import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
 import {useNavigation} from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Config, Keys} from 'utils';
 
 const introDescription = 'Casper Dash is a platform that aims to build a new creative economy.';
 
@@ -54,7 +55,8 @@ function WelcomeScreen() {
         }
     };
 
-    const openCreateNewWallet = () => {
+    const openCreateNewWallet = async () => {
+        await Config.saveItem(Keys.overview, 1);
         navigation.replace(AuthenticationRouter.CREATE_NEW_WALLET);
     };
 
@@ -79,55 +81,64 @@ function WelcomeScreen() {
     };
 
     return (
-        <View style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom}]}>
-            <Row.LR px={24} pt={20} mb={40} style={{alignItems: 'center'}}>
-                <CButton
-                    onPress={openCreateNewWallet}
-                    style={styles.btnSkip}>
-                    <Text style={styles.txtSkip}>Skip</Text>
-                </CButton>
-                <CPaginationDot
-                    lineStyle
-                    length={3}
-                    style={styles.pagination}
-                    active={currentIndex}
-                    activeLineWidth={scale(24)}
-                    activeLineHeight={scale(4)}
-                    borderRadius={scale(4)}
-                    activeLineColor={colors.R1}
-                    lineSpace={scale(4)}
-                    passiveLineWidth={scale(12)}
-                    passiveLineHeight={scale(4)}
-                    passiveLineColor={colors.cE0E0E0}
+        <View style={[styles.container]}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                alwaysBounceVertical={false}
+                contentContainerStyle={{
+                    paddingTop: insets.top,
+                    paddingBottom: insets.bottom,
+                    minHeight: device.h,
+                }}>
+                <Row.LR px={24} pt={20} mb={20} style={{alignItems: 'center'}}>
+                    <CButton
+                        onPress={openCreateNewWallet}
+                        style={styles.btnSkip}>
+                        <Text style={styles.txtSkip}>Skip</Text>
+                    </CButton>
+                    <CPaginationDot
+                        lineStyle
+                        length={3}
+                        style={styles.pagination}
+                        active={currentIndex}
+                        activeLineWidth={scale(24)}
+                        activeLineHeight={scale(4)}
+                        borderRadius={scale(4)}
+                        activeLineColor={colors.R1}
+                        lineSpace={scale(4)}
+                        passiveLineWidth={scale(12)}
+                        passiveLineHeight={scale(4)}
+                        passiveLineColor={colors.cE0E0E0}
+                    />
+                </Row.LR>
+                <FlatList
+                    ref={flatListRef}
+                    data={ListIntro}
+                    extraData={ListIntro}
+                    horizontal={true}
+                    scrollEventThrottle={1}
+                    decelerationRate={'fast'}
+                    style={{
+                        flexGrow: 0,
+                    }}
+                    snapToOffsets={arrayImgSlider}
+                    onMomentumScrollEnd={onMomentumScrollEnd}
+                    getItemLayout={(data, index) => (
+                        {length: scale(375), offset: scale(375) * index, index}
+                    )}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({item, index}) => {
+                        return <IntroItem {...item} key={index}/>;
+                    }}
+                    keyExtractor={(item, index) => `${index}-${item.id ? item.id : ''}`}
                 />
-            </Row.LR>
-            <FlatList
-                ref={flatListRef}
-                data={ListIntro}
-                extraData={ListIntro}
-                horizontal={true}
-                scrollEventThrottle={1}
-                decelerationRate={'fast'}
-                style={{
-                    flexGrow: 0,
-                }}
-                snapToOffsets={arrayImgSlider}
-                onMomentumScrollEnd={onMomentumScrollEnd}
-                getItemLayout={(data, index) => (
-                    {length: scale(375), offset: scale(375) * index, index}
-                )}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item, index}) => {
-                    return <IntroItem {...item} key={index}/>;
-                }}
-                keyExtractor={(item, index) => `${index}-${item.id ? item.id : ''}`}
-            />
-            <Text style={styles.body2}>{introDescription}</Text>
-            <Col style={styles.footer}>
-                {
-                    currentIndex === 2 ? _renderGetStarted() : _renderNavigatorButton()
-                }
-            </Col>
+                <Text style={styles.body2}>{introDescription}</Text>
+                <Col style={styles.footer}>
+                    {
+                        currentIndex === 2 ? _renderGetStarted() : _renderNavigatorButton()
+                    }
+                </Col>
+            </ScrollView>
         </View>
     );
 }
@@ -137,6 +148,7 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        justifyContent: 'flex-start',
         flex: 1,
     },
     txtSkip: {
@@ -170,6 +182,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
+        marginTop: scale(20),
         paddingBottom: scale(20),
     },
     navigatorContainer: {

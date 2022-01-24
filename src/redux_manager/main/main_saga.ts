@@ -1,19 +1,13 @@
-import {put, takeLatest, take, cancel, delay} from 'redux-saga/effects';
+import {put, takeLatest, delay} from 'redux-saga/effects';
 import {types} from './main_action';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {network} from "services";
-import * as RootNavigation from '../../navigation/RootNavigation';
 
-export function* tokenExpire() {
-    yield AsyncStorage.removeItem('access_token');
-    network.setToken('');
-    yield put({type: 'GET_INFORMATION_SUCCESS', payload: null});
-    RootNavigation.reset({
-        routes: [{name: 'AuthenticationStack'}],
-    });
+export function* showMessage(data: any) {
+    yield put({type: types.SHOW_MESSAGE_SUCCESS, payload: data.message});
+    yield delay(data.duration ?? 2000);
+    yield put({type: types.SHOW_MESSAGE_SUCCESS, payload: null});
 }
 
-export function* watchTokenExpire() {
-    yield takeLatest(types.TOKEN_EXPIRE, tokenExpire);
+export function* watchShowMessage() {
+    yield takeLatest(types.SHOW_MESSAGE, showMessage);
 }
 
