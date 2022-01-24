@@ -14,11 +14,14 @@ export interface Intro {
     title: string,
 }
 
+import { KeyFactory } from "casper-storage";
+const key = KeyFactory.getInstance().generate();
+
 const ListIntro: Array<Intro> = [
     {
         id: 0,
         image: images.intro1,
-        title: 'The new NFT marketplace',
+        title: key,
     },
     {
         id: 1,
