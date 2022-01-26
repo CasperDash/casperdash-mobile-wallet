@@ -16,6 +16,7 @@ import {useDispatch} from 'react-redux';
 import {Phrase} from 'screens/authentication/data/data';
 import Keys from 'utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import {MessageType} from 'components/CMessge/types';
 
 // @ts-ignore
 const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN>> = ({route}) => {
@@ -65,6 +66,14 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
     };
 
     const getAccountInformation = () => {
+        if (listDataSelected.filter((i: any) => !!i).length !== numberOfWords){
+            const message = {
+                message: 'Invalid',
+                type: MessageType.error,
+            };
+            dispatch(allActions.main.showMessage(message));
+            return;
+        }
         const {data} = route.params;
         const phrases = data.reduce((previous: string, current: Phrase) => previous + current.word + ' ', '');
         const publicKey = '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'; //TODO: get publicKey from phrases string
@@ -90,7 +99,7 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
 
     return (
         <CLayout>
-            <CHeader title={'Let\'s double check it'}/>
+            <CHeader title={`Double check (${listData.filter((row: any) => row.find((phrase: any) => phrase.isSelected)).length}/${numberOfWords})`}/>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{paddingVertical: scale(20)}}>
@@ -109,7 +118,7 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
             <CButton2
                 onPress={getAccountInformation}
                 style={styles.btnNext}
-                disabled={listDataSelected.filter((i: any) => !!i).length !== numberOfWords}
+                disabled={listData.filter((row: any) => row.find((phrase: any) => phrase.isSelected)).length < numberOfWords}
                 text={'Next'}
             />
             {isLoading && <CLoading/>}
