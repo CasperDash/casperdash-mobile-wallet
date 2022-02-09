@@ -5,10 +5,10 @@ import {
 } from '@react-navigation/stack';
 
 import {isReadyRef, navigationRef} from 'navigation/RootNavigation';
-import MainStack from './stack/MainStack';
 import AuthenticationNavigation from './AuthenticationNavigation';
 import {SplashScreen} from 'screens';
 import CMessge from 'components/CMessge';
+import MainNavigation from 'navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -51,7 +51,7 @@ export default function AppNavigation() {
                         cardStyleInterpolator: fadeAnim,
                     }}>
                     <Stack.Screen name="SplashScreen" component={SplashScreen}/>
-                    <Stack.Screen name="MainStack" component={MainStack}/>
+                    <Stack.Screen name="MainStack" component={MainNavigation}/>
                     <Stack.Screen name="AuthenticationStack" component={AuthenticationNavigation}/>
                 </Stack.Navigator>
             </NavigationContainer>

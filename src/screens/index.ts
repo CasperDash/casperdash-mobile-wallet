@@ -32,3 +32,6 @@ export {default as ConfirmPinScreen} from './authentication/choose_pin/ConfirmPi
 //connect ledger
 export {default as GetPublicKeyScreen} from './authentication/create_new_wallet/GetPublicKeyScreen';
 export {default as ConnectLedgerScreen} from './authentication/create_new_wallet/ConnectLedgerScreen';
+
+//key manager
+export {default as KeyManagerScreen} from './key_manager/KeyManagerScreen';
