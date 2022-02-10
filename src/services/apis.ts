@@ -18,6 +18,23 @@ function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
     });
 }
 
+function getTokenInfoWithBalanceAPI<T>(params: any): NetworkPromiseResponse<T> {
+    return new Promise((resolve, reject) => {
+        network
+            .authorizedRequest('/tokens/getTokensInfo?' + qs.stringify(params), 'GET')
+            .then((res: any) => {
+                if (!res || (res && res.status >= 400)) {
+                    return reject(res);
+                }
+                resolve(res as any);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
 export default {
     getAccountInformation,
+    getTokenInfoWithBalanceAPI,
 };

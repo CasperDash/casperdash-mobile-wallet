@@ -1,5 +1,15 @@
-import React, {useState, useRef, useContext} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
+import React, {useState, useRef, useContext, useEffect} from 'react';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Platform,
+    UIManager,
+    LayoutAnimation,
+    ScrollView,
+    Image
+} from 'react-native';
 import {
     colors,
     textStyles,
@@ -9,6 +19,9 @@ import {
     IconEye,
     IconPencilFilled,
     IconCopy,
+    images,
+    IconPlusCircle,
+    IconLogo,
 } from 'assets';
 import {CButton, CLayout, Col, Row} from 'components';
 import {scale} from 'device';
@@ -20,6 +33,8 @@ import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
 import {AccountActions} from './data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
+import TokenComponent from "screens/home/HomeScreen/components/TokenComponent";
 
 function HomeScreen() {
 
@@ -29,6 +44,8 @@ function HomeScreen() {
 
     const {navigate} = useNavigation();
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets();
+
     const key = '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38';
     const amount = 45678.89;
 
@@ -38,6 +55,22 @@ function HomeScreen() {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setIsShowAmount(i => !i);
     };
+
+    useEffect(() => {
+        getTokenInfoWithBalance();
+    }, []);
+
+    const getTokenInfoWithBalance = () => {
+        dispatch(allActions.home.getTokenInfoWithBalance((error: any, data: any) => {
+            if (error) {
+                const message = {
+                    message: error && error.message ? error.message : 'Error',
+                    type: MessageType.error,
+                };
+                dispatch(allActions.main.showMessage(message));
+            }
+        }))
+    }
 
     const saveKey = () => {
         Clipboard.setString(key);
@@ -57,7 +90,7 @@ function HomeScreen() {
                             <Text
                                 numberOfLines={1}
                                 style={styles.titleAccount}>Account 1</Text>
-                            <IconPencilFilled width={scale(16)} height={scale(16)}/>
+                            {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
                         </Row.C>
                     </CButton>
 
@@ -80,10 +113,10 @@ function HomeScreen() {
                         style: 'currency',
                         currency: 'USD',
                     }) : '$*****00'}</Text>
-                    <CButton onPress={onToggleAmount}>
+                    {/*<CButton onPress={onToggleAmount}>
                         {isShowAmount ? <IconEye width={scale(20)} height={scale(14)}/> :
                             <IconEyeOff width={scale(20)} height={scale(19)}/>}
-                    </CButton>
+                    </CButton>*/}
                 </Row.C>
                 <Row.C>
                     {AccountActions.map((action, index) => {
@@ -94,23 +127,45 @@ function HomeScreen() {
         );
     };
 
+    const _renderListTokens = () => {
+        return (
+            <Col mt={16}
+                 style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}]}>
+                <TokenComponent/>
+                <CButton style={{marginTop: scale(16)}}>
+                    <Row mx={16} style={styles.alignCenter}>
+                        <IconPlusCircle width={scale(14)} height={scale(14)}/>
+                        <Text style={[textStyles.Body1, {marginLeft: scale(8)}]}>Add Custom Token</Text>
+                    </Row>
+                </CButton>
+            </Col>
+        )
+    }
     return (
         <CLayout bgColor={colors.cF8F8F8}>
             <View style={styles.container}>
-                <Row.LR pl={24} pr={16} pt={10} pb={24}>
-                    <Text style={textStyles.H3}>Home</Text>
+                <Row.LR pl={24} pr={16} pt={10} pb={10}>
+                    <Row style={styles.alignCenter}>
+                        <IconLogo width={scale(28)} height={scale(28)}/>
+                        <Text style={[textStyles.H3, {marginLeft: scale(16)}]}>Home</Text>
+                    </Row>
                     <Row.C>
                         <CButton
                             onPress={() => navigate(MainRouter.SETTINGS_SCREEN)}
-                            style={[styles.circleBtn, {marginRight: scale(16)}]}>
+                            style={styles.circleBtn}>
                             <IconSetting width={scale(21)} height={scale(21)}/>
                         </CButton>
-                        <CButton style={styles.circleBtn}>
+                        {/*<CButton style={[styles.circleBtn, {marginLeft: scale(16)}]}>
                             <IconScanCode width={scale(21)} height={scale(21)}/>
-                        </CButton>
+                        </CButton>*/}
                     </Row.C>
                 </Row.LR>
-                {_renderAccountComponent()}
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{paddingTop: scale(14)}}>
+                    {_renderAccountComponent()}
+                    {_renderListTokens()}
+                </ScrollView>
             </View>
         </CLayout>
     );
@@ -140,4 +195,14 @@ const styles = StyleSheet.create({
         ...textStyles.Body2,
         marginRight: scale(10),
     },
+    listContainer: {
+        width: '100%',
+        minHeight: scale(500),
+        backgroundColor: colors.W1,
+        borderTopLeftRadius: scale(40),
+        borderTopRightRadius: scale(40),
+    },
+    alignCenter: {
+        alignItems: 'center'
+    }
 });
