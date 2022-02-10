@@ -17,7 +17,7 @@ const ButtonAction = ({data}: Props) => {
     const IconAction = icon;
 
     return (
-        <Col mx={id === 1 ? 32 : 0} mb={16} style={styles.container}>
+        <Col mx={16} mb={16} style={styles.container}>
             <CButton
                 style={styles.button}
                 // onPress={() => navigate(screen)}

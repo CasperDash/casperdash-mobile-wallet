@@ -1,17 +1,15 @@
-/* eslint-disable prettier/prettier */
 export const types = {
-    TEST: 'TEST',
-    TEST_SUCCESS: 'TEST_SUCCESS',
+    GET_TOKEN_INFO_WITH_BALANCE: 'GET_TOKEN_INFO_WITH_BALANCE',
+    GET_TOKEN_INFO_WITH_BALANCE_SUCCESS: 'GET_TOKEN_INFO_WITH_BALANCE_SUCCESS',
 };
 
-const test = (params: any, cb: any) => {
+const getTokenInfoWithBalance = (cb: any) => {
     return {
-        type: types.TEST,
-        params,
+        type: types.GET_TOKEN_INFO_WITH_BALANCE,
         cb,
     };
 };
 
 export default {
-    test
+    getTokenInfoWithBalance
 };

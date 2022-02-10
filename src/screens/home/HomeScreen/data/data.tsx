@@ -24,12 +24,12 @@ const AccountActions: Array<AccountAction> = [
         title: 'Receive',
         screen: 'ReceiveScreen',
     },
-    {
+    /*{
         id: 2,
         icon: IconSwap,
         title: 'Swap',
         screen: 'SwapScreen',
-    },
+    },*/
 ];
 
 export {

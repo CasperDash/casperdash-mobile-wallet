@@ -29,6 +29,7 @@ import IconEyeOff from './images/ic_eye_off.svg';
 import IconSend from './images/ic_send.svg';
 import IconReceive from './images/ic_receive.svg';
 import IconSwap from './images/ic_swap.svg';
+import IconLogo from './images/ic_logo.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
@@ -36,6 +37,7 @@ const images = {
     intro2: require('./images/intro2.png'),
     intro3: require('./images/intro3.png'),
     logo: require('./images/logo.png'),
+    symbol_cspr: require('./images/ic_symbol_CSPR.png'),
 };
 
 const colors = {
@@ -190,4 +192,5 @@ export {
     IconReceive,
     IconSend,
     IconSwap,
+    IconLogo,
 };

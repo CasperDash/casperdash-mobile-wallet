@@ -12,7 +12,7 @@ import {
 } from '../wallet/wallet_saga';
 
 import {
-
+    watchGetTokenInfoWithBalance
 } from '../home/home_saga';
 
 export default function* rootSaga() {
@@ -24,6 +24,7 @@ export default function* rootSaga() {
         watchShowMessage(),
 
         //home
+        watchGetTokenInfoWithBalance(),
 
         //wallet
 

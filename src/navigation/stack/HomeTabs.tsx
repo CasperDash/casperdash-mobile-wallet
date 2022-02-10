@@ -47,7 +47,7 @@ const TabItem = ({focused, children}: TProps) => {
     );
 };
 
-const tabBarHeight = scale(82);
+const tabBarHeight = scale(72);
 
 const HomeTabs = () => {
     const insets = useSafeAreaInsets();
