@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {CInput, CLayout} from "components";
+import {CInput, CLayout, CLoading} from "components";
 import {CHeader, Col} from "components";
 import {colors, textStyles} from "assets";
 import {scale} from "device";

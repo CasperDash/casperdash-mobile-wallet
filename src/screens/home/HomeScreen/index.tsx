@@ -1,12 +1,8 @@
-import React, {useState, useRef, useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     StyleSheet,
-    Platform,
-    UIManager,
-    LayoutAnimation,
     ScrollView,
     Image
 } from 'react-native';
@@ -15,11 +11,6 @@ import {
     textStyles,
     IconScanCode,
     IconSetting,
-    IconEyeOff,
-    IconEye,
-    IconPencilFilled,
-    IconCopy,
-    images,
     IconPlusCircle,
     IconLogo,
 } from 'assets';
@@ -27,105 +18,61 @@ import {CButton, CLayout, Col, Row} from 'components';
 import {scale} from 'device';
 import {useNavigation} from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
-import Clipboard from '@react-native-clipboard/clipboard';
 import {MessageType} from 'components/CMessge/types';
 import {allActions} from 'redux_manager';
-import {useDispatch} from 'react-redux';
-import {AccountActions} from './data/data';
-import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
+import {useDispatch, useSelector} from 'react-redux';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import TokenComponent from "screens/home/HomeScreen/components/TokenComponent";
+import {getAccountTotalBalanceInFiat, getAllTokenInfo} from "utils/selectors/user";
+import Account from "screens/home/HomeScreen/components/Account";
 
 function HomeScreen() {
-
-    if (Platform.OS === 'android') {
-        UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
 
     const {navigate} = useNavigation();
     const dispatch = useDispatch();
     const insets = useSafeAreaInsets();
 
-    const key = '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38';
-    const amount = 45678.89;
-
-    const [isShowAmount, setIsShowAmount] = useState<boolean>(true);
-
-    const onToggleAmount = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setIsShowAmount(i => !i);
-    };
+    const allTokenInfo = useSelector(getAllTokenInfo);
 
     useEffect(() => {
+        getAccountInformation();
         getTokenInfoWithBalance();
+        fetchCSPRMarketInfo();
     }, []);
 
+    const getAccountInformation = () => {
+        dispatch(allActions.user.getAccountInformation(null, (error: any) => {
+            if(error){
+                showErrorMessage(error);
+            }
+        }))
+    };
+
     const getTokenInfoWithBalance = () => {
-        dispatch(allActions.home.getTokenInfoWithBalance((error: any, data: any) => {
+        dispatch(allActions.home.getTokenInfoWithBalance((error: any) => {
             if (error) {
-                const message = {
-                    message: error && error.message ? error.message : 'Error',
-                    type: MessageType.error,
-                };
-                dispatch(allActions.main.showMessage(message));
+                showErrorMessage(error);
+            }
+        }))
+    };
+
+    const fetchCSPRMarketInfo = () => {
+        dispatch(allActions.home.fetchCSPRMarketInfo((error: any) => {
+            if(error){
+                showErrorMessage(error);
             }
         }))
     }
 
-    const saveKey = () => {
-        Clipboard.setString(key);
+    const showErrorMessage = (error: any) => {
         const message = {
-            message: 'Copied to Clipboard',
-            type: MessageType.normal,
+            message: error && error.message ? error.message : 'Error',
+            type: MessageType.error,
         };
-        dispatch(allActions.main.showMessage(message, 1000));
-    };
+        dispatch(allActions.main.showMessage(message));
+    }
 
-    const _renderAccountComponent = () => {
-        return (
-            <Col px={16} py={16} mx={16} style={styles.accountContainer}>
-                <Row.LR>
-                    <CButton style={{maxWidth: scale(343 - 16) / 2}}>
-                        <Row.C>
-                            <Text
-                                numberOfLines={1}
-                                style={styles.titleAccount}>Account 1</Text>
-                            {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
-                        </Row.C>
-                    </CButton>
 
-                    <CButton
-                        onPress={saveKey}
-                        style={{maxWidth: scale(343 - 16) / 2}}>
-                        <Row.C>
-                            <Text numberOfLines={1}
-                                  ellipsizeMode={'middle'}
-                                  style={[styles.titleAccount, {maxWidth: scale(100)}]}>
-                                {key}
-                            </Text>
-                            <IconCopy width={scale(16)} height={scale(16)}/>
-                        </Row.C>
-                    </CButton>
-                </Row.LR>
-                <Row.C mx={16} mt={20} mb={24}>
-                    <Text numberOfLines={1}
-                          style={[textStyles.H3, {marginRight: scale(8)}]}>{isShowAmount ? (amount).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                    }) : '$*****00'}</Text>
-                    {/*<CButton onPress={onToggleAmount}>
-                        {isShowAmount ? <IconEye width={scale(20)} height={scale(14)}/> :
-                            <IconEyeOff width={scale(20)} height={scale(19)}/>}
-                    </CButton>*/}
-                </Row.C>
-                <Row.C>
-                    {AccountActions.map((action, index) => {
-                        return <ButtonAction data={action} key={index}/>;
-                    })}
-                </Row.C>
-            </Col>
-        );
-    };
 
     const _renderListTokens = () => {
         return (
@@ -163,7 +110,7 @@ function HomeScreen() {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{paddingTop: scale(14)}}>
-                    {_renderAccountComponent()}
+                    <Account/>
                     {_renderListTokens()}
                 </ScrollView>
             </View>
@@ -185,16 +132,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    accountContainer: {
-        width: scale(343),
-        backgroundColor: colors.W1,
-        borderRadius: scale(24),
-        alignSelf: 'center',
-    },
-    titleAccount: {
-        ...textStyles.Body2,
-        marginRight: scale(10),
-    },
+
     listContainer: {
         width: '100%',
         minHeight: scale(500),
