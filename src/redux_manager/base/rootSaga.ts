@@ -4,6 +4,7 @@ import {
 } from '../user/user_saga';
 
 import {
+    watchLoadLocalStorage,
     watchShowMessage,
 } from '../main/main_saga';
 
@@ -12,7 +13,8 @@ import {
 } from '../wallet/wallet_saga';
 
 import {
-    watchGetTokenInfoWithBalance
+    watchGetTokenInfoWithBalance,
+    watchFetchCSPRMarketInfo,
 } from '../home/home_saga';
 
 export default function* rootSaga() {
@@ -22,10 +24,11 @@ export default function* rootSaga() {
 
         // main
         watchShowMessage(),
+        watchLoadLocalStorage(),
 
         //home
         watchGetTokenInfoWithBalance(),
-
+        watchFetchCSPRMarketInfo(),
         //wallet
 
     ]);

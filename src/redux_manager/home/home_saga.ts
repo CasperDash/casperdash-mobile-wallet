@@ -40,3 +40,33 @@ export function* watchGetTokenInfoWithBalance() {
         yield cancel(watcher);
     }
 }
+
+
+export function* fetchCSPRMarketInfo(data: any) {
+    try {
+        yield put({type: types.FETCH_CSPR_MARKET_INFO + '_SUCCESS', payload: null});
+        // @ts-ignore
+        const response = yield apis.fetchCSPRMarketInfoAPI();
+        if (response) {
+            yield put({type: types.FETCH_CSPR_MARKET_INFO + '_SUCCESS', payload: response});
+            data.cb && data.cb(null, response);
+        } else {
+            data.cb && data.cb(true, null);
+        }
+    } catch (error: any) {
+        if (error && error.data) {
+            data.cb && data.cb(error.data, null);
+        } else {
+            data.cb && data.cb(error, null);
+        }
+    }
+}
+
+export function* watchFetchCSPRMarketInfo() {
+    while (true) {
+        // @ts-ignore
+        const watcher = yield takeLatest(types.FETCH_CSPR_MARKET_INFO, fetchCSPRMarketInfo);
+        yield take(['LOGOUT', 'NETWORK']);
+        yield cancel(watcher);
+    }
+}

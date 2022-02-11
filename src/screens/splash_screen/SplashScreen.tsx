@@ -7,14 +7,22 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {isEmpty} from 'lodash';
+import {useDispatch} from "react-redux";
+import {allActions} from "redux_manager";
 
 const SplashScreen = () => {
 
     const navigation = useNavigation<StackNavigationProp<any>>();
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        loadLocalStorage();
         setupNavigation();
     }, []);
+
+    const loadLocalStorage = () => {
+        dispatch(allActions.main.loadLocalStorage());
+    }
 
     const setupNavigation = async () => {
         const overview = await Config.getItem(Keys.overview);

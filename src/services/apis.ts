@@ -34,7 +34,24 @@ function getTokenInfoWithBalanceAPI<T>(params: any): NetworkPromiseResponse<T> {
     });
 }
 
+function fetchCSPRMarketInfoAPI<T>(): NetworkPromiseResponse<T> {
+    return new Promise((resolve, reject) => {
+        network
+            .unAuthorizedRequest('api/v3/coins/markets?vs_currency=usd&ids=casper-network', 'GET', undefined, undefined, 'https://api.coingecko.com/')
+            .then((res: any) => {
+                if (!res || (res && res.status >= 400)) {
+                    return reject(res);
+                }
+                resolve(res as any);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
 export default {
     getAccountInformation,
     getTokenInfoWithBalanceAPI,
+    fetchCSPRMarketInfoAPI,
 };
