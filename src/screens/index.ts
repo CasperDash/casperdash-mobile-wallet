@@ -4,6 +4,7 @@ export {default as SplashScreen} from './splash_screen/SplashScreen';
 
 // Home
 export {default as HomeScreen} from './home/HomeScreen';
+export {default as AddCustomTokenScreen} from './home/AddCustomTokenScreen';
 
 //Staking
 export {default as StakingScreen} from './staking/StakingScreen';

@@ -6,6 +6,9 @@ export const types = {
 
     LOAD_LOCAL_STORAGE: 'LOAD_LOCAL_STORAGE',
     LOAD_LOCAL_STORAGE_SUCCESS: 'LOAD_LOCAL_STORAGE_SUCCESS',
+
+    GET_CONFIGURATIONS: 'GET_CONFIGURATIONS',
+    GET_CONFIGURATIONS_SUCCESS: 'GET_CONFIGURATIONS_SUCCESS'
 };
 
 const showMessage = (message: Message, duration?: number) => {
@@ -22,7 +25,14 @@ const loadLocalStorage = () => {
     };
 };
 
+const getConfigurations = () => {
+    return {
+        type: types.GET_CONFIGURATIONS,
+    };
+};
+
 export default {
     showMessage,
-    loadLocalStorage
+    loadLocalStorage,
+    getConfigurations
 };

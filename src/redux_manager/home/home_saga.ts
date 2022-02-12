@@ -5,7 +5,6 @@ import {Config, Keys} from 'utils';
 
 export function* getTokenInfoWithBalance(data: any) {
     try {
-        yield put({type: types.GET_TOKEN_INFO_WITH_BALANCE + '_SUCCESS', payload: null});
         // @ts-ignore
         const casperDashInfo = yield Config.getItem(Keys.casperdash);
         // @ts-ignore
@@ -13,7 +12,7 @@ export function* getTokenInfoWithBalance(data: any) {
 
         const params = {
             publicKey: (casperDashInfo && casperDashInfo.publicKey) || '',
-            tokenAddress: (token && token.address) || [],
+            tokenAddress: token || [],
         };
         // @ts-ignore
         const response = yield apis.getTokenInfoWithBalanceAPI(params);
@@ -66,6 +65,35 @@ export function* watchFetchCSPRMarketInfo() {
     while (true) {
         // @ts-ignore
         const watcher = yield takeLatest(types.FETCH_CSPR_MARKET_INFO, fetchCSPRMarketInfo);
+        yield take(['LOGOUT', 'NETWORK']);
+        yield cancel(watcher);
+    }
+}
+
+export function* getTokenAddressInfo(data: any) {
+    try {
+        yield put({type: types.GET_TOKEN_ADDRESS_INFO + '_SUCCESS', payload: null});
+        // @ts-ignore
+        const response = yield apis.getTokenAddressInfoAPI(data.params);
+        if (response) {
+            yield put({type: types.GET_TOKEN_ADDRESS_INFO + '_SUCCESS', payload: response});
+            data.cb && data.cb(null, response);
+        } else {
+            data.cb && data.cb(true, null);
+        }
+    } catch (error: any) {
+        if (error && error.data) {
+            data.cb && data.cb(error.data, null);
+        } else {
+            data.cb && data.cb(error, null);
+        }
+    }
+}
+
+export function* watchGetTokenAddressInfo() {
+    while (true) {
+        // @ts-ignore
+        const watcher = yield takeLatest(types.GET_TOKEN_ADDRESS_INFO, getTokenAddressInfo);
         yield take(['LOGOUT', 'NETWORK']);
         yield cancel(watcher);
     }
