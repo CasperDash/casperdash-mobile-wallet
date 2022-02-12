@@ -23,7 +23,7 @@ import {allActions} from 'redux_manager';
 import {useDispatch, useSelector} from 'react-redux';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import TokenComponent from "screens/home/HomeScreen/components/TokenComponent";
-import {getAccountTotalBalanceInFiat, getAllTokenInfo} from "utils/selectors/user";
+import {getAllTokenInfo} from "utils/selectors/user";
 import Account from "screens/home/HomeScreen/components/Account";
 
 function HomeScreen() {
@@ -35,18 +35,9 @@ function HomeScreen() {
     const allTokenInfo = useSelector(getAllTokenInfo);
 
     useEffect(() => {
-        getAccountInformation();
-        getTokenInfoWithBalance();
         fetchCSPRMarketInfo();
+        getTokenInfoWithBalance();
     }, []);
-
-    const getAccountInformation = () => {
-        dispatch(allActions.user.getAccountInformation(null, (error: any) => {
-            if(error){
-                showErrorMessage(error);
-            }
-        }))
-    };
 
     const getTokenInfoWithBalance = () => {
         dispatch(allActions.home.getTokenInfoWithBalance((error: any) => {
@@ -58,7 +49,7 @@ function HomeScreen() {
 
     const fetchCSPRMarketInfo = () => {
         dispatch(allActions.home.fetchCSPRMarketInfo((error: any) => {
-            if(error){
+            if (error) {
                 showErrorMessage(error);
             }
         }))
@@ -72,14 +63,18 @@ function HomeScreen() {
         dispatch(allActions.main.showMessage(message));
     }
 
-
-
     const _renderListTokens = () => {
         return (
             <Col mt={16}
                  style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}]}>
-                <TokenComponent/>
-                <CButton style={{marginTop: scale(16)}}>
+                {
+                    allTokenInfo && allTokenInfo.length > 0 && allTokenInfo.map((value, i) => {
+                        return <TokenComponent value={value} key={i}/>
+                    })
+                }
+                <CButton
+                    onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)}
+                    style={{marginTop: scale(16)}}>
                     <Row mx={16} style={styles.alignCenter}>
                         <IconPlusCircle width={scale(14)} height={scale(14)}/>
                         <Text style={[textStyles.Body1, {marginLeft: scale(8)}]}>Add Custom Token</Text>

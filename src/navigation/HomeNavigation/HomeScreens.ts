@@ -6,6 +6,6 @@ const {HOME_SCREEN} = HomeRouter;
 export const HomeScreens = {
     [HOME_SCREEN]: {
         screen: HomeScreen,
-        title: '',
+        title: 'HomeScreen',
     },
 };

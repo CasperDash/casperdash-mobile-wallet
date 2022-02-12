@@ -1,26 +1,39 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {scale} from "device";
-import {Row, Col} from 'components';
+import {Row, Col, CButton} from 'components';
 import {colors, images, textStyles} from "assets";
+import {toFormattedCurrency} from "utils/helpers/format";
 
-const TokenComponent = () => {
+interface Props {
+    value: any
+}
+
+const TokenComponent = ({value}: Props) => {
     return (
-        <Row.LR mx={16} style={styles.container}>
-            <Row>
-                <Image source={images.symbol_cspr}
-                       style={styles.symbol}
-                />
-                <Col mx={12}>
-                    <Text style={styles.sub1}>Casper</Text>
-                    <Text style={styles.body2}>1.909,89 CSPR</Text>
-                </Col>
-            </Row>
-            <Col.R mx={12}>
-                <Text style={styles.sub1}>$32,128.80</Text>
-                <Text style={styles.body2}>@ $189</Text>
-            </Col.R>
-        </Row.LR>
+        <CButton>
+            <Row.LR mx={16} style={styles.container}>
+                <Row>
+                    {
+                        value.symbol && (
+                            value.symbol === 'CSPR' ? <Image source={value.icon} style={styles.symbol}/> :
+                                <Image source={{uri: value.icon}} style={styles.symbol}/>
+                        )
+                    }
+
+                    <Col mx={12}>
+                        <Text style={styles.sub1}>{value.symbol ?? ''}</Text>
+                        <Text style={styles.body2}>{value.balance && value.balance.displayValue}</Text>
+                    </Col>
+                </Row>
+                <Col.R mx={12}>
+                    <Text
+                        style={styles.sub1}>{toFormattedCurrency(value.totalPrice ?? 0, {maximumFractionDigits: 2}, 'en-US')}</Text>
+                    <Text
+                        style={styles.body2}>{toFormattedCurrency(value.price ?? 0, {maximumFractionDigits: 2}, 'en-US')}</Text>
+                </Col.R>
+            </Row.LR>
+        </CButton>
     );
 };
 

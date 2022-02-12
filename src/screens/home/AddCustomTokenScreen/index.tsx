@@ -5,57 +5,62 @@ import {CHeader, Col} from "components";
 import {colors, textStyles} from "assets";
 import {scale} from "device";
 import CTextButton from "components/CTextButton";
-import {Config} from "utils";
-import {Keys} from "utils";
-import AuthenticationRouter from "navigation/AuthenticationNavigation/AuthenticationRouter";
+import {Config, Keys} from "utils";
 import {useNavigation} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {allActions} from "redux_manager";
 import {useDispatch} from "react-redux";
 
-function AddKeyScreen() {
+function AddCustomTokenScreen() {
 
     const [error, setError] = useState('');
-    const [publicKey, setPublicKey] = useState('02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38'); //TODO: remove initialState
-    const {navigate} = useNavigation<StackNavigationProp<any>>();
+    const [tokenAddress, setTokenAddress] = useState('d5080e422a00a952f61b3b5c941856daf758a4f90eb487dbb00bd4741d67f5de'); //TODO: remove initialState
+    const {goBack} = useNavigation<StackNavigationProp<any>>();
     const [isLoading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const onChange = (value?: string) => {
-        setPublicKey(value ?? '');
+        setTokenAddress(value ?? '');
         // setError(isValidPublicKey(value) ? '' : 'Invalid public key'); //TODO: validate public key
     };
 
     const onAddPublicKey = async () => {
         setLoading(true);
-        dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, res: any) => {
+        dispatch(allActions.home.getTokenAddressInfo(tokenAddress, async (err: any, res: any) => {
             if (res) {
+                if(res.address){
+                    let tokensAddressList = await Config.getItem(Keys.tokensAddressList);
+                    if(tokensAddressList){
+                        const isExist = tokensAddressList.find((address: string) => address === res.address);
+                        if(!isExist){
+                            tokensAddressList.push(res.address);
+                        }
+                    }
+                    else {
+                        tokensAddressList = [res.address];
+                    }
+                    await Config.saveItem(Keys.tokensAddressList, tokensAddressList);
+                    dispatch(allActions.home.getTokenInfoWithBalance(undefined));
+                }
                 setLoading(false);
-                const info = {
-                    publicKey: publicKey,
-                    loginOptions: {
-                        connectionType: 'view_mode',
-                    },
-                };
-                await Config.saveItem(Keys.casperdash, info);
-                navigate(AuthenticationRouter.CHOOSE_PIN);
+                goBack();
             } else {
                 setLoading(false);
-                Config.alertMess(err);
+                setError(err && err.message ? err.message : 'Can not find token info');
             }
         }));
     };
 
     return (
         <CLayout bgColor={colors.cF8F8F8}>
-            <CHeader title={'Add'} style={{backgroundColor: colors.cF8F8F8}}/>
+            <CHeader title={'Add Token'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col
                 mt={10}
                 py={24}
                 style={styles.container}>
-                <Text style={styles.title}>Public Key</Text>
+                <Text style={styles.title}>Token Address</Text>
                 <CInput
-                    placeholder={'Enter public key'}
+                    placeholder={'Enter token address'}
                     inputStyle={styles.input}
                     onChangeText={onChange}
                     style={styles.inputContainer}
@@ -63,7 +68,7 @@ function AddKeyScreen() {
                 <Text style={styles.errorText}>{error}</Text>
                 <CTextButton
                     onPress={onAddPublicKey}
-                    disabled={!!error || !publicKey}
+                    disabled={!!error || !tokenAddress}
                     style={styles.btnAdd}
                     text={'Add'}/>
             </Col>
@@ -72,7 +77,7 @@ function AddKeyScreen() {
     );
 }
 
-export default AddKeyScreen;
+export default AddCustomTokenScreen;
 
 const styles = StyleSheet.create(({
     container: {
