@@ -14,14 +14,15 @@ import {useDispatch} from "react-redux";
 function AddCustomTokenScreen() {
 
     const [error, setError] = useState('');
-    const [tokenAddress, setTokenAddress] = useState('d5080e422a00a952f61b3b5c941856daf758a4f90eb487dbb00bd4741d67f5de'); //TODO: remove initialState
+    const [tokenAddress, setTokenAddress] = useState('');
     const {goBack} = useNavigation<StackNavigationProp<any>>();
     const [isLoading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const onChange = (value?: string) => {
+        //TODO: validate public key
         setTokenAddress(value ?? '');
-        // setError(isValidPublicKey(value) ? '' : 'Invalid public key'); //TODO: validate public key
+        // setError(isValidPublicKey(value) ? '' : 'Invalid public key');
     };
 
     const onAddPublicKey = async () => {
