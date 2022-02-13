@@ -57,3 +57,7 @@ import { CryptoUtils } from "casper-storage";
 // Override the randomBytes method, which is also only available for browser/node
 import { randomBytes } from "react-native-randombytes";
 CryptoUtils.randomBytes = randomBytes;
+
+// Buffer
+// casper-js-sdk relies heavily on 
+global.Buffer = global.Buffer || require('buffer').Buffer
