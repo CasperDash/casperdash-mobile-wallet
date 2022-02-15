@@ -20,6 +20,7 @@ import IconImportPhrase from './images/ic_import_phrase.svg';
 import IconMessageSuccess from './images/ic_message_success.svg';
 import IconMessageWarning from './images/ic_message_warning.svg';
 import IconMessageError from './images/ic_message_error.svg';
+import IconArrowDown from './images/ic_arrow_down.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
@@ -39,7 +40,7 @@ const colors = {
     c232635: '#232635',
     N1: '#000000',
     N2: '#353945',
-    N3: '#777E91',
+    N3: '#777E90',
     N4: '#D1D7E7',
     N5: '#F6F7FA',
     N6: '#FCFCFD',
@@ -169,4 +170,5 @@ export {
     IconMessageSuccess,
     IconMessageWarning,
     IconMessageError,
+    IconArrowDown
 };

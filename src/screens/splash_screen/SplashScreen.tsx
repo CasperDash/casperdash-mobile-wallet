@@ -33,7 +33,7 @@ const SplashScreen = () => {
                     state: {
                         routes: [
                             {
-                                name: screen,
+                                name: AuthenticationRouter.SEND_SCREEN,
                             },
                         ],
                     },
