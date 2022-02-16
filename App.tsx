@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from 'redux_manager';
 import Toast from 'react-native-toast-message';
 import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import CodePush from 'react-native-code-push';
 
@@ -16,8 +17,10 @@ let App = () => {
 
   return (
     <Provider store={store}>
-      <AppNavigation />
-      <Toast ref={ref => Toast.setRef(ref)} />
+        <SafeAreaProvider>
+            <AppNavigation />
+            <Toast ref={ref => Toast.setRef(ref)} />
+        </SafeAreaProvider>
     </Provider>
   );
 };

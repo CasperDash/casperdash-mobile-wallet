@@ -10,6 +10,13 @@ export type ScreenParams = {
     CHOOSE_PIN_SCREEN: undefined,
     CONFIRM_PIN_SCREEN: {
         pin: number,
+    },
+    CONFIRM_SEND_SCREEN: {
+        assets: any,
+        transferAmount: number,
+        networkFee: number,
+        receivingAddress: string,
+        transferID?: any
     }
 };
 
