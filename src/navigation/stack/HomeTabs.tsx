@@ -49,6 +49,16 @@ const TabItem = ({focused, children}: TProps) => {
 
 const tabBarHeight = scale(72);
 
+const tabIcon24 = {
+    width: scale(24),
+    height: scale(24),
+};
+
+const tabIcon25 = {
+    width: scale(25),
+    height: scale(25),
+};
+
 const HomeTabs = () => {
     const insets = useSafeAreaInsets();
 
@@ -73,8 +83,7 @@ const HomeTabs = () => {
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'Home'}>
                                 {
-                                    focused ? <IconMenuHomeActive width={scale(24)} height={scale(24)}/> :
-                                        <IconMenuHome width={scale(24)} height={scale(24)}/>
+                                    focused ? <IconMenuHomeActive {...tabIcon24}/> : <IconMenuHome {...tabIcon24}/>
                                 }
                             </TabItem>
                         ),
@@ -87,8 +96,7 @@ const HomeTabs = () => {
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'Staking'}>
                                 {
-                                    focused ? <IconMenuStakingActive width={scale(24)} height={scale(24)}/> :
-                                        <IconMenuStaking width={scale(24)} height={scale(24)}/>
+                                    focused ? <IconMenuStakingActive {...tabIcon24}/> : <IconMenuStaking {...tabIcon24}/>
                                 }
                             </TabItem>
                         ),
@@ -101,8 +109,7 @@ const HomeTabs = () => {
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'NFT'}>
                                 {
-                                    focused ? <IconMenuNFTActive width={scale(25)} height={scale(25)}/> :
-                                        <IconMenuNFT width={scale(25)} height={scale(25)}/>
+                                    focused ? <IconMenuNFTActive {...tabIcon25}/> : <IconMenuNFT {...tabIcon25}/>
                                 }
                             </TabItem>
                         ),
@@ -115,8 +122,7 @@ const HomeTabs = () => {
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'Market'}>
                                 {
-                                    focused ? <IconMenuMarketActive width={scale(24)} height={scale(24)}/> :
-                                        <IconMenuMarket width={scale(24)} height={scale(24)}/>
+                                    focused ? <IconMenuMarketActive {...tabIcon24}/> : <IconMenuMarket {...tabIcon24}/>
                                 }
                             </TabItem>
                         ),
@@ -129,8 +135,7 @@ const HomeTabs = () => {
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'Manager'}>
                                 {
-                                    focused ? <IconMenuKeyManagerActive width={scale(25)} height={scale(25)}/> :
-                                        <IconMenuKeyManager width={scale(25)} height={scale(25)}/>
+                                    focused ? <IconMenuKeyManagerActive {...tabIcon25}/> : <IconMenuKeyManager {...tabIcon25}/>
                                 }
                             </TabItem>
                         ),

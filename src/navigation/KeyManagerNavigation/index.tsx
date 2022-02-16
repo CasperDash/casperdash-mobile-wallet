@@ -18,7 +18,6 @@ const KeyManagerNavigation = () => {
                     component={KeyManagerScreens[elem].screen}
                     options={{
                         title: KeyManagerScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />

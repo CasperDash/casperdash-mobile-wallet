@@ -4,7 +4,7 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    Image
+    Image,
 } from 'react-native';
 import {
     colors,
@@ -21,10 +21,10 @@ import MainRouter from 'navigation/stack/MainRouter';
 import {MessageType} from 'components/CMessge/types';
 import {allActions} from 'redux_manager';
 import {useDispatch, useSelector} from 'react-redux';
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import TokenComponent from "screens/home/HomeScreen/components/TokenComponent";
-import {getAllTokenInfo} from "utils/selectors/user";
-import Account from "screens/home/HomeScreen/components/Account";
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
+import {getAllTokenInfo} from 'utils/selectors/user';
+import Account from 'screens/home/HomeScreen/components/Account';
 
 function HomeScreen() {
 
@@ -44,7 +44,7 @@ function HomeScreen() {
             if (error) {
                 showErrorMessage(error);
             }
-        }))
+        }));
     };
 
     const fetchCSPRMarketInfo = () => {
@@ -52,8 +52,8 @@ function HomeScreen() {
             if (error) {
                 showErrorMessage(error);
             }
-        }))
-    }
+        }));
+    };
 
     const showErrorMessage = (error: any) => {
         const message = {
@@ -61,15 +61,15 @@ function HomeScreen() {
             type: MessageType.error,
         };
         dispatch(allActions.main.showMessage(message));
-    }
+    };
 
     const _renderListTokens = () => {
         return (
-            <Col mt={16}
+            <Col
                  style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}]}>
                 {
                     allTokenInfo && allTokenInfo.length > 0 && allTokenInfo.map((value, i) => {
-                        return <TokenComponent value={value} key={i}/>
+                        return <TokenComponent value={value} key={i}/>;
                     })
                 }
                 <CButton
@@ -81,12 +81,12 @@ function HomeScreen() {
                     </Row>
                 </CButton>
             </Col>
-        )
-    }
+        );
+    };
     return (
         <CLayout bgColor={colors.cF8F8F8}>
             <View style={styles.container}>
-                <Row.LR pl={24} pr={16} pt={10} pb={10}>
+                <Row.LR pl={24} pr={16} pt={10} pb={20}>
                     <Row style={styles.alignCenter}>
                         <IconLogo width={scale(28)} height={scale(28)}/>
                         <Text style={[textStyles.H3, {marginLeft: scale(16)}]}>Home</Text>
@@ -102,10 +102,10 @@ function HomeScreen() {
                         </CButton>*/}
                     </Row.C>
                 </Row.LR>
+                <Account/>
                 <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{paddingTop: scale(14)}}>
-                    <Account/>
+                    style={{marginTop: scale(16)}}
+                    showsVerticalScrollIndicator={false}>
                     {_renderListTokens()}
                 </ScrollView>
             </View>
@@ -136,6 +136,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: scale(40),
     },
     alignCenter: {
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
 });
