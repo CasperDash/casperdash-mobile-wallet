@@ -32,6 +32,7 @@ const ConfirmPinScreen: React.FC<ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>
                     }],
                 }),
             );
+            dispatch(allActions.main.loadLocalStorage());
             const message = {
                 message: 'Logged in successfully',
                 type: MessageType.success,
