@@ -18,24 +18,18 @@ import {
     IconMenuNFTActive,
     IconMenuMarket,
     IconMenuMarketActive,
-    IconMenuSetting,
-    IconMenuSettingActive
+    IconMenuKeyManagerActive,
+    IconMenuKeyManager,
 } from 'assets';
 
-
-import {
-    createStackNavigator,
-    TransitionPresets,
-} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import HomeStack from 'navigation/stack/HomeStack';
-import StakingNavigation from "navigation/StakingNavigation";
-import NFTNavigation from "navigation/NFTNavigation";
-import MarketNavigation from "navigation/MarketNavigation";
-import SettingsNavigation from "navigation/SettingsNavigation";
+import StakingNavigation from 'navigation/StakingNavigation';
+import NFTNavigation from 'navigation/NFTNavigation';
+import MarketNavigation from 'navigation/MarketNavigation';
+import HomeNavigation from 'navigation/HomeNavigation';
+import KeyManagerNavigation from 'navigation/KeyManagerNavigation';
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 interface TProps {
@@ -44,15 +38,16 @@ interface TProps {
     label: string;
 }
 
-const TabItem = ({focused, children, label}: TProps) => {
+const TabItem = ({focused, children}: TProps) => {
     return (
         <Col.B style={styles.tab}>
             {children}
+            {focused && <View style={styles.activeDot}/>}
         </Col.B>
     );
 };
 
-const tabBarHeight = scale(82);
+const tabBarHeight = scale(72);
 
 const HomeTabs = () => {
     const insets = useSafeAreaInsets();
@@ -67,13 +62,13 @@ const HomeTabs = () => {
                     style: [
                         styles.tab, {
                             height: tabBarHeight + insets.bottom,
-                        }
+                        },
                     ],
                     keyboardHidesTabBar: Platform.OS === 'android',
                 }}>
                 <Tab.Screen
                     name="Home"
-                    component={HomeStack}
+                    component={HomeNavigation}
                     options={{
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'Home'}>
@@ -106,8 +101,8 @@ const HomeTabs = () => {
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'NFT'}>
                                 {
-                                    focused ? <IconMenuNFTActive width={scale(24)} height={scale(24)}/> :
-                                        <IconMenuNFT width={scale(24)} height={scale(24)}/>
+                                    focused ? <IconMenuNFTActive width={scale(25)} height={scale(25)}/> :
+                                        <IconMenuNFT width={scale(25)} height={scale(25)}/>
                                 }
                             </TabItem>
                         ),
@@ -128,14 +123,14 @@ const HomeTabs = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Settings"
-                    component={SettingsNavigation}
+                    name="KeyManager"
+                    component={KeyManagerNavigation}
                     options={{
                         tabBarIcon: ({focused}) => (
                             <TabItem {...{focused}} label={'Manager'}>
                                 {
-                                    focused ? <IconMenuSettingActive width={scale(24)} height={scale(24)}/> :
-                                        <IconMenuSetting width={scale(24)} height={scale(24)}/>
+                                    focused ? <IconMenuKeyManagerActive width={scale(25)} height={scale(25)}/> :
+                                        <IconMenuKeyManager width={scale(25)} height={scale(25)}/>
                                 }
                             </TabItem>
                         ),
@@ -144,18 +139,6 @@ const HomeTabs = () => {
             </Tab.Navigator>
 
         </View>
-    );
-};
-
-const MainStack = () => {
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: false,
-                ...TransitionPresets.SlideFromRightIOS,
-            }}>
-            <Stack.Screen name="HomeTabs" component={HomeTabs}/>
-        </Stack.Navigator>
     );
 };
 
@@ -172,7 +155,7 @@ const styles = StyleSheet.create({
         shadowRadius: scale(8),
         shadowOpacity: 0.8,
 
-        backgroundColor: colors.cFFFFFF
+        backgroundColor: colors.cFFFFFF,
     },
     labelStyle: {
         marginTop: scale(5),
@@ -180,6 +163,14 @@ const styles = StyleSheet.create({
         fontSize: scale(12),
         color: colors.c000000,
     },
+    activeDot: {
+        width: scale(6),
+        height: scale(6),
+        backgroundColor: colors.R1,
+        borderRadius: scale(3),
+        position: 'absolute',
+        bottom: scale(-12),
+    },
 });
 
-export default MainStack;
+export default HomeTabs;
