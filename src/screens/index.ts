@@ -5,6 +5,7 @@ export {default as SplashScreen} from './splash_screen/SplashScreen';
 // Home
 export {default as HomeScreen} from './home/HomeScreen';
 export {default as SendScreen} from './home/SendScreen';
+export {default as ConfirmSendScreen} from './home/ConfirmSendScreen';
 
 //Staking
 export {default as StakingScreen} from './staking/StakingScreen';
