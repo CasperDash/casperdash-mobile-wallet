@@ -6,6 +6,7 @@ const initialState = {
     configurations: null,
     loader: {
         actions: [],
+        refreshing: []
     },
 };
 
@@ -14,7 +15,7 @@ export default function (
     action = {type: '', payload: {}},
 ) {
     const { loader } = state;
-    const { actions } = loader;
+    const { actions, refreshing } = loader;
 
     switch (action.type) {
         case types.SHOW_MESSAGE_SUCCESS:
@@ -48,6 +49,23 @@ export default function (
                     actions: actions.filter((act: any) => act.name !== action.payload.name),
                 },
             };
+        case types.REFRESH_ACTION_START:
+            return {
+                ...state,
+                loader: {
+                    ...loader,
+                    refreshing: [...refreshing, action.payload.action]
+                }
+            };
+        case types.REFRESH_ACTION_STOP:
+            return {
+                ...state,
+                loader: {
+                    ...loader,
+                    refreshing: refreshing.filter((act: any) => act.name !== action.payload.name),
+                }
+            };
+
         default:
             return state;
     }

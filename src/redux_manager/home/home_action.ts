@@ -9,16 +9,18 @@ export const types = {
     GET_TOKEN_ADDRESS_INFO_SUCCESS: 'GET_TOKEN_ADDRESS_INFO_SUCCESS',
 };
 
-const getTokenInfoWithBalance = (cb: any) => {
+const getTokenInfoWithBalance = (params: any, cb: any) => {
     return {
         type: types.GET_TOKEN_INFO_WITH_BALANCE,
+        params,
         cb,
     };
 };
 
-const fetchCSPRMarketInfo = (cb: any) => {
+const fetchCSPRMarketInfo = (params: any, cb: any) => {
     return {
         type: types.FETCH_CSPR_MARKET_INFO,
+        params,
         cb,
     };
 };

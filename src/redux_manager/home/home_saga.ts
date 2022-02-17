@@ -2,11 +2,12 @@ import {put, takeLatest, take, cancel, delay} from 'redux-saga/effects';
 import {types} from './home_action';
 import {apis} from 'services';
 import {Config, Keys} from 'utils';
-import {startAction, stopAction} from 'redux_manager/main/main_action';
+import {refreshActionStart, refreshActionStop, startAction, stopAction} from 'redux_manager/main/main_action';
 
 export function* getTokenInfoWithBalance(data: any) {
     try {
-        yield put(startAction(types.GET_TOKEN_INFO_WITH_BALANCE));
+        yield put(data.params && data.params.refreshing ? refreshActionStart(types.GET_TOKEN_INFO_WITH_BALANCE) : startAction(types.GET_TOKEN_INFO_WITH_BALANCE));
+        yield put({type: types.GET_TOKEN_INFO_WITH_BALANCE + '_SUCCESS', payload: null});
         // @ts-ignore
         const casperDashInfo = yield Config.getItem(Keys.casperdash);
         // @ts-ignore
@@ -31,7 +32,7 @@ export function* getTokenInfoWithBalance(data: any) {
             data.cb && data.cb(error, null);
         }
     } finally {
-        yield put(stopAction(types.GET_TOKEN_INFO_WITH_BALANCE));
+        yield put(data.params && data.params.refreshing ? refreshActionStop(types.GET_TOKEN_INFO_WITH_BALANCE) : stopAction(types.GET_TOKEN_INFO_WITH_BALANCE));
     }
 }
 
@@ -47,7 +48,7 @@ export function* watchGetTokenInfoWithBalance() {
 
 export function* fetchCSPRMarketInfo(data: any) {
     try {
-        yield put(startAction(types.FETCH_CSPR_MARKET_INFO));
+        yield put(data.params && data.params.refreshing ? refreshActionStart(types.FETCH_CSPR_MARKET_INFO) : startAction(types.FETCH_CSPR_MARKET_INFO));
         yield put({type: types.FETCH_CSPR_MARKET_INFO + '_SUCCESS', payload: null});
         // @ts-ignore
         const response = yield apis.fetchCSPRMarketInfoAPI();
@@ -64,7 +65,7 @@ export function* fetchCSPRMarketInfo(data: any) {
             data.cb && data.cb(error, null);
         }
     } finally {
-        yield put(stopAction(types.FETCH_CSPR_MARKET_INFO));
+        yield put(data.params && data.params.refreshing ? refreshActionStop(types.FETCH_CSPR_MARKET_INFO) :  stopAction(types.FETCH_CSPR_MARKET_INFO));
     }
 }
 

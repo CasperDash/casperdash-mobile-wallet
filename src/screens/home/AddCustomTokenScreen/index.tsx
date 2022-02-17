@@ -41,7 +41,7 @@ function AddCustomTokenScreen() {
                         tokensAddressList = [res.address];
                     }
                     await Config.saveItem(Keys.tokensAddressList, tokensAddressList);
-                    dispatch(allActions.home.getTokenInfoWithBalance(undefined));
+                    dispatch(allActions.home.getTokenInfoWithBalance({refreshing: false}, undefined));
                 }
                 setLoading(false);
                 goBack();

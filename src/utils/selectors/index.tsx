@@ -1,7 +1,8 @@
 import {getCurrentPrice} from './price';
-import {checkIfLoadingSelector} from './main';
+import {checkIfLoadingSelector, checkIfRefreshingSelector} from './main';
 
 export {
     getCurrentPrice,
     checkIfLoadingSelector,
+    checkIfRefreshingSelector,
 };

@@ -4,7 +4,7 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    ActivityIndicator,
+    ActivityIndicator, FlatList, RefreshControl,
 } from 'react-native';
 import {
     colors,
@@ -25,7 +25,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import {getAllTokenInfo} from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
-import {checkIfLoadingSelector} from 'utils/selectors';
+import {checkIfLoadingSelector, checkIfRefreshingSelector} from 'utils/selectors';
 import {types as homeTypes} from 'redux_manager/home/home_action';
 import {types as userTypes} from 'redux_manager/user/user_action';
 
@@ -39,22 +39,42 @@ function HomeScreen() {
 
     // @ts-ignore
     const isLoading = useSelector((state: any) => checkIfLoadingSelector(state, [homeTypes.GET_TOKEN_INFO_WITH_BALANCE, homeTypes.FETCH_CSPR_MARKET_INFO, userTypes.GET_ACCOUNT_INFORMATION]));
+    // @ts-ignore
+    const isRefreshing = useSelector((state: any) => checkIfRefreshingSelector(state, [homeTypes.GET_TOKEN_INFO_WITH_BALANCE, homeTypes.FETCH_CSPR_MARKET_INFO, userTypes.GET_ACCOUNT_INFORMATION]));
 
     useEffect(() => {
-        fetchCSPRMarketInfo();
-        getTokenInfoWithBalance();
+        getData(false);
     }, []);
 
-    const getTokenInfoWithBalance = () => {
-        dispatch(allActions.home.getTokenInfoWithBalance((error: any) => {
+    const getData = (refreshing: boolean) => {
+        fetchCSPRMarketInfo(refreshing);
+        getTokenInfoWithBalance(refreshing);
+    }
+
+    const onRefresh = () => {
+        getAccountInformation(true);
+        getData(true);
+    }
+
+    const getAccountInformation = (refreshing: boolean) => {
+        dispatch(allActions.user.getAccountInformation({refreshing}, (error: any) => {
+            if (error) {
+                showErrorMessage(error);
+            }
+        }));
+
+    }
+
+    const getTokenInfoWithBalance = (refreshing: boolean) => {
+        dispatch(allActions.home.getTokenInfoWithBalance({refreshing},(error: any) => {
             if (error) {
                 showErrorMessage(error);
             }
         }));
     };
 
-    const fetchCSPRMarketInfo = () => {
-        dispatch(allActions.home.fetchCSPRMarketInfo((error: any) => {
+    const fetchCSPRMarketInfo = (refreshing: boolean) => {
+        dispatch(allActions.home.fetchCSPRMarketInfo({refreshing},(error: any) => {
             if (error) {
                 showErrorMessage(error);
             }
@@ -72,10 +92,12 @@ function HomeScreen() {
     const _renderListTokens = () => {
         return (
             <Col
-                style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}, isLoading && {paddingTop: scale(16)}]}>
+                style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}]}>
                 {
-                    isLoading ? <ActivityIndicator size="small" color={colors.N2}/> :
-                        <>
+                    isLoading ? <View style={styles.flexCenter}>
+                            <ActivityIndicator size="small" color={colors.N2}/>
+                        </View> :
+                        <ScrollView>
                             {
                                 allTokenInfo && allTokenInfo.length > 0 && allTokenInfo.map((value, i) => {
                                     return <TokenComponent value={value} key={i}/>;
@@ -89,7 +111,7 @@ function HomeScreen() {
                                     <Text style={[textStyles.Body1, {marginLeft: scale(8)}]}>Add Custom Token</Text>
                                 </Row>
                             </CButton>
-                        </>
+                        </ScrollView>
                 }
             </Col>
         );
@@ -114,10 +136,17 @@ function HomeScreen() {
                         </CButton>*/}
                     </Row.C>
                 </Row.LR>
-                <Account/>
                 <ScrollView
-                    style={{marginTop: scale(16)}}
+                    nestedScrollEnabled
+                    stickyHeaderIndices={[0]}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
                     showsVerticalScrollIndicator={false}>
+                    <Account/>
                     {_renderListTokens()}
                 </ScrollView>
             </View>
@@ -141,8 +170,9 @@ const styles = StyleSheet.create({
     },
 
     listContainer: {
-        width: '100%',
-        minHeight: scale(500),
+        width: scale(375),
+        minHeight: scale(400),
+        alignSelf: 'center',
         backgroundColor: colors.W1,
         borderTopLeftRadius: scale(40),
         borderTopRightRadius: scale(40),
@@ -150,4 +180,9 @@ const styles = StyleSheet.create({
     alignCenter: {
         alignItems: 'center',
     },
+    flexCenter: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });
