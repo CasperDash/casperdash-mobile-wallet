@@ -1,10 +1,12 @@
 import {put, takeLatest, take, cancel} from 'redux-saga/effects';
 import {types} from './user_action';
 import {apis} from 'services';
-import {Config, Keys} from "utils";
+import {Config, Keys} from 'utils';
+import {startAction, stopAction} from 'redux_manager/main/main_action';
 
 export function* getAccountInformation(data: any) {
     try {
+        yield put(startAction(types.GET_ACCOUNT_INFORMATION));
         yield put({type: types.GET_ACCOUNT_INFORMATION + '_SUCCESS', payload: null});
         // @ts-ignore
         const casperDashInfo = yield Config.getItem(Keys.casperdash);
@@ -22,6 +24,8 @@ export function* getAccountInformation(data: any) {
         } else {
             data.cb && data.cb(error, null);
         }
+    } finally {
+        yield put(stopAction(types.GET_ACCOUNT_INFORMATION));
     }
 }
 
