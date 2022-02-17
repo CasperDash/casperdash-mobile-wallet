@@ -16,7 +16,7 @@ import {useDispatch} from "react-redux";
 function AddKeyScreen() {
 
     const [error, setError] = useState('');
-    const [publicKey, setPublicKey] = useState('');
+    const [publicKey, setPublicKey] = useState('02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38');
     const {navigate} = useNavigation<StackNavigationProp<any>>();
     const [isLoading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ function AddKeyScreen() {
 
     const onAddPublicKey = async () => {
         setLoading(true);
-        dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, res: any) => {
+        dispatch(allActions.user.getAccountInformation({publicKey}, async (err: any, res: any) => {
             if (res) {
                 setLoading(false);
                 const info = {

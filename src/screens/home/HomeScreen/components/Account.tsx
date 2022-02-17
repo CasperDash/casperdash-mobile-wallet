@@ -45,50 +45,57 @@ function Account() {
     };
 
     return (
-        <Col px={16} py={16} mx={16} style={styles.accountContainer}>
-            <Row.LR>
-                <CButton style={{maxWidth: scale(343 - 16) / 2}}>
-                    <Row.C>
-                        <Text
-                            numberOfLines={1}
-                            style={styles.titleAccount}>Account 1</Text>
-                        {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
-                    </Row.C>
-                </CButton>
+       <View style={styles.container}>
+           <Col px={16} py={16} style={styles.accountContainer}>
+               <Row.LR>
+                   <CButton style={{maxWidth: scale(343 - 16) / 2}}>
+                       <Row.C>
+                           <Text
+                               numberOfLines={1}
+                               style={styles.titleAccount}>Account 1</Text>
+                           {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
+                       </Row.C>
+                   </CButton>
 
-                <CButton
-                    onPress={saveKey}
-                    style={{maxWidth: scale(343 - 16) / 2}}>
-                    <Row.C>
-                        <Text numberOfLines={1}
-                              ellipsizeMode={'middle'}
-                              style={[styles.titleAccount, {maxWidth: scale(100)}]}>
-                            {publicKey}
-                        </Text>
-                        <IconCopy width={scale(16)} height={scale(16)}/>
-                    </Row.C>
-                </CButton>
-            </Row.LR>
-            <Row.C mx={16} mt={20} mb={24}>
-                <Text numberOfLines={1}
-                      style={[textStyles.H3, {marginRight: scale(8)}]}>{isShowAmount ? toFormattedCurrency(totalFiatBalance, {maximumFractionDigits: 2}, 'en-US') : '$*****00'}</Text>
-                {/*<CButton onPress={onToggleAmount}>
+                   <CButton
+                       onPress={saveKey}
+                       style={{maxWidth: scale(343 - 16) / 2}}>
+                       <Row.C>
+                           <Text numberOfLines={1}
+                                 ellipsizeMode={'middle'}
+                                 style={[styles.titleAccount, {maxWidth: scale(100)}]}>
+                               {publicKey}
+                           </Text>
+                           <IconCopy width={scale(16)} height={scale(16)}/>
+                       </Row.C>
+                   </CButton>
+               </Row.LR>
+               <Row.C mx={16} mt={20} mb={24}>
+                   <Text numberOfLines={1}
+                         style={[textStyles.H3, {marginRight: scale(8)}]}>{isShowAmount ? toFormattedCurrency(totalFiatBalance, {maximumFractionDigits: 2}, 'en-US') : '$*****00'}</Text>
+                   {/*<CButton onPress={onToggleAmount}>
                         {isShowAmount ? <IconEye width={scale(20)} height={scale(14)}/> :
                             <IconEyeOff width={scale(20)} height={scale(19)}/>}
                     </CButton>*/}
-            </Row.C>
-            <Row.C>
-                {AccountActions.map((action, index) => {
-                    return <ButtonAction data={action} key={index}/>;
-                })}
-            </Row.C>
-        </Col>
+               </Row.C>
+               <Row.C>
+                   {AccountActions.map((action, index) => {
+                       return <ButtonAction data={action} key={index}/>;
+                   })}
+               </Row.C>
+           </Col>
+       </View>
     );
 }
 
 export default Account;
 
 const styles = StyleSheet.create({
+    container: {
+        width: scale(375),
+        backgroundColor: colors.cF8F8F8,
+        paddingBottom: scale(16)
+    },
     accountContainer: {
         width: scale(343),
         backgroundColor: colors.W1,
