@@ -1,18 +1,15 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import { colors, IconArrowLeft, images } from 'assets';
+import { colors, IconArrowLeft, IconCopy, images } from 'assets';
 import { device, scale } from 'device';
 import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
 import { navigate } from 'navigation/RootNavigation';
 import React, { useState } from 'react';
 import {
   Image,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   Share,
   View,
-  ToastAndroid,
   ScrollView,
 } from 'react-native';
 import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
@@ -34,14 +31,7 @@ function NFTDetail({ route }: Props) {
   const onBack = () => {
     navigate(NFTRouter.NFT_SCREEN);
   };
-  const copyToClipboard = () => {
-    Clipboard.setString(contractAddress);
-    ToastAndroid.showWithGravity(
-      'Coppy scucess',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
-    );
-  };
+  const copyToClipboard = () => {};
   const ShareSocial = async () => {
     try {
       const ShareResponse = await Share.share({
@@ -68,7 +58,7 @@ function NFTDetail({ route }: Props) {
         onError={() => setValid(false)}
       />
       <ScrollView style={styles.scrollView}>
-        <View style={styles.infomation}>
+        <View>
           <View style={styles.headerInformation}>
             <Text>Total Supply :{totalSupply}</Text>
             <View>
@@ -86,8 +76,13 @@ function NFTDetail({ route }: Props) {
             <TouchableOpacity
               onPress={copyToClipboard}
               style={styles.copyClipboard}>
-              <Text>{CollapseText(contractAddress)}</Text>
-              <Text style={styles.textCopy}>Copy</Text>
+              <Text
+                ellipsizeMode="middle"
+                numberOfLines={1}
+                style={styles.contractAddressText}>
+                {contractAddress}
+              </Text>
+              <IconCopy />
             </TouchableOpacity>
           </View>
           <View style={styles.titleWrapper}>
@@ -108,17 +103,6 @@ function NFTDetail({ route }: Props) {
       </ScrollView>
     </View>
   );
-}
-
-function CollapseText(string: any) {
-  console.log(string);
-  if (typeof string !== 'string') {
-    return 'Not a string';
-  }
-  const start = string.slice(0, 15);
-  const end = string.slice(-5, string.length);
-  const newString = start + '...' + end;
-  return newString;
 }
 
 const styles = StyleSheet.create({
@@ -179,7 +163,10 @@ const styles = StyleSheet.create({
     width: device.w,
     height: scale(189),
   },
-  infomation: {},
+  contractAddressText: {
+    maxWidth: scale(180),
+    marginRight: scale(10),
+  },
   headerInformation: {
     display: 'flex',
     justifyContent: 'space-between',

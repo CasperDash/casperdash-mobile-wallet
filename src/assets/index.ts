@@ -22,6 +22,7 @@ import IconMessageSuccess from './images/ic_message_success.svg';
 import IconMessageWarning from './images/ic_message_warning.svg';
 import IconMessageError from './images/ic_message_error.svg';
 import IconSearch from './images/ic_search.svg';
+import IconCopy from './images/ic_copy.svg';
 
 
 const images = {
@@ -180,5 +181,6 @@ export {
     IconMessageWarning,
     IconMessageError,
     IconSearch,
-    IconArrowUp
+    IconArrowUp,
+    IconCopy
 };
