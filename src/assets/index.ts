@@ -30,6 +30,9 @@ import IconSend from './images/ic_send.svg';
 import IconReceive from './images/ic_receive.svg';
 import IconSwap from './images/ic_swap.svg';
 import IconLogo from './images/ic_logo.svg';
+import IconLock from './images/ic_lock.svg';
+import IconAboutUs from './images/ic_about_us.svg';
+import IconCircleRight from './images/ic_circle_right.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
@@ -193,4 +196,7 @@ export {
     IconSend,
     IconSwap,
     IconLogo,
+    IconAboutUs,
+    IconLock,
+    IconCircleRight
 };
