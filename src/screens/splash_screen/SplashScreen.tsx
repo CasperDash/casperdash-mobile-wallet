@@ -7,9 +7,11 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {isEmpty} from 'lodash';
+import { useDispatch } from 'react-redux';
+import { fetchNFTInfo } from 'redux_manager/nft/nft_action';
 
 const SplashScreen = () => {
-
+    const dispatch = useDispatch();
     const navigation = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
@@ -19,12 +21,17 @@ const SplashScreen = () => {
     const setupNavigation = async () => {
         const overview = await Config.getItem(Keys.overview);
         const pinCode = await Config.getItem(Keys.pinCode);
+        const publickey = await Config.getItem(Keys.publicKey);
         let screen = AuthenticationRouter.WELCOME_SCREEN;
+
         if (overview === 1) {
             screen = AuthenticationRouter.CREATE_NEW_WALLET;
         }
         if (!isEmpty(pinCode)){
             screen = AuthenticationRouter.ENTER_PIN;
+        }
+        if(publickey){
+            dispatch(fetchNFTInfo(publickey));
         }
         navigation.dispatch(
             CommonActions.reset({

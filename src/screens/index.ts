@@ -10,6 +10,7 @@ export {default as StakingScreen} from './staking/StakingScreen';
 
 //NFT
 export {default as NFTScreen} from './nft/NFTScreen';
+export {default as NFTDetailScreen} from './nft/NFTDetailScreen';
 
 //Market
 export {default as MarketScreen} from './market/MarketScreen';
