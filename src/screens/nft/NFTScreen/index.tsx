@@ -16,7 +16,7 @@ import {
 
 import { colors, IconArrowUp, IconSearch } from 'assets';
 import { images } from 'assets';
-import { device } from 'device';
+import { device, scale } from 'device';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -54,7 +54,6 @@ function NFTScreen() {
     setNFTs(newSortArr);
     setSort(type);
   };
-
   const onSubmitEdit = () => {
     if (search.length === 0) {
       setReload(true);
@@ -134,15 +133,15 @@ function NFTScreen() {
               </View>
             ) : (
               <View>
-                  <FlatList
-                    data={nfts}
-                    renderItem={({ item }) => <NFTItem data={item} />}
-                    keyExtractor={nfts.tokenId}
-                    numColumns={2}
-                    style={styles.flaslist}
-                    refreshing={reaload}
-                    columnWrapperStyle={styles.columnWrapper}
-                  />
+                <FlatList
+                  data={nfts}
+                  renderItem={({ item }) => <NFTItem data={item} />}
+                  keyExtractor={nfts.tokenId}
+                  numColumns={2}
+                  style={styles.flaslist}
+                  refreshing={reaload}
+                  columnWrapperStyle={styles.columnWrapper}
+                />
               </View>
             )}
           </View>
@@ -161,15 +160,15 @@ const styles = StyleSheet.create({
     flex: 1,
     height: device.h,
     position: 'relative',
-    paddingTop: 46,
+    paddingTop: scale(46),
   },
   sortWrapper: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 16,
-    marginBottom: 26,
-    marginTop: 16,
+    marginHorizontal: scale(16),
+    marginBottom: scale(26),
+    marginTop: scale(16),
   },
   columnWrapper: {
     justifyContent: 'space-between',
@@ -183,10 +182,10 @@ const styles = StyleSheet.create({
     left: 0,
   },
   title: {
-    fontSize: 32,
+    fontSize: scale(32),
     fontWeight: '600',
-    paddingLeft: 15,
-    paddingBottom: 24,
+    paddingLeft: scale(15),
+    paddingBottom: scale(24),
   },
   iconSearch: {
     position: 'absolute',
@@ -206,59 +205,59 @@ const styles = StyleSheet.create({
   searchWrapper: {
     position: 'relative',
     backgroundColor: '#ffffff',
-    borderRadius: 50,
-    height: 55,
-    marginHorizontal: 16,
+    borderRadius: scale(50),
+    height: scale(55),
+    marginHorizontal: scale(16),
   },
   containerInputStyle: {
     borderWidth: 0,
   },
   inputSearch: {
-    fontSize: 16,
-    paddingLeft: 54,
+    fontSize: scale(16),
+    paddingLeft: scale(54),
   },
   btnFilter: {
     backgroundColor: colors.cFFFFFF,
     borderRadius: 50,
-    width: 164,
-    height: 50,
+    width: scale(164),
+    height: scale(50),
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingVertical: scale(10),
+    paddingHorizontal: scale(16),
   },
   nftListWrapper: {
-    paddingTop: 24,
-    paddingHorizontal: 16,
+    paddingTop: scale(24),
+    paddingHorizontal: scale(16),
     backgroundColor: colors.cFFFFFF,
-    borderTopRightRadius: 40,
-    borderTopLeftRadius: 40,
+    borderTopRightRadius: scale(40),
+    borderTopLeftRadius: scale(40),
   },
   flaslist: {
-    marginBottom: 370,
+    marginBottom: scale(370),
   },
   numNft: {
     color: colors.N2,
-    fontSize: 16,
-    marginBottom: 24,
+    fontSize: scale(16),
+    marginBottom: scale(24),
   },
   noNFT: {
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 60,
+    paddingTop: scale(60),
   },
   imageNoNFT: {},
   imageNFT: {
     width: '100%',
-    height: 126,
-    borderRadius: 16,
+    height: scale(126),
+    borderRadius: scale(16),
   },
   textNoNFT: {
     color: colors.N4,
-    fontSize: 16,
+    fontSize: scale(16),
   },
 });

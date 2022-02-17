@@ -1,5 +1,6 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import { colors, IconArrowLeft, images } from 'assets';
-import { device } from 'device';
+import { device, scale } from 'device';
 import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
 import { navigate } from 'navigation/RootNavigation';
 import React, { useState } from 'react';
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   Share,
   View,
+  ToastAndroid,
   ScrollView,
 } from 'react-native';
 import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
@@ -32,7 +34,14 @@ function NFTDetail({ route }: Props) {
   const onBack = () => {
     navigate(NFTRouter.NFT_SCREEN);
   };
-
+  const copyToClipboard = () => {
+    Clipboard.setString(contractAddress);
+    ToastAndroid.showWithGravity(
+      'Coppy scucess',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
   const ShareSocial = async () => {
     try {
       const ShareResponse = await Share.share({
@@ -68,13 +77,18 @@ function NFTDetail({ route }: Props) {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.nftContractName}>
+          <View>
             <Text>Contract Name:</Text>
-            <Text>{nftContractName}</Text>
+            <Text> {nftContractName}</Text>
           </View>
           <View style={styles.contractAdress}>
             <Text>Contract Adress :</Text>
-            <Text>{contractAddress}</Text>
+            <TouchableOpacity
+              onPress={copyToClipboard}
+              style={styles.copyClipboard}>
+              <Text>{CollapseText(contractAddress)}</Text>
+              <Text style={styles.textCopy}>Copy</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>Attributes </Text>
@@ -96,14 +110,25 @@ function NFTDetail({ route }: Props) {
   );
 }
 
+function CollapseText(string: any) {
+  console.log(string);
+  if (typeof string !== 'string') {
+    return 'Not a string';
+  }
+  const start = string.slice(0, 15);
+  const end = string.slice(-5, string.length);
+  const newString = start + '...' + end;
+  return newString;
+}
+
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
+    paddingTop: scale(20),
     backgroundColor: '#F8F8F8',
     height: device.h,
   },
   titleWrapper: {
-    marginBottom: 24,
+    marginBottom: scale(24),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -111,13 +136,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.N3,
-    fontSize: 16,
+    fontSize: scale(16),
     fontWeight: '500',
   },
   arrow: {
     transform: [{ rotateX: '180deg' }],
     color: colors.N3,
-    fontSize: 20,
+    fontSize: scale(20),
     fontWeight: '700',
   },
   header: {
@@ -125,42 +150,50 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    marginBottom: 24,
+    paddingHorizontal: scale(20),
+    paddingVertical: scale(20),
+    marginBottom: scale(24),
+  },
+  copyClipboard: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  textCopy: {
+    marginLeft: scale(20),
   },
   iconArrow: {
-    width: 32,
-    height: 24,
+    width: scale(32),
+    height: scale(24),
   },
   name: {
     fontWeight: '600',
-    fontSize: 24,
+    fontSize: scale(24),
     color: colors.N2,
-    maxWidth: 260,
+    maxWidth: scale(260),
   },
   scrollView: {
-    paddingHorizontal: 20,
+    paddingHorizontal: scale(20),
   },
   nftImage: {
     width: device.w,
-    height: 189,
+    height: scale(189),
   },
   infomation: {},
   headerInformation: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingVertical: 20,
-    marginTop: 10,
+    paddingVertical: scale(20),
+    marginTop: scale(10),
     flexDirection: 'row',
   },
   contractAdress: {
-    paddingVertical: 20,
+    paddingVertical: scale(20),
   },
- 
+
   shareText: {
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: scale(16),
   },
   metaData: {
     display: 'flex',
@@ -169,9 +202,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   metaDataItem: {
-    padding: 16,
-    marginBottom: 20,
-    borderRadius: 16,
+    padding: scale(16),
+    marginBottom: scale(20),
+    borderRadius: scale(16),
     backgroundColor: colors.W1,
     width: device.w / 2 - 30,
   },

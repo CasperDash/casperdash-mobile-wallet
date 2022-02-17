@@ -3,7 +3,6 @@ const Keys = {
     overview: 'overview',
     pinCode: 'pinCode',
     nfts:'nfts',
-    publicKey:'publickey',
 };
 
 export default Keys;

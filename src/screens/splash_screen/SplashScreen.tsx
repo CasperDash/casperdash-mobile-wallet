@@ -21,7 +21,8 @@ const SplashScreen = () => {
     const setupNavigation = async () => {
         const overview = await Config.getItem(Keys.overview);
         const pinCode = await Config.getItem(Keys.pinCode);
-        const publickey = await Config.getItem(Keys.publicKey);
+        const casperdash = await Config.getItem(Keys.casperdash);
+        
         let screen = AuthenticationRouter.WELCOME_SCREEN;
 
         if (overview === 1) {
@@ -30,8 +31,8 @@ const SplashScreen = () => {
         if (!isEmpty(pinCode)){
             screen = AuthenticationRouter.ENTER_PIN;
         }
-        if(publickey){
-            dispatch(fetchNFTInfo(publickey));
+        if(casperdash.publicKey){
+            dispatch(fetchNFTInfo(casperdash.publicKey));
         }
         navigation.dispatch(
             CommonActions.reset({
