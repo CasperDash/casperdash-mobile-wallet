@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { colors, images } from 'assets';
-import { device } from 'device';
+import { device, scale } from 'device';
 import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
 import { navigate } from 'navigation/RootNavigation';
 
@@ -61,25 +61,25 @@ export default NFTItem;
 const styles = StyleSheet.create({
   nftItemWrapper: {
     width: (device.w - 47) / 2,
-    marginBottom: 16,
+    marginBottom: scale(16),
     borderWidth: 1,
     borderColor: colors.N5,
-    borderRadius: 16,
+    borderRadius: scale(16),
   },
 
   nftItemContent: {
-    padding: 16,
+    padding: scale(16),
   },
   nftImage: {
     width: '100%',
-    height: 128,
-    borderRadius: 16,
+    height: scale(128),
+    borderRadius: scale(16),
   },
   nftName: {
-    fontSize: 16,
+    fontSize: scale(16),
     fontWeight: '500',
     color: colors.N2,
-    marginBottom: 12,
+    marginBottom: scale(12),
   },
   contractNameNFT: {
     color: colors.N3,
