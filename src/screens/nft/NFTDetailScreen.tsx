@@ -58,7 +58,7 @@ function NFTDetail({ route }: Props) {
         style={styles.nftImage}
         onError={() => setValid(false)}
       />
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.infomation}>
           <View style={styles.headerInformation}>
             <Text>Total Supply :{totalSupply}</Text>
@@ -67,6 +67,10 @@ function NFTDetail({ route }: Props) {
                 <Text style={styles.shareText}>Share</Text>
               </TouchableOpacity>
             </View>
+          </View>
+          <View style={styles.nftContractName}>
+            <Text>Contract Name:</Text>
+            <Text>{nftContractName}</Text>
           </View>
           <View style={styles.contractAdress}>
             <Text>Contract Adress :</Text>
@@ -99,7 +103,6 @@ const styles = StyleSheet.create({
     height: device.h,
   },
   titleWrapper: {
-    paddingHorizontal: 20,
     marginBottom: 24,
     display: 'flex',
     flexDirection: 'row',
@@ -136,6 +139,9 @@ const styles = StyleSheet.create({
     color: colors.N2,
     maxWidth: 260,
   },
+  scrollView: {
+    paddingHorizontal: 20,
+  },
   nftImage: {
     width: device.w,
     height: 189,
@@ -144,13 +150,14 @@ const styles = StyleSheet.create({
   headerInformation: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: 20,
+    paddingVertical: 20,
     marginTop: 10,
     flexDirection: 'row',
   },
   contractAdress: {
-    padding: 20,
+    paddingVertical: 20,
   },
+ 
   shareText: {
     fontWeight: '600',
     fontSize: 16,
@@ -160,7 +167,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-    paddingHorizontal: 20,
   },
   metaDataItem: {
     padding: 16,
