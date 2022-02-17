@@ -78,7 +78,6 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
         const phrases = data.reduce((previous: string, current: Phrase) => previous + current.word + ' ', '');
         const publicKey = '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'; //TODO: get publicKey from phrases string
         setLoading(true);
-        Config.saveItem(Keys.publicKey, publicKey);
         dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, res: any) => {
             if (res) {
                 setLoading(false);
