@@ -8,7 +8,10 @@ export const types = {
     LOAD_LOCAL_STORAGE_SUCCESS: 'LOAD_LOCAL_STORAGE_SUCCESS',
 
     GET_CONFIGURATIONS: 'GET_CONFIGURATIONS',
-    GET_CONFIGURATIONS_SUCCESS: 'GET_CONFIGURATIONS_SUCCESS'
+    GET_CONFIGURATIONS_SUCCESS: 'GET_CONFIGURATIONS_SUCCESS',
+
+    START_ACTION: 'START_ACTION',
+    STOP_ACTION: 'STOP_ACTION'
 };
 
 const showMessage = (message: Message, duration?: number) => {
@@ -31,8 +34,25 @@ const getConfigurations = () => {
     };
 };
 
+export const startAction = (name: any, params?: any) => ({
+    type: types.START_ACTION,
+    payload: {
+        action: {
+            name,
+            params,
+        },
+    },
+});
+
+export const stopAction = (name: any) => ({
+    type: types.STOP_ACTION,
+    payload: { name },
+});
+
 export default {
     showMessage,
     loadLocalStorage,
-    getConfigurations
+    getConfigurations,
+    startAction,
+    stopAction,
 };
