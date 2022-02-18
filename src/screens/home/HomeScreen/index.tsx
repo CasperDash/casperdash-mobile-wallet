@@ -49,12 +49,12 @@ function HomeScreen() {
     const getData = (refreshing: boolean) => {
         fetchCSPRMarketInfo(refreshing);
         getTokenInfoWithBalance(refreshing);
-    }
+    };
 
     const onRefresh = () => {
         getAccountInformation(true);
         getData(true);
-    }
+    };
 
     const getAccountInformation = (refreshing: boolean) => {
         dispatch(allActions.user.getAccountInformation({refreshing}, (error: any) => {
@@ -62,8 +62,7 @@ function HomeScreen() {
                 showErrorMessage(error);
             }
         }));
-
-    }
+    };
 
     const getTokenInfoWithBalance = (refreshing: boolean) => {
         dispatch(allActions.home.getTokenInfoWithBalance({refreshing},(error: any) => {
@@ -90,9 +89,10 @@ function HomeScreen() {
     };
 
     const _renderListTokens = () => {
+        const height = insets.bottom === 0 ? 0 : insets.bottom + scale(72);
         return (
             <Col
-                style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}]}>
+                style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom, minHeight: scale(315) + height}]}>
                 {
                     isLoading ? <View style={styles.flexCenter}>
                             <ActivityIndicator size="small" color={colors.N2}/>
@@ -118,7 +118,7 @@ function HomeScreen() {
     };
 
     return (
-        <CLayout bgColor={colors.cF8F8F8}>
+        <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
             <View style={styles.container}>
                 <Row.LR pl={24} pr={16} pt={10} pb={20}>
                     <Row style={styles.alignCenter}>
@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
 
     listContainer: {
         width: scale(375),
-        minHeight: scale(400),
         alignSelf: 'center',
         backgroundColor: colors.W1,
         borderTopLeftRadius: scale(40),
@@ -183,6 +182,6 @@ const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
 });
