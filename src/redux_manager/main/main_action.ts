@@ -8,7 +8,13 @@ export const types = {
     LOAD_LOCAL_STORAGE_SUCCESS: 'LOAD_LOCAL_STORAGE_SUCCESS',
 
     GET_CONFIGURATIONS: 'GET_CONFIGURATIONS',
-    GET_CONFIGURATIONS_SUCCESS: 'GET_CONFIGURATIONS_SUCCESS'
+    GET_CONFIGURATIONS_SUCCESS: 'GET_CONFIGURATIONS_SUCCESS',
+
+    START_ACTION: 'START_ACTION',
+    STOP_ACTION: 'STOP_ACTION',
+
+    REFRESH_ACTION_START: 'REFRESH_ACTION_START',
+    REFRESH_ACTION_STOP: 'REFRESH_ACTION_STOP'
 };
 
 const showMessage = (message: Message, duration?: number) => {
@@ -31,8 +37,40 @@ const getConfigurations = () => {
     };
 };
 
+export const startAction = (name: any, params?: any) => ({
+    type: types.START_ACTION,
+    payload: {
+        action: {
+            name,
+            params,
+        },
+    },
+});
+
+export const stopAction = (name: any) => ({
+    type: types.STOP_ACTION,
+    payload: { name },
+});
+
+export const refreshActionStart = (name: any, params?: any) => ({
+    type: types.REFRESH_ACTION_START,
+    payload: {
+        action: {
+            name,
+            params,
+        },
+    }
+});
+
+export const refreshActionStop = (name: any) => ({
+    type: types.REFRESH_ACTION_STOP,
+    payload: { name }
+});
+
 export default {
     showMessage,
     loadLocalStorage,
-    getConfigurations
+    getConfigurations,
+    startAction,
+    stopAction,
 };

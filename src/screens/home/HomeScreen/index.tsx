@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
     View,
     Text,
     StyleSheet,
     ScrollView,
-    Image,
+    ActivityIndicator, FlatList, RefreshControl,
 } from 'react-native';
 import {
     colors,
@@ -25,6 +25,9 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import {getAllTokenInfo} from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
+import {checkIfLoadingSelector, checkIfRefreshingSelector} from 'utils/selectors';
+import {types as homeTypes} from 'redux_manager/home/home_action';
+import {types as userTypes} from 'redux_manager/user/user_action';
 
 function HomeScreen() {
 
@@ -34,21 +37,43 @@ function HomeScreen() {
 
     const allTokenInfo = useSelector(getAllTokenInfo);
 
+    // @ts-ignore
+    const isLoading = useSelector((state: any) => checkIfLoadingSelector(state, [homeTypes.GET_TOKEN_INFO_WITH_BALANCE, homeTypes.FETCH_CSPR_MARKET_INFO, userTypes.GET_ACCOUNT_INFORMATION]));
+    // @ts-ignore
+    const isRefreshing = useSelector((state: any) => checkIfRefreshingSelector(state, [homeTypes.GET_TOKEN_INFO_WITH_BALANCE, homeTypes.FETCH_CSPR_MARKET_INFO, userTypes.GET_ACCOUNT_INFORMATION]));
+
     useEffect(() => {
-        fetchCSPRMarketInfo();
-        getTokenInfoWithBalance();
+        getData(false);
     }, []);
 
-    const getTokenInfoWithBalance = () => {
-        dispatch(allActions.home.getTokenInfoWithBalance((error: any) => {
+    const getData = (refreshing: boolean) => {
+        fetchCSPRMarketInfo(refreshing);
+        getTokenInfoWithBalance(refreshing);
+    };
+
+    const onRefresh = () => {
+        getAccountInformation(true);
+        getData(true);
+    };
+
+    const getAccountInformation = (refreshing: boolean) => {
+        dispatch(allActions.user.getAccountInformation({refreshing}, (error: any) => {
             if (error) {
                 showErrorMessage(error);
             }
         }));
     };
 
-    const fetchCSPRMarketInfo = () => {
-        dispatch(allActions.home.fetchCSPRMarketInfo((error: any) => {
+    const getTokenInfoWithBalance = (refreshing: boolean) => {
+        dispatch(allActions.home.getTokenInfoWithBalance({refreshing},(error: any) => {
+            if (error) {
+                showErrorMessage(error);
+            }
+        }));
+    };
+
+    const fetchCSPRMarketInfo = (refreshing: boolean) => {
+        dispatch(allActions.home.fetchCSPRMarketInfo({refreshing},(error: any) => {
             if (error) {
                 showErrorMessage(error);
             }
@@ -64,27 +89,36 @@ function HomeScreen() {
     };
 
     const _renderListTokens = () => {
+        const height = insets.bottom === 0 ? 0 : insets.bottom + scale(72);
         return (
             <Col
-                 style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom}]}>
+                style={[styles.listContainer, {paddingBottom: scale(72) + insets.bottom, minHeight: scale(315) + height}]}>
                 {
-                    allTokenInfo && allTokenInfo.length > 0 && allTokenInfo.map((value, i) => {
-                        return <TokenComponent value={value} key={i}/>;
-                    })
+                    isLoading ? <View style={styles.flexCenter}>
+                            <ActivityIndicator size="small" color={colors.N2}/>
+                        </View> :
+                        <ScrollView>
+                            {
+                                allTokenInfo && allTokenInfo.length > 0 && allTokenInfo.map((value, i) => {
+                                    return <TokenComponent value={value} key={i}/>;
+                                })
+                            }
+                            <CButton
+                                onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)}
+                                style={{marginTop: scale(16)}}>
+                                <Row mx={16} style={styles.alignCenter}>
+                                    <IconPlusCircle width={scale(14)} height={scale(14)}/>
+                                    <Text style={[textStyles.Body1, {marginLeft: scale(8)}]}>Add Custom Token</Text>
+                                </Row>
+                            </CButton>
+                        </ScrollView>
                 }
-                <CButton
-                    onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)}
-                    style={{marginTop: scale(16)}}>
-                    <Row mx={16} style={styles.alignCenter}>
-                        <IconPlusCircle width={scale(14)} height={scale(14)}/>
-                        <Text style={[textStyles.Body1, {marginLeft: scale(8)}]}>Add Custom Token</Text>
-                    </Row>
-                </CButton>
             </Col>
         );
     };
+
     return (
-        <CLayout bgColor={colors.cF8F8F8}>
+        <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
             <View style={styles.container}>
                 <Row.LR pl={24} pr={16} pt={10} pb={20}>
                     <Row style={styles.alignCenter}>
@@ -102,10 +136,17 @@ function HomeScreen() {
                         </CButton>*/}
                     </Row.C>
                 </Row.LR>
-                <Account/>
                 <ScrollView
-                    style={{marginTop: scale(16)}}
+                    nestedScrollEnabled
+                    stickyHeaderIndices={[0]}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
                     showsVerticalScrollIndicator={false}>
+                    <Account/>
                     {_renderListTokens()}
                 </ScrollView>
             </View>
@@ -129,13 +170,18 @@ const styles = StyleSheet.create({
     },
 
     listContainer: {
-        width: '100%',
-        minHeight: scale(500),
+        width: scale(375),
+        alignSelf: 'center',
         backgroundColor: colors.W1,
         borderTopLeftRadius: scale(40),
         borderTopRightRadius: scale(40),
     },
     alignCenter: {
+        alignItems: 'center',
+    },
+    flexCenter: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
     },
 });
