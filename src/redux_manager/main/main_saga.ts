@@ -2,7 +2,6 @@ import {put, takeLatest, delay, take, cancel} from 'redux-saga/effects';
 import {types} from './main_action';
 import {Config, Keys} from "utils";
 import {apis} from "services";
-import {getTokenAddressInfo} from "redux_manager/home/home_saga";
 
 export function* showMessage(data: any) {
     yield put({type: types.SHOW_MESSAGE_SUCCESS, payload: data.message});
