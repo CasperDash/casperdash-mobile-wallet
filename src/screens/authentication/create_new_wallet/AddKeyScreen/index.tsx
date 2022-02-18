@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {CInput, CLayout, CLoading} from "components";
-import {CHeader, Col} from "components";
-import {colors, textStyles} from "assets";
-import {scale} from "device";
-import CTextButton from "components/CTextButton";
-import {Config} from "utils";
-import {Keys} from "utils";
-import AuthenticationRouter from "navigation/AuthenticationNavigation/AuthenticationRouter";
-import {useNavigation} from "@react-navigation/native";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {allActions} from "redux_manager";
-import {useDispatch} from "react-redux";
+import {CInput, CLayout, CLoading} from 'components';
+import {CHeader, Col} from 'components';
+import {colors, textStyles} from 'assets';
+import {scale} from 'device';
+import CTextButton from 'components/CTextButton';
+import {Config} from 'utils';
+import {Keys} from 'utils';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {allActions} from 'redux_manager';
+import {useDispatch} from 'react-redux';
 
 function AddKeyScreen() {
 
     const [error, setError] = useState('');
-    const [publicKey, setPublicKey] = useState('02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38');
+    const [publicKey, setPublicKey] = useState('');
     const {navigate} = useNavigation<StackNavigationProp<any>>();
     const [isLoading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -48,7 +48,7 @@ function AddKeyScreen() {
     };
 
     return (
-        <CLayout bgColor={colors.cF8F8F8}>
+        <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
             <CHeader title={'Add'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col
                 mt={10}
@@ -81,13 +81,13 @@ const styles = StyleSheet.create(({
         width: '100%',
         backgroundColor: colors.W1,
         borderTopLeftRadius: scale(40),
-        borderTopRightRadius: scale(40)
+        borderTopRightRadius: scale(40),
     },
     title: {
         ...textStyles.Body1,
         color: colors.N3,
         marginBottom: scale(8),
-        marginHorizontal: scale(24)
+        marginHorizontal: scale(24),
     },
     input: {
         ...textStyles.Body1,
@@ -95,16 +95,16 @@ const styles = StyleSheet.create(({
     },
     btnAdd: {
         width: scale(327),
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     errorText: {
         ...textStyles.Body2,
         color: colors.R1,
         marginHorizontal: scale(24),
-        marginBottom: scale(20)
+        marginBottom: scale(20),
     },
     inputContainer: {
         marginBottom: scale(6),
-        paddingHorizontal: scale(24)
-    }
-}))
+        paddingHorizontal: scale(24),
+    },
+}));

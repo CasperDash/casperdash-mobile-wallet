@@ -33,6 +33,7 @@ import IconLogo from './images/ic_logo.svg';
 import IconLock from './images/ic_lock.svg';
 import IconAboutUs from './images/ic_about_us.svg';
 import IconCircleRight from './images/ic_circle_right.svg';
+import IconCircleClose from './images/ic_close_circle.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
@@ -119,7 +120,7 @@ const textStyles = StyleSheet.create({
         color: colors.N2,
     },
     Sub1: {
-        fontFamily: fonts.Poppins.regular,
+        fontFamily: fonts.Poppins.semiBold,
         fontWeight: '500',
         fontSize: scale(16),
         fontStyle: 'normal',
@@ -198,5 +199,6 @@ export {
     IconLogo,
     IconAboutUs,
     IconLock,
-    IconCircleRight
+    IconCircleRight,
+    IconCircleClose,
 };

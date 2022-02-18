@@ -1,16 +1,18 @@
-import React from 'react';
-import {StyleSheet, Linking} from 'react-native';
-import {colors, IconAboutUs, IconCircleRight, IconLock, textStyles} from "assets";
-import {CHeader, CLayout, Col} from "components";
-import {scale} from "device";
-import {SettingMenu} from "screens/settings/data";
+import React, {useRef} from 'react';
+import {StyleSheet, Linking, Text} from 'react-native';
+import {colors, IconAboutUs, IconCircleRight, IconLock, textStyles} from 'assets';
+import {CAlert, CButton, CHeader, CLayout, Col} from 'components';
+import {scale} from 'device';
+import {SettingMenu} from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
-import {CommonActions, useNavigation} from "@react-navigation/native";
-import AuthenticationRouter from "navigation/AuthenticationNavigation/AuthenticationRouter";
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import {Config, Keys} from 'utils';
 
 function SettingsScreen() {
 
     const navigation = useNavigation();
+    const alertRef = useRef<any>();
 
     const listMenu: Array<SettingMenu> = [
         {
@@ -18,15 +20,15 @@ function SettingsScreen() {
             title: 'About Us',
             icon: () => <IconAboutUs width={scale(32)} height={scale(32)}/>,
             subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)}/>,
-            onPress: () => openUrl()
+            onPress: () => openUrl(),
         },
         {
             id: 1,
             title: 'Lock',
             icon: () => <IconLock width={scale(32)} height={scale(32)}/>,
-            onPress: () => lockScreen()
+            onPress: () => lockScreen(),
         },
-    ]
+    ];
 
     const openUrl = async () => {
         const url = 'https://casperdash.io/';
@@ -34,9 +36,30 @@ function SettingsScreen() {
         if (supported) {
             await Linking.openURL(url);
         }
-    }
+    };
 
     const lockScreen = () => {
+        resetStack(AuthenticationRouter.ENTER_PIN);
+    };
+
+    const onDeleteAllData = () => {
+        const alert = {
+            alertMessage: 'Are you sure you want to \n Delete All Data?',
+        };
+        alertRef.current.show(alert);
+    };
+
+    const deleteAllData = () => {
+        Promise.all([
+            Config.deleteItem(Keys.casperdash),
+            Config.deleteItem(Keys.pinCode),
+            Config.deleteItem(Keys.tokensAddressList),
+        ]).then(async () => {
+            resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
+        });
+    };
+
+    const resetStack = (name: string) => {
         navigation.dispatch(
             CommonActions.reset({
                 routes: [{
@@ -44,17 +67,17 @@ function SettingsScreen() {
                     state: {
                         routes: [
                             {
-                                name: AuthenticationRouter.ENTER_PIN,
+                                name: name,
                             },
                         ],
                     },
                 }],
             }),
         );
-    }
+    };
 
     return (
-        <CLayout bgColor={colors.cF8F8F8}>
+        <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
             <CHeader title={'Settings'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col
                 mt={10}
@@ -62,10 +85,16 @@ function SettingsScreen() {
                 style={styles.container}>
                 {
                     listMenu.map((item, index) => {
-                        return <SettingMenuComponent data={item} key={index}/>
+                        return <SettingMenuComponent data={item} key={index}/>;
                     })
                 }
+                <CButton
+                    onPress={onDeleteAllData}
+                    style={styles.btnDelete}>
+                    <Text style={styles.txtDelete}>Delete All Data</Text>
+                </CButton>
             </Col>
+            <CAlert ref={alertRef} onConfirm={deleteAllData}/>
         </CLayout>
     );
 }
@@ -78,10 +107,24 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: colors.W1,
         borderTopLeftRadius: scale(40),
-        borderTopRightRadius: scale(40)
+        borderTopRightRadius: scale(40),
     },
     title: {
         ...textStyles.Body1,
         color: colors.N2,
     },
-})
+    btnDelete: {
+        paddingVertical: scale(6),
+        paddingHorizontal: scale(16),
+        minWidth: scale(134),
+        height: scale(36),
+        borderRadius: scale(18),
+        borderWidth: scale(1),
+        borderColor: colors.N4,
+        alignSelf: 'center',
+        marginTop: scale(70),
+    },
+    txtDelete: {
+        ...textStyles.Body2,
+    },
+});

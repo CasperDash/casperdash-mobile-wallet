@@ -6,7 +6,7 @@ const initialState = {
     configurations: null,
     loader: {
         actions: [],
-        refreshing: []
+        refreshing: [],
     },
 };
 
@@ -54,8 +54,8 @@ export default function (
                 ...state,
                 loader: {
                     ...loader,
-                    refreshing: [...refreshing, action.payload.action]
-                }
+                    refreshing: [...refreshing, action.payload.action],
+                },
             };
         case types.REFRESH_ACTION_STOP:
             return {
@@ -63,7 +63,7 @@ export default function (
                 loader: {
                     ...loader,
                     refreshing: refreshing.filter((act: any) => act.name !== action.payload.name),
-                }
+                },
             };
 
         default:
