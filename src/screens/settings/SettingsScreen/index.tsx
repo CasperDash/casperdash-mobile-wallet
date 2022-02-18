@@ -8,6 +8,7 @@ import SettingMenuComponent from '../components/SettingMenuComponent';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {Config, Keys} from 'utils';
+import {CASPERDASH_URL} from "utils/constants/key";
 
 function SettingsScreen() {
 
@@ -31,10 +32,9 @@ function SettingsScreen() {
     ];
 
     const openUrl = async () => {
-        const url = 'https://casperdash.io/';
-        const supported = await Linking.canOpenURL(url);
+        const supported = await Linking.canOpenURL(CASPERDASH_URL);
         if (supported) {
-            await Linking.openURL(url);
+            await Linking.openURL(CASPERDASH_URL);
         }
     };
 

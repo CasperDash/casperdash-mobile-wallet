@@ -18,3 +18,4 @@ export const ENTRY_POINT_UNDELEGATE = 'undelegate';
 export const CASPER_SYMBOL = 'CSPR';
 export const NFT_GATEWAY = 'ipfs.dweb.link';
 export const CASPER_KEY_PATH = `m/44'/506'/0'/0/`;
+export const CASPERDASH_URL = 'https://casperdash.io/'
