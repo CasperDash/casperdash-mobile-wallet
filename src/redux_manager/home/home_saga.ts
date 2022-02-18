@@ -49,7 +49,6 @@ export function* watchGetTokenInfoWithBalance() {
 export function* fetchCSPRMarketInfo(data: any) {
     try {
         yield put(data.params && data.params.refreshing ? refreshActionStart(types.FETCH_CSPR_MARKET_INFO) : startAction(types.FETCH_CSPR_MARKET_INFO));
-        yield put({type: types.FETCH_CSPR_MARKET_INFO + '_SUCCESS', payload: null});
         // @ts-ignore
         const response = yield apis.fetchCSPRMarketInfoAPI();
         if (response) {
