@@ -61,7 +61,7 @@ const CInput = forwardRef((props: Props, ref): any => {
         label,
         labelStyle,
         placeholder,
-        placeholderTextColor = colors.cB2B2B2,
+        placeholderTextColor = colors.N3,
         onFocus,
         onBlur,
         style,
@@ -157,9 +157,8 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: colors.cB2B2B2,
-        borderRadius: scale(5),
-        borderWidth: scale(1),
+        borderRadius: scale(16),
+        backgroundColor: colors.N5
     },
     title: {
         fontSize: scale(12),

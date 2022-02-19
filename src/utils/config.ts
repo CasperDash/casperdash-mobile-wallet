@@ -84,10 +84,18 @@ const getItem = async (key: string, options?: any) => {
     return data ? JSON.parse(data) : null;
 };
 
+const deleteItem = async (key: string, options?: any) => {
+    return SInfo.deleteItem(key, Object.assign({
+        sharedPreferencesName: 'casperdashSharedPrefs',
+        keychainService: 'casperdashKeychain',
+    }, options));
+};
+
 export default {
     ROOT_HTTP,
     alertMess,
     requestPermission,
     saveItem,
     getItem,
+    deleteItem
 };
