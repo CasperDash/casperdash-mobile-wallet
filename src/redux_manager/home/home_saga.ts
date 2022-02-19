@@ -7,7 +7,6 @@ import {refreshActionStart, refreshActionStop, startAction, stopAction} from 're
 export function* getTokenInfoWithBalance(data: any) {
     try {
         yield put(data.params && data.params.refreshing ? refreshActionStart(types.GET_TOKEN_INFO_WITH_BALANCE) : startAction(types.GET_TOKEN_INFO_WITH_BALANCE));
-        yield put({type: types.GET_TOKEN_INFO_WITH_BALANCE + '_SUCCESS', payload: null});
         // @ts-ignore
         const casperDashInfo = yield Config.getItem(Keys.casperdash);
         // @ts-ignore
@@ -79,7 +78,6 @@ export function* watchFetchCSPRMarketInfo() {
 
 export function* getTokenAddressInfo(data: any) {
     try {
-        yield put({type: types.GET_TOKEN_ADDRESS_INFO + '_SUCCESS', payload: null});
         // @ts-ignore
         const response = yield apis.getTokenAddressInfoAPI(data.params);
         if (response) {
