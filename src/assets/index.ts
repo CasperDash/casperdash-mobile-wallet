@@ -10,8 +10,8 @@ import IconMenuNFT from './images/ic_menu_nft.svg';
 import IconMenuNFTActive from './images/ic_menu_nft_active.svg';
 import IconMenuMarket from './images/ic_menu_market.svg';
 import IconMenuMarketActive from './images/ic_menu_market_active.svg';
-import IconMenuSetting from './images/ic_menu_setting.svg';
-import IconMenuSettingActive from './images/ic_menu_setting_active.svg';
+import IconMenuKeyManager from './images/ic_menu_key_manager.svg';
+import IconMenuKeyManagerActive from './images/ic_menu_key_manager_active.svg';
 import IconArrowLeft from './images/ic_arrow_left.svg';
 import IconArrowRight from './images/ic_arrow_right.svg';
 import IconArrowUp from './images/ic_arrow_up.svg';
@@ -21,9 +21,21 @@ import IconImportPhrase from './images/ic_import_phrase.svg';
 import IconMessageSuccess from './images/ic_message_success.svg';
 import IconMessageWarning from './images/ic_message_warning.svg';
 import IconMessageError from './images/ic_message_error.svg';
-import IconSearch from './images/ic_search.svg';
+import IconSetting from './images/ic_setting.svg';
+import IconScanCode from './images/ic_scan_code.svg';
+import IconPencilFilled from './images/ic_pencil_filled.svg';
 import IconCopy from './images/ic_copy.svg';
-
+import IconEye from './images/ic_eye.svg';
+import IconEyeOff from './images/ic_eye_off.svg';
+import IconSend from './images/ic_send.svg';
+import IconReceive from './images/ic_receive.svg';
+import IconSwap from './images/ic_swap.svg';
+import IconLogo from './images/ic_logo.svg';
+import IconLock from './images/ic_lock.svg';
+import IconSearch from '/images/ic_search.svg';
+import IconAboutUs from './images/ic_about_us.svg';
+import IconCircleRight from './images/ic_circle_right.svg';
+import IconCircleClose from './images/ic_close_circle.svg';
 
 const images = {
 
@@ -37,7 +49,8 @@ const images = {
     logo: require('./images/logo.png'),
     nonft:require('./images/nonft.png'),
     bgnft:require('./images/bgnft.png'),
-    imgnft:require('./images/img_nft.jpg')
+    imgnft:require('./images/img_nft.jpg'),
+    symbol_cspr: require('./images/ic_symbol_CSPR.png'),
 };
 
 const colors = {
@@ -48,12 +61,15 @@ const colors = {
     cE0E0E0: '#E0E0E0',
     c828489: '#828489',
     c232635: '#232635',
+    cF8F8F8: '#F8F8F8',
+
     N1: '#000000',
     N2: '#353945',
     N3: '#777E91',
     N4: '#D1D7E7',
     N5: '#F6F7FA',
     N6: '#FCFCFD',
+    N700: '#232635',
 
     W1: '#FFFFFF',
 
@@ -113,7 +129,7 @@ const textStyles = StyleSheet.create({
         color: colors.N2,
     },
     Sub1: {
-        fontFamily: fonts.Poppins.regular,
+        fontFamily: fonts.Poppins.semiBold,
         fontWeight: '500',
         fontSize: scale(16),
         fontStyle: 'normal',
@@ -170,8 +186,8 @@ export {
     IconMenuNFTActive,
     IconMenuMarket,
     IconMenuMarketActive,
-    IconMenuSetting,
-    IconMenuSettingActive,
+    IconMenuKeyManager,
+    IconMenuKeyManagerActive,
     IconArrowLeft,
     IconArrowRight,
     IconImportPhrase,
@@ -182,5 +198,19 @@ export {
     IconMessageError,
     IconSearch,
     IconArrowUp,
-    IconCopy
+    IconCopy,
+    IconScanCode,
+    IconSetting,
+    IconEyeOff,
+    IconEye,
+    IconPencilFilled,
+    IconCopy,
+    IconReceive,
+    IconSend,
+    IconSwap,
+    IconLogo,
+    IconAboutUs,
+    IconLock,
+    IconCircleRight,
+    IconCircleClose,
 };

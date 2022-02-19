@@ -23,7 +23,6 @@ function ListItem({data, onPress}: ListItemProps) {
                 Config.requestPermission(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL, {message}, navigate);
             }
             if (Platform.OS === 'android') {
-                //TODO: test this case on physical devices
                 const status = await requestMultiple([
                     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
                     PERMISSIONS.ANDROID.BLUETOOTH_SCAN,

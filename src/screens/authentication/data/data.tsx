@@ -49,7 +49,7 @@ export interface CreateNewWalletMenu {
 }
 
 const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
-    {
+    /*{
         id: 0,
         icon: () => <IconPlusCircle width={scale(22)} height={scale(22)}/>,
         title: 'Create new wallet',
@@ -60,6 +60,12 @@ const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
         icon: () => <IconImportPhrase width={scale(22)} height={scale(22)}/>,
         title: 'Import Phrase',
         screen: CreateNewWalletRouter.IMPORT_PHRASE_SCREEN,
+    },*/
+    {
+        id: 3,
+        icon: () => <IconPlusCircle width={scale(22)} height={scale(22)}/>,
+        title: 'View Mode',
+        screen: CreateNewWalletRouter.ADD_KEY_SCREEN,
     },
     {
         id: 2,

@@ -4,6 +4,8 @@ import {
 } from '../user/user_saga';
 
 import {
+    watchGetConfigurations,
+    watchLoadLocalStorage,
     watchShowMessage,
 } from '../main/main_saga';
 
@@ -12,7 +14,9 @@ import {
 } from '../wallet/wallet_saga';
 
 import {
-
+    watchGetTokenInfoWithBalance,
+    watchFetchCSPRMarketInfo,
+    watchGetTokenAddressInfo,
 } from '../home/home_saga';
 import {  watchgetNFTsaga } from '../nft/nft_saga';
  
@@ -24,8 +28,13 @@ export default function* rootSaga() {
 
         // main
         watchShowMessage(),
+        watchLoadLocalStorage(),
+        watchGetConfigurations(),
 
         //home
+        watchGetTokenInfoWithBalance(),
+        watchFetchCSPRMarketInfo(),
+        watchGetTokenAddressInfo(),
 
         //wallet
 
