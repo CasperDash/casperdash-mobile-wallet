@@ -19,7 +19,6 @@ const MainNavigation = () => {
                     component={MainScreens[elem].screen}
                     options={{
                         title: MainScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />
