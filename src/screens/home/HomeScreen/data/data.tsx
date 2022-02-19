@@ -4,6 +4,7 @@ import {
     IconReceive,
     IconSwap,
 } from 'assets';
+import MainRouter from "navigation/stack/MainRouter";
 
 export interface AccountAction {
     id: number,
@@ -23,7 +24,7 @@ const AccountActions: Array<AccountAction> = [
         id: 1,
         icon: IconReceive,
         title: 'Receive',
-        screen: 'ReceiveScreen',
+        screen: MainRouter.RECEIVE_SCREEN,
     },
     //TODO: follow the figma's design
     /*{
