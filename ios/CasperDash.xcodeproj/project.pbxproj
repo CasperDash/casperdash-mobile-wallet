@@ -23,8 +23,6 @@
 		3DBF5E91CAE9426E9DC7D728 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADEBE5B62D494861A4102850 /* Poppins-BlackItalic.ttf */; };
 		418BB4A91BA945D3B5682978 /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 342AA82392184744BFD69921 /* Lato-Thin.ttf */; };
 		444A20051C354B958892F3D2 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA7C6476DB6A4D9E8057AA4C /* Lato-ThinItalic.ttf */; };
-		469C42F82787D036000A3740 /* Pods-CasperDash.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4E57A5F87D96DE290CA18132 /* Pods-CasperDash.debug.xcconfig */; };
-		469C42F92787D037000A3740 /* Pods-CasperDash.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4E57A5F87D96DE290CA18132 /* Pods-CasperDash.debug.xcconfig */; };
 		50D3AC6AB07849AEAD8C5E23 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42A12783D0F64FF2B827787D /* Poppins-MediumItalic.ttf */; };
 		5A29B9C53FFE42A398C51935 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A12714EEB5614C9A95773669 /* Lato-Bold.ttf */; };
 		682D56DAFF6D4C81B25486A0 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA35CF5E01FC41DF923DC291 /* Lato-Black.ttf */; };
@@ -347,7 +345,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -382,7 +380,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				469C42F92787D037000A3740 /* Pods-CasperDash.debug.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +390,6 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				046203BD278DC40500ABF808 /* splash.png in Resources */,
-				469C42F82787D036000A3740 /* Pods-CasperDash.debug.xcconfig in Resources */,
 				78AD49892C6748CBB08F8BBC /* Poppins-Black.ttf in Resources */,
 				3DBF5E91CAE9426E9DC7D728 /* Poppins-BlackItalic.ttf in Resources */,
 				052BBD61E9424BDA97246BE2 /* Poppins-Bold.ttf in Resources */,
@@ -614,13 +610,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 312B4E1127C0BE8B126E2BB8 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = CasperDashTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -641,10 +638,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 294EC6B833947F81C134B72F /* Pods-CasperDash-CasperDashTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = CasperDashTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -668,8 +666,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 77X6LN3CVN;
+				CURRENT_PROJECT_VERSION = 17;
+				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -697,8 +695,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 77X6LN3CVN;
+				CURRENT_PROJECT_VERSION = 17;
+				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -750,7 +748,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -815,7 +813,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

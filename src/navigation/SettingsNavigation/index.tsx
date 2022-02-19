@@ -18,7 +18,6 @@ const SettingsNavigation = () => {
                     component={SettingsScreens[elem].screen}
                     options={{
                         title: SettingsScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />

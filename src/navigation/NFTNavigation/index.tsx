@@ -19,7 +19,6 @@ const NFTNavigation = () => {
                     component={NFTScreens[elem].screen}
                     options={{
                         title: NFTScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />
