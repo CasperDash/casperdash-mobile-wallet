@@ -131,6 +131,7 @@ function HomeScreen() {
                             style={styles.circleBtn}>
                             <IconSetting width={scale(21)} height={scale(21)}/>
                         </CButton>
+                        {/*TODO: follow the figma's design*/}
                         {/*<CButton style={[styles.circleBtn, {marginLeft: scale(16)}]}>
                             <IconScanCode width={scale(21)} height={scale(21)}/>
                         </CButton>*/}
