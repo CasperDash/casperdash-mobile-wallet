@@ -7,4 +7,5 @@ export const MessageType = {
     success: 'Success',
     error: 'Error',
     warning: 'Warning',
+    normal: 'normal',
 };
