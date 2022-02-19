@@ -4,6 +4,7 @@ export {default as SplashScreen} from './splash_screen/SplashScreen';
 
 // Home
 export {default as HomeScreen} from './home/HomeScreen';
+export {default as AddCustomTokenScreen} from './home/AddCustomTokenScreen';
 
 //Staking
 export {default as StakingScreen} from './staking/StakingScreen';
@@ -33,3 +34,6 @@ export {default as ConfirmPinScreen} from './authentication/choose_pin/ConfirmPi
 //connect ledger
 export {default as GetPublicKeyScreen} from './authentication/create_new_wallet/GetPublicKeyScreen';
 export {default as ConnectLedgerScreen} from './authentication/create_new_wallet/ConnectLedgerScreen';
+
+//key manager
+export {default as KeyManagerScreen} from './key_manager/KeyManagerScreen';

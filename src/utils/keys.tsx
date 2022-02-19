@@ -2,7 +2,8 @@ const Keys = {
     casperdash: 'casperdash',
     overview: 'overview',
     pinCode: 'pinCode',
-    nfts:'nfts',
+    tokensAddressList: 'tokensAddressList',
+    configurations: 'configurations',
 };
 
 export default Keys;

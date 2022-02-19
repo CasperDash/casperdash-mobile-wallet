@@ -6,49 +6,55 @@ import { Config, Keys } from 'utils';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { isEmpty } from 'lodash';
-import { useDispatch } from 'react-redux';
-import { fetchNFTInfo } from 'redux_manager/nft/nft_action';
+import {isEmpty} from 'lodash';
+import {useDispatch} from "react-redux";
+import {allActions} from "redux_manager";
 
 const SplashScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<any>>();
 
-  useEffect(() => {
-    setupNavigation();
-  }, []);
+    const navigation = useNavigation<StackNavigationProp<any>>();
+    const dispatch = useDispatch();
 
-  const setupNavigation = async () => {
-    const overview = await Config.getItem(Keys.overview);
-    const pinCode = await Config.getItem(Keys.pinCode);
-    const casperdash = await Config.getItem(Keys.casperdash);
+    useEffect(() => {
+        loadLocalStorage();
+        setupNavigation();
+    }, []);
 
-    let screen = AuthenticationRouter.WELCOME_SCREEN;
+    const loadLocalStorage = () => {
+        dispatch(allActions.main.loadLocalStorage());
+    }
 
-    if (overview === 1) {
-      screen = AuthenticationRouter.CREATE_NEW_WALLET;
-    }
-    if (!isEmpty(pinCode)) {
-      screen = AuthenticationRouter.ENTER_PIN;
-    }
-    if (casperdash && casperdash.publicKey) {
-      dispatch(fetchNFTInfo(casperdash.publicKey));
-    }
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [
-          {
-            name: 'AuthenticationStack',
-            state: {
-              routes: [
-                {
-                  name: screen,
-                },
-              ],
-            },
-          },
-        ],
-      }),
+    const setupNavigation = async () => {
+        const overview = await Config.getItem(Keys.overview);
+        const pinCode = await Config.getItem(Keys.pinCode);
+        let screen = AuthenticationRouter.WELCOME_SCREEN;
+        if (overview === 1) {
+            screen = AuthenticationRouter.CREATE_NEW_WALLET;
+        }
+        if (!isEmpty(pinCode)){
+            screen = AuthenticationRouter.ENTER_PIN;
+        }
+        navigation.dispatch(
+            CommonActions.reset({
+                routes: [{
+                    name: 'AuthenticationStack',
+                    state: {
+                        routes: [
+                            {
+                                name: screen,
+                            },
+                        ],
+                    },
+                }],
+            }),
+        );
+        Splash.hide();
+    };
+
+    return (
+        <View/>
     );
     Splash.hide();
   };

@@ -19,7 +19,6 @@ const MarketNavigation = () => {
                     component={MarketScreens[elem].screen}
                     options={{
                         title: MarketScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />

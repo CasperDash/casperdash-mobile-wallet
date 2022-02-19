@@ -9,12 +9,14 @@ import {Row, Col} from 'components';
 
 const CMessage = () => {
     const {CMessageData} = useSelector((state: any) => state && state.main);
+    const isNormal = CMessageData && CMessageData.type && CMessageData.type === MessageType.normal;
 
     const getIcon = (type: string) => {
         const arrImage = new Map([
             [MessageType.success, {icon: <IconMessageSuccess width={scale(30)} height={scale(30)}/>, color: colors.G1}],
             [MessageType.error, {icon: <IconMessageError width={scale(30)} height={scale(30)}/>, color: colors.R3}],
             [MessageType.warning, {icon: <IconMessageWarning width={scale(30)} height={scale(30)}/>, color: colors.Y1}],
+            [MessageType.normal, {icon: null, color: null}],
         ]);
         return arrImage.get(type);
     };
@@ -32,13 +34,15 @@ const CMessage = () => {
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}>
             <Row.TL
-                style={[styles.body, !CMessageData && {opacity: 0}]}>
+                style={[styles.body, !CMessageData && {opacity: 0}, isNormal && styles.bodyNormal]}>
                 {Type && Type.icon}
                 <Col pl={16}>
+                    {
+                        CMessageData && CMessageData.type && !isNormal && <Text
+                            style={[styles.title, Type && {color: Type.color}]}>{CMessageData.type}</Text>
+                    }
                     <Text
-                        style={[styles.title, Type && {color: Type.color}]}>{CMessageData && CMessageData.type ? CMessageData.type : ''}</Text>
-                    <Text
-                        style={styles.content}>{CMessageData && CMessageData.message ? CMessageData.message : ''}</Text>
+                        style={[styles.content, isNormal && {color: colors.N3}]}>{CMessageData && CMessageData.message ? CMessageData.message : ''}</Text>
                 </Col>
             </Row.TL>
         </Modal>
@@ -74,11 +78,16 @@ const styles = StyleSheet.create({
     },
     content: {
         ...textStyles.Body1,
-        marginTop: scale(12),
         color: colors.N2,
     },
     title: {
         ...textStyles.H5,
         marginTop: scale(-5),
+        marginBottom: scale(12),
     },
+    bodyNormal: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: scale(69),
+    }
 });

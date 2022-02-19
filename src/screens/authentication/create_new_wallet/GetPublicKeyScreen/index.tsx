@@ -71,7 +71,7 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
     };
 
     const getAccountInformation = (publicKey: string) => {
-        dispatch(allActions.user.getAccountInformation(publicKey, async (err: any, data: any) => {
+        dispatch(allActions.user.getAccountInformation({publicKey}, async (err: any, data: any) => {
             if (data) {
                 const info = {
                     publicKey: publicKey,
