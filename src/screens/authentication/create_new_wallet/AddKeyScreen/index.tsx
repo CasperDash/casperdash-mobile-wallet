@@ -22,7 +22,7 @@ function AddKeyScreen() {
     const dispatch = useDispatch();
 
     const onChange = (value?: string) => {
-        //TODO: validate public key
+        //TODO: validate public key and set Error
         setPublicKey(value ?? '');
         // setError(isValidPublicKey(value) ? '' : 'Invalid public key');
     };

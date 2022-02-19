@@ -30,6 +30,7 @@ function Account() {
     const publicKey = useSelector(getPublicKey);
     const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
 
+    {/*TODO: follow the figma's design*/}
     const onToggleAmount = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setIsShowAmount(i => !i);
@@ -53,6 +54,7 @@ function Account() {
                            <Text
                                numberOfLines={1}
                                style={styles.titleAccount}>Account 1</Text>
+                           {/*TODO: follow the figma's design*/}
                            {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
                        </Row.C>
                    </CButton>
@@ -73,6 +75,7 @@ function Account() {
                <Row.C mx={16} mt={20} mb={24}>
                    <Text numberOfLines={1}
                          style={[textStyles.H3, {marginRight: scale(8)}]}>{isShowAmount ? toFormattedCurrency(totalFiatBalance, {maximumFractionDigits: 2}, 'en-US') : '$*****00'}</Text>
+                   {/*TODO: follow the figma's design*/}
                    {/*<CButton onPress={onToggleAmount}>
                         {isShowAmount ? <IconEye width={scale(20)} height={scale(14)}/> :
                             <IconEyeOff width={scale(20)} height={scale(19)}/>}

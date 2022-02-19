@@ -1,7 +1,8 @@
 import React from 'react';
 import {
     IconSend,
-    IconReceive, IconSwap,
+    IconReceive,
+    IconSwap,
 } from 'assets';
 
 export interface AccountAction {
@@ -24,6 +25,7 @@ const AccountActions: Array<AccountAction> = [
         title: 'Receive',
         screen: 'ReceiveScreen',
     },
+    //TODO: follow the figma's design
     /*{
         id: 2,
         icon: IconSwap,
