@@ -18,7 +18,6 @@ const AuthenticationNavigation = () => {
                     component={AuthenticationScreens[elem].screen}
                     options={{
                         title: AuthenticationScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />

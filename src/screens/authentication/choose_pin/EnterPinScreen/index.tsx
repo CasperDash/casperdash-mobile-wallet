@@ -8,6 +8,9 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Config, Keys} from 'utils';
+import {allActions} from "redux_manager";
+import {useDispatch} from "react-redux";
+import {MessageType} from "components/CMessge/types";
 
 // @ts-ignore
 const EnterPinScreen = () => {
@@ -17,6 +20,7 @@ const EnterPinScreen = () => {
     const pinLength = 6;
     const [error, setError] = useState<boolean>(false);
     const inputRef = useRef<any>();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (Platform.OS === 'android'){
@@ -24,8 +28,20 @@ const EnterPinScreen = () => {
                 inputRef.current?.focus();
             }, 1000);
         }
+        getAccountInformation();
     }, []);
 
+    const getAccountInformation = () => {
+        dispatch(allActions.user.getAccountInformation(null, (error: any) => {
+            if (error) {
+                const message = {
+                    message: error && error.message ? error.message : 'Error',
+                    type: MessageType.error,
+                };
+                dispatch(allActions.main.showMessage(message));
+            }
+        }))
+    };
 
     useEffect(() => {
         if (pin && pin.length === pinLength) {

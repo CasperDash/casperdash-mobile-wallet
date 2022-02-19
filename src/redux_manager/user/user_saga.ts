@@ -1,12 +1,16 @@
 import {put, takeLatest, take, cancel} from 'redux-saga/effects';
 import {types} from './user_action';
 import {apis} from 'services';
+import {Config, Keys} from 'utils';
+import {refreshActionStart, refreshActionStop, startAction, stopAction} from 'redux_manager/main/main_action';
 
 export function* getAccountInformation(data: any) {
     try {
-        yield put({type: types.GET_ACCOUNT_INFORMATION + '_SUCCESS', payload: null});
+        yield put(data.params && data.params.refreshing ? refreshActionStart(types.GET_ACCOUNT_INFORMATION) :startAction(types.GET_ACCOUNT_INFORMATION));
         // @ts-ignore
-        const response = yield apis.getAccountInformation(data.params);
+        const casperDashInfo = yield Config.getItem(Keys.casperdash);
+        // @ts-ignore
+        const response = yield apis.getAccountInformation(data.params && data.params.publicKey ? data.params.publicKey : ((casperDashInfo && casperDashInfo.publicKey) || ''));
         if (response) {
             yield put({type: types.GET_ACCOUNT_INFORMATION + '_SUCCESS', payload: response});
             data.cb && data.cb(null, response);
@@ -19,6 +23,8 @@ export function* getAccountInformation(data: any) {
         } else {
             data.cb && data.cb(error, null);
         }
+    } finally {
+        yield put(data.params && data.params.refreshing ? refreshActionStop(types.GET_ACCOUNT_INFORMATION) : stopAction(types.GET_ACCOUNT_INFORMATION));
     }
 }
 
