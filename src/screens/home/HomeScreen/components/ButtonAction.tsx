@@ -20,7 +20,7 @@ const ButtonAction = ({data}: Props) => {
         <Col mx={16} mb={16} style={styles.container}>
             <CButton
                 style={styles.button}
-                // onPress={() => navigate(screen)}
+                onPress={() => navigate(screen)}
             >
                 <IconAction/>
             </CButton>

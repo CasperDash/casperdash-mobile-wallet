@@ -1,9 +1,9 @@
 import MainRouter from './MainRouter';
 import SettingsNavigation from 'navigation/SettingsNavigation';
 import HomeTabs from 'navigation/stack/HomeTabs';
-import AddCustomTokenScreen from "../../screens/home/AddCustomTokenScreen";
+import {AddCustomTokenScreen, ConfirmSendScreen, SendScreen} from 'screens';
 
-const {SETTINGS_SCREEN, HOME_TAB, ADD_CUSTOM_TOKEN_SCREEN} = MainRouter;
+const {SETTINGS_SCREEN, HOME_TAB, ADD_CUSTOM_TOKEN_SCREEN, SEND_SCREEN, CONFIRM_SEND_SCREEN} = MainRouter;
 
 export const MainScreens = {
     [HOME_TAB]: {
@@ -16,6 +16,12 @@ export const MainScreens = {
     },
     [ADD_CUSTOM_TOKEN_SCREEN]: {
         screen: AddCustomTokenScreen,
-        title: 'AddCustomTokenScreen'
-    }
+        title: 'AddCustomTokenScreen',
+    },
+    [SEND_SCREEN]: {
+        screen: SendScreen,
+    },
+    [CONFIRM_SEND_SCREEN]: {
+        screen: ConfirmSendScreen,
+    },
 };

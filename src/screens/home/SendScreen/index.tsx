@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {CButton, CHeader, CInput, CInputFormik, CLayout, Col, Row} from 'components';
+import {CButton, CHeader, CInputFormik, CLayout, Col, Row} from 'components';
 import {colors, textStyles, IconArrowDown} from 'assets';
 import {scale} from 'device';
 import CTextButton from 'components/CTextButton';
@@ -8,11 +8,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import * as yup from 'yup';
 import {useFormik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
-const max = 1000;
-const min = 2.5;
+import MainRouter from 'navigation/stack/MainRouter';
+import {useSelector} from 'react-redux';
+import {getAllTokenInfo, getTokenInfoByAddress} from 'utils/selectors/user';
 
 const isValidKey = (text: any) => {
     return text === '123';
@@ -24,41 +23,49 @@ const initialValues = {
     transferID: '',
 };
 
+const networkFee = '0.1 CSPR';
+const min = 2.5;
+const percent = 1;
+
 function SendScreen() {
     const {bottom} = useSafeAreaInsets();
+    const {navigate} = useNavigation();
+
+    const [selectedTokenAddress, setSelectedTokenAddress] = useState('CSPR');
+
+    const allTokenInfo = useSelector(getAllTokenInfo);
+    const selectedToken = useSelector(getTokenInfoByAddress({address: selectedTokenAddress}));
+
+    const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+    const max = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
+
     const validationSchema = yup.object().shape({
         transferAmount: yup
             .number()
             .max(max, 'Not enough balance.')
             .min(min, `Amount must be at least ${min} CSPR`)
             .required('Required.'),
-        receivingAddress: yup.string().required('Required.').test('isValidPublicKey', 'Invalid address.', function(value: any) {
-            return isValidKey(value);
-        }),
+        receivingAddress: yup
+            .string()
+            .required('Required.')
+            .test('isValidPublicKey', 'Invalid address.', function (value: any) {
+                return isValidKey(value); //TODO: change isValidKey to isValidPublicKey in helpers/validator.js
+            }),
         transferID: yup.string(),
     });
 
-    const {
-        handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue} =
+    const {handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue} =
         useFormik({
             initialValues,
             validationSchema,
             onSubmit: () => onConfirm(),
         });
 
-    const {navigate} = useNavigation();
-
-    const [selectedTokenAddress, setSelectedTokenAddress] = useState('CSPR');
-    // const selectedToken = useSelector(getTokenInfoByAddress({ address: selectedTokenAddress }));
-    const networkFee = '0.1 CSPR';
-
     const onConfirm = () => {
-        navigate(AuthenticationRouter.CONFIRM_SEND_SCREEN, {assets: 'assets ne', ...values, networkFee: networkFee});
+        navigate(MainRouter.CONFIRM_SEND_SCREEN, {assets: 'assets ne', ...values, networkFee: networkFee});
     };
 
     const setBalance = () => {
-        // const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-        // const amount = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
         setFieldValue('transferAmount', max);
     };
 
@@ -76,11 +83,13 @@ function SendScreen() {
 
     return (
         <CLayout
+            statusBgColor={colors.cF8F8F8}
             edges={['right', 'top', 'left']}
-            bgColor={'#f8f8f8'}>
-            <CHeader title={'Send'} style={{backgroundColor: '#f8f8f8'}}/>
+            bgColor={colors.cF8F8F8}>
+            <CHeader title={'Send'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col mt={16} style={styles.container}>
                 <KeyboardAwareScrollView
+                    showsVerticalScrollIndicator={false}
                     alwaysBounceVertical={false}
                     contentContainerStyle={styles.contentContainerStyle}>
                     <Text style={styles.title}>Asset</Text>
@@ -117,7 +126,7 @@ function SendScreen() {
                         {...{values, errors, touched, handleBlur, handleChange}}
                         containerStyle={styles.rowPicker}/>
                     <Text style={[styles.title, {marginBottom: scale(8)}]}>Network Fee</Text>
-                    <Text style={[styles.title, {marginTop: 0, marginBottom: scale(40)}, textStyles.Body1]}>{networkFee}</Text>
+                    <Text style={[styles.title, styles.networkFee]}>{networkFee}</Text>
                 </KeyboardAwareScrollView>
                 <CTextButton
                     style={[styles.btnConfirm, {marginBottom: bottom + scale(10)}]}
@@ -174,5 +183,10 @@ const styles = StyleSheet.create({
     btnConfirm: {
         alignSelf: 'center',
         marginTop: scale(20),
+    },
+    networkFee: {
+        marginTop: 0,
+        marginBottom: scale(40),
+        ...textStyles.Body1,
     },
 });
