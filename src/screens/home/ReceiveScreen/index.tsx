@@ -1,18 +1,19 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
-import {Row, Col, CHeader, CLayout} from "components";
-import {device, scale} from "device";
-import {colors, textStyles} from "assets";
+import React from 'react';
+import {Text, ScrollView, StyleSheet} from 'react-native';
+import {Col, CHeader, CLayout} from 'components';
+import {scale} from 'device';
+import {colors, textStyles} from 'assets';
 import QRCode from 'react-native-qrcode-svg';
-import CTextButton from "components/CTextButton";
-import Clipboard from "@react-native-clipboard/clipboard";
-import {useDispatch} from "react-redux";
-import {MessageType} from "components/CMessge/types";
-import {allActions} from "redux_manager";
+import CTextButton from 'components/CTextButton';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {useDispatch, useSelector} from 'react-redux';
+import {MessageType} from 'components/CMessge/types';
+import {allActions} from 'redux_manager';
+import {getPublicKey} from 'utils/selectors';
 
 const ReceiveScreen = () => {
 
-    const publicKey = '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38'; //TODO: get public key
+    const publicKey = useSelector(getPublicKey);
 
     const dispatch = useDispatch();
 
@@ -20,14 +21,14 @@ const ReceiveScreen = () => {
         await Clipboard.setString(publicKey);
         const message = {
             message: 'Copied to Clipboard',
-            type: MessageType.success, //TODO: change to type normal
-        }
+            type: MessageType.normal,
+        };
         dispatch(allActions.main.showMessage(message, 1000));
-    }
+    };
 
     return (
-        <CLayout bgColor={'#f8f8f8'}>
-            <CHeader title={'Receive'} style={{backgroundColor: '#f8f8f8'}}/>
+        <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
+            <CHeader title={'Receive'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col mt={16} style={styles.container}>
                 <ScrollView
                     alwaysBounceVertical={false}
@@ -59,21 +60,21 @@ const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         alignItems: 'center',
-        paddingTop: scale(120)
+        paddingTop: scale(120),
     },
     caption: {
         ...textStyles.Body1,
         color: colors.c828489,
         marginTop: scale(45),
-        marginBottom: scale(10)
+        marginBottom: scale(10),
     },
     title: {
         ...textStyles.Body1,
         paddingHorizontal: scale(16),
         width: scale(375),
-        textAlign: 'center'
+        textAlign: 'center',
     },
     btnCopy: {
-        marginTop: scale(28)
-    }
-})
+        marginTop: scale(28),
+    },
+});
