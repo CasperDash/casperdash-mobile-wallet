@@ -18,7 +18,6 @@ const StakingNavigation = () => {
                     component={StakingScreens[elem].screen}
                     options={{
                         title: StakingScreens[elem].title,
-                        // headerShown: elem === AuthenticationRouter.WELCOME ? false : true,
                     }}
                     key={index}
                 />
