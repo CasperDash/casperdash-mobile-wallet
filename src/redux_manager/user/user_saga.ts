@@ -7,7 +7,6 @@ import {refreshActionStart, refreshActionStop, startAction, stopAction} from 're
 export function* getAccountInformation(data: any) {
     try {
         yield put(data.params && data.params.refreshing ? refreshActionStart(types.GET_ACCOUNT_INFORMATION) :startAction(types.GET_ACCOUNT_INFORMATION));
-        yield put({type: types.GET_ACCOUNT_INFORMATION + '_SUCCESS', payload: null});
         // @ts-ignore
         const casperDashInfo = yield Config.getItem(Keys.casperdash);
         // @ts-ignore
