@@ -1,4 +1,6 @@
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"  // here
+#import "Orientation.h"
 
 #if RCT_DEV
  #import <React/RCTDevLoadingView.h>
