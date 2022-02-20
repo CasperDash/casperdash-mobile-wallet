@@ -4,15 +4,14 @@ import {AccountAction} from 'screens/home/HomeScreen/data/data';
 import {CButton, Col} from 'components';
 import {scale} from 'device';
 import {colors, textStyles} from 'assets';
-import {useNavigation} from '@react-navigation/native';
 
 interface Props {
-    data: AccountAction
+    data: AccountAction,
+    onPress: (screen: string) => void,
 }
 
-const ButtonAction = ({data}: Props) => {
+const ButtonAction = ({data, onPress}: Props) => {
     const {id, icon, title, screen} = data;
-    const {navigate} = useNavigation();
 
     const IconAction = icon;
 
@@ -20,7 +19,7 @@ const ButtonAction = ({data}: Props) => {
         <Col mx={16} mb={16} style={styles.container}>
             <CButton
                 style={styles.button}
-                onPress={() => navigate(screen)}
+                onPress={() => onPress(screen)}
             >
                 <IconAction/>
             </CButton>
