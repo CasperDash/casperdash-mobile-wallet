@@ -5,32 +5,40 @@ import {colors, textStyles} from 'assets';
 import {scale} from 'device';
 import CTextButton from 'components/CTextButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {ScreenProps} from 'navigation/ScreenProps';
+import MainRouter from 'navigation/stack/MainRouter';
+import {toFormattedCurrency, toFormattedNumber} from 'utils/helpers/format';
 
-function ConfirmSendScreen() {
+// @ts-ignore
+const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> = ({route}) => {
 
     const {bottom} = useSafeAreaInsets();
+    const {selectedToken, transferAmount: amount, receivingAddress, transferID, networkFee} = route.params;
+    const price = (selectedToken && selectedToken.price) || 0;
+    const symbol = selectedToken && selectedToken.symbol ? selectedToken.symbol : '';
 
     return (
         <CLayout
             edges={['right', 'top', 'left']}
-            bgColor={'#f8f8f8'}>
-            <CHeader title={'Confirm'} style={{backgroundColor: '#f8f8f8'}}/>
+            statusBgColor={colors.cF8F8F8}
+            bgColor={colors.cF8F8F8}>
+            <CHeader title={'Confirm'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col mt={16} style={styles.container}>
                 <ScrollView
                     alwaysBounceVertical={false}
                     contentContainerStyle={styles.contentContainerStyle}>
                     <Col pt={24}>
                         <Text style={styles.caption}>Asset</Text>
-                        <Text style={styles.value}>CSPR</Text>
+                        <Text style={styles.value}>{symbol}</Text>
                         <Text style={styles.caption}>Transfer Amount</Text>
-                        <Text style={styles.value}>12 ($1.08)</Text>
-                        <Text style={styles.caption}>Network Fee</Text>
-                        <Text style={styles.value}>0.1 CSPR</Text>
-                        <Text style={styles.caption}>Receiving Address</Text>
                         <Text
-                            style={styles.value}>02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38</Text>
+                            style={styles.value}>{`${toFormattedNumber(amount, {maximumFractionDigits: 4}, 'en-US')} (${toFormattedCurrency(amount * price, {maximumFractionDigits: 2}, 'en-US')})`}</Text>
+                        <Text style={styles.caption}>Network Fee</Text>
+                        <Text style={styles.value}>{`${networkFee} CSPR`}</Text>
+                        <Text style={styles.caption}>Receiving Address</Text>
+                        <Text style={styles.value}>{receivingAddress}</Text>
                         <Text style={styles.caption}>Transfer ID</Text>
-                        <Text style={styles.value}>123321321</Text>
+                        <Text style={styles.value}>{transferID}</Text>
                     </Col>
                 </ScrollView>
                 <CTextButton
@@ -39,7 +47,7 @@ function ConfirmSendScreen() {
             </Col>
         </CLayout>
     );
-}
+};
 
 export default ConfirmSendScreen;
 

@@ -12,11 +12,14 @@ export type ScreenParams = {
         pin: number,
     },
     CONFIRM_SEND_SCREEN: {
-        assets: any,
         transferAmount: number,
-        networkFee: number,
         receivingAddress: string,
         transferID?: any
+        selectedToken: any,
+        networkFee: number,
+    },
+    SEND_SCREEN: {
+        token: any,
     }
 };
 

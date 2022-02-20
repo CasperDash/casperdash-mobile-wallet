@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {CButton, CHeader, CInputFormik, CLayout, Col, Row} from 'components';
-import {colors, textStyles, IconArrowDown} from 'assets';
+import {CButton, CHeader, CInputFormik, CLayout, Col} from 'components';
+import {colors, textStyles} from 'assets';
 import {scale} from 'device';
 import CTextButton from 'components/CTextButton';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -12,39 +12,48 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import {useSelector} from 'react-redux';
 import {getAllTokenInfo, getTokenInfoByAddress} from 'utils/selectors/user';
+import {ScreenProps} from 'navigation/ScreenProps';
+import SelectDropdown from 'react-native-select-dropdown';
+import DropdownItem from 'screens/home/SendScreen/DropdownItem';
+import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 const isValidKey = (text: any) => {
     return text === '123';
 };
 
 const initialValues = {
-    transferAmount: 0,
+    transferAmount: '0',
     receivingAddress: '',
     transferID: '',
 };
 
-const networkFee = '0.1 CSPR';
-const min = 2.5;
 const percent = 1;
 
-function SendScreen() {
-    const {bottom} = useSafeAreaInsets();
-    const {navigate} = useNavigation();
+// @ts-ignore
+const SendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_PIN_SCREEN>> = ({route}) => {
 
-    const [selectedTokenAddress, setSelectedTokenAddress] = useState('CSPR');
+    const {bottom} = useSafeAreaInsets();
+    const {replace} = useNavigation<StackNavigationProp<any>>();
+    const {token} = route.params;
+
+    const [selectedTokenAddress, setSelectedTokenAddress] = useState(token ? token.address : 'CSPR');
 
     const allTokenInfo = useSelector(getAllTokenInfo);
     const selectedToken = useSelector(getTokenInfoByAddress({address: selectedTokenAddress}));
 
-    const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-    const max = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
+    const minAmount = (selectedToken && selectedToken.minAmount && selectedToken.minAmount) || 0;
 
     const validationSchema = yup.object().shape({
         transferAmount: yup
             .number()
-            .max(max, 'Not enough balance.')
-            .min(min, `Amount must be at least ${min} CSPR`)
-            .required('Required.'),
+            .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
+            .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
+            .test('max', 'Not enough balance.', function (value: any) {
+                const fee = (selectedToken && selectedToken.transferFee) || 0;
+                const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+                return selectedTokenAddress === 'CSPR' ? value + fee <= displayValue : true;
+            }),
         receivingAddress: yup
             .string()
             .required('Required.')
@@ -54,7 +63,7 @@ function SendScreen() {
         transferID: yup.string(),
     });
 
-    const {handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue} =
+    const {handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setErrors} =
         useFormik({
             initialValues,
             validationSchema,
@@ -62,11 +71,22 @@ function SendScreen() {
         });
 
     const onConfirm = () => {
-        navigate(MainRouter.CONFIRM_SEND_SCREEN, {assets: 'assets ne', ...values, networkFee: networkFee});
+        replace(MainRouter.CONFIRM_SEND_SCREEN, {
+            ...values,
+            selectedToken: selectedToken,
+            networkFee: token ? token.transferFee : 1,
+        });
     };
 
     const setBalance = () => {
-        setFieldValue('transferAmount', max);
+        const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+        const maxAmount = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
+        setFieldValue('transferAmount', maxAmount);
+    };
+
+    const onSelectedToken = (item: any) => {
+        setErrors({});
+        setSelectedTokenAddress(item && item.address ? item.address : '');
     };
 
     const _renderBtnMax = () => {
@@ -93,16 +113,23 @@ function SendScreen() {
                     alwaysBounceVertical={false}
                     contentContainerStyle={styles.contentContainerStyle}>
                     <Text style={styles.title}>Asset</Text>
-                    <CButton>
-                        <Row.LR px={16} style={styles.rowPicker}>
-                            <Text style={textStyles.Body1}>{selectedTokenAddress}</Text>
-                            <Row.C>
-                                <Text style={textStyles.Sub1}>6.7394</Text>
-                                <View style={styles.verticalLine}/>
-                                <IconArrowDown width={scale(10)} height={scale(6)}/>
-                            </Row.C>
-                        </Row.LR>
-                    </CButton>
+                    <SelectDropdown
+                        dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+                        buttonStyle={styles.rowPicker}
+                        dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+                        defaultValue={selectedToken}
+                        renderCustomizedButtonChild={(item: any, index) => {
+                            if (!item) {
+                                return null;
+                            }
+                            return <SelectDropdownComponent item={item} key={index}/>;
+                        }}
+                        renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index}/>}
+                        data={allTokenInfo}
+                        onSelect={onSelectedToken}
+                        buttonTextAfterSelection={(item) => item}
+                        rowTextForSelection={(item) => item}
+                    />
                     <Text style={styles.title}>Transfer Amount</Text>
                     <CInputFormik
                         name={'transferAmount'}
@@ -126,7 +153,7 @@ function SendScreen() {
                         {...{values, errors, touched, handleBlur, handleChange}}
                         containerStyle={styles.rowPicker}/>
                     <Text style={[styles.title, {marginBottom: scale(8)}]}>Network Fee</Text>
-                    <Text style={[styles.title, styles.networkFee]}>{networkFee}</Text>
+                    <Text style={[styles.title, styles.networkFee]}>{`${token ? token.transferFee : 1} CSPR`}</Text>
                 </KeyboardAwareScrollView>
                 <CTextButton
                     style={[styles.btnConfirm, {marginBottom: bottom + scale(10)}]}
@@ -135,7 +162,7 @@ function SendScreen() {
             </Col>
         </CLayout>
     );
-}
+};
 
 export default SendScreen;
 
@@ -158,16 +185,11 @@ const styles = StyleSheet.create({
     },
     rowPicker: {
         width: scale(343),
-        height: scale(48),
+        minHeight: scale(48),
+        maxHeight: scale(100),
         backgroundColor: colors.N5,
         borderRadius: scale(16),
         borderWidth: 0,
-    },
-    verticalLine: {
-        width: scale(1),
-        marginHorizontal: scale(8),
-        height: scale(30),
-        backgroundColor: colors.N4,
     },
     inputStyle: {
         ...textStyles.Sub1,
@@ -188,5 +210,8 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginBottom: scale(40),
         ...textStyles.Body1,
+    },
+    dropdownStyle: {
+        borderRadius: scale(10),
     },
 });
