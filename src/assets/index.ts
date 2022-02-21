@@ -39,6 +39,7 @@ import IconSearch from './images/ic_search.svg';
 import IconFacebook from './images/ic_facebook.svg';
 import IconInstagram from './images/ic_instagram.svg';
 import IconTwitter from './images/ic_twitter.svg';
+import IconAttributes from './images/ic_attributes.svg';
 
 const images = {
 
@@ -52,7 +53,7 @@ const images = {
     logo: require('./images/logo.png'),
     nonft:require('./images/nonft.png'),
     bgnft:require('./images/bgnft.png'),
-    imgnft:require('./images/img_nft.jpg'),
+    imgnft:require('./images/img_nft.png'),
     symbol_cspr: require('./images/ic_symbol_CSPR.png'),
 };
 
@@ -218,5 +219,6 @@ export {
     IconCircleClose,
     IconFacebook,
     IconInstagram,
-    IconTwitter
+    IconTwitter,
+    IconAttributes
 };

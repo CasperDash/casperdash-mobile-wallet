@@ -2,6 +2,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {
   colors,
   IconArrowLeft,
+  IconAttributes,
   IconCopy,
   IconFacebook,
   IconInstagram,
@@ -18,9 +19,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Share,
+  Modal,
   View,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
 import { useDispatch } from 'react-redux';
@@ -29,6 +31,9 @@ import { allActions } from 'redux_manager';
 function NFTDetail({ route }: Props) {
   const [valid, setValid] = useState(true);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [showAttributes, setshowAttributes] = useState(true);
+  const [loading, setLoading] = useState(false);
   const data = route.params;
   const {
     nftImage,
@@ -49,6 +54,10 @@ function NFTDetail({ route }: Props) {
       type: MessageType.normal,
     };
     dispatch(allActions.main.showMessage(message, 1000));
+  };
+
+  const onOpenModal = () => {
+    setOpen(!open);
   };
   // const ShareSocial = async () => {
   //   try {
@@ -71,11 +80,20 @@ function NFTDetail({ route }: Props) {
         <Text style={styles.name}>{nftName}</Text>
         <Text />
       </View>
-      <Image
-        source={valid ? { uri: nftImage } : images.imgnft}
-        style={styles.nftImage}
-        onError={() => setValid(false)}
-      />
+      <TouchableOpacity onPress={onOpenModal} style={{ position: 'relative' }}>
+        <Image
+          source={valid ? { uri: nftImage } : images.imgnft}
+          style={styles.nftImage}
+          onError={() => setValid(false)}
+          onLoadStart={() => setLoading(true)}
+          onLoadEnd={() => setLoading(false)}
+        />
+        {loading && (
+          <View style={styles.loading}>
+            <ActivityIndicator size="small" color={colors.N2} />
+          </View>
+        )}
+      </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
         <View>
           {/* TODO:follow the figma's design
@@ -104,7 +122,6 @@ function NFTDetail({ route }: Props) {
             <Text style={styles.textPriceConvert}>(~$111)</Text>
           </View>
           <Text style={styles.time}>2021-11-09 23:45</Text> */}
-
           <View style={styles.headerInformation}>
             <Text>Total Supply :{totalSupply}</Text>
           </View>
@@ -126,22 +143,39 @@ function NFTDetail({ route }: Props) {
               <IconCopy />
             </TouchableOpacity>
           </View>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>Attributes </Text>
-            <Text style={styles.arrow}> ^ </Text>
-          </View>
-          <View style={styles.metaData}>
-            {metadata.map(
-              (item: { name: string; key: string; value: string }) => (
-                <View key={item.name} style={styles.metaDataItem}>
-                  <Text style={styles.keyMetaData}>{item.key}</Text>
-                  <Text style={styles.valueMetaData}>{item.value}</Text>
-                </View>
-              ),
-            )}
-          </View>
+          <TouchableOpacity onPress={() => setshowAttributes(!showAttributes)}>
+            <View style={styles.titleWrapper}>
+              <Text style={styles.title}>Attributes </Text>
+              <IconAttributes
+                style={
+                  showAttributes ? styles.showAttribute : styles.hideAttribute
+                }
+              />
+            </View>
+          </TouchableOpacity>
+          {showAttributes && (
+            <View style={styles.metaData}>
+              {metadata.map(
+                (item: { name: string; key: string; value: string }) => (
+                  <View key={item.name} style={styles.metaDataItem}>
+                    <Text style={styles.keyMetaData}>{item.key}</Text>
+                    <Text style={styles.valueMetaData}>{item.value}</Text>
+                  </View>
+                ),
+              )}
+            </View>
+          )}
         </View>
       </ScrollView>
+      <Modal animationType="fade" transparent={true} visible={open}>
+        <TouchableOpacity onPress={onOpenModal} style={styles.modal}>
+          <Image
+            source={valid ? { uri: nftImage } : images.imgnft}
+            style={styles.nftImageFull}
+            onError={() => setValid(false)}
+          />
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -169,6 +203,7 @@ const styles = StyleSheet.create({
     color: colors.N3,
     fontSize: scale(16),
     fontWeight: '500',
+    marginRight: scale(25),
   },
   arrow: {
     transform: [{ rotateX: '180deg' }],
@@ -242,6 +277,11 @@ const styles = StyleSheet.create({
     width: device.w,
     height: scale(189),
   },
+  nftImageFull: {
+    width: device.w - 60,
+    height: device.h - 60,
+    resizeMode: 'contain',
+  },
   contractAddressText: {
     maxWidth: scale(180),
     marginRight: scale(10),
@@ -256,7 +296,6 @@ const styles = StyleSheet.create({
   contractAdress: {
     paddingVertical: scale(20),
   },
-
   shareText: {
     fontWeight: '600',
     fontSize: scale(16),
@@ -276,9 +315,31 @@ const styles = StyleSheet.create({
   },
   keyMetaData: {
     color: colors.N3,
+    marginBottom: scale(14),
   },
   valueMetaData: {
     color: colors.N2,
+  },
+  modal: {
+    width: device.w,
+    height: device.h,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: scale(64),
+    left: device.w / 2 - 20,
+  },
+  showAttribute: {
+    transform: [{ rotateX: '0deg' }],
+  },
+  hideAttribute: {
+    transform: [{ rotateX: '180deg' }],
   },
 });
 

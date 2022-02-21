@@ -134,13 +134,15 @@ function NFTScreen() {
           <Text>Loading ...</Text>
         ) : (
           <View>
-            <Text style={styles.numNft}>{nfts.length} NFT</Text>
+            <Text style={styles.numNft}>
+              {nfts.length === 1
+                ? 'a ' + nfts.length + 'NFT'
+                : nfts.length + ' NFTs'}
+            </Text>
             {nfts.length === 0 ? (
               <View style={styles.noNFT}>
-                <TouchableOpacity onPress={loadTest}>
-                  <Image source={images.nonft} style={styles.imageNoNFT} />
-                  <Text style={styles.textNoNFT}>There is no NFT</Text>
-                </TouchableOpacity>
+                <Image source={images.nonft} style={styles.imageNoNFT} />
+                <Text style={styles.textNoNFT}>There is no NFT</Text>
               </View>
             ) : (
               <View>

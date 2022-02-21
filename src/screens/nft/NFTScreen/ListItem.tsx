@@ -6,7 +6,7 @@ import { navigate } from 'navigation/RootNavigation';
 
 import React, { useState } from 'react';
 
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNFTContactAdress } from 'redux_manager/nft/nft_action';
@@ -19,6 +19,7 @@ export const getMetadataByKey = (metadata: any[], key: any) => {
 function NFTItem({ data }: any) {
   const dispatch = useDispatch();
   const [valid, setValid] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   if (!data) {
     return null;
@@ -42,11 +43,20 @@ function NFTItem({ data }: any) {
   return (
     <View style={styles.nftItemWrapper}>
       <TouchableOpacity onPress={onNavigationDetail}>
-        <Image
-          source={valid ? { uri: nftImage } : images.imgnft}
-          style={styles.nftImage}
-          onError={() => setValid(false)}
-        />
+        <View style={styles.imageWrapper}>
+          <Image
+            source={valid ? { uri: nftImage } : images.imgnft}
+            style={styles.nftImage}
+            onError={() => setValid(false)}
+            onLoadStart={() => setLoading(true)}
+            onLoadEnd={() => setLoading(false)}
+          />
+          {loading && (
+            <View style={styles.loading}>
+              <ActivityIndicator size="small" color={colors.N2} />
+            </View>
+          )}
+        </View>
         <View style={styles.nftItemContent}>
           <Text style={styles.nftName}>{nftName}</Text>
           <Text style={styles.contractNameNFT}>{nftContractName}</Text>
@@ -69,6 +79,9 @@ const styles = StyleSheet.create({
   nftItemContent: {
     padding: scale(16),
   },
+  imageWrapper: {
+    position: 'relative',
+  },
   nftImage: {
     width: '100%',
     height: scale(128),
@@ -82,5 +95,15 @@ const styles = StyleSheet.create({
   },
   contractNameNFT: {
     color: colors.N3,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
 });
