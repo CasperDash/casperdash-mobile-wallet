@@ -9,7 +9,7 @@ const allActions = {
   main: main,
   home: home,
   wallet: wallet,
-  nft:nft,
+  nft: nft,
 };
 
 export default allActions;
