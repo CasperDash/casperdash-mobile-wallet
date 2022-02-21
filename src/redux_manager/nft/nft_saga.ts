@@ -10,9 +10,11 @@ const getMetadataByKey = (metadata: any[], key: any) => {
 };
 
 export function* getApiNFtList(params: string) {
+    console.log('params',params)
     try {
         yield put({ type: types.LOADING_LIST, payload: true });
-        const response = yield call(apis.getListNFTs, params.payload);
+        const response = yield call(apis.getListNFTsAPI, params.payload);
+        console.log('response',response)
         if (response) {
             let newData: { nftName: any; nftImage: any; metadata: any[]; }[] = [];
             response.forEach((element: { metadata: any[]; }): any => {

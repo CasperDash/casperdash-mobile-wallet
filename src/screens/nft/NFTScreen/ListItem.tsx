@@ -31,7 +31,6 @@ function NFTItem({ data }: any) {
   );
 
   const onNavigationDetail = () => {
-    dispatch(addNFTContactAdress(data));
     navigate(NFTRouter.NFT_DETAIL, {
       ...data,
       metadata: metadata,

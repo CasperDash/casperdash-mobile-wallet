@@ -31,6 +31,8 @@ import {
 } from '../../../redux_manager/nft/nft_action';
 import { Config, Keys } from 'utils';
 import { orderBy } from 'lodash';
+import { navigate } from 'navigation/RootNavigation';
+import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
 
 function NFTScreen() {
   const insets = useSafeAreaInsets();
@@ -62,6 +64,13 @@ function NFTScreen() {
       x => x.nftName.toLowerCase().indexOf(search.toLowerCase()) > -1,
     );
     setNFTs(newFillterArr);
+  };
+  const loadTest = () => {
+    navigate(NFTRouter.NFT_DETAIL, {
+      metadata: [],
+      background: 'nftBackground',
+      totalSupply: 1,
+    });
   };
   useEffect(() => {
     const loadNfts = async () => {
@@ -128,8 +137,10 @@ function NFTScreen() {
             <Text style={styles.numNft}>{nfts.length} NFT</Text>
             {nfts.length === 0 ? (
               <View style={styles.noNFT}>
-                <Image source={images.nonft} style={styles.imageNoNFT} />
-                <Text style={styles.textNoNFT}>There is no NFT</Text>
+                <TouchableOpacity onPress={loadTest}>
+                  <Image source={images.nonft} style={styles.imageNoNFT} />
+                  <Text style={styles.textNoNFT}>There is no NFT</Text>
+                </TouchableOpacity>
               </View>
             ) : (
               <View>
@@ -187,6 +198,7 @@ const styles = StyleSheet.create({
     paddingLeft: scale(15),
     paddingBottom: scale(24),
   },
+
   iconSearch: {
     position: 'absolute',
     top: '50%',
@@ -194,7 +206,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     width: 20,
     height: 15,
-    transform: [{ translateY: -10 }],
+    transform: [{ translateY: -15 }],
   },
   filter: {
     transform: [{ rotate: '180deg' }],
@@ -204,21 +216,24 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     position: 'relative',
-    backgroundColor: '#ffffff',
-    borderRadius: scale(50),
     height: scale(55),
     marginHorizontal: scale(16),
   },
   containerInputStyle: {
     borderWidth: 0,
+    borderRadius: scale(50),
+    backgroundColor: colors.W1,
   },
   inputSearch: {
     fontSize: scale(16),
     paddingLeft: scale(54),
+    backgroundColor: colors.W1,
+    borderRadius: scale(50),
+    paddingHorizontal: scale(30),
   },
   btnFilter: {
     backgroundColor: colors.cFFFFFF,
-    borderRadius: 50,
+    borderRadius: scale(50),
     width: scale(164),
     height: scale(50),
     display: 'flex',

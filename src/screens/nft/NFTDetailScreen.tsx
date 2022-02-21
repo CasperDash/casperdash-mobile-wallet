@@ -1,4 +1,14 @@
-import { colors, IconArrowLeft, IconCopy, images } from 'assets';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {
+  colors,
+  IconArrowLeft,
+  IconCopy,
+  IconFacebook,
+  IconInstagram,
+  IconTwitter,
+  images,
+} from 'assets';
+import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
 import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
 import { navigate } from 'navigation/RootNavigation';
@@ -13,13 +23,14 @@ import {
   ScrollView,
 } from 'react-native';
 import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
+import { useDispatch } from 'react-redux';
+import { allActions } from 'redux_manager';
 
 function NFTDetail({ route }: Props) {
   const [valid, setValid] = useState(true);
-
+  const dispatch = useDispatch();
   const data = route.params;
   const {
-    background,
     nftImage,
     contractAddress,
     metadata,
@@ -29,20 +40,28 @@ function NFTDetail({ route }: Props) {
   } = data;
 
   const onBack = () => {
-    navigate(NFTRouter.NFT_SCREEN);
+    navigate(NFTRouter.NFT_SCREEN, null);
   };
-  const copyToClipboard = () => {};
-  const ShareSocial = async () => {
-    try {
-      const ShareResponse = await Share.share({
-        message: contractAddress,
-        url: contractAddress,
-        title: contractAddress,
-      });
-    } catch (error) {
-      console.log('Error =>', error);
-    }
+  const copyToClipboard = async () => {
+    await Clipboard.setString(contractAddress);
+    const message = {
+      message: 'Copied to Clipboard',
+      type: MessageType.normal,
+    };
+    dispatch(allActions.main.showMessage(message, 1000));
   };
+  // const ShareSocial = async () => {
+  //   try {
+  //     const ShareResponse = await Share.share({
+  //       message: contractAddress,
+  //       url: contractAddress,
+  //       title: contractAddress,
+  //     });
+  //   } catch (error) {
+  //     console.log('Error =>', error);
+  //   }
+  // };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -59,13 +78,35 @@ function NFTDetail({ route }: Props) {
       />
       <ScrollView style={styles.scrollView}>
         <View>
+          {/* TODO:follow the figma's design
+          <View style={styles.headerInformation}>
+            <Text style={styles.title}>Current Price</Text>
+            <View style={styles.flex}>
+              <View style={styles.iconShareWrapper}>
+                <IconTwitter />
+              </View>
+              <View style={styles.iconShareWrapper}>
+                <IconInstagram />
+              </View>
+              <View style={styles.iconShareWrapper}>
+                <IconFacebook />
+              </View>
+            </View>
+          </View>
+        
+          <View style={styles.flexStart}>
+            <Image
+              source={valid ? images.symbol_cspr : images.imgnft}
+              style={styles.imagePrice}
+              onError={() => setValid(false)}
+            />
+            <Text style={styles.textPrice}>45.89</Text>
+            <Text style={styles.textPriceConvert}>(~$111)</Text>
+          </View>
+          <Text style={styles.time}>2021-11-09 23:45</Text> */}
+
           <View style={styles.headerInformation}>
             <Text>Total Supply :{totalSupply}</Text>
-            <View>
-              <TouchableOpacity onPress={ShareSocial}>
-                <Text style={styles.shareText}>Share</Text>
-              </TouchableOpacity>
-            </View>
           </View>
           <View>
             <Text>Contract Name:</Text>
@@ -106,6 +147,12 @@ function NFTDetail({ route }: Props) {
 }
 
 const styles = StyleSheet.create({
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   container: {
     paddingTop: scale(20),
     backgroundColor: '#F8F8F8',
@@ -138,6 +185,37 @@ const styles = StyleSheet.create({
     paddingVertical: scale(20),
     marginBottom: scale(24),
   },
+  flexStart: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  imagePrice: {
+    width: scale(40),
+    height: scale(40),
+  },
+  textPrice: {
+    color: colors.N2,
+    fontWeight: '600',
+    fontSize: scale(32),
+    marginHorizontal: scale(8),
+  },
+  textPriceConvert: {
+    color: colors.N3,
+    fontWeight: '500',
+    fontSize: scale(16),
+  },
+  time: {
+    color: colors.N3,
+    marginTop: scale(20),
+  },
+  iconShareWrapper: {
+    padding: scale(8),
+    marginLeft: scale(24),
+    backgroundColor: '#E6E8EC',
+    borderRadius: scale(50),
+  },
   copyClipboard: {
     display: 'flex',
     flexDirection: 'row',
@@ -158,6 +236,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingHorizontal: scale(20),
+    marginBottom: scale(40),
   },
   nftImage: {
     width: device.w,

@@ -32,10 +32,13 @@ import IconReceive from './images/ic_receive.svg';
 import IconSwap from './images/ic_swap.svg';
 import IconLogo from './images/ic_logo.svg';
 import IconLock from './images/ic_lock.svg';
-import IconSearch from '/images/ic_search.svg';
 import IconAboutUs from './images/ic_about_us.svg';
 import IconCircleRight from './images/ic_circle_right.svg';
 import IconCircleClose from './images/ic_close_circle.svg';
+import IconSearch from './images/ic_search.svg';
+import IconFacebook from './images/ic_facebook.svg';
+import IconInstagram from './images/ic_instagram.svg';
+import IconTwitter from './images/ic_twitter.svg';
 
 const images = {
 
@@ -213,4 +216,7 @@ export {
     IconLock,
     IconCircleRight,
     IconCircleClose,
+    IconFacebook,
+    IconInstagram,
+    IconTwitter
 };
