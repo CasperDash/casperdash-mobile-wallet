@@ -8,14 +8,77 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ScreenProps} from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
 import {toFormattedCurrency, toFormattedNumber} from 'utils/helpers/format';
+import {useSelector} from 'react-redux';
+import {getPublicKey} from 'utils/selectors/user';
+import {getTransferDeploy} from 'utils/services/userServices';
+import {getTransferTokenDeploy} from 'utils/services/tokenServices';
 
 // @ts-ignore
 const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> = ({route}) => {
 
+    const publicKey = useSelector(getPublicKey);
     const {bottom} = useSafeAreaInsets();
-    const {selectedToken, transferAmount: amount, receivingAddress, transferID, networkFee} = route.params;
+    const {
+        token,
+        selectedToken,
+        transferAmount: amount,
+        receivingAddress: toAddress,
+        transferID,
+        networkFee: fee
+    } = route.params;
+
     const price = (selectedToken && selectedToken.price) || 0;
     const symbol = selectedToken && selectedToken.symbol ? selectedToken.symbol : '';
+
+    const buildTransferDeploy = (transferDetails: any) => {
+        return token.address === 'CSPR'
+            ? getTransferDeploy({
+                ...transferDetails,
+                transferID,
+            })
+            : getTransferTokenDeploy({
+                ...transferDetails,
+                contractInfo: {address: token.address, decimals: token.decimals},
+            });
+    };
+
+    const onSendTransaction = async () => {
+        const transferDetails = {
+            fromAddress: publicKey,
+            toAddress,
+            amount,
+            fee,
+        };
+
+        const buildDeployFn = () => buildTransferDeploy(transferDetails);
+        try {
+            const deploy = await buildDeployFn();
+
+        } catch (error) {
+
+        }
+
+        /*const { deployHash, signedDeploy } = await executeDeploy(
+            buildDeployFn,
+            transferDetails.fromAddress,
+            transferDetails.toAddress,
+        );*/
+        /*if (deployHash) {
+            dispatch(
+                pushTransferToLocalStorage(publicKey, {
+                    ...transferDetails,
+                    deployHash: deployHash,
+                    status: 'pending',
+                    timestamp: signedDeploy.deploy.header.timestamp,
+                    transferId: transferId,
+                    address,
+                    decimals,
+                    symbol,
+                }),
+            );
+            navigateToTokenPage();
+        }*/
+    };
 
     return (
         <CLayout
@@ -34,14 +97,15 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
                         <Text
                             style={styles.value}>{`${toFormattedNumber(amount, {maximumFractionDigits: 4}, 'en-US')} (${toFormattedCurrency(amount * price, {maximumFractionDigits: 2}, 'en-US')})`}</Text>
                         <Text style={styles.caption}>Network Fee</Text>
-                        <Text style={styles.value}>{`${networkFee} CSPR`}</Text>
+                        <Text style={styles.value}>{`${fee} CSPR`}</Text>
                         <Text style={styles.caption}>Receiving Address</Text>
-                        <Text style={styles.value}>{receivingAddress}</Text>
+                        <Text style={styles.value}>{toAddress}</Text>
                         <Text style={styles.caption}>Transfer ID</Text>
                         <Text style={styles.value}>{transferID}</Text>
                     </Col>
                 </ScrollView>
                 <CTextButton
+                    onPress={onSendTransaction}
                     style={[styles.btnSend, {marginBottom: bottom + scale(10)}]}
                     text={'Send'}/>
             </Col>

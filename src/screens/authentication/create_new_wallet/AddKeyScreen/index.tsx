@@ -12,6 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
+import {isValidPublicKey} from 'utils/validator';
 
 function AddKeyScreen() {
 
@@ -22,9 +23,8 @@ function AddKeyScreen() {
     const dispatch = useDispatch();
 
     const onChange = (value?: string) => {
-        //TODO: validate public key and set Error
         setPublicKey(value ?? '');
-        // setError(isValidPublicKey(value) ? '' : 'Invalid public key');
+        setError(isValidPublicKey(value) ? '' : 'Invalid public key');
     };
 
     const onAddPublicKey = async () => {

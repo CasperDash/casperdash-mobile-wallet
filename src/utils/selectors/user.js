@@ -12,6 +12,11 @@ const CSPR_INFO = {
     icon: require('../../assets/images/ic_cspr.png'),
 };
 
+export const getLoginOptions = ({ user }) => {
+    return user.casperdash && user.casperdash.loginOptions || {};
+};
+
+
 export const getPublicKey = ({user}) => {
     return user.casperdash && user.casperdash.publicKey;
 };

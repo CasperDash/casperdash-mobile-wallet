@@ -17,14 +17,11 @@ import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
 import {StackNavigationProp} from '@react-navigation/stack';
-
-const isValidKey = (text: any) => {
-    return text === '123';
-};
+import {isValidPublicKey} from 'utils/validator';
 
 const initialValues = {
     transferAmount: '0',
-    receivingAddress: '',
+    receivingAddress: '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
     transferID: '',
 };
 
@@ -58,7 +55,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_PIN_SCREEN>> = ({route
             .string()
             .required('Required.')
             .test('isValidPublicKey', 'Invalid address.', function (value: any) {
-                return isValidKey(value); //TODO: change isValidKey to isValidPublicKey in helpers/validator.js
+                return isValidPublicKey(value);
             }),
         transferID: yup.string(),
     });
@@ -75,6 +72,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_PIN_SCREEN>> = ({route
             ...values,
             selectedToken: selectedToken,
             networkFee: token ? token.transferFee : 1,
+            token,
         });
     };
 

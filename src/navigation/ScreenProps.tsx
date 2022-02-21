@@ -17,6 +17,7 @@ export type ScreenParams = {
         transferID?: any
         selectedToken: any,
         networkFee: number,
+        token: any
     },
     SEND_SCREEN: {
         token: any,
