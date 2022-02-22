@@ -1,14 +1,15 @@
 import { DeployUtil, CLPublicKey } from 'casper-js-sdk';
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import CasperApp from '@zondax/ledger-casper';
 import { SECP256k1, CONNECT_ERROR_MESSAGE } from '../constants/ledger';
 import { CASPER_KEY_PATH } from '../constants/key';
+import {Config, Keys} from 'utils';
 
 /**
  * Initial ledger app
  */
 export const initLedgerApp = async () => {
-	const transport = await TransportWebUSB.create();
+	const ledger = await Config.getItem(Keys.ledger);
+	const transport = ledger && ledger.transport || {};
 	return { casperApp: new CasperApp(transport), transport };
 };
 
@@ -82,7 +83,7 @@ export const getListKeys = async (app, startPath = 0, numberOfKey = 1) => {
  * @param {number} code
  */
 export const getLedgerError = (error, code) => {
-	if ('TransportInterfaceNotAvailable' === error.name || code === 27014) {
+	if (error.name === 'TransportInterfaceNotAvailable' || code === 27014) {
 		return CONNECT_ERROR_MESSAGE;
 	}
 	if (code === 27012) {

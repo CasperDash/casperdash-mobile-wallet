@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import { putDeploy } from '../../actions/deployActions';
 import useSigner from './useSigner';
 
@@ -22,30 +21,30 @@ export const useConfirmDeploy = () => {
 
 	const executeDeploy = async (buildDeployFn, fromPublicKey, toPublicKey) => {
 		setIsDeploying(true);
-		const toastId = toast.loading('Preparing deploy');
+		// const toastId = toast.loading('Preparing deploy');
 		try {
 			const deploy = await buildDeployFn();
 			// Sign with signer
-			toast.update(toastId, { render: 'Please review the deploy' });
+			// toast.update(toastId, { render: 'Please review the deploy' });
 			const signedDeploy = await signer.sign(deploy, fromPublicKey, toPublicKey);
 			// Put deploy on chain
-			toast.update(toastId, { render: 'Putting deploy' });
+			// toast.update(toastId, { render: 'Putting deploy' });
 			const deployHash = await putSignedDeploy(signedDeploy);
-			toast.update(toastId, {
+			/*toast.update(toastId, {
 				render: `Deploy hash: ${deployHash}`,
 				type: 'success',
 				isLoading: false,
 				autoClose: 5000,
-			});
+			});*/
 			setIsDeploying(false);
 			return { deployHash, signedDeploy };
 		} catch (error) {
-			toast.update(toastId, {
+			/*toast.update(toastId, {
 				render: error.message,
 				type: 'error',
 				isLoading: false,
 				autoClose: 5000,
-			});
+			});*/
 			setDeployError(true);
 			setIsDeploying(false);
 			console.error(error);

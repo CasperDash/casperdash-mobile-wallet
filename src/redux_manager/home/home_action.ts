@@ -7,6 +7,9 @@ export const types = {
 
     GET_TOKEN_ADDRESS_INFO: 'GET_TOKEN_ADDRESS_INFO',
     GET_TOKEN_ADDRESS_INFO_SUCCESS: 'GET_TOKEN_ADDRESS_INFO_SUCCESS',
+
+    DEPLOY: 'DEPLOY',
+    DEPLOY_SUCCESS: 'DEPLOY_SUCCESS',
 };
 
 const getTokenInfoWithBalance = (params: any, cb: any) => {
@@ -33,8 +36,17 @@ const getTokenAddressInfo = (params: any, cb: any) => {
     };
 };
 
+const deploy = (params: any, cb: any) => {
+    return {
+        type: types.DEPLOY,
+        params,
+        cb,
+    };
+};
+
 export default {
     getTokenInfoWithBalance,
     fetchCSPRMarketInfo,
-    getTokenAddressInfo
+    getTokenAddressInfo,
+    deploy,
 };
