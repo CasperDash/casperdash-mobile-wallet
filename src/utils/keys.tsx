@@ -4,6 +4,7 @@ const Keys = {
     pinCode: 'pinCode',
     tokensAddressList: 'tokensAddressList',
     configurations: 'configurations',
+    ledger: 'transport',
 };
 
 export default Keys;

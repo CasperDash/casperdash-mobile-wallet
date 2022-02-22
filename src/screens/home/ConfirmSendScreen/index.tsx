@@ -12,6 +12,7 @@ import {useSelector} from 'react-redux';
 import {getPublicKey} from 'utils/selectors/user';
 import {getTransferDeploy} from 'utils/services/userServices';
 import {getTransferTokenDeploy} from 'utils/services/tokenServices';
+// import {useConfirmDeploy} from 'utils/hooks/useConfirmDeploy';
 
 // @ts-ignore
 const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> = ({route}) => {
@@ -24,11 +25,14 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
         transferAmount: amount,
         receivingAddress: toAddress,
         transferID,
-        networkFee: fee
+        networkFee: fee,
     } = route.params;
 
     const price = (selectedToken && selectedToken.price) || 0;
     const symbol = selectedToken && selectedToken.symbol ? selectedToken.symbol : '';
+
+    // const { executeDeploy, isDeploying } = useConfirmDeploy();
+    // console.log('isDeploying', isDeploying);
 
     const buildTransferDeploy = (transferDetails: any) => {
         return token.address === 'CSPR'
@@ -51,20 +55,13 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
         };
 
         const buildDeployFn = () => buildTransferDeploy(transferDetails);
-        try {
-            const deploy = await buildDeployFn();
-
-        } catch (error) {
-
-        }
-
-        /*const { deployHash, signedDeploy } = await executeDeploy(
+       /* const { deployHash, signedDeploy } = await executeDeploy(
             buildDeployFn,
             transferDetails.fromAddress,
             transferDetails.toAddress,
-        );*/
-        /*if (deployHash) {
-            dispatch(
+        );
+        if (deployHash) {
+           /!* dispatch(
                 pushTransferToLocalStorage(publicKey, {
                     ...transferDetails,
                     deployHash: deployHash,
@@ -76,7 +73,7 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
                     symbol,
                 }),
             );
-            navigateToTokenPage();
+            navigateToTokenPage();*!/
         }*/
     };
 

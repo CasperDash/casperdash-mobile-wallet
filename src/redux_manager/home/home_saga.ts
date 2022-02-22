@@ -103,3 +103,31 @@ export function* watchGetTokenAddressInfo() {
         yield cancel(watcher);
     }
 }
+
+export function* deploy(data: any) {
+    try {
+        // @ts-ignore
+        const response = yield apis.deployAPI(data.params);
+        if (response) {
+            yield put({type: types.DEPLOY + '_SUCCESS', payload: response});
+            data.cb && data.cb(null, response);
+        } else {
+            data.cb && data.cb(true, null);
+        }
+    } catch (error: any) {
+        if (error && error.data) {
+            data.cb && data.cb(error.data, null);
+        } else {
+            data.cb && data.cb(error, null);
+        }
+    }
+}
+
+export function* watchDeploy() {
+    while (true) {
+        // @ts-ignore
+        const watcher = yield takeLatest(types.DEPLOY, deploy);
+        yield take(['LOGOUT', 'NETWORK']);
+        yield cancel(watcher);
+    }
+}
