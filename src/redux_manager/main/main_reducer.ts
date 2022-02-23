@@ -8,6 +8,8 @@ const initialState = {
         actions: [],
         refreshing: [],
     },
+    tokensAddressList: [],
+    casperdash: null,
 };
 
 export default function (
