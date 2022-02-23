@@ -21,14 +21,14 @@ import {isValidPublicKey} from 'utils/validator';
 
 const initialValues = {
     transferAmount: '0',
-    receivingAddress: '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
+    receivingAddress: '',
     transferID: '',
 };
 
 const percent = 1;
 
 // @ts-ignore
-const SendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_PIN_SCREEN>> = ({route}) => {
+const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
 
     const {bottom} = useSafeAreaInsets();
     const {replace} = useNavigation<StackNavigationProp<any>>();
