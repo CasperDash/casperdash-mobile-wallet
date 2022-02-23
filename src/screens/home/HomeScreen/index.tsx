@@ -88,6 +88,10 @@ function HomeScreen() {
         dispatch(allActions.main.showMessage(message));
     };
 
+    const openHistories = (token: any) => {
+        navigate(MainRouter.HISTORIES_SCREEN, {token})
+    }
+
     const _renderListTokens = () => {
         const height = insets.bottom === 0 ? 0 : insets.bottom + scale(72);
         return (
@@ -100,7 +104,7 @@ function HomeScreen() {
                         <ScrollView>
                             {
                                 allTokenInfo && allTokenInfo.length > 0 && allTokenInfo.map((value, i) => {
-                                    return <TokenComponent value={value} key={i}/>;
+                                    return <TokenComponent value={value} key={i} onPress={openHistories}/>;
                                 })
                             }
                             <CButton
