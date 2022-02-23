@@ -10,6 +10,9 @@ export type ScreenParams = {
     CHOOSE_PIN_SCREEN: undefined,
     CONFIRM_PIN_SCREEN: {
         pin: number,
+    },
+    HISTORIES_SCREEN: {
+        token: any
     }
 };
 
