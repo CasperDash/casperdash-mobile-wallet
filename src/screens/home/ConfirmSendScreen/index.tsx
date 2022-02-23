@@ -8,17 +8,21 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ScreenProps} from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
 import {toFormattedCurrency, toFormattedNumber} from 'utils/helpers/format';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getPublicKey} from 'utils/selectors/user';
 import {getTransferDeploy} from 'utils/services/userServices';
 import {getTransferTokenDeploy} from 'utils/services/tokenServices';
-// import {useConfirmDeploy} from 'utils/hooks/useConfirmDeploy';
+import {useConfirmDeploy} from 'utils/hooks/useConfirmDeploy';
+import {allActions} from 'redux_manager';
+import {MessageType} from 'components/CMessge/types';
 
 // @ts-ignore
 const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> = ({route}) => {
 
     const publicKey = useSelector(getPublicKey);
     const {bottom} = useSafeAreaInsets();
+    const dispatch = useDispatch();
+
     const {
         token,
         selectedToken,
@@ -31,8 +35,7 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
     const price = (selectedToken && selectedToken.price) || 0;
     const symbol = selectedToken && selectedToken.symbol ? selectedToken.symbol : '';
 
-    // const { executeDeploy, isDeploying } = useConfirmDeploy();
-    // console.log('isDeploying', isDeploying);
+    const {executeDeploy, isDeploying} = useConfirmDeploy();
 
     const buildTransferDeploy = (transferDetails: any) => {
         return token.address === 'CSPR'
@@ -46,35 +49,51 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
             });
     };
 
-    const onSendTransaction = async () => {
-        const transferDetails = {
-            fromAddress: publicKey,
-            toAddress,
-            amount,
-            fee,
+    const showMessage = (message: string, type?: string) => {
+        const messages = {
+            message: message,
+            type: type ?? MessageType.normal,
         };
+        dispatch(allActions.main.showMessage(messages, 2000));
+    };
 
-        const buildDeployFn = () => buildTransferDeploy(transferDetails);
-       /* const { deployHash, signedDeploy } = await executeDeploy(
-            buildDeployFn,
-            transferDetails.fromAddress,
-            transferDetails.toAddress,
-        );
-        if (deployHash) {
-           /!* dispatch(
-                pushTransferToLocalStorage(publicKey, {
-                    ...transferDetails,
-                    deployHash: deployHash,
-                    status: 'pending',
-                    timestamp: signedDeploy.deploy.header.timestamp,
-                    transferId: transferId,
-                    address,
-                    decimals,
-                    symbol,
-                }),
+    const onSendTransaction = async () => {
+        try {
+            if (isDeploying) {
+                return;
+            }
+            const transferDetails = {
+                fromAddress: publicKey,
+                toAddress,
+                amount,
+                fee,
+            };
+
+            const buildDeployFn = () => buildTransferDeploy(transferDetails);
+            const {deployHash, signedDeploy} = await executeDeploy(
+                buildDeployFn,
+                transferDetails.fromAddress,
+                transferDetails.toAddress,
+                showMessage
             );
-            navigateToTokenPage();*!/
-        }*/
+
+            if (deployHash) {
+                dispatch(
+                    allActions.home.pushTransferToLocalStorage(publicKey, {
+                        ...transferDetails,
+                        deployHash: deployHash,
+                        status: 'pending',
+                        timestamp: signedDeploy.deploy.header.timestamp,
+                        transferId: transferID,
+                        address: token.address,
+                        decimals: token.decimals,
+                        symbol,
+                    }),
+                );
+            }
+        } catch (error: any) {
+            showMessage(error && error.message || 'Transaction Failed', MessageType.error);
+        }
     };
 
     return (
@@ -104,7 +123,7 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
                 <CTextButton
                     onPress={onSendTransaction}
                     style={[styles.btnSend, {marginBottom: bottom + scale(10)}]}
-                    text={'Send'}/>
+                    text={isDeploying ? 'Sending' : 'Send'}/>
             </Col>
         </CLayout>
     );

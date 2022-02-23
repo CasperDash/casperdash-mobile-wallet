@@ -5,6 +5,7 @@ const Keys = {
     tokensAddressList: 'tokensAddressList',
     configurations: 'configurations',
     ledger: 'transport',
+    deploysTransfer: 'deploys.transfers',
 };
 
 export default Keys;

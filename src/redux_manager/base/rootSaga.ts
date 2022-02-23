@@ -17,6 +17,7 @@ import {
     watchGetTokenInfoWithBalance,
     watchFetchCSPRMarketInfo,
     watchGetTokenAddressInfo,
+    watchPushTransferToLocalStorage,
 } from '../home/home_saga';
 
 export default function* rootSaga() {
@@ -33,6 +34,7 @@ export default function* rootSaga() {
         watchGetTokenInfoWithBalance(),
         watchFetchCSPRMarketInfo(),
         watchGetTokenAddressInfo(),
+        watchPushTransferToLocalStorage(),
 
         //wallet
 

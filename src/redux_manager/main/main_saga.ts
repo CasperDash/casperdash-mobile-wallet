@@ -1,7 +1,8 @@
 import {put, takeLatest, delay, take, cancel} from 'redux-saga/effects';
 import {types} from './main_action';
-import {Config, Keys} from "utils";
-import {apis} from "services";
+import {Config, Keys} from 'utils';
+import {apis} from 'services';
+import {types as typesHome} from '../home/home_action';
 
 export function* showMessage(data: any) {
     yield put({type: types.SHOW_MESSAGE_SUCCESS, payload: data.message});
@@ -20,19 +21,23 @@ export function* loadLocalStorage() {
     const tokensAddressList = yield Config.getItem(Keys.tokensAddressList);
     // @ts-ignore
     const configurations = yield Config.getItem(Keys.configurations);
-    if(!configurations){
+    // @ts-ignore
+    const deploysTransfer = yield Config.getItem(Keys.deploysTransfer);
+
+    if (!configurations) {
         yield put({type: types.GET_CONFIGURATIONS});
     }
     const data = {
         casperdash: casperdash,
         tokensAddressList: tokensAddressList,
-        configurations: configurations
-    }
+        configurations: configurations,
+        deploysTransfer: deploysTransfer,
+    };
     yield put({type: types.LOAD_LOCAL_STORAGE_SUCCESS, payload: data});
 }
 
 export function* watchLoadLocalStorage() {
-    yield takeLatest(types.LOAD_LOCAL_STORAGE, loadLocalStorage);
+    yield takeLatest([types.LOAD_LOCAL_STORAGE, typesHome.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS], loadLocalStorage);
 }
 
 export function* getConfigurations(data: any) {
