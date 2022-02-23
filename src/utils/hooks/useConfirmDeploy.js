@@ -26,11 +26,9 @@ export const useConfirmDeploy = () => {
         showMessage('Preparing deploy');
         try {
             const deploy = await buildDeployFn();
-            console.log('deploy', deploy);
             // Sign with signer
             showMessage('Please review the deploy');
             const signedDeploy = await signer.sign(deploy, fromPublicKey, toPublicKey);
-            console.log('signedDeploy', signedDeploy);
             showMessage('Putting deploy');
 
             const deployHash = await putSignedDeploy(signedDeploy);
