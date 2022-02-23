@@ -21,6 +21,9 @@ export type ScreenParams = {
     },
     SEND_SCREEN: {
         token: any,
+    },
+    HISTORIES_SCREEN: {
+        token: any
     }
 };
 

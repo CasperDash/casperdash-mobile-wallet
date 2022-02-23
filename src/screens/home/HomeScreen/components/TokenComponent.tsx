@@ -6,12 +6,13 @@ import {colors, images, textStyles} from "assets";
 import {toFormattedCurrency} from "utils/helpers/format";
 
 interface Props {
-    value: any
+    value: any,
+    onPress: (token: any) => void,
 }
 
-const TokenComponent = ({value}: Props) => {
+const TokenComponent = ({value, onPress}: Props) => {
     return (
-        <CButton>
+        <CButton onPress={() => onPress(value)}>
             <Row.LR mx={16} style={styles.container}>
                 <Row>
                     {

@@ -8,6 +8,7 @@ export {default as AddCustomTokenScreen} from './home/AddCustomTokenScreen';
 export {default as SendScreen} from './home/SendScreen';
 export {default as ConfirmSendScreen} from './home/ConfirmSendScreen';
 export {default as ReceiveScreen} from './home/ReceiveScreen';
+export {default as HistoriesScreen} from './home/HistoriesScreen';
 
 //Staking
 export {default as StakingScreen} from './staking/StakingScreen';
