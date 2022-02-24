@@ -70,6 +70,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
     const onConfirm = () => {
         replace(MainRouter.CONFIRM_SEND_SCREEN, {
             ...values,
+            transferAmount: parseFloat(values.transferAmount),
             selectedToken: selectedToken,
             networkFee: token ? token.transferFee : 1,
             token,
