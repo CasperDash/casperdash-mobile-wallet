@@ -71,10 +71,6 @@ const ConnectLedgerScreen = () => {
     const onSelect = async (device: any) => {
         try {
             const tp = await TransportBLE.open(device);
-            await Config.saveItem(Keys.ledger, {
-                transport: tp,
-                device: device,
-            });
             tp.on('disconnect', () => {
                 setTransport(null);
                 setError(null);

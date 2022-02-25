@@ -13,6 +13,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
 import {isValidPublicKey} from 'utils/validator';
+import ChoosePinRouter from "navigation/ChoosePinNavigation/ChoosePinRouter";
 
 function AddKeyScreen() {
 
@@ -39,7 +40,12 @@ function AddKeyScreen() {
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
-                navigate(AuthenticationRouter.CHOOSE_PIN);
+                navigate(AuthenticationRouter.CHOOSE_PIN, {
+                    screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+                    params: {
+                        showBack: true,
+                    },
+                });
             } else {
                 setLoading(false);
                 Config.alertMess(err);

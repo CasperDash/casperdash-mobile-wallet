@@ -3,13 +3,14 @@ import CasperApp from '@zondax/ledger-casper';
 import { SECP256k1, CONNECT_ERROR_MESSAGE } from '../constants/ledger';
 import { CASPER_KEY_PATH } from '../constants/key';
 import {Config, Keys} from 'utils';
+import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
 
 /**
  * Initial ledger app
  */
 export const initLedgerApp = async () => {
-	const ledger = await Config.getItem(Keys.ledger);
-	const transport = ledger && ledger.transport || {};
+	const device = await Config.getItem(Keys.ledger);
+	const transport = await TransportBLE.open(device && device.id);
 	return { casperApp: new CasperApp(transport), transport };
 };
 
