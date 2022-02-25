@@ -95,7 +95,7 @@ function NFTDetail({ route }: Props) {
         )}
       </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
-        <View>
+        <View style={{ width: '100%' }}>
           {/* TODO:follow the figma's design
           <View style={styles.headerInformation}>
             <Text style={styles.title}>Current Price</Text>
@@ -111,7 +111,7 @@ function NFTDetail({ route }: Props) {
               </View>
             </View>
           </View>
-        
+
           <View style={styles.flexStart}>
             <Image
               source={valid ? images.symbol_cspr : images.imgnft}
@@ -123,26 +123,22 @@ function NFTDetail({ route }: Props) {
           </View>
           <Text style={styles.time}>2021-11-09 23:45</Text> */}
           <View style={styles.headerInformation}>
-            <Text>Total Supply :{totalSupply}</Text>
+            <Text style={styles.totalSupply}>Total Supply :{totalSupply}</Text>
           </View>
-          <View>
-            <Text>Contract Name:</Text>
-            <Text> {nftContractName}</Text>
+          <View style={styles.flexStart}>
+            <Text style={styles.labelContract}>Contract Name:</Text>
+            <Text style={styles.contractContent}> {nftContractName}</Text>
           </View>
-          <View style={styles.contractAdress}>
-            <Text>Contract Adress :</Text>
-            <TouchableOpacity
-              onPress={copyToClipboard}
-              style={styles.copyClipboard}>
-              <Text
-                ellipsizeMode="middle"
-                numberOfLines={1}
-                style={styles.contractAddressText}>
-                {contractAddress}
-              </Text>
-              <IconCopy />
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.flexContract} numberOfLines={2}>
+            <Text style={styles.labelContract}>Contract Adress: </Text>
+            <Text style={styles.contractAddressText}>
+              {resizeString(contractAddress)}
+            </Text>
+            {/* <Text style={{ paddingLeft: 50 }}>  </Text> */}
+            {/* TODO:Add Space between text and icon */}
+            <Text> </Text>
+            <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
+          </Text>
           <TouchableOpacity onPress={() => setshowAttributes(!showAttributes)}>
             <View style={styles.titleWrapper}>
               <Text style={styles.title}>Attributes </Text>
@@ -222,9 +218,15 @@ const styles = StyleSheet.create({
   },
   flexStart: {
     display: 'flex',
-    justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+
+  totalSupply: {
+    fontSize: scale(16),
+    fontWeight: '500',
+    color: colors.N3,
   },
   imagePrice: {
     width: scale(40),
@@ -252,12 +254,38 @@ const styles = StyleSheet.create({
     borderRadius: scale(50),
   },
   copyClipboard: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    marginVertical: scale(20),
   },
   textCopy: {
     marginLeft: scale(20),
+  },
+  flexContract: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: scale(20),
+  },
+  labelContract: {
+    flexWrap: 'wrap',
+    fontSize: scale(16),
+    fontWeight: '500',
+    color: colors.N3,
+  },
+  iconCopy: {
+    width: 50,
+    height: 50,
+  },
+  contractAddressText: {
+    flexWrap: 'wrap',
+    fontSize: scale(16),
+    fontWeight: '400',
+    color: colors.N2,
+    paddingRight: 20,
+  },
+  contractContent: {
+    fontSize: scale(16),
+    color: colors.N2,
   },
   iconArrow: {
     width: scale(32),
@@ -282,10 +310,7 @@ const styles = StyleSheet.create({
     height: device.h - 60,
     resizeMode: 'contain',
   },
-  contractAddressText: {
-    maxWidth: scale(180),
-    marginRight: scale(10),
-  },
+
   headerInformation: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -342,5 +367,11 @@ const styles = StyleSheet.create({
     transform: [{ rotateX: '180deg' }],
   },
 });
+
+function resizeString(string: String) {
+  const start = string.slice(0, 18);
+  const end = string.slice(string.length - 18, string.length);
+  return start + '...' + end ;
+}
 
 export default NFTDetail;
