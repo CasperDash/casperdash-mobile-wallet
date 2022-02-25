@@ -9,9 +9,9 @@ export const useConfirmDeploy = () => {
 
     const signer = useSigner();
 
-    const putSignedDeploy = (signedDeploy, cb) => {
+    const putSignedDeploy = async (signedDeploy, cb) => {
         try {
-            const data = apis.deployAPI(signedDeploy);
+            const data = await apis.deployAPI(signedDeploy);
             if (data){
                 return data.deployHash;
             }

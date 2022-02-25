@@ -15,6 +15,7 @@ import Keys from '../../../../utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import ChoosePinRouter from "navigation/ChoosePinNavigation/ChoosePinRouter";
 
 const ImportPhraseScreen = () => {
     const dispatch = useDispatch();
@@ -104,7 +105,12 @@ const ImportPhraseScreen = () => {
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
-                replace(AuthenticationRouter.CHOOSE_PIN);
+                replace(AuthenticationRouter.CHOOSE_PIN, {
+                    screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+                    params: {
+                        showBack: false,
+                    },
+                });
             } else {
                 setLoading(false);
                 setWrongPhrase(true);

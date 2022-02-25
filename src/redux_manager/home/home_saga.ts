@@ -136,6 +136,7 @@ export function* pushTransferToLocalStorage(data: any) {
     const {publicKey, transfer} = data;
     // @ts-ignore
     let deploysTransfer = yield Config.getItem(Keys.deploysTransfer);
+    deploysTransfer = deploysTransfer || {};
     if (deploysTransfer && deploysTransfer[publicKey]){
         const listTransfer = deploysTransfer[publicKey] || [];
         listTransfer.push(transfer);
@@ -151,7 +152,7 @@ export function* pushTransferToLocalStorage(data: any) {
 export function* watchPushTransferToLocalStorage() {
     while (true) {
         // @ts-ignore
-        const watcher = yield takeLatest(types.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS, pushTransferToLocalStorage);
+        const watcher = yield takeLatest(types.PUSH_TRANSFER_TO_LOCAL_STORAGE, pushTransferToLocalStorage);
         yield take(['LOGOUT', 'NETWORK']);
         yield cancel(watcher);
     }

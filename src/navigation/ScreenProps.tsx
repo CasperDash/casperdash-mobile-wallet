@@ -7,7 +7,9 @@ export type ScreenParams = {
     DOUBLE_CHECK_IT_SCREEN: {
         data: any
     },
-    CHOOSE_PIN_SCREEN: undefined,
+    CHOOSE_PIN_SCREEN: {
+        hideBackButton?: boolean,
+    },
     CONFIRM_PIN_SCREEN: {
         pin: number,
     },

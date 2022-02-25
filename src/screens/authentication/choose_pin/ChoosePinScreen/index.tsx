@@ -11,11 +11,12 @@ import {useNavigation} from '@react-navigation/native';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 
 // @ts-ignore
-const ChoosePinScreen: React.FC<ScreenProps<CreateNewWalletRouter.CHOOSE_PIN_SCREEN>> = ({}) => {
+const ChoosePinScreen: React.FC<ScreenProps<ChoosePinRouter.CHOOSE_PIN_SCREEN>> = ({route}) => {
 
     const [pin, setPin] = useState<string>();
     const pinLength = 6;
     const {navigate} = useNavigation();
+    const {showBack} = route.params;
 
     useEffect(() => {
         if (pin && pin.length === pinLength) {
@@ -25,7 +26,7 @@ const ChoosePinScreen: React.FC<ScreenProps<CreateNewWalletRouter.CHOOSE_PIN_SCR
 
     return (
         <CLayout>
-            <CHeader title={'Choose PIN'}/>
+            <CHeader title={'Choose PIN'} showBack={showBack}/>
             <Col.C mt={78}>
                 <Text style={styles.title}>Input security PIN</Text>
                 <SmoothPinCodeInput
