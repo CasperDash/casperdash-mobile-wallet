@@ -134,7 +134,6 @@ function NFTDetail({ route }: Props) {
             <Text style={styles.contractAddressText}>
               {resizeString(contractAddress)}
             </Text>
-            {/* <Text style={{ paddingLeft: 50 }}>  </Text> */}
             {/* TODO:Add Space between text and icon */}
             <Text> </Text>
             <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
