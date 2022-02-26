@@ -14,6 +14,13 @@ export interface Intro {
     title: string,
 }
 
+
+export interface NFT{
+    id:number,
+    image:any,
+    title:string,
+    time:string,
+}
 const ListIntro: Array<Intro> = [
     {
         id: 0,
@@ -32,6 +39,8 @@ const ListIntro: Array<Intro> = [
     },
 ];
 
+
+const ListNFT:Array
 export interface CreateNewWalletMenu {
     id: number,
     icon: any,

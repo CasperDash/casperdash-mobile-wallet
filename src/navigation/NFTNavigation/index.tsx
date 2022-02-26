@@ -1,8 +1,9 @@
 import React from 'react';
-import {NFTScreens} from './NFTScreens';
+import { NFTScreens } from './NFTScreens';
+import { NFTDetailScreenNav } from './NFTDetailScreen';
 import NFTRouter from './NFTRouter';
 
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,16 @@ const NFTNavigation = () => {
                     component={NFTScreens[elem].screen}
                     options={{
                         title: NFTScreens[elem].title,
+                    }}
+                    key={index}
+                />
+            ))}
+              {Object.keys(NFTDetailScreenNav).map((elem: string, index) => (
+                <Stack.Screen
+                    name={elem}
+                    component={NFTDetailScreenNav[elem].screen}
+                    options={{
+                        title: NFTDetailScreenNav[elem].title,
                     }}
                     key={index}
                 />

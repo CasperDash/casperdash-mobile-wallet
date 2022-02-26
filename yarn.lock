@@ -8959,6 +8959,11 @@ react-native-sensitive-info@^5.5.8:
   resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.5.8.tgz#6ebb67eed83d1c2867bd435630ef2c41eef204ed"
   integrity sha512-p99oaEW4QG1RdUNrkvd/c6Qdm856dQw/Rk81f9fA6Y3DlPs6ADNdU+jbPuTz3CcOUJwuKBDNenX6LR9KfmGFEg==
 
+react-native-share@^7.3.5:
+  version "7.3.5"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.5.tgz#68b6076136ceac7cd5921bb84680fe46ed4383a3"
+  integrity sha512-5uulG2cQ2WfPSjZoEU/EGMycUFZEO99g3EqnKsO/7JNx5Tb465or35am4Kuezi4QU0YsOc3AqxzrW10UkI0+Ag==
+
 react-native-size-matters@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"

@@ -14,6 +14,7 @@ import IconMenuKeyManager from './images/ic_menu_key_manager.svg';
 import IconMenuKeyManagerActive from './images/ic_menu_key_manager_active.svg';
 import IconArrowLeft from './images/ic_arrow_left.svg';
 import IconArrowRight from './images/ic_arrow_right.svg';
+import IconArrowUp from './images/ic_arrow_up.svg';
 import IconPlusCircle from './images/ic_plus_circle.svg';
 import IconConnectLedger from './images/ic_connect_ledger.svg';
 import IconImportPhrase from './images/ic_import_phrase.svg';
@@ -34,13 +35,25 @@ import IconLock from './images/ic_lock.svg';
 import IconAboutUs from './images/ic_about_us.svg';
 import IconCircleRight from './images/ic_circle_right.svg';
 import IconCircleClose from './images/ic_close_circle.svg';
+import IconSearch from './images/ic_search.svg';
+import IconFacebook from './images/ic_facebook.svg';
+import IconInstagram from './images/ic_instagram.svg';
+import IconTwitter from './images/ic_twitter.svg';
+import IconAttributes from './images/ic_attributes.svg';
 
 const images = {
+
     avatar: require('./images/avatar.png'),
+
     intro1: require('./images/intro1.png'),
+
     intro2: require('./images/intro2.png'),
+
     intro3: require('./images/intro3.png'),
     logo: require('./images/logo.png'),
+    nonft:require('./images/nonft.png'),
+    bgnft:require('./images/bgnft.png'),
+    imgnft:require('./images/img_nft.png'),
     symbol_cspr: require('./images/ic_symbol_CSPR.png'),
 };
 
@@ -187,6 +200,9 @@ export {
     IconMessageSuccess,
     IconMessageWarning,
     IconMessageError,
+    IconSearch,
+    IconArrowUp,
+    IconCopy,
     IconScanCode,
     IconSetting,
     IconEyeOff,
@@ -201,4 +217,8 @@ export {
     IconLock,
     IconCircleRight,
     IconCircleClose,
+    IconFacebook,
+    IconInstagram,
+    IconTwitter,
+    IconAttributes
 };

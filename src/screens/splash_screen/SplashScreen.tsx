@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 
 import Splash from 'react-native-splash-screen';
-import {Config, Keys} from 'utils';
-import {CommonActions, useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { Config, Keys } from 'utils';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {isEmpty} from 'lodash';
 import {useDispatch} from "react-redux";
@@ -27,12 +27,18 @@ const SplashScreen = () => {
     const setupNavigation = async () => {
         const overview = await Config.getItem(Keys.overview);
         const pinCode = await Config.getItem(Keys.pinCode);
+        const user = await Config.getItem(Keys.casperdash);
+
         let screen = AuthenticationRouter.WELCOME_SCREEN;
         if (overview === 1) {
             screen = AuthenticationRouter.CREATE_NEW_WALLET;
         }
         if (!isEmpty(pinCode)){
             screen = AuthenticationRouter.ENTER_PIN;
+        }
+
+        if(user && user.casperdash && user.casperdash.publicKey){
+            dispatch(allActions.nft.fetchNFTInfo(user.casperdash.publicKey));
         }
         navigation.dispatch(
             CommonActions.reset({

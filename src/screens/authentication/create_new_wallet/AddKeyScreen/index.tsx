@@ -39,6 +39,7 @@ function AddKeyScreen() {
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
+                dispatch(allActions.nft.fetchNFTInfo(publicKey));
                 navigate(AuthenticationRouter.CHOOSE_PIN);
             } else {
                 setLoading(false);
