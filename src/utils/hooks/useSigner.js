@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from '../constants/settings';
 import { getLoginOptions } from '../selectors/user';
-import { signDeployByCasperSigner } from '../services/casperServices';
 import { signDeployByLedger } from '../services/ledgerServices';
 
 /**
@@ -19,8 +18,6 @@ const useSigner = () => {
 					keyIndex: loginOptions.keyIndex,
 				});
 			}
-			case CONNECTION_TYPES.casperSigner:
-				return await signDeployByCasperSigner(deploy, mainAccountHex, setAccountHex);
 			default:
 				throw Error('Can not find signer');
 		}
