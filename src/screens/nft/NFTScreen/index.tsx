@@ -40,7 +40,8 @@ function NFTScreen() {
   const [isLoading, setLoading] = useState(true);
   const [nfts, setNFTs] = useState([]);
   const [sort, setSort] = useState('nftName');
-  const [reaload, setReload] = useState(false);
+  const [reload, setReload] = useState(false);
+  const [reloadData, setReloadData] = useState(nfts);
   const [filterName, setFilterName] = useState(false);
   const [filterContractName, setFilterContractName] = useState(false);
 
@@ -65,12 +66,10 @@ function NFTScreen() {
     );
     setNFTs(newFillterArr);
   };
-  const loadTest = () => {
-    navigate(NFTRouter.NFT_DETAIL, {
-      metadata: [],
-      background: 'nftBackground',
-      totalSupply: 1,
-    });
+  const onReload = () => {
+    setReload(true);
+    setNFTs(orderBy(reloadData, 'nftName', 'asc'));
+    setReload(false);
   };
   useEffect(() => {
     const loadNfts = async () => {
@@ -78,13 +77,14 @@ function NFTScreen() {
       if (response) {
         setNFTs(response);
         setLoading(false);
+        setReloadData(response);
         setReload(false);
       }
       setLoading(false);
       setReload(false);
     };
     loadNfts();
-  }, [reaload]);
+  }, [isLoading]);
 
   return (
     <View style={styles.container}>
@@ -145,17 +145,15 @@ function NFTScreen() {
                 <Text style={styles.textNoNFT}>There is no NFT</Text>
               </View>
             ) : (
-              <View>
-                <FlatList
-                  data={nfts}
-                  renderItem={({ item }) => <NFTItem data={item} />}
-                  keyExtractor={nfts.tokenId}
-                  numColumns={2}
-                  style={styles.flaslist}
-                  refreshing={reaload}
-                  columnWrapperStyle={styles.columnWrapper}
-                />
-              </View>
+              <ScrollView
+                contentContainerStyle={styles.nftsList}
+                refreshControl={
+                  <RefreshControl refreshing={reload} onRefresh={onReload} />
+                }>
+                {nfts.map(item => (
+                  <NFTItem data={item} key={item.tokenId} />
+                ))}
+              </ScrollView>
             )}
           </View>
         )}
@@ -188,7 +186,7 @@ const styles = StyleSheet.create({
   },
   bg: {
     width: '100%',
-    height: device.h + 90,
+    height: device.h + 110,
     position: 'absolute',
     zIndex: -1,
     top: 0,
@@ -200,7 +198,6 @@ const styles = StyleSheet.create({
     paddingLeft: scale(15),
     paddingBottom: scale(24),
   },
-
   iconSearch: {
     position: 'absolute',
     top: '50%',
@@ -252,8 +249,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: scale(40),
     borderTopLeftRadius: scale(40),
   },
-  flaslist: {
-    marginBottom: scale(370),
+  nftsList: {
+    paddingBottom: scale(310),
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   numNft: {
     color: colors.N2,
