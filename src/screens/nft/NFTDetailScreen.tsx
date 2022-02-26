@@ -9,6 +9,7 @@ import {
   IconTwitter,
   images,
 } from 'assets';
+import { Row } from 'components';
 import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
 import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
@@ -129,15 +130,20 @@ function NFTDetail({ route }: Props) {
             <Text style={styles.labelContract}>Contract Name:</Text>
             <Text style={styles.contractContent}> {nftContractName}</Text>
           </View>
-          <Text style={styles.flexContract} numberOfLines={2}>
-            <Text style={styles.labelContract}>Contract Adress: </Text>
-            <Text style={styles.contractAddressText}>
-              {resizeString(contractAddress)}
-            </Text>
-            {/* TODO:Add Space between text and icon */}
-            <Text> </Text>
-            <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
-          </Text>
+          <View style={{ marginVertical: scale(20) }}>
+            <Text style={styles.labelContract}>Contract Address:</Text>
+            <Row.C>
+              <Text
+                onPress={copyToClipboard}
+                numberOfLines={1}
+                ellipsizeMode={'middle'}
+                style={styles.contractAddressText}>
+                {contractAddress}
+              </Text>
+              <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
+            </Row.C>
+          </View>
+
           <TouchableOpacity onPress={() => setshowAttributes(!showAttributes)}>
             <View style={styles.titleWrapper}>
               <Text style={styles.title}>Attributes </Text>
@@ -276,11 +282,11 @@ const styles = StyleSheet.create({
     height: 50,
   },
   contractAddressText: {
-    flexWrap: 'wrap',
     fontSize: scale(16),
     fontWeight: '400',
     color: colors.N2,
-    paddingRight: 20,
+    marginRight: scale(10),
+    width: device.w - 75,
   },
   contractContent: {
     fontSize: scale(16),
@@ -368,9 +374,9 @@ const styles = StyleSheet.create({
 });
 
 function resizeString(string: String) {
-  const start = string.slice(0, 18);
-  const end = string.slice(string.length - 18, string.length);
-  return start + '...' + end ;
+  const start = string.slice(0, 15);
+  const end = string.slice(string.length - 15, string.length);
+  return start + '...' + end;
 }
 
 export default NFTDetail;
