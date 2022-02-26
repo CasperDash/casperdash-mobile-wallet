@@ -1,5 +1,7 @@
 import {put, takeLatest, take, cancel, delay} from 'redux-saga/effects';
 import {types} from './home_action';
+import {types as userTypes} from '../user/user_action';
+
 import {apis} from 'services';
 import {Config, Keys} from 'utils';
 import {refreshActionStart, refreshActionStop, startAction, stopAction} from 'redux_manager/main/main_action';
@@ -7,14 +9,17 @@ import {refreshActionStart, refreshActionStop, startAction, stopAction} from 're
 export function* getTokenInfoWithBalance(data: any) {
     try {
         yield put(data.params && data.params.refreshing ? refreshActionStart(types.GET_TOKEN_INFO_WITH_BALANCE) : startAction(types.GET_TOKEN_INFO_WITH_BALANCE));
+        if (data.params && data.params.skipAction){
+            yield put(data.params && data.params.refreshing ? refreshActionStop(types.GET_TOKEN_INFO_WITH_BALANCE) : stopAction(types.GET_TOKEN_INFO_WITH_BALANCE));
+        }
         // @ts-ignore
         const casperDashInfo = yield Config.getItem(Keys.casperdash);
         // @ts-ignore
         const token = yield Config.getItem(Keys.tokensAddressList);
 
         const params = {
-            publicKey: (casperDashInfo && casperDashInfo.publicKey) || '',
-            tokenAddress: token || [],
+            publicKey: data.params.publicKey ?? ((casperDashInfo && casperDashInfo.publicKey) || ''),
+            tokenAddress: data.params.tokensAddressList ?? (token || []),
         };
         // @ts-ignore
         const response = yield apis.getTokenInfoWithBalanceAPI(params);
@@ -146,7 +151,10 @@ export function* pushTransferToLocalStorage(data: any) {
         deploysTransfer[publicKey] = [{...transfer}];
     }
     yield Config.saveItem(Keys.deploysTransfer, deploysTransfer);
-    yield put({type: types.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS + '_SUCCESS', payload: deploysTransfer});
+    yield put({type: types.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS, payload: deploysTransfer});
+    yield put({type: userTypes.GET_ACCOUNT_INFORMATION});
+    yield put({type: types.FETCH_CSPR_MARKET_INFO});
+    yield put({type: types.GET_TOKEN_INFO_WITH_BALANCE});
 }
 
 export function* watchPushTransferToLocalStorage() {
