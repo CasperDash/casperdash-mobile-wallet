@@ -39,7 +39,6 @@ export function* loadLocalStorage() {
 export function* watchLoadLocalStorage() {
     while (true) {
         // @ts-ignore
-        //TODO: check this issue why not take action PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS
         const watcher = yield takeLatest([types.LOAD_LOCAL_STORAGE, typesHome.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS], loadLocalStorage);
         yield take(['LOGOUT', 'NETWORK']);
         yield cancel(watcher);

@@ -57,28 +57,11 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
             message: message,
             type: type ?? MessageType.normal,
         };
-        dispatch(allActions.main.showMessage(messages, 2000));
+        dispatch(allActions.main.showMessage(messages, type && type !== MessageType.normal ? 2000 : 30000));
     };
 
     const onSendTransaction = async () => {
         try {
-            dispatch(
-                allActions.home.pushTransferToLocalStorage('020327763a0f606c4f204247666f6ae52683b9465a5d5620e1e146f1c652dac40031', {
-                    address: 'CSPR',
-                    amount: 2.5,
-                    decimals: undefined,
-                    deployHash: '86a9a699af58aa37f591eb1c86a3e88ee9b097f61d7e43987ce59c0de51f38d4',
-                    fee: 0.1,
-                    fromAddress: '020327763a0f606c4f204247666f6ae52683b9465a5d5620e1e146f1c652dac40031',
-                    status: 'pending',
-                    symbol: 'CSPR',
-                    timestamp: '2022-02-25T14:48:04.274Z',
-                    toAddress: '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38',
-                    transferId: '',
-                }),
-            );
-            replace(MainRouter.HISTORIES_SCREEN, {token});
-            return;
             if (isDeploying) {
                 return;
             }
