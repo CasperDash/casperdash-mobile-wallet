@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import AppEth from '@ledgerhq/hw-app-eth';
 import {scale} from 'device';
 import {textStyles} from 'assets';
 import {useDispatch} from 'react-redux';
@@ -10,9 +9,9 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import Keys from 'utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import {getLedgerPublicKey} from "utils/services/ledgerServices";
+import {getLedgerPublicKey} from 'utils/services/ledgerServices';
 import CasperApp from '@zondax/ledger-casper';
-import ChoosePinRouter from "navigation/ChoosePinNavigation/ChoosePinRouter";
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
@@ -49,15 +48,15 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
     const fetchAddress = async () => {
         try {
             const casperApp = new CasperApp(transport);
-            const publicKey = await getLedgerPublicKey(casperApp);
+            const ledgerPublicKey = await getLedgerPublicKey(casperApp);
             if (unmountRef.current) {
                 return;
             }
-            if (publicKey) {
+            if (ledgerPublicKey) {
                 setError(null);
-                setPublicKey(publicKey);
+                setPublicKey(ledgerPublicKey);
                 unmountRef.current = true;
-                getAccountInformation(publicKey);
+                getAccountInformation(ledgerPublicKey);
             }
             else {
                 setTransport(null);
@@ -71,12 +70,12 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
         }
     };
 
-    const getAccountInformation = (publicKey: string) => {
-        dispatch(allActions.user.getAccountInformation({publicKey: publicKey}, async (err: any, data: any) => {
+    const getAccountInformation = (ledgerPublicKey: string) => {
+        dispatch(allActions.user.getAccountInformation({publicKey: ledgerPublicKey}, async (err: any, data: any) => {
             if (data) {
                 await Config.saveItem(Keys.ledger, transport.device);
                 const info = {
-                    publicKey: publicKey,
+                    publicKey: ledgerPublicKey,
                     loginOptions: {
                         connectionType: 'ledger',
                         keyIndex: 0,
