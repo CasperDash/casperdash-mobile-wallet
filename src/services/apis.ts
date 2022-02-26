@@ -98,6 +98,22 @@ function deployAPI<T>(params: any): NetworkPromiseResponse<T> {
     });
 }
 
+function getListNFTsAPI<T>(params: any): NetworkPromiseResponse<T> {
+    return new Promise((resolve, reject) => {
+        network
+            .authorizedRequest('/nfts/getNFTsInfo?publicKey=' + params, 'GET')
+            .then((res: any) => {
+                if (!res || (res && res.status >= 400)) {
+                    return reject(res);
+                }
+                resolve(res as any);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
 export default {
     getAccountInformation,
     getTokenInfoWithBalanceAPI,
@@ -105,4 +121,5 @@ export default {
     getTokenAddressInfoAPI,
     getConfigurationsAPI,
     deployAPI,
+    getListNFTsAPI
 };
