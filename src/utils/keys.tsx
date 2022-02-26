@@ -6,6 +6,7 @@ const Keys = {
     configurations: 'configurations',
     ledger: 'transport',
     deploysTransfer: 'deploys.transfers',
+    nfts:'nfts'
 };
 
 export default Keys;

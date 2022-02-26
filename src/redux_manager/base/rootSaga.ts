@@ -19,6 +19,8 @@ import {
     watchGetTokenAddressInfo,
     watchPushTransferToLocalStorage,
 } from '../home/home_saga';
+import {  watchgetNFTsaga } from '../nft/nft_saga';
+ 
 
 export default function* rootSaga() {
     yield all([
@@ -38,5 +40,9 @@ export default function* rootSaga() {
 
         //wallet
 
+        //NFTs
+        watchgetNFTsaga(),
+ 
+        
     ]);
 }
