@@ -1,4 +1,4 @@
-import { CLPublicKey } from 'casper-js-sdk';
+import { CLPublicKey } from 'casperdash-js-sdk';
 import { buildTransferTokenDeploy } from './casperServices';
 
 /**

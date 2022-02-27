@@ -13,7 +13,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
 import {isValidPublicKey} from 'utils/validator';
-import ChoosePinRouter from "navigation/ChoosePinNavigation/ChoosePinRouter";
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 
 function AddKeyScreen() {
 

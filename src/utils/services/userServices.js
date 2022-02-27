@@ -1,4 +1,4 @@
-import { CLPublicKey } from 'casper-js-sdk';
+import { CLPublicKey } from 'casperdash-js-sdk';
 import { toMotes } from '../helpers/currency';
 import { buildTransferDeploy } from './casperServices';
 
