@@ -1,4 +1,4 @@
-import { DeployUtil, CLPublicKey } from 'casper-js-sdk';
+import { DeployUtil, CLPublicKey } from 'casperdash-js-sdk';
 import CasperApp from '@zondax/ledger-casper';
 import { SECP256k1, CONNECT_ERROR_MESSAGE } from '../constants/ledger';
 import { CASPER_KEY_PATH } from '../constants/key';

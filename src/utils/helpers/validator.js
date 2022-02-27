@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { CLPublicKey } from 'casper-js-sdk';
+import { CLPublicKey } from 'casperdash-js-sdk ';
 import { MAX_METADATA_ATTRIBUTES } from '../constants/nft';
 
 /**

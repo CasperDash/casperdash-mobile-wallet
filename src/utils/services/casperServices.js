@@ -1,4 +1,4 @@
-import { DeployUtil, Signer, RuntimeArgs, CLValueBuilder, CLAccountHash, CLKey, CLTypeBuilder } from 'casper-js-sdk';
+import { DeployUtil, Signer, RuntimeArgs, CLValueBuilder, CLAccountHash, CLKey, CLTypeBuilder } from 'casperdash-js-sdk ';
 import { NETWORK_NAME, PAYMENT_AMOUNT, MOTE_RATE, DEPLOY_TTL_MS } from '../constants/key';
 
 /**

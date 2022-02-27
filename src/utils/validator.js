@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { CLPublicKey } from 'casper-js-sdk';
+import { CLPublicKey } from 'casperdash-js-sdk ';
 
 const MAX_METADATA_ATTRIBUTES = 5;
 
