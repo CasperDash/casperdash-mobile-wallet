@@ -34,6 +34,9 @@ import IconLock from './images/ic_lock.svg';
 import IconAboutUs from './images/ic_about_us.svg';
 import IconCircleRight from './images/ic_circle_right.svg';
 import IconCircleClose from './images/ic_close_circle.svg';
+import IconStatusSend from './images/ic_status_send.svg';
+import IconStatusReceive from './images/ic_status_receive.svg';
+import IconStatusSwap from './images/ic_status_swap.svg';
 
 const images = {
     avatar: require('./images/avatar.png'),
@@ -42,6 +45,7 @@ const images = {
     intro3: require('./images/intro3.png'),
     logo: require('./images/logo.png'),
     symbol_cspr: require('./images/ic_symbol_CSPR.png'),
+    nodata: require('./images/ic_no_data.png'),
 };
 
 const colors = {
@@ -201,4 +205,7 @@ export {
     IconLock,
     IconCircleRight,
     IconCircleClose,
+    IconStatusSend,
+    IconStatusReceive,
+    IconStatusSwap,
 };
