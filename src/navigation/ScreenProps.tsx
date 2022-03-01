@@ -7,9 +7,25 @@ export type ScreenParams = {
     DOUBLE_CHECK_IT_SCREEN: {
         data: any
     },
-    CHOOSE_PIN_SCREEN: undefined,
+    CHOOSE_PIN_SCREEN: {
+        hideBackButton?: boolean,
+    },
     CONFIRM_PIN_SCREEN: {
         pin: number,
+    },
+    CONFIRM_SEND_SCREEN: {
+        transferAmount: number,
+        receivingAddress: string,
+        transferID?: any
+        selectedToken: any,
+        networkFee: number,
+        token: any
+    },
+    SEND_SCREEN: {
+        token: any,
+    },
+    HISTORIES_SCREEN: {
+        token: any
     }
 };
 

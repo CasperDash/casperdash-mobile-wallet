@@ -4,7 +4,7 @@ import {
     IconReceive,
     IconSwap,
 } from 'assets';
-import MainRouter from "navigation/stack/MainRouter";
+import MainRouter from 'navigation/stack/MainRouter';
 
 export interface AccountAction {
     id: number,
@@ -18,7 +18,7 @@ const AccountActions: Array<AccountAction> = [
         id: 0,
         icon: IconSend,
         title: 'Sent',
-        screen: 'SendScreen',
+        screen: MainRouter.SEND_SCREEN,
     },
     {
         id: 1,

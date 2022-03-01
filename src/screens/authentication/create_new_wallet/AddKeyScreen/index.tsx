@@ -12,6 +12,8 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
+import {isValidPublicKey} from 'utils/validator';
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 
 function AddKeyScreen() {
 
@@ -22,9 +24,8 @@ function AddKeyScreen() {
     const dispatch = useDispatch();
 
     const onChange = (value?: string) => {
-        //TODO: validate public key and set Error
         setPublicKey(value ?? '');
-        // setError(isValidPublicKey(value) ? '' : 'Invalid public key');
+        setError(isValidPublicKey(value) ? '' : 'Invalid public key');
     };
 
     const onAddPublicKey = async () => {
@@ -39,8 +40,13 @@ function AddKeyScreen() {
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
+                navigate(AuthenticationRouter.CHOOSE_PIN, {
+                    screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+                    params: {
+                        showBack: true,
+                    },
+                });
                 dispatch(allActions.nft.fetchNFTInfo(publicKey));
-                navigate(AuthenticationRouter.CHOOSE_PIN);
             } else {
                 setLoading(false);
                 Config.alertMess(err);

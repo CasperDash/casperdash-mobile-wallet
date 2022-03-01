@@ -82,6 +82,22 @@ function getConfigurationsAPI<T>(): NetworkPromiseResponse<T> {
     });
 }
 
+function deployAPI<T>(params: any): NetworkPromiseResponse<T> {
+    return new Promise((resolve, reject) => {
+        network
+            .authorizedRequest('/deploy', 'POST', params)
+            .then((res: any) => {
+                if (!res || (res && res.status >= 400)) {
+                    return reject(res);
+                }
+                resolve(res as any);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
 function getListNFTsAPI<T>(params: any): NetworkPromiseResponse<T> {
     return new Promise((resolve, reject) => {
         network
@@ -104,5 +120,6 @@ export default {
     fetchCSPRMarketInfoAPI,
     getTokenAddressInfoAPI,
     getConfigurationsAPI,
+    deployAPI,
     getListNFTsAPI
 };

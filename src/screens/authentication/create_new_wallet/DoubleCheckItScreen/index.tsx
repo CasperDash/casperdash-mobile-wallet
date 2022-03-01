@@ -17,6 +17,7 @@ import {Phrase} from 'screens/authentication/data/data';
 import Keys from 'utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import {MessageType} from 'components/CMessge/types';
+import ChoosePinRouter from "navigation/ChoosePinNavigation/ChoosePinRouter";
 
 // @ts-ignore
 const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN>> = ({route}) => {
@@ -89,7 +90,12 @@ const DoubleCheckItScreen: React.FC<ScreenProps<CreateNewWalletRouter.DOUBLE_CHE
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
-                navigate(AuthenticationRouter.CHOOSE_PIN);
+                navigate(AuthenticationRouter.CHOOSE_PIN, {
+                    screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+                    params: {
+                        showBack: true,
+                    },
+                });
             } else {
                 setLoading(false);
                 Config.alertMess(err);

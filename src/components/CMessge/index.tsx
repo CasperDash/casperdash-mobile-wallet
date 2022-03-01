@@ -36,7 +36,7 @@ const CMessage = () => {
             <Row.TL
                 style={[styles.body, !CMessageData && {opacity: 0}, isNormal && styles.bodyNormal]}>
                 {Type && Type.icon}
-                <Col pl={16}>
+                <Col px={16}>
                     {
                         CMessageData && CMessageData.type && !isNormal && <Text
                             style={[styles.title, Type && {color: Type.color}]}>{CMessageData.type}</Text>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, LayoutAnimation, Platform, UIManager} from 'react-native';
-import {CButton, Col, Row} from "components";
-import {scale} from "device";
+import {CButton, Col, Row} from 'components';
+import {scale} from 'device';
 import {
     colors,
     textStyles,
@@ -10,15 +10,16 @@ import {
     IconPencilFilled,
     IconCopy,
     images,
-} from "assets";
-import {AccountActions} from "screens/home/HomeScreen/data/data";
-import ButtonAction from "screens/home/HomeScreen/components/ButtonAction";
-import Clipboard from "@react-native-clipboard/clipboard";
-import {MessageType} from "components/CMessge/types";
-import {allActions} from "redux_manager";
-import {useDispatch, useSelector} from "react-redux";
-import {getAccountTotalBalanceInFiat, getPublicKey} from "utils/selectors/user";
-import {toFormattedCurrency, toFormattedNumber} from "utils/helpers/format";
+} from 'assets';
+import {AccountActions} from 'screens/home/HomeScreen/data/data';
+import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {MessageType} from 'components/CMessge/types';
+import {allActions} from 'redux_manager';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAccountTotalBalanceInFiat, getAllTokenInfo, getPublicKey} from 'utils/selectors/user';
+import {toFormattedCurrency, toFormattedNumber} from 'utils/helpers/format';
+import { useNavigation } from '@react-navigation/native';
 
 function Account() {
     if (Platform.OS === 'android') {
@@ -29,6 +30,8 @@ function Account() {
     const [isShowAmount, setIsShowAmount] = useState<boolean>(true);
     const publicKey = useSelector(getPublicKey);
     const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
+    const allTokenInfo = useSelector(getAllTokenInfo);
+    const {navigate} = useNavigation();
 
     {/*TODO: follow the figma's design*/}
     const onToggleAmount = () => {
@@ -43,6 +46,13 @@ function Account() {
             type: MessageType.normal,
         };
         dispatch(allActions.main.showMessage(message, 1000));
+    };
+
+    const navigateSendReceive = (screen: string) => {
+        const params = {
+            token: allTokenInfo.find((token) => token.address === 'CSPR'),
+        };
+        navigate(screen, params);
     };
 
     return (
@@ -83,7 +93,7 @@ function Account() {
                </Row.C>
                <Row.C>
                    {AccountActions.map((action, index) => {
-                       return <ButtonAction data={action} key={index}/>;
+                       return <ButtonAction data={action} key={index} onPress={navigateSendReceive}/>;
                    })}
                </Row.C>
            </Col>
@@ -97,7 +107,7 @@ const styles = StyleSheet.create({
     container: {
         width: scale(375),
         backgroundColor: colors.cF8F8F8,
-        paddingBottom: scale(16)
+        paddingBottom: scale(16),
     },
     accountContainer: {
         width: scale(343),
@@ -109,4 +119,4 @@ const styles = StyleSheet.create({
         ...textStyles.Body2,
         marginRight: scale(10),
     },
-})
+});

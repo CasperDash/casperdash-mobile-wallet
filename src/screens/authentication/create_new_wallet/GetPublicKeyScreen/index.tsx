@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import AppEth from '@ledgerhq/hw-app-eth';
 import {scale} from 'device';
 import {textStyles} from 'assets';
 import {useDispatch} from 'react-redux';
@@ -10,7 +9,9 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import Keys from 'utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-
+import {getLedgerPublicKey} from 'utils/services/ledgerServices';
+import CasperApp from '@zondax/ledger-casper';
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
@@ -38,25 +39,24 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
             if (unmountRef.current) {
                 return;
             }
-            await fetchAddress(false);
+            await fetchAddress();
             await delay(700);
         }
-        await fetchAddress(true);
+        await fetchAddress();
     };
 
-    const fetchAddress = async (verify: boolean) => {
+    const fetchAddress = async () => {
         try {
-            const eth = new AppEth(transport);
-            const path = "44'/60'/0'/0/0"; // HD derivation path
-            const address = await eth.getAddress(path, verify);
+            const casperApp = new CasperApp(transport);
+            const ledgerPublicKey = await getLedgerPublicKey(casperApp);
             if (unmountRef.current) {
                 return;
             }
-            if (address && address.publicKey) {
+            if (ledgerPublicKey) {
                 setError(null);
-                setPublicKey(address.publicKey);
+                setPublicKey(ledgerPublicKey);
                 unmountRef.current = true;
-                getAccountInformation(address.publicKey);
+                getAccountInformation(ledgerPublicKey);
             }
             else {
                 setTransport(null);
@@ -70,17 +70,24 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
         }
     };
 
-    const getAccountInformation = (publicKey: string) => {
-        dispatch(allActions.user.getAccountInformation({publicKey}, async (err: any, data: any) => {
+    const getAccountInformation = (ledgerPublicKey: string) => {
+        dispatch(allActions.user.getAccountInformation({publicKey: ledgerPublicKey}, async (err: any, data: any) => {
             if (data) {
+                await Config.saveItem(Keys.ledger, transport.device);
                 const info = {
-                    publicKey: publicKey,
+                    publicKey: ledgerPublicKey,
                     loginOptions: {
                         connectionType: 'ledger',
+                        keyIndex: 0,
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
-                replace(AuthenticationRouter.CHOOSE_PIN);
+                replace(AuthenticationRouter.CHOOSE_PIN, {
+                    screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+                    params: {
+                        showBack: false,
+                    },
+                });
             } else {
                 setTransport(null);
                 Config.alertMess(err);
