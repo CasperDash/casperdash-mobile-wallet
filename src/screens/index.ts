@@ -5,6 +5,8 @@ export {default as SplashScreen} from './splash_screen/SplashScreen';
 // Home
 export {default as HomeScreen} from './home/HomeScreen';
 export {default as AddCustomTokenScreen} from './home/AddCustomTokenScreen';
+export {default as SendScreen} from './home/SendScreen';
+export {default as ConfirmSendScreen} from './home/ConfirmSendScreen';
 export {default as ReceiveScreen} from './home/ReceiveScreen';
 export {default as HistoriesScreen} from './home/HistoriesScreen';
 export {default as TransferHistoryScreen} from './home/TransferHistoryScreen';
@@ -14,6 +16,7 @@ export {default as StakingScreen} from './staking/StakingScreen';
 
 //NFT
 export {default as NFTScreen} from './nft/NFTScreen';
+export {default as NFTDetailScreen} from './nft/NFTDetailScreen';
 
 //Market
 export {default as MarketScreen} from './market/MarketScreen';

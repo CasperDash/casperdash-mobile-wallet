@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import {ScreenProps} from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
+import {useTokenInfo} from 'utils/hooks/useTokensInfo';
 import {useSelector} from 'react-redux';
+import {getDeploysTransfer} from 'utils/selectors/transfer';
 import {getPublicKey} from 'utils/selectors';
 import {CButton, CHeader, CLayout, Col, Row} from 'components';
 import {colors, images, textStyles} from 'assets';
@@ -34,6 +36,12 @@ const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ro
     const onTransactionClick = (deploy: any) => {
         navigate(MainRouter.TRANSFER_HISTORY_SCREEN, {deploy});
     };
+
+    const { tokenInfoByAddress: tokenInfo } = useTokenInfo(token);
+    const publicKey = useSelector(getPublicKey);
+    // @ts-ignore
+    const listTransfers = useSelector((state: any) => getDeploysTransfer(state, {symbol: token.symbol, publicKey, status: selectedStatus}));
+
 
     return (
         <CLayout bgColor={colors.cF8F8F8}
