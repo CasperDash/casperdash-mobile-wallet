@@ -9,6 +9,12 @@ interface Props {
     value: any,
 }
 
+const COLOR_MAPPING: any = {
+    'pending': colors.Y1,
+    'completed': colors.G1,
+    'failed': colors.R1,
+};
+
 const TransactionItem = ({onPress, value}: Props) => {
     return (
         <CButton onPress={() => onPress(value)}>
@@ -17,11 +23,15 @@ const TransactionItem = ({onPress, value}: Props) => {
                 <Row.LR pl={16} style={{flex: 1}}>
                     <Col.L>
                         <Text style={textStyles.Sub1}>0xa64784...2583</Text>
-                        <Text style={[textStyles.Body2, {color: colors.c828489, marginTop: scale(4)}]}>2021-11-09 23:45</Text>
+                        <Text style={[textStyles.Body2, {color: colors.c828489, marginTop: scale(4)}]}>2021-11-09
+                            23:45</Text>
                     </Col.L>
                     <Col.R>
                         <Text style={textStyles.Sub1}>+0.00274 CSPR</Text>
-                        <Text style={[textStyles.Body2, {color: colors.c828489, marginTop: scale(4)}]}>Pending</Text>
+                        <Text style={[textStyles.Body2, {
+                            color: COLOR_MAPPING[value.status] ?? colors.N2,
+                            marginTop: scale(4),
+                        }]}>{value.status ?? ''}</Text>
                     </Col.R>
                 </Row.LR>
             </Row>

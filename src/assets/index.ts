@@ -214,7 +214,6 @@ export {
     IconEyeOff,
     IconEye,
     IconPencilFilled,
-    IconCopy,
     IconReceive,
     IconSend,
     IconSwap,
