@@ -7,6 +7,7 @@ export {default as HomeScreen} from './home/HomeScreen';
 export {default as AddCustomTokenScreen} from './home/AddCustomTokenScreen';
 export {default as ReceiveScreen} from './home/ReceiveScreen';
 export {default as HistoriesScreen} from './home/HistoriesScreen';
+export {default as TransferHistoryScreen} from './home/TransferHistoryScreen';
 
 //Staking
 export {default as StakingScreen} from './staking/StakingScreen';
