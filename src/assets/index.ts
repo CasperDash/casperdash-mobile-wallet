@@ -21,6 +21,7 @@ import IconImportPhrase from './images/ic_import_phrase.svg';
 import IconMessageSuccess from './images/ic_message_success.svg';
 import IconMessageWarning from './images/ic_message_warning.svg';
 import IconMessageError from './images/ic_message_error.svg';
+import IconArrowDown from './images/ic_arrow_down.svg';
 import IconSetting from './images/ic_setting.svg';
 import IconScanCode from './images/ic_scan_code.svg';
 import IconPencilFilled from './images/ic_pencil_filled.svg';
@@ -69,7 +70,7 @@ const colors = {
 
     N1: '#000000',
     N2: '#353945',
-    N3: '#777E91',
+    N3: '#777E90',
     N4: '#D1D7E7',
     N5: '#F6F7FA',
     N6: '#FCFCFD',
@@ -200,6 +201,7 @@ export {
     IconMessageSuccess,
     IconMessageWarning,
     IconMessageError,
+    IconArrowDown,
     IconSearch,
     IconArrowUp,
     IconCopy,

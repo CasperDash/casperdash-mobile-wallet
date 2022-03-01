@@ -9,6 +9,7 @@ import {DeviceItem} from 'screens/authentication/create_new_wallet/components';
 import {scale} from 'device';
 import {textStyles} from 'assets';
 import {GetPublicKeyScreen} from 'screens';
+import {Config, Keys} from 'utils';
 
 const deviceAddition = (device: any, devices: any) => (devices.some((i: any) => i.id === device.id) ? devices : devices.concat(device));
 

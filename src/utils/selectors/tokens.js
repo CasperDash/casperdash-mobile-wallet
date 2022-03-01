@@ -42,7 +42,7 @@ export const getMassagedTokenData = createSelector(tokensSelector, ({ tokenInfoW
 	});
 });
 
-export const getTokensAddressList = ({ tokens }) => {
-	const tokensAddress = (tokens && tokens.address) || [];
+export const getTokensAddressList = ({ main }) => {
+	const tokensAddress = (main && main.tokensAddressList) || [];
 	return [...new Set([...tokensAddress])];
 };
