@@ -16,4 +16,5 @@ export { default as CFastImage } from './CFastImage';
 export { default as CListView } from './CListView';
 export { default as CTab } from './CTab/CTab';
 export { default as CTab2 } from './CTab/CTab2';
+export { default as CInputFormik } from './CInputFormik';
 export { default as CAlert } from './CAlert';

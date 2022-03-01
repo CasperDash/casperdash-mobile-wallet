@@ -14,12 +14,14 @@ import IconMenuKeyManager from './images/ic_menu_key_manager.svg';
 import IconMenuKeyManagerActive from './images/ic_menu_key_manager_active.svg';
 import IconArrowLeft from './images/ic_arrow_left.svg';
 import IconArrowRight from './images/ic_arrow_right.svg';
+import IconArrowUp from './images/ic_arrow_up.svg';
 import IconPlusCircle from './images/ic_plus_circle.svg';
 import IconConnectLedger from './images/ic_connect_ledger.svg';
 import IconImportPhrase from './images/ic_import_phrase.svg';
 import IconMessageSuccess from './images/ic_message_success.svg';
 import IconMessageWarning from './images/ic_message_warning.svg';
 import IconMessageError from './images/ic_message_error.svg';
+import IconArrowDown from './images/ic_arrow_down.svg';
 import IconSetting from './images/ic_setting.svg';
 import IconScanCode from './images/ic_scan_code.svg';
 import IconPencilFilled from './images/ic_pencil_filled.svg';
@@ -34,16 +36,28 @@ import IconLock from './images/ic_lock.svg';
 import IconAboutUs from './images/ic_about_us.svg';
 import IconCircleRight from './images/ic_circle_right.svg';
 import IconCircleClose from './images/ic_close_circle.svg';
+import IconSearch from './images/ic_search.svg';
+import IconFacebook from './images/ic_facebook.svg';
+import IconInstagram from './images/ic_instagram.svg';
+import IconTwitter from './images/ic_twitter.svg';
+import IconAttributes from './images/ic_attributes.svg';
 import IconStatusSend from './images/ic_status_send.svg';
 import IconStatusReceive from './images/ic_status_receive.svg';
 import IconStatusSwap from './images/ic_status_swap.svg';
 
 const images = {
+
     avatar: require('./images/avatar.png'),
+
     intro1: require('./images/intro1.png'),
+
     intro2: require('./images/intro2.png'),
+
     intro3: require('./images/intro3.png'),
     logo: require('./images/logo.png'),
+    nonft:require('./images/nonft.png'),
+    bgnft:require('./images/bgnft.png'),
+    imgnft:require('./images/img_nft.png'),
     symbol_cspr: require('./images/ic_symbol_CSPR.png'),
     nodata: require('./images/ic_no_data.png'),
 };
@@ -60,7 +74,7 @@ const colors = {
 
     N1: '#000000',
     N2: '#353945',
-    N3: '#777E91',
+    N3: '#777E90',
     N4: '#D1D7E7',
     N5: '#F6F7FA',
     N6: '#FCFCFD',
@@ -191,6 +205,10 @@ export {
     IconMessageSuccess,
     IconMessageWarning,
     IconMessageError,
+    IconArrowDown,
+    IconSearch,
+    IconArrowUp,
+    IconCopy,
     IconScanCode,
     IconSetting,
     IconEyeOff,
@@ -205,6 +223,10 @@ export {
     IconLock,
     IconCircleRight,
     IconCircleClose,
+    IconFacebook,
+    IconInstagram,
+    IconTwitter,
+    IconAttributes,
     IconStatusSend,
     IconStatusReceive,
     IconStatusSwap,

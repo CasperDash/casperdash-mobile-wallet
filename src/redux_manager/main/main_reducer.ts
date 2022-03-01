@@ -1,4 +1,4 @@
-import {types as typesMain, types} from './main_action';
+import {types} from './main_action';
 
 const initialState = {
     CMessageData: null,
@@ -10,6 +10,7 @@ const initialState = {
     },
     tokensAddressList: [],
     casperdash: null,
+    deploysTransfer: null,
 };
 
 export default function (
@@ -25,7 +26,7 @@ export default function (
                 ...state,
                 CMessageData: action.payload,
             };
-        case typesMain.LOAD_LOCAL_STORAGE_SUCCESS:
+        case types.LOAD_LOCAL_STORAGE_SUCCESS:
             return {
                 ...state,
                 ...action.payload,
