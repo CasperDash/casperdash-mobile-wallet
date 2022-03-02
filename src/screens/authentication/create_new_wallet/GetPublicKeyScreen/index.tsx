@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {scale} from 'device';
