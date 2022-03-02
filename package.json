@@ -71,6 +71,7 @@
     "react-native-image-viewing": "^0.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-localize": "^2.2.0",
     "react-native-masked-text": "^1.13.0",
     "react-native-modal": "^12.0.2",
     "react-native-modal-datetime-picker": "^13.0.0",
