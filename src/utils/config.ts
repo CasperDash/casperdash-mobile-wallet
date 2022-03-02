@@ -2,6 +2,7 @@ import {Alert, Linking} from 'react-native';
 import {check, request, RESULTS} from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
 
+const EXPLORER_URL = __DEV__ ? 'https://testnet.cspr.live' : 'https://cspr.live';
 const ROOT_HTTP = 'https://testnet-api.casperdash.io';
 
 const alertMess = function (data: any, title?: any, cb?: Function, cbCancel?: Function) {
@@ -91,11 +92,16 @@ const deleteItem = async (key: string, options?: any) => {
     }, options));
 };
 
+const getViewExplorerURL = (type: string, value: string) => {
+    return `${EXPLORER_URL}/${type}/${value}`;
+
+};
 export default {
     ROOT_HTTP,
     alertMess,
     requestPermission,
     saveItem,
     getItem,
-    deleteItem
+    deleteItem,
+    getViewExplorerURL
 };

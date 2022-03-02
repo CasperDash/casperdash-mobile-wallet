@@ -1,58 +1,74 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {colors, IconCopy, textStyles} from 'assets';
+import React from 'react';
+import {Text, StyleSheet, ScrollView, Linking} from 'react-native';
+import {colors, IconViewExplorer, textStyles} from 'assets';
 import {CButton, CHeader, CLayout, Col, Row} from 'components';
 import {ScreenProps} from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
 import {scale} from 'device';
+import TransferDetailComponent from 'screens/home/TransferHistoryScreen/TransferDetailComponent';
+import {STATUS_MAPPING} from 'screens/home/HistoriesScreen';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { Config } from 'utils';
+import {useDispatch} from 'react-redux';
+import { MessageType } from 'components/CMessge/types';
+import { allActions } from 'redux_manager';
+
+const DETAILS_MAPPING = [
+    {label: 'Sending address', value: 'fromAddress', copy: true},
+    {label: 'Receiving address', value: 'toAddress', copy: true},
+    {label: 'Amount', value: 'amount', format: 'number'},
+    {label: 'Network Fee', value: 'fee', format: 'number'},
+    {label: 'Transaction Time', value: 'timestamp', format: 'date'},
+    {label: 'Transaction Hash', value: 'deployHash', copy: true},
+    {label: 'Transfer ID', value: 'transferId'},
+];
 
 // @ts-ignore
 const TransferHistoryScreen: React.FC<ScreenProps<MainRouter.TRANSFER_HISTORY_SCREEN>> = ({route}) => {
     const {deploy} = route.params;
-    const {symbol} = deploy;
+    const {bottom} = useSafeAreaInsets();
+    const mappingStatus = STATUS_MAPPING.find(i => i.value === (deploy.status || true));
+    const dispatch = useDispatch();
+    const onViewExplorer = async () => {
+        const url = Config.getViewExplorerURL('deploy', deploy.deployHash);
+        const supported = await Linking.canOpenURL(url);
+        if (supported){
+            await Linking.openURL(url);
+        }
+        else {
+            const message = {
+                message: 'Can not view in explorer',
+                type: MessageType.error,
+            };
+            dispatch(allActions.main.showMessage(message));
+        }
+    };
 
     return (
         <CLayout bgColor={colors.cF8F8F8}
                  edges={['right', 'top', 'left']}
                  statusBgColor={colors.cF8F8F8}>
-            <CHeader title={'Send CSRP'} style={{backgroundColor: colors.cF8F8F8}}/>
+            <CHeader title={'Transaction details'} style={{backgroundColor: colors.cF8F8F8}}/>
             <Col mt={16} style={styles.container}>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{marginTop: scale(24)}}
-                    contentContainerStyle={styles.contentContainerStyle}>
-                    <Text style={[styles.title, {marginTop: 0}]}>Sending Address</Text>
-                    <CButton>
-                        <Row style={styles.row}>
-                            <Text numberOfLines={1}
-                                  ellipsizeMode={'middle'}
-                                  style={[styles.value, {width: scale(200)}]}>02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38</Text>
-                            <IconCopy style={styles.icCopy} width={scale(15)} height={scale(15)}/>
-                        </Row>
-                    </CButton>
-                    <Text style={styles.title}>Receiving Address</Text>
-                    <CButton>
-                        <Row style={styles.row}>
-                            <Text numberOfLines={1}
-                                  ellipsizeMode={'middle'}
-                                  style={[styles.value, {width: scale(200)}]}>02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38</Text>
-                            <IconCopy style={styles.icCopy} width={scale(15)} height={scale(15)}/>
-                        </Row>
-                    </CButton>
-                    <Text style={styles.title}>Network Fee</Text>
-                    <Text style={styles.value}>0.00022203 <Text
-                        style={[textStyles.Body1, {fontWeight: '500'}]}>CSPR</Text></Text>
-                    <Text style={styles.title}>Transaction Time</Text>
-                    <Text style={styles.value}>2021-10-19 22:30</Text>
-                    <Text style={styles.title}>Transaction Hash</Text>
-                    <CButton>
-                        <Row style={styles.row}>
-                            <Text style={styles.value}>0xhf797vbco98948nous98c999wrbiosiijdid9wffosf9skcjaf89fcsoch 879b </Text>
-                            <IconCopy style={styles.icCopy} width={scale(15)} height={scale(15)}/>
-                        </Row>
-                    </CButton>
-                    <Text style={styles.title}>Transfer ID</Text>
-                    <Text style={styles.value}>0474938757539385</Text>
+                    contentContainerStyle={[styles.contentContainerStyle, {paddingBottom: bottom + scale(20)}]}>
+                    {
+                        DETAILS_MAPPING.map((detail, index) => {
+                            return <TransferDetailComponent data={detail} key={index} deploy={deploy} index={index}/>;
+                        })
+                    }
+                    <Row.LR mt={16}>
+                        <Text
+                            style={[textStyles.Body2, {color: mappingStatus?.color || colors.N2}]}>{mappingStatus?.label}</Text>
+                        <CButton onPress={onViewExplorer}>
+                            <Row>
+                                <Text style={[textStyles.Body2, {color: colors.R1, marginRight: scale(8)}]}>View in explorer</Text>
+                                <IconViewExplorer width={scale(20)} height={scale(20)}/>
+                            </Row>
+                        </CButton>
+                    </Row.LR>
                 </ScrollView>
             </Col>
         </CLayout>
@@ -71,23 +87,5 @@ const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         paddingHorizontal: scale(16),
-    },
-    title: {
-        ...textStyles.Sub1,
-        color: colors.N3,
-        marginTop: scale(20),
-    },
-    value: {
-        ...textStyles.Body1,
-        marginTop: scale(12),
-        paddingRight: scale(20),
-        maxWidth: scale(375 - 32 - 20),
-    },
-    row: {
-        width: scale(375 - 16 * 2),
-        alignItems: 'center',
-    },
-    icCopy: {
-        marginTop: scale(10),
     },
 });
