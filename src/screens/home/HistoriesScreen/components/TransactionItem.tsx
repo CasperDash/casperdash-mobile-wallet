@@ -1,38 +1,44 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
+import {Text, StyleSheet} from 'react-native';
 import {Row, Col, CButton} from 'components';
 import {colors, IconStatusReceive, textStyles} from 'assets';
 import {scale} from 'device';
+import _ from 'lodash';
+import {STATUS_MAPPING} from 'screens/home/HistoriesScreen';
+import * as RNLocalize from 'react-native-localize';
+
+import {toFormattedDate} from 'utils/date';
 
 interface Props {
     onPress: (deploy: any) => void,
     value: any,
 }
 
-const COLOR_MAPPING: any = {
-    'pending': colors.Y1,
-    'completed': colors.G1,
-    'failed': colors.R1,
-};
-
 const TransactionItem = ({onPress, value}: Props) => {
+    const mappingStatus = STATUS_MAPPING.find(i => i.value === value.status);
+    const locales = RNLocalize.getLocales();
+    const defaultLocale = locales && locales[0] && locales[0].languageTag;
+
     return (
         <CButton onPress={() => onPress(value)}>
             <Row px={16} py={10} style={styles.container}>
                 <IconStatusReceive width={scale(24)} height={scale(24)}/>
                 <Row.LR pl={16} style={{flex: 1}}>
-                    <Col.L>
-                        <Text style={textStyles.Sub1}>0xa64784...2583</Text>
-                        <Text style={[textStyles.Body2, {color: colors.c828489, marginTop: scale(4)}]}>2021-11-09
-                            23:45</Text>
-                    </Col.L>
-                    <Col.R>
-                        <Text style={textStyles.Sub1}>+0.00274 CSPR</Text>
+                    <Col.TL>
+                        <Text style={styles.title} numberOfLines={1}
+                              ellipsizeMode={'middle'}>{value.deployHash ?? ''}</Text>
                         <Text style={[textStyles.Body2, {
-                            color: COLOR_MAPPING[value.status] ?? colors.N2,
+                            color: colors.c828489,
                             marginTop: scale(4),
-                        }]}>{value.status ?? ''}</Text>
-                    </Col.R>
+                        }]}>{value.timestamp ? (toFormattedDate(value.timestamp, defaultLocale)) : ''}</Text>
+                    </Col.TL>
+                    <Col.TR>
+                        <Text style={textStyles.Sub1}>{`${value.amount} ${value.symbol}`}</Text>
+                        <Text style={[textStyles.Body2, {
+                            color: mappingStatus ? mappingStatus.color : colors.N2,
+                            marginTop: scale(4),
+                        }]}>{mappingStatus ? mappingStatus.label : _.capitalize(value.status ?? '')}</Text>
+                    </Col.TR>
                 </Row.LR>
             </Row>
         </CButton>
@@ -45,5 +51,9 @@ const styles = StyleSheet.create({
     container: {
         width: scale(375),
         alignItems: 'center',
+    },
+    title: {
+        ...textStyles.Sub1,
+        width: scale(130),
     },
 });
