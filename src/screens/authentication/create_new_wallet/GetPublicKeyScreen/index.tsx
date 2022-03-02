@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {scale} from 'device';
@@ -94,7 +95,7 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
                     publicKey: ledgerPublicKey,
                     loginOptions: {
                         connectionType: 'ledger',
-                        keyIndex: keyIndex,
+                        keyIndex,
                     },
                 };
                 await Config.saveItem(Keys.casperdash, info);
@@ -113,6 +114,9 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
         }));
     };
 
+    /**
+     * Render the key component to display public key and index.
+     */
     const _renderKeys = () => {
         const height = insets.bottom === 0 ? 0 : insets.bottom + scale(72);
         return (
@@ -135,9 +139,10 @@ const GetPublicKeyScreen = ({transport, setTransport}: Props) => {
 
     return (
         <View style={styles.ShowAddressScreen}>
-            {isLoading && <Text style={styles.loading}>Loading your account</Text>}
-            {
-                !isLoading && !publicKey && error &&
+            {isLoading
+            ? <Text style={styles.loading}>Loading your account</Text>
+            :
+                !publicKey && error &&
                 <Text style={styles.error}>
                     A problem occurred, make sure to open the Casper application
                     on your Ledger Nano X. (
