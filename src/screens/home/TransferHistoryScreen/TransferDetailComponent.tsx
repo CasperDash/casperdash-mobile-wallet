@@ -7,10 +7,9 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {MessageType} from 'components/CMessge/types';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
-import * as RNLocalize from 'react-native-localize';
 import {getValueByFormat} from 'utils/helpers/format';
 import {toFormattedDate} from 'utils/date';
-import {STATUS_MAPPING} from 'screens/home/HistoriesScreen';
+import {Config} from 'utils';
 
 interface Props {
     data: any,
@@ -21,11 +20,9 @@ interface Props {
 const TransferDetailComponent = ({data, deploy, index}: Props) => {
 
     const dispatch = useDispatch();
-    const locales = RNLocalize.getLocales();
-    const defaultLocale = locales && locales[0] && locales[0].languageTag;
     const deployValue = deploy[data.value];
     const formattedValue = data.format ? (
-        data.format === 'date' ? toFormattedDate(deploy.timestamp, defaultLocale) : getValueByFormat(deployValue, {format: data.format})
+        data.format === 'date' ? toFormattedDate(deploy.timestamp, Config.defaultLocale) : getValueByFormat(deployValue, {format: data.format})
     ) : deployValue;
 
     const copy = async () => {
