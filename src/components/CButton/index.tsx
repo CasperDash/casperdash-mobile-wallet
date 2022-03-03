@@ -6,9 +6,16 @@ const defaultProps = {
   onPress: () => console.log('KIEM TRA'),
 };
 
-const Button: React.FC<TouchableOpacityProps> = ({ disabled, style, children, ...rest }) => {
+interface Props extends React.FC<TouchableOpacityProps> {
+  enabledOpacity?: boolean,
+  disabled?: boolean,
+  style?: any,
+  children?: any,
+}
+
+const Button = ({ disabled, style, enabledOpacity = false, children, ...rest }: Props) => {
   return (
-    <TouchableOpacity {...rest} {...{ disabled }} activeOpacity={0.85} style={[style, disabled && styles.disabled]}>
+    <TouchableOpacity {...rest} {...{ disabled }} activeOpacity={0.85} style={[style, disabled && !enabledOpacity && styles.disabled]}>
       {children}
     </TouchableOpacity>
   );

@@ -1,8 +1,13 @@
 import {Alert, Linking} from 'react-native';
 import {check, request, RESULTS} from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
+import * as RNLocalize from 'react-native-localize';
+import {EXPLORER_URL} from 'utils/constants/key';
 
 const ROOT_HTTP = __DEV__ ? 'https://testnet-api.casperdash.io' : 'https://api.casperdash.io';
+
+const locales = RNLocalize.getLocales();
+const defaultLocale = locales && locales[0] && locales[0].languageTag;
 
 const alertMess = function (data: any, title?: any, cb?: Function, cbCancel?: Function) {
     let messAlert = data && data.message ? data.message : 'System error';
@@ -91,11 +96,17 @@ const deleteItem = async (key: string, options?: any) => {
     }, options));
 };
 
+const getViewExplorerURL = (type: string, value: string) => {
+    return `${EXPLORER_URL}/${type}/${value}`;
+
+};
 export default {
     ROOT_HTTP,
     alertMess,
     requestPermission,
     saveItem,
     getItem,
-    deleteItem
+    deleteItem,
+    getViewExplorerURL,
+    defaultLocale,
 };
