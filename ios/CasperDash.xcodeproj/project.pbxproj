@@ -667,7 +667,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CURRENT_PROJECT_VERSION = 23;
-				DEVELOPMENT_TEAM = 77X6LN3CVN;
+				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -680,7 +680,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.casperdash.casperwallet1;
+				PRODUCT_BUNDLE_IDENTIFIER = io.casperdash.casperwallet;
 				PRODUCT_NAME = CasperDash;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -696,7 +696,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CURRENT_PROJECT_VERSION = 23;
-				DEVELOPMENT_TEAM = 77X6LN3CVN;
+				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -708,7 +708,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.casperdash.casperwallet1;
+				PRODUCT_BUNDLE_IDENTIFIER = io.casperdash.casperwallet;
 				PRODUCT_NAME = CasperDash;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
