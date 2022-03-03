@@ -8,9 +8,9 @@ import {
   IconFacebook,
   IconInstagram,
   IconTwitter,
-  images,
+  images, textStyles,
 } from 'assets';
-import { Row } from 'components';
+import {CFastImage, CHeader, CLayout, Row} from 'components';
 import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
 
@@ -23,9 +23,7 @@ import {
   Modal,
   View,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
-// import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 
@@ -34,13 +32,13 @@ interface Props {
   navigation: any;
 }
 
-function NFTDetail({ route, navigation }: Props) {
-  const [valid, setValid] = useState(true);
+function NFTDetail({ route }: Props) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [showAttributes, setshowAttributes] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [showAttributes, setShowAttributes] = useState(true);
+
   const data = route.params;
+
   const {
     nftImage,
     contractAddress,
@@ -50,10 +48,6 @@ function NFTDetail({ route, navigation }: Props) {
     totalSupply,
   } = data;
 
-  const onBack = () => {
-    navigation.goBack();
-    // navigate(NFTRouter.NFT_SCREEN, null);
-  };
   const copyToClipboard = async () => {
     await Clipboard.setString(contractAddress);
     const message = {
@@ -79,31 +73,26 @@ function NFTDetail({ route, navigation }: Props) {
   // };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onBack}>
-          <IconArrowLeft width={32} height={24} />
+    <CLayout statusBgColor={colors.cF8F8F8}
+             edges={['right', 'top', 'left']}
+             bgColor={colors.cF8F8F8}>
+      <View style={styles.container}>
+        <CHeader title={nftName} style={{backgroundColor: colors.cF8F8F8}}/>
+        <TouchableOpacity onPress={onOpenModal} style={{ position: 'relative', marginTop: scale(24) }}>
+          <CFastImage
+              disabled
+              colorDef={'transparent'}
+              source={nftImage}
+              resizeMode={'cover'}
+              sourceDef={images.imgnft}
+              style={styles.nftImage}
+              width={device.w}
+              height={scale(189)}
+          />
         </TouchableOpacity>
-        <Text style={styles.name}>{nftName}</Text>
-        <Text />
-      </View>
-      <TouchableOpacity onPress={onOpenModal} style={{ position: 'relative' }}>
-        <Image
-          source={valid ? { uri: nftImage } : images.imgnft}
-          style={styles.nftImage}
-          onError={() => setValid(false)}
-          onLoadStart={() => setLoading(true)}
-          onLoadEnd={() => setLoading(false)}
-        />
-        {loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator size="small" color={colors.N2} />
-          </View>
-        )}
-      </TouchableOpacity>
-      <ScrollView style={styles.scrollView}>
-        <View style={{ width: '100%' }}>
-          {/* TODO:follow the figma's design
+        <ScrollView style={styles.scrollView}>
+          <View style={{ width: '100%' }}>
+            {/* TODO:follow the figma's design
           <View style={styles.headerInformation}>
             <Text style={styles.title}>Current Price</Text>
             <View style={styles.flex}>
@@ -129,61 +118,69 @@ function NFTDetail({ route, navigation }: Props) {
             <Text style={styles.textPriceConvert}>(~$111)</Text>
           </View>
           <Text style={styles.time}>2021-11-09 23:45</Text> */}
-          <View style={styles.headerInformation}>
-            <Text style={styles.totalSupply}>Total Supply :{totalSupply}</Text>
-          </View>
-          <View style={styles.flexStart}>
-            <Text style={styles.labelContract}>Contract Name:</Text>
-            <Text style={styles.contractContent}> {nftContractName}</Text>
-          </View>
-          <View style={{ marginVertical: scale(20) }}>
-            <Text style={styles.labelContract}>Contract Address:</Text>
-            <Row.C>
-              <Text
-                onPress={copyToClipboard}
-                numberOfLines={1}
-                ellipsizeMode={'middle'}
-                style={styles.contractAddressText}>
-                {contractAddress}
-              </Text>
-              <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
-            </Row.C>
-          </View>
+            <View style={styles.headerInformation}>
+              <Text style={styles.totalSupply}>Total Supply: {totalSupply}</Text>
+            </View>
+            <View style={styles.flexStart}>
+              <Text style={styles.labelContract}>Contract Name:</Text>
+              <Text style={styles.contractContent}> {nftContractName}</Text>
+            </View>
+            <View style={{ marginVertical: scale(20) }}>
+              <Text style={styles.labelContract}>Contract Address:</Text>
+              <Row.C mt={14}>
+                <Text
+                    onPress={copyToClipboard}
+                    numberOfLines={1}
+                    ellipsizeMode={'middle'}
+                    style={styles.contractAddressText}>
+                  {contractAddress}
+                </Text>
+                <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
+              </Row.C>
+            </View>
 
-          <TouchableOpacity onPress={() => setshowAttributes(!showAttributes)}>
-            <View style={styles.titleWrapper}>
-              <Text style={styles.title}>Attributes </Text>
-              <IconAttributes
-                style={
-                  showAttributes ? styles.showAttribute : styles.hideAttribute
-                }
-              />
-            </View>
+            <TouchableOpacity
+                style={{marginBottom: scale(24)}}
+                onPress={() => setShowAttributes(!showAttributes)}>
+              <View style={styles.titleWrapper}>
+                <Text style={styles.title}>Attributes</Text>
+                <IconAttributes
+                    style={
+                      showAttributes ? styles.showAttribute : styles.hideAttribute
+                    }
+                />
+              </View>
+            </TouchableOpacity>
+            {showAttributes && (
+                <View style={styles.metaData}>
+                  {metadata.map(
+                      (item: { name: string; key: string; value: string }) => (
+                          <View key={item.name} style={styles.metaDataItem}>
+                            <Text style={styles.keyMetaData}>{item.key}</Text>
+                            <Text style={styles.valueMetaData}>{item.value}</Text>
+                          </View>
+                      ),
+                  )}
+                </View>
+            )}
+          </View>
+        </ScrollView>
+        <Modal animationType="fade" transparent={true} visible={open}>
+          <TouchableOpacity onPress={onOpenModal} style={styles.modal}>
+            <CFastImage
+                disabled
+                colorDef={'transparent'}
+                source={nftImage}
+                resizeMode={'contain'}
+                sourceDef={images.imgnft}
+                style={styles.nftImage}
+                width={device.w - scale(60)}
+                height={device.h - scale(60)}
+            />
           </TouchableOpacity>
-          {showAttributes && (
-            <View style={styles.metaData}>
-              {metadata.map(
-                (item: { name: string; key: string; value: string }) => (
-                  <View key={item.name} style={styles.metaDataItem}>
-                    <Text style={styles.keyMetaData}>{item.key}</Text>
-                    <Text style={styles.valueMetaData}>{item.value}</Text>
-                  </View>
-                ),
-              )}
-            </View>
-          )}
-        </View>
-      </ScrollView>
-      <Modal animationType="fade" transparent={true} visible={open}>
-        <TouchableOpacity onPress={onOpenModal} style={styles.modal}>
-          <Image
-            source={valid ? { uri: nftImage } : images.imgnft}
-            style={styles.nftImageFull}
-            onError={() => setValid(false)}
-          />
-        </TouchableOpacity>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
+    </CLayout>
   );
 }
 
@@ -195,18 +192,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    paddingTop: scale(20),
     backgroundColor: '#F8F8F8',
     height: device.h + 50,
   },
   titleWrapper: {
-    marginBottom: scale(24),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   title: {
+    ...textStyles.Sub1,
     color: colors.N3,
     fontSize: scale(16),
     fontWeight: '500',
@@ -235,6 +231,7 @@ const styles = StyleSheet.create({
   },
 
   totalSupply: {
+    ...textStyles.Sub1,
     fontSize: scale(16),
     fontWeight: '500',
     color: colors.N3,
@@ -278,6 +275,7 @@ const styles = StyleSheet.create({
     marginVertical: scale(20),
   },
   labelContract: {
+    ...textStyles.Sub1,
     flexWrap: 'wrap',
     fontSize: scale(16),
     fontWeight: '500',
@@ -350,11 +348,12 @@ const styles = StyleSheet.create({
     width: device.w / 2 - 30,
   },
   keyMetaData: {
+    ...textStyles.Body2,
     color: colors.N3,
     marginBottom: scale(14),
   },
   valueMetaData: {
-    color: colors.N2,
+    ...textStyles.Body2,
   },
   modal: {
     width: device.w,
