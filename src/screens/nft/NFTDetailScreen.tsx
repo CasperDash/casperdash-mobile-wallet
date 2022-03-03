@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import Clipboard from '@react-native-clipboard/clipboard';
 import {
   colors,
@@ -12,8 +13,7 @@ import {
 import { Row } from 'components';
 import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
-import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
-import { navigate } from 'navigation/RootNavigation';
+
 import React, { useState } from 'react';
 import {
   Image,
@@ -25,11 +25,16 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
+// import { Props } from 'react-native-tab-view/lib/typescript/TabBarItem';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 
-function NFTDetail({ route }: Props) {
+interface Props {
+  route: any;
+  navigation: any;
+}
+
+function NFTDetail({ route, navigation }: Props) {
   const [valid, setValid] = useState(true);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -46,7 +51,8 @@ function NFTDetail({ route }: Props) {
   } = data;
 
   const onBack = () => {
-    navigate(NFTRouter.NFT_SCREEN, null);
+    navigation.goBack();
+    // navigate(NFTRouter.NFT_SCREEN, null);
   };
   const copyToClipboard = async () => {
     await Clipboard.setString(contractAddress);
@@ -191,7 +197,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: scale(20),
     backgroundColor: '#F8F8F8',
-    height: device.h,
+    height: device.h + 50,
   },
   titleWrapper: {
     marginBottom: scale(24),
@@ -319,7 +325,7 @@ const styles = StyleSheet.create({
   headerInformation: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingVertical: scale(20),
+    paddingVertical: scale(15),
     marginTop: scale(10),
     flexDirection: 'row',
   },
@@ -373,10 +379,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function resizeString(string: String) {
-  const start = string.slice(0, 15);
-  const end = string.slice(string.length - 15, string.length);
-  return start + '...' + end;
-}
-
-export default NFTDetail;
+export default React.memo(NFTDetail);
