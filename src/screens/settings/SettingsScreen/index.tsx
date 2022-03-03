@@ -56,6 +56,7 @@ function SettingsScreen() {
             Config.deleteItem(Keys.tokensAddressList),
             Config.deleteItem(Keys.ledger),
             Config.deleteItem(Keys.deploysTransfer),
+            Config.deleteItem(Keys.nfts),
         ]).then(async () => {
             resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
         });
