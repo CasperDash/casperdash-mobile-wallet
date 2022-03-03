@@ -5,9 +5,8 @@ import {colors, IconStatusReceive, textStyles} from 'assets';
 import {scale} from 'device';
 import _ from 'lodash';
 import {STATUS_MAPPING} from 'screens/home/HistoriesScreen';
-import * as RNLocalize from 'react-native-localize';
-
 import {toFormattedDate} from 'utils/date';
+import {Config} from 'utils';
 
 interface Props {
     onPress: (deploy: any) => void,
@@ -16,8 +15,6 @@ interface Props {
 
 const TransactionItem = ({onPress, value}: Props) => {
     const mappingStatus = STATUS_MAPPING.find(i => i.value === value.status);
-    const locales = RNLocalize.getLocales();
-    const defaultLocale = locales && locales[0] && locales[0].languageTag;
 
     return (
         <CButton onPress={() => onPress(value)}>
@@ -30,7 +27,7 @@ const TransactionItem = ({onPress, value}: Props) => {
                         <Text style={[textStyles.Body2, {
                             color: colors.c828489,
                             marginTop: scale(4),
-                        }]}>{value.timestamp ? (toFormattedDate(value.timestamp, defaultLocale)) : ''}</Text>
+                        }]}>{value.timestamp ? (toFormattedDate(value.timestamp, Config.defaultLocale)) : ''}</Text>
                     </Col.TL>
                     <Col.TR>
                         <Text style={textStyles.Sub1}>{`${value.amount} ${value.symbol}`}</Text>

@@ -1,9 +1,13 @@
 import {Alert, Linking} from 'react-native';
 import {check, request, RESULTS} from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
+import * as RNLocalize from 'react-native-localize';
+import {EXPLORER_URL} from 'utils/constants/key';
 
-const EXPLORER_URL = __DEV__ ? 'https://testnet.cspr.live' : 'https://cspr.live';
 const ROOT_HTTP = 'https://testnet-api.casperdash.io';
+
+const locales = RNLocalize.getLocales();
+const defaultLocale = locales && locales[0] && locales[0].languageTag;
 
 const alertMess = function (data: any, title?: any, cb?: Function, cbCancel?: Function) {
     let messAlert = data && data.message ? data.message : 'System error';
@@ -103,5 +107,6 @@ export default {
     saveItem,
     getItem,
     deleteItem,
-    getViewExplorerURL
+    getViewExplorerURL,
+    defaultLocale,
 };
