@@ -9,9 +9,9 @@ export const types = {
   SORT_CONTRACTNAME: 'SORT_CONTRACTNAME',
 };
 
-const fetchNFTInfo = (payload: string) => ({
+const fetchNFTInfo = (cb: any) => ({
   type: types.GET_LIST_NFT,
-  payload,
+  cb,
 });
 
 const addNFTContactAdress = (payload: any) => ({
@@ -33,5 +33,5 @@ export default {
   sortNFTs,
   setLoadingNFT,
   addNFTContactAdress,
-  fetchNFTInfo
+  fetchNFTInfo,
 }
