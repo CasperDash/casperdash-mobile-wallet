@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {scale} from "device";
+import {scale} from 'device';
 import {Row, Col, CButton} from 'components';
-import {colors, images, textStyles} from "assets";
-import {toFormattedCurrency} from "utils/helpers/format";
+import {colors, images, textStyles} from 'assets';
+import {toFormattedCurrency, toFormattedNumber} from 'utils/helpers/format';
 
 interface Props {
     value: any,
@@ -20,14 +20,14 @@ const TokenComponent = ({value, onPress}: Props) => {
                     }
                     <Col mx={12}>
                         <Text style={styles.sub1}>{value.symbol ?? ''}</Text>
-                        <Text style={styles.body2}>{value.balance && value.balance.displayValue}</Text>
+                        <Text style={styles.body2}>{value.balance ? toFormattedNumber(value.balance.displayValue ?? 0, {maximumFractionDigits: 5}, 'en-US') : ''}</Text>
                     </Col>
                 </Row>
                 <Col.R mx={12}>
                     <Text
-                        style={styles.sub1}>{toFormattedCurrency(value.totalPrice ?? 0, {maximumFractionDigits: 2}, 'en-US')}</Text>
+                        style={styles.sub1}>{toFormattedCurrency(value.totalPrice ?? 0, {maximumFractionDigits: 5}, 'en-US')}</Text>
                     <Text
-                        style={styles.body2}>{toFormattedCurrency(value.price ?? 0, {maximumFractionDigits: 2}, 'en-US')}</Text>
+                        style={styles.body2}>{toFormattedCurrency(value.price ?? 0, {maximumFractionDigits: 5}, 'en-US')}</Text>
                 </Col.R>
             </Row.LR>
         </CButton>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         borderBottomWidth: scale(1),
-        borderColor: colors.N5
+        borderColor: colors.N5,
     },
     symbol: {
         width: scale(40),
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
     },
     body2: {
         ...textStyles.Body2,
-        marginTop: scale(4)
-    }
-})
+        marginTop: scale(4),
+    },
+});
