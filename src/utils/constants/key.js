@@ -19,3 +19,4 @@ export const CASPER_SYMBOL = 'CSPR';
 export const NFT_GATEWAY = 'ipfs.dweb.link';
 export const CASPER_KEY_PATH = 'm/44\'/506\'/0\'/0/';
 export const CASPERDASH_URL = 'https://casperdash.io/';
+export const NETWORK_URL = __DEV__ ? 'https://testnet-api.casperdash.io' : 'https://api.casperdash.io';

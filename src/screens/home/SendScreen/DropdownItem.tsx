@@ -4,6 +4,7 @@ import {Row} from 'components';
 import {colors, textStyles} from 'assets';
 import {scale} from 'device';
 import {toFormattedNumber} from 'utils/helpers/format';
+import {Config} from '../../../utils';
 
 interface Props {
     item: any,
@@ -14,7 +15,7 @@ const DropdownItem = ({item}: Props) => {
         <Row.LR px={16} style={styles.dropItem}>
             <Text style={textStyles.Body1}>{item.symbol}</Text>
             <Text
-                style={textStyles.Sub1}>{item.balance ? toFormattedNumber(item.balance.displayValue ?? 0, {maximumFractionDigits: 5}, 'en-US') : ''}</Text>
+                style={textStyles.Sub1}>{item.balance ? toFormattedNumber(item.balance.displayValue ?? 0) : ''}</Text>
         </Row.LR>
     );
 };

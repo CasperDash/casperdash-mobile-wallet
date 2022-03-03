@@ -1,7 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 import { Config } from 'utils';
-
-const BASE_URL = Config.ROOT_HTTP;
+import {NETWORK_URL} from 'utils/constants/key';
 
 type RequestMethod = 'POST' | 'GET' | 'PUT' | 'DELETE';
 
@@ -23,7 +22,7 @@ class Network {
   }
 
   getBaseUrl(): string {
-    return BASE_URL;
+    return NETWORK_URL;
   }
 
   setToken(token: string) {
@@ -41,7 +40,7 @@ class Network {
     const response: AxiosPromise<T> = axios({
       method: method,
       url: url,
-      baseURL: baseURL ? baseURL : BASE_URL,
+      baseURL: baseURL ? baseURL : NETWORK_URL,
       data: data ? data : undefined,
       // params: params ? params : null,
       timeout: 60000,
@@ -64,7 +63,7 @@ class Network {
     const response: AxiosPromise<T> = axios({
       method: method,
       url: url,
-      baseURL: baseURL ? baseURL : BASE_URL,
+      baseURL: baseURL ? baseURL : NETWORK_URL,
       data: data ? data : undefined,
       params: params ? params : undefined,
       timeout: 60000,
@@ -86,7 +85,7 @@ class Network {
     const response: AxiosPromise<T> = axios({
       method: method,
       url: url,
-      baseURL: BASE_URL,
+      baseURL: NETWORK_URL,
       data: data ? data : undefined,
       params: params ? params : undefined,
       timeout: 60000,
