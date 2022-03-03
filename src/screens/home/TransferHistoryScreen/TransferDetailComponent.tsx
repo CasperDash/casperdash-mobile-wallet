@@ -22,7 +22,7 @@ const TransferDetailComponent = ({data, deploy, index}: Props) => {
     const dispatch = useDispatch();
     const deployValue = deploy[data.value];
     const formattedValue = data.format ? (
-        data.format === 'date' ? toFormattedDate(deploy.timestamp, Config.defaultLocale) : getValueByFormat(deployValue, {format: data.format})
+        data.format === 'date' ? toFormattedDate(deploy.timestamp) : getValueByFormat(deployValue, {format: data.format})
     ) : deployValue;
 
     const copy = async () => {

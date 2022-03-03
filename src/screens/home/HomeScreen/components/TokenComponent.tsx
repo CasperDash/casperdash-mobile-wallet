@@ -20,14 +20,14 @@ const TokenComponent = ({value, onPress}: Props) => {
                     }
                     <Col mx={12}>
                         <Text style={styles.sub1}>{value.symbol ?? ''}</Text>
-                        <Text style={styles.body2}>{value.balance ? toFormattedNumber(value.balance.displayValue ?? 0, {maximumFractionDigits: 5}, 'en-US') : ''}</Text>
+                        <Text style={styles.body2}>{value.balance ? toFormattedNumber(value.balance.displayValue ?? 0) : ''}</Text>
                     </Col>
                 </Row>
                 <Col.R mx={12}>
                     <Text
-                        style={styles.sub1}>{toFormattedCurrency(value.totalPrice ?? 0, {maximumFractionDigits: 5}, 'en-US')}</Text>
+                        style={styles.sub1}>{toFormattedCurrency(value.totalPrice ?? 0)}</Text>
                     <Text
-                        style={styles.body2}>{toFormattedCurrency(value.price ?? 0, {maximumFractionDigits: 5}, 'en-US')}</Text>
+                        style={styles.body2}>{toFormattedCurrency(value.price ?? 0)}</Text>
                 </Col.R>
             </Row.LR>
         </CButton>

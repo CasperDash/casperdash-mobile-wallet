@@ -4,8 +4,6 @@ import SInfo from 'react-native-sensitive-info';
 import * as RNLocalize from 'react-native-localize';
 import {EXPLORER_URL} from 'utils/constants/key';
 
-const ROOT_HTTP = __DEV__ ? 'https://testnet-api.casperdash.io' : 'https://api.casperdash.io';
-
 const locales = RNLocalize.getLocales();
 const defaultLocale = locales && locales[0] && locales[0].languageTag;
 
@@ -101,7 +99,6 @@ const getViewExplorerURL = (type: string, value: string) => {
 
 };
 export default {
-    ROOT_HTTP,
     alertMess,
     requestPermission,
     saveItem,
