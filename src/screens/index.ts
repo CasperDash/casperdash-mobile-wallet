@@ -12,6 +12,7 @@ export {default as HistoriesScreen} from './home/HistoriesScreen';
 
 //Staking
 export {default as StakingScreen} from './staking/StakingScreen';
+export {default as ValidatorScreen} from './staking/ValidatorScreen';
 
 //NFT
 export {default as NFTScreen} from './nft/NFTScreen';

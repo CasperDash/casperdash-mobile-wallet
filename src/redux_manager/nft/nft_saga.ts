@@ -10,7 +10,6 @@ const getMetadataByKey = (metadata: any[], key: any) => {
 };
 
 export function* getApiNFtList(params: string) {
-    console.log('params',params)
     try {
         yield put({ type: types.LOADING_LIST, payload: true });
         const response = yield call(apis.getListNFTsAPI, params.payload);

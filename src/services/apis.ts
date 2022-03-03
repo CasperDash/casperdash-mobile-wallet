@@ -114,6 +114,23 @@ function getListNFTsAPI<T>(params: any): NetworkPromiseResponse<T> {
     });
 }
 
+
+function getListValidatorAPI<T>(): NetworkPromiseResponse<T> {
+    return new Promise((resolve, reject) => {
+        network
+            .authorizedRequest('/validators', 'GET')
+            .then((res: any) => {
+                if (!res || (res && res.status >= 400)) {
+                    return reject(res);
+                }
+                resolve(res as any);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
 export default {
     getAccountInformation,
     getTokenInfoWithBalanceAPI,
@@ -121,5 +138,6 @@ export default {
     getTokenAddressInfoAPI,
     getConfigurationsAPI,
     deployAPI,
-    getListNFTsAPI
+    getListNFTsAPI,
+    getListValidatorAPI
 };

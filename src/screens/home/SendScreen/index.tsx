@@ -128,7 +128,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
                         onSelect={onSelectedToken}
                         buttonTextAfterSelection={(item) => item}
                         rowTextForSelection={(item) => item}
-                    />
+                    /> 
                     <Text style={styles.title}>Transfer Amount</Text>
                     <CInputFormik
                         name={'transferAmount'}
@@ -140,7 +140,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
                     <Text style={styles.title}>Receiving Address</Text>
                     <CInputFormik
                         name={'receivingAddress'}
-                        inputStyle={styles.inputStyle}
+                        inputStyle={styles.inputStyle} 
                         placeholder={'Enter receiving address'}
                         {...{values, errors, touched, handleBlur, handleChange}}
                         containerStyle={styles.rowPicker}/>
