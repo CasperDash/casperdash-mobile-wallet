@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import {colors, IconArrowDown, textStyles} from 'assets';
 import {Row} from 'components';
 import {scale} from 'device';
+import {toFormattedNumber} from 'utils/helpers/format';
 
 interface Props {
     item: any,
@@ -15,7 +16,7 @@ const SelectDropdownComponent = ({item}: Props) => {
                 style={textStyles.Body1}>{item && item.symbol ? item.symbol : ''}</Text>
             <Row.C>
                 <Text
-                    style={textStyles.Sub1}>{item.balance && item.balance.displayValue ? item.balance.displayValue : ''}</Text>
+                    style={textStyles.Sub1}>{item.balance ? toFormattedNumber(item.balance.displayValue ?? 0, {maximumFractionDigits: 5}, 'en-US') : ''}</Text>
                 <View style={styles.verticalLine}/>
                 <IconArrowDown width={scale(10)} height={scale(6)}/>
             </Row.C>

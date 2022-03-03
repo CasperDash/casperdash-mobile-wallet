@@ -2,7 +2,7 @@ import {Alert, Linking} from 'react-native';
 import {check, request, RESULTS} from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
 
-const ROOT_HTTP = 'https://testnet-api.casperdash.io';
+const ROOT_HTTP = __DEV__ ? 'https://testnet-api.casperdash.io' : 'https://api.casperdash.io';
 
 const alertMess = function (data: any, title?: any, cb?: Function, cbCancel?: Function) {
     let messAlert = data && data.message ? data.message : 'System error';
