@@ -1,9 +1,9 @@
 import MainRouter from './MainRouter';
 import SettingsNavigation from 'navigation/SettingsNavigation';
 import HomeTabs from 'navigation/stack/HomeTabs';
-import {AddCustomTokenScreen, ConfirmSendScreen, ReceiveScreen, SendScreen, HistoriesScreen} from 'screens';
+import {AddCustomTokenScreen, ConfirmSendScreen, ReceiveScreen, SendScreen, HistoriesScreen, ValidatorScreen} from 'screens';
 
-const {SETTINGS_SCREEN, HOME_TAB, ADD_CUSTOM_TOKEN_SCREEN, SEND_SCREEN, CONFIRM_SEND_SCREEN, RECEIVE_SCREEN, HISTORIES_SCREEN} = MainRouter;
+const {SETTINGS_SCREEN, HOME_TAB, ADD_CUSTOM_TOKEN_SCREEN, SEND_SCREEN, CONFIRM_SEND_SCREEN, RECEIVE_SCREEN, HISTORIES_SCREEN,VALIDATOR_SCREEN} = MainRouter;
 
 export const MainScreens = {
     [HOME_TAB]: {
@@ -29,5 +29,8 @@ export const MainScreens = {
     },
     [HISTORIES_SCREEN]: {
         screen: HistoriesScreen,
+    },
+    [VALIDATOR_SCREEN]: {
+        screen: ValidatorScreen,
     }
 };
