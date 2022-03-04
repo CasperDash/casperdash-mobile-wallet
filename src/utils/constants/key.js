@@ -14,8 +14,8 @@ export const BASE_API_URL = 'http://localhost:3001';
 export const DEPLOY_TTL_MS = 1800000;
 export const ENTRY_POINT_DELEGATE = 'delegate';
 export const ENTRY_POINT_UNDELEGATE = 'undelegate';
-// export const EXPLORER_URL = NETWORK_NAME === 'casper' ? 'https://cspr.live' : 'https://testnet.cspr.live';
+export const EXPLORER_URL = __DEV__ ? 'https://testnet.cspr.live' : 'https://cspr.live';
 export const CASPER_SYMBOL = 'CSPR';
 export const NFT_GATEWAY = 'ipfs.dweb.link';
-export const CASPER_KEY_PATH = `m/44'/506'/0'/0/`;
-export const CASPERDASH_URL = 'https://casperdash.io/'
+export const CASPER_KEY_PATH = 'm/44\'/506\'/0\'/0/';
+export const CASPERDASH_URL = 'https://casperdash.io/';
