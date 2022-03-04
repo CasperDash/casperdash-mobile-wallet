@@ -11,12 +11,10 @@ type Props = {
     renderRight?: any,
     onPressRight?: () => void,
     titleStyle?: TextStyle,
-    style?: ViewStyle,
-    customTitleContainer: TextStyle,
-    titleStart:boolean
+    style?: ViewStyle
 };
 
-const CHeader = ({title, showBack = true, onBack, renderRight, onPressRight,titleStart ,customTitleContainer, titleStyle, style}: Props) => {
+const CHeader = ({title, showBack = true, onBack, renderRight, onPressRight, titleStyle, style}: Props) => {
 
     const navigation = useNavigation();
     const goBack = () => {
@@ -37,9 +35,9 @@ const CHeader = ({title, showBack = true, onBack, renderRight, onPressRight,titl
                     <IconBack width={scale(20)} height={scale(17)} style={styles.icon}/>
                 </TouchableOpacity>
             }
-           {!titleStart?<View style={styles.emptyView}/> : null} 
+            <View style={styles.emptyView}/>
             <View
-                style={[styles.titleHeaderContainer,customTitleContainer, {maxWidth: renderRight ? scale(375 - 24 * 2 - 20 * 2 - 45) : scale(375 - 24 * 2 - 20 * 2)}]}>
+                style={[styles.titleHeaderContainer, {maxWidth: renderRight ? scale(375 - 24 * 2 - 20 * 2 - 45) : scale(375 - 24 * 2 - 20 * 2)}]}>
                 <Text numberOfLines={1}
                       style={[styles.titleHeader, titleStyle]}>{title}</Text>
             </View>
