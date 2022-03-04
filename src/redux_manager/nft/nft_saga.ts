@@ -1,20 +1,21 @@
-import { put, takeLatest, call, select } from 'redux-saga/effects';
+import {put, takeLatest, call, select, take, cancel} from 'redux-saga/effects';
 import { types } from './nft_action';
 import { apis } from 'services';
 import config from 'utils/config';
-import { Keys } from 'utils';
+import {Config, Keys} from 'utils';
 
 const getMetadataByKey = (metadata: any[], key: any) => {
     const data = metadata.find(item => item.key === key) || {};
     return data.value;
 };
 
-export function* getApiNFtList(params: string) {
-    console.log('params',params)
+export function* fetchNFTInfo(data: any) {
     try {
         yield put({ type: types.LOADING_LIST, payload: true });
-        const response = yield call(apis.getListNFTsAPI, params.payload);
-        console.log('response',response)
+        // @ts-ignore
+        const casperDashInfo = yield Config.getItem(Keys.casperdash);
+        // @ts-ignore
+        const response = yield apis.getListNFTsAPI((casperDashInfo && casperDashInfo.publicKey) || '');
         if (response) {
             let newData: { nftName: any; nftImage: any; metadata: any[]; }[] = [];
             response.forEach((element: { metadata: any[]; }): any => {
@@ -23,16 +24,22 @@ export function* getApiNFtList(params: string) {
                 newData.push({ ...element, nftName: NFTname, nftImage: NFTimage });
             });
             newData.sort((a, b) => (a.nftName > b.nftName ? 1 : -1));
-            config.saveItem(Keys.nfts,newData);
+            yield config.saveItem(Keys.nfts, newData);
+            data.cb && data.cb(null, newData);
             yield put({ type: types.LOADING_LIST, payload: false });
         } else {
+            data.cb && data.cb(true, null);
         }
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        if (error && error.data) {
+            data.cb && data.cb(error.data, null);
+        } else {
+            data.cb && data.cb(error, null);
+        }
     }
 }
 
-
-export function* watchgetNFTsaga() {
-    yield takeLatest(types.GET_LIST_NFT, getApiNFtList);
+export function* watchFetchNFTInfo() {
+    // @ts-ignore
+    yield takeLatest(types.GET_LIST_NFT, fetchNFTInfo);
 }
