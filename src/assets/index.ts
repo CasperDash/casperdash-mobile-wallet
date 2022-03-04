@@ -41,6 +41,7 @@ import IconFacebook from './images/ic_facebook.svg';
 import IconInstagram from './images/ic_instagram.svg';
 import IconTwitter from './images/ic_twitter.svg';
 import IconAttributes from './images/ic_attributes.svg';
+import IconArrowLeft2 from './images/ic_arrow_left_2.svg';
 
 const images = {
 
@@ -222,5 +223,6 @@ export {
     IconFacebook,
     IconInstagram,
     IconTwitter,
-    IconAttributes
+    IconAttributes,
+    IconArrowLeft2,
 };
