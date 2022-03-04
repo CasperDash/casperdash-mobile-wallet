@@ -26,6 +26,9 @@ export type ScreenParams = {
     },
     HISTORIES_SCREEN: {
         token: any
+    },
+    TRANSFER_HISTORY_SCREEN: {
+        deploy: any,
     }
 };
 
