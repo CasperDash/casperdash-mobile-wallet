@@ -7,9 +7,6 @@ import {EXPLORER_URL} from 'utils/constants/key';
 const locales = RNLocalize.getLocales();
 const defaultLocale = locales && locales[0] && locales[0].languageTag;
 
-const locales = RNLocalize.getLocales();
-const defaultLocale = locales && locales[0] && locales[0].languageTag;
-
 const alertMess = function (data: any, title?: any, cb?: Function, cbCancel?: Function) {
     let messAlert = data && data.message ? data.message : 'System error';
     let titleAlert = data && data.title ? data.title : 'Message';
