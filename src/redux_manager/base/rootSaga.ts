@@ -21,7 +21,7 @@ import {
 } from '../home/home_saga';
 import {  watchgetNFTsaga } from '../nft/nft_saga';
 
-import { watchgetValidatorSaga } from 'redux_manager/staking/staking_saga';
+import { watchGetValidatorsInformation } from 'redux_manager/staking/staking_saga';
 
 
 export default function* rootSaga() {
@@ -44,10 +44,8 @@ export default function* rootSaga() {
         //NFTs
         watchgetNFTsaga(),
 
-
-
         //Staking
-        watchgetValidatorSaga()
+        watchGetValidatorsInformation(),
 
     ]);
 }

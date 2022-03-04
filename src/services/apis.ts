@@ -1,6 +1,5 @@
 import network from 'services/network';
 import qs from 'qs';
-import {getTransferDeploysStatus} from "redux_manager/home/home_saga";
 export type NetworkPromiseResponse<T> = Promise<T>;
 
 function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
@@ -132,7 +131,7 @@ function getTransferDeploysStatusAPI<T>(params: any): NetworkPromiseResponse<T> 
 }
 
 
-function getListValidatorAPI<T>(): NetworkPromiseResponse<T> {
+function getValidatorsInformationAPI<T>(): NetworkPromiseResponse<T> {
     return new Promise((resolve, reject) => {
         network
             .authorizedRequest('/validators', 'GET')
@@ -156,6 +155,6 @@ export default {
     getConfigurationsAPI,
     deployAPI,
     getListNFTsAPI,
-    getListValidatorAPI,
+    getValidatorsInformationAPI,
     getTransferDeploysStatusAPI,
 };

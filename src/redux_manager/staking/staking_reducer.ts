@@ -1,7 +1,7 @@
-/* eslint-disable prettier/prettier */
 import { types } from './staking_action';
 
 const initialState = {
+    listValidators: [],
 };
 
 export default function (
@@ -9,15 +9,10 @@ export default function (
     action = { type: '', payload: null },
 ) {
     switch (action.type) {
-        case types.GET_LIST_SUCCESS:
+        case types.GET_VALIDATORS_INFORMATION_SUCCESS:
             return {
                 ...state,
-                listValidator: action.payload,
-            };
-        case types.SET_VALIDATOR:
-            return {
-                ...state,
-                validator: action.payload,
+                listValidators: action.payload,
             };
         default:
             return state;

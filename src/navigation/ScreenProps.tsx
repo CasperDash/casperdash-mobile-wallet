@@ -29,7 +29,10 @@ export type ScreenParams = {
     },
     TRANSFER_HISTORY_SCREEN: {
         deploy: any,
-    }
+    },
+    STAKING_SCREEN: {
+        selectValidator?: any,
+    },
 };
 
 type ScreenNavigationProp<T extends keyof ScreenParams> = StackNavigationProp<ScreenParams, T>;
