@@ -1,24 +1,25 @@
 import React, {useState, useRef, useContext} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Row, Col} from 'components';
 
-function StakedIfomationItem() {
+function StakedInfomationItem() {
     const insets = useSafeAreaInsets();
 
     return (
-        <View style={styles.container}>
+        <Row my={16} style={styles.container}>
             <Text>
-            StakedIfomationItem
+                StakedIfomationItem
             </Text>
-        </View>
+        </Row>
     );
 }
 
-export default StakedIfomationItem;
+export default StakedInfomationItem;
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        flex: 1,
-    }
-})
+        alignItems: 'center',
+    },
+});
