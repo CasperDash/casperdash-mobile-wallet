@@ -27,7 +27,7 @@ const TransactionItem = ({onPress, value}: Props) => {
                         <Text style={[textStyles.Body2, {
                             color: colors.c828489,
                             marginTop: scale(4),
-                        }]}>{value.timestamp ? (toFormattedDate(value.timestamp, Config.defaultLocale)) : ''}</Text>
+                        }]}>{value.timestamp ? (toFormattedDate(value.timestamp)) : ''}</Text>
                     </Col.TL>
                     <Col.TR>
                         <Text style={textStyles.Sub1}>{`${value.amount} ${value.symbol}`}</Text>
