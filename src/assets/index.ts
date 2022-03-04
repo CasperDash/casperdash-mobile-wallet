@@ -45,6 +45,7 @@ import IconStatusSend from './images/ic_status_send.svg';
 import IconStatusReceive from './images/ic_status_receive.svg';
 import IconStatusSwap from './images/ic_status_swap.svg';
 import IconViewExplorer from './images/ic_view_explorer.svg';
+import IconArrowLeft2 from './images/ic_arrow_left_2.svg';
 
 const images = {
 
@@ -231,4 +232,5 @@ export {
     IconStatusReceive,
     IconStatusSwap,
     IconViewExplorer,
+    IconArrowLeft2,
 };
