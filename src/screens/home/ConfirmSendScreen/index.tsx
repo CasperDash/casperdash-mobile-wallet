@@ -24,7 +24,7 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
     const publicKey = useSelector(getPublicKey);
     const {bottom} = useSafeAreaInsets();
     const dispatch = useDispatch();
-    const {replace} = useNavigation<StackNavigationProp<any>>();
+    const navigation = useNavigation<StackNavigationProp<any>>();
 
     const {
         token,
@@ -86,14 +86,21 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
                         ...transferDetails,
                         deployHash: deployHash,
                         status: 'pending',
-                        timestamp: signedDeploy.deploy.header.timestamp,
+                        timestamp: signedDeploy?.deploy?.header?.timestamp,
                         transferId: transferID,
                         address: token.address,
                         decimals: token.decimals,
                         symbol,
                     }),
                 );
-                replace(MainRouter.HISTORIES_SCREEN, {token});
+                const routes = navigation.getState().routes;
+                if (routes.length > 0) {
+                    if (routes[1] && routes[1].name === MainRouter.HISTORIES_SCREEN){
+                        navigation.navigate(MainRouter.HISTORIES_SCREEN, {token});
+                        return;
+                    }
+                }
+                navigation.replace(MainRouter.HISTORIES_SCREEN, {token});
             }
         } catch (error: any) {
             showMessage(error && error.message || 'Transaction Failed', MessageType.error);

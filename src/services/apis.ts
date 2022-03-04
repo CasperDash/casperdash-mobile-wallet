@@ -1,5 +1,6 @@
 import network from 'services/network';
 import qs from 'qs';
+import {getTransferDeploysStatus} from "redux_manager/home/home_saga";
 export type NetworkPromiseResponse<T> = Promise<T>;
 
 function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
@@ -114,6 +115,22 @@ function getListNFTsAPI<T>(params: any): NetworkPromiseResponse<T> {
     });
 }
 
+function getTransferDeploysStatusAPI<T>(params: any): NetworkPromiseResponse<T> {
+    return new Promise((resolve, reject) => {
+        network
+            .authorizedRequest('/deploysStatus?' + qs.stringify(params), 'GET')
+            .then((res: any) => {
+                if (!res || (res && res.status >= 400)) {
+                    return reject(res);
+                }
+                resolve(res as any);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
 
 function getListValidatorAPI<T>(): NetworkPromiseResponse<T> {
     return new Promise((resolve, reject) => {
@@ -139,5 +156,6 @@ export default {
     getConfigurationsAPI,
     deployAPI,
     getListNFTsAPI,
-    getListValidatorAPI
+    getListValidatorAPI,
+    getTransferDeploysStatusAPI,
 };

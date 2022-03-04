@@ -41,6 +41,10 @@ import IconFacebook from './images/ic_facebook.svg';
 import IconInstagram from './images/ic_instagram.svg';
 import IconTwitter from './images/ic_twitter.svg';
 import IconAttributes from './images/ic_attributes.svg';
+import IconStatusSend from './images/ic_status_send.svg';
+import IconStatusReceive from './images/ic_status_receive.svg';
+import IconStatusSwap from './images/ic_status_swap.svg';
+import IconViewExplorer from './images/ic_view_explorer.svg';
 import IconArrowLeft2 from './images/ic_arrow_left_2.svg';
 
 const images = {
@@ -57,6 +61,7 @@ const images = {
     bgnft:require('./images/bgnft.png'),
     imgnft:require('./images/img_nft.png'),
     symbol_cspr: require('./images/ic_symbol_CSPR.png'),
+    nodata: require('./images/ic_no_data.png'),
 };
 
 const colors = {
@@ -211,7 +216,6 @@ export {
     IconEyeOff,
     IconEye,
     IconPencilFilled,
-    IconCopy,
     IconReceive,
     IconSend,
     IconSwap,
@@ -224,5 +228,9 @@ export {
     IconInstagram,
     IconTwitter,
     IconAttributes,
+    IconStatusSend,
+    IconStatusReceive,
+    IconStatusSwap,
+    IconViewExplorer,
     IconArrowLeft2,
 };
