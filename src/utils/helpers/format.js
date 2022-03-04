@@ -1,4 +1,5 @@
 import { MOTE_RATE } from '../constants/key';
+import {Config} from "utils";
 
 /**
  * Return formatted number.
@@ -7,7 +8,7 @@ import { MOTE_RATE } from '../constants/key';
  * @param {String} locales - Locales.
  * @return {String} Formatted number.
  */
-export const toFormattedNumber = (num = 0, options, locales) => {
+export const toFormattedNumber = (num = 0, options = {}, locales = Config.defaultLocale) => {
 	const number = new Intl.NumberFormat(locales, { maximumFractionDigits: 5, ...options });
 	return number.format(num) || '0';
 };
@@ -19,7 +20,7 @@ export const toFormattedNumber = (num = 0, options, locales) => {
  * @param {String} locales - Locales.
  * @return {String} Formatted number by currency.
  */
-export const toFormattedCurrency = (num = 0, options, locales) => {
+export const toFormattedCurrency = (num = 0, options = {}, locales = Config.defaultLocale) => {
 	const defaultOpt = {
 		style: 'currency',
 		currency: 'USD',
@@ -37,7 +38,7 @@ export const toFormattedCurrency = (num = 0, options, locales) => {
 export const toFormattedDate = (
 	dateString,
 	options = { dateStyle: 'short', timeStyle: 'medium', hour12: false },
-	locales,
+	locales = Config.defaultLocale,
 ) => {
 	let date = new Date(dateString);
 

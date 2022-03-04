@@ -36,9 +36,9 @@ const TokenInfoComponent = ({tokenInfo}: Props) => {
                                style={styles.symbol}/>
                     }
                     <Text
-                        style={styles.amount}>{`${tokenInfo.balance && toFormattedNumber(tokenInfo.balance.displayValue, {maximumFractionDigits: 2}, 'en-US')} ${tokenInfo.symbol}`}</Text>
+                        style={styles.amount}>{`${tokenInfo.balance && toFormattedNumber(tokenInfo.balance.displayValue)} ${tokenInfo.symbol}`}</Text>
                     <Text
-                        style={styles.amount2}>~ {toFormattedCurrency(tokenInfo.totalPrice, {maximumFractionDigits: 2}, 'en-US')}</Text>
+                        style={styles.amount2}>~ {toFormattedCurrency(tokenInfo.totalPrice)}</Text>
                 </Col.C>
                 <Row.C>
                     {AccountActions.map((action, index) => {

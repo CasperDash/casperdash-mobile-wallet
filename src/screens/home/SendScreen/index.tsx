@@ -44,6 +44,12 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
     const validationSchema = yup.object().shape({
         transferAmount: yup
             .number()
+            .transform((_, value) => {
+                if (value && value.includes('.')) {
+                    return parseFloat(value);
+                }
+                return +value.replace(/,/, '.');
+            })
             .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
             .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
             .test('max', 'Not enough balance.', function (value: any) {
@@ -70,7 +76,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
     const onConfirm = () => {
         replace(MainRouter.CONFIRM_SEND_SCREEN, {
             ...values,
-            transferAmount: parseFloat(values.transferAmount),
+            transferAmount: values.transferAmount.replace(/,/, '.'),
             selectedToken: selectedToken,
             networkFee: token ? token.transferFee : 1,
             token,
@@ -80,7 +86,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
     const setBalance = () => {
         const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
         const maxAmount = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
-        setFieldValue('transferAmount', maxAmount);
+        setFieldValue('transferAmount', maxAmount.toString());
     };
 
     const onSelectedToken = (item: any) => {

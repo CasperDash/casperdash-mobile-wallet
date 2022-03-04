@@ -122,7 +122,7 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
                         <Text style={styles.value}>{symbol}</Text>
                         <Text style={styles.caption}>Transfer Amount</Text>
                         <Text
-                            style={styles.value}>{`${toFormattedNumber(amount, {maximumFractionDigits: 4}, 'en-US')} (${toFormattedCurrency(amount * price, {maximumFractionDigits: 2}, 'en-US')})`}</Text>
+                            style={styles.value}>{`${toFormattedNumber(amount)} (${toFormattedCurrency(amount * price)})`}</Text>
                         <Text style={styles.caption}>Network Fee</Text>
                         <Text style={styles.value}>{`${fee} CSPR`}</Text>
                         <Text style={styles.caption}>Receiving Address</Text>
