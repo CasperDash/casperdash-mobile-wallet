@@ -24,16 +24,6 @@ const NFTNavigation = () => {
                     key={index}
                 />
             ))}
-              {Object.keys(NFTDetailScreenNav).map((elem: string, index) => (
-                <Stack.Screen
-                    name={elem}
-                    component={NFTDetailScreenNav[elem].screen}
-                    options={{
-                        title: NFTDetailScreenNav[elem].title,
-                    }}
-                    key={index}
-                />
-            ))}
         </Stack.Navigator>
     );
 };
