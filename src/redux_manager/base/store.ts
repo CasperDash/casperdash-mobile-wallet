@@ -5,9 +5,9 @@ import rootSaga from './rootSaga';
 import createSagaMiddleware from 'redux-saga';
 
 const sagaMiddleware = createSagaMiddleware();
-let store = createStore(
-  allReducers,
-  compose(applyMiddleware(...[sagaMiddleware, logger])),
-);
+
+const middleWare = __DEV__ ? [sagaMiddleware, logger] : [sagaMiddleware];
+let store = createStore(allReducers, compose(applyMiddleware(...middleWare)));
+
 sagaMiddleware.run(rootSaga);
 export default store;
