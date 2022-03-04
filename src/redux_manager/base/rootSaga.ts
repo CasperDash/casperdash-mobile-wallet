@@ -19,6 +19,7 @@ import {
     watchGetTokenAddressInfo,
     watchPushTransferToLocalStorage,
 } from '../home/home_saga';
+
 import {  watchFetchNFTInfo } from '../nft/nft_saga';
 
 export default function* rootSaga() {
@@ -36,7 +37,6 @@ export default function* rootSaga() {
         watchFetchCSPRMarketInfo(),
         watchGetTokenAddressInfo(),
         watchPushTransferToLocalStorage(),
-
         //wallet
 
         //NFTs
