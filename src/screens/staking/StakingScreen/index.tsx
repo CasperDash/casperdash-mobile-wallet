@@ -20,7 +20,7 @@ import {getAllTokenInfo, getMassagedUserDetails, getPublicKey, getTokenInfoByAdd
 import {useNavigation} from '@react-navigation/native';
 import {getConfigKey} from 'utils/selectors/configurations';
 import {toFormattedNumber} from 'utils/helpers/format';
-import StakedInfomationItem from "screens/staking/StakingScreen/StakedInfomationItem";
+import StakedInformationItem from './StakedInformationItem';
 
 const initialValues = {
     amount: '0',
@@ -124,8 +124,9 @@ function StakingScreen() {
                         text={'Stake Now'}
                         style={styles.btnStaking}/>
                     <View style={styles.line}/>
-                    <Text style={[styles.title, {marginTop: scale(24), marginBottom: scale(15)}]}>Staked Information</Text>
-                    <StakedInfomationItem/>
+                    <Text style={[styles.title, {marginTop: scale(24), marginBottom: scale(15)}]}>Staked
+                        Information</Text>
+                    <StakedInformationItem/>
                 </KeyboardAwareScrollView>
             </Col>
         </CLayout>
@@ -137,13 +138,14 @@ export default StakingScreen;
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        flex: 1,
-        backgroundColor: colors.cFFFFFF,
+        height: '100%',
+        backgroundColor: colors.W1,
         borderTopLeftRadius: scale(40),
         borderTopRightRadius: scale(40),
     },
     contentContainerStyle: {
         paddingHorizontal: scale(16),
+        paddingBottom: scale(70),
     },
     btnMax: {
         height: scale(28),
@@ -195,5 +197,5 @@ const styles = StyleSheet.create({
         width: '100%',
         height: scale(2),
         backgroundColor: colors.N5,
-    }
+    },
 });
