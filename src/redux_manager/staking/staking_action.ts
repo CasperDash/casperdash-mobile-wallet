@@ -1,21 +1,14 @@
-/* eslint-disable prettier/prettier */
 export const types = {
-  GET_LIST_VALIDATOR: 'GET_LIST_VALIDATOR',
-  GET_LIST_SUCCESS:'GET_LIST_SUCCESS',
-  SET_VALIDATOR:'SET_VALIDATOR'
+    GET_VALIDATORS_INFORMATION: 'GET_VALIDATORS_INFORMATION',
+    GET_VALIDATORS_INFORMATION_SUCCESS: 'GET_VALIDATORS_INFORMATION_SUCCESS',
 };
 
-const fetchListValidator = (payload: string) => ({
-  type: types.GET_LIST_VALIDATOR,
-  payload,
-});
-
-const setValidator = (payload: string) => ({
-  type: types.SET_VALIDATOR,
-  payload,
+const getValidatorsInformation = (params: any, cb: any) => ({
+    type: types.GET_VALIDATORS_INFORMATION,
+    params,
+    cb,
 });
 
 export default {
-  fetchListValidator,
-  setValidator
+    getValidatorsInformation,
 };

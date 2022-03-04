@@ -12,5 +12,5 @@ export default combineReducers({
   wallet: Wallet,
   home: Home,
   nft: NFT,
-  staking: Staking
+  staking: Staking,
 });

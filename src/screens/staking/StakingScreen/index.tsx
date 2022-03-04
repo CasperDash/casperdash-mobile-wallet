@@ -1,47 +1,44 @@
-import {colors, IconArrowDown, IconLogo, textStyles} from 'assets';
+import React, {useEffect} from 'react';
+import {colors, fonts, IconArrowDown, IconLogo, textStyles} from 'assets';
 import {Row, CInputFormik, CLayout, Col, CButton} from 'components';
 import {scale} from 'device';
 import {useFormik} from 'formik';
 import MainRouter from 'navigation/stack/MainRouter';
-import React, {useState, useRef, useContext} from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     StyleSheet,
 } from 'react-native';
 import * as yup from 'yup';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CTextButton from 'components/CTextButton';
-
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
-import {getAllTokenInfo, getMassagedUserDetails, getPublicKey, getTokenInfoByAddress} from 'utils/selectors';
+import {useDispatch, useSelector} from 'react-redux';
+import {getMassagedUserDetails, getPublicKey} from 'utils/selectors';
 import {useNavigation} from '@react-navigation/native';
 import {getConfigKey} from 'utils/selectors/configurations';
 import {toFormattedNumber} from 'utils/helpers/format';
 import StakedInformationItem from './StakedInformationItem';
+import {allActions} from 'redux_manager';
+import {MessageType} from 'components/CMessge/types';
+import {ScreenProps} from 'navigation/ScreenProps';
+import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 
 const initialValues = {
     amount: '0',
     validator: '',
 };
 
-function StakingScreen() {
-    const insets = useSafeAreaInsets();
+// @ts-ignore
+const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({route}) => {
+    const {selectedValidator} = route?.params || {};
     const {navigate} = useNavigation();
+    const dispatch = useDispatch();
 
     // Selector
     const publicKey = useSelector(getPublicKey);
     const userDetails = useSelector(getMassagedUserDetails);
     const balance = userDetails && userDetails.balance && userDetails.balance.displayBalance;
-
     const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
-
-    const setBalance = () => {
-        setFieldValue('amount', balance - fee);
-        setErrors({...errors, amount: ''});
-    };
 
     const validationSchema = yup.object().shape({
         amount: yup
@@ -52,7 +49,7 @@ function StakingScreen() {
             }).test('min', 'Amount must be more than 0 CSPR', function (value: any) {
                 return value > 0;
             }),
-        validator: yup.string(),
+        validator: yup.string().required('Validator is required'),
     });
 
     const {
@@ -69,6 +66,29 @@ function StakingScreen() {
         validationSchema,
         onSubmit: () => onConfirm(),
     });
+
+    useEffect(() => {
+        setFieldValue('validator', selectedValidator && selectedValidator.public_key);
+    }, [selectedValidator]);
+
+
+    useEffect(() => {
+        dispatch(allActions.staking.getValidatorsInformation({refreshing: false}, (error: any, _: any) => {
+            if (error) {
+                dispatch(allActions.main.showMessage({message: error.message, type: MessageType.error}));
+            }
+        }));
+    }, [dispatch]);
+
+    const setBalance = () => {
+        setFieldValue('amount', balance - fee);
+        setErrors({...errors, amount: ''});
+    };
+
+    const selectValidator = () => {
+        navigate(MainRouter.VALIDATOR_SCREEN);
+    };
+
     const onConfirm = () => {
 
     };
@@ -101,12 +121,19 @@ function StakingScreen() {
                         <Text style={textStyles.Body1}>Network Fee: {fee} CSPR</Text>
                     </Row.LR>
                     <CButton
-                        onPress={() => navigate(MainRouter.VALIDATOR_SCREEN)}>
+                        onPress={selectValidator}>
                         <View style={styles.selectValidator}>
-                            <Text style={styles.nameValidator}>Select Validator</Text>
+                            <Text numberOfLines={1}
+                                  ellipsizeMode={'middle'}
+                                  style={[styles.nameValidator, !!values.validator && {color: colors.N2}]}>
+                                {
+                                    values.validator ? values.validator : 'Select Validator'
+                                }
+                            </Text>
                             <IconArrowDown/>
                         </View>
                     </CButton>
+                    {errors.validator && touched.validator && <Text style={styles.error}>{errors.validator}</Text>}
                     <Row.LR mt={24} mb={16}>
                         <Text style={styles.title}>Amount</Text>
                         <Text style={textStyles.Body1}>Balance: {toFormattedNumber(balance)}</Text>
@@ -126,12 +153,12 @@ function StakingScreen() {
                     <View style={styles.line}/>
                     <Text style={[styles.title, {marginTop: scale(24), marginBottom: scale(15)}]}>Staked
                         Information</Text>
-                    <StakedInformationItem/>
+                    <StakedInformationItem value={{}}/>
                 </KeyboardAwareScrollView>
             </Col>
         </CLayout>
     );
-}
+};
 
 export default StakingScreen;
 
@@ -160,7 +187,7 @@ const styles = StyleSheet.create({
         color: colors.N3,
     },
     inputStyle: {
-        ...textStyles.Sub1,
+        ...textStyles.Body1,
     },
     rowPicker: {
         width: scale(343),
@@ -185,6 +212,7 @@ const styles = StyleSheet.create({
         color: colors.N3,
         fontSize: scale(16),
         lineHeight: scale(30),
+        width: scale(280),
     },
     alignCenter: {
         alignItems: 'center',
@@ -197,5 +225,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: scale(2),
         backgroundColor: colors.N5,
+    },
+    error: {
+        color: colors.R3,
+        fontSize: scale(12),
+        marginTop: scale(12),
+        fontWeight: '400',
+        fontFamily: fonts.Poppins.regular,
     },
 });
