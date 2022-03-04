@@ -85,7 +85,7 @@ function Account() {
                </Row.LR>
                <Row.C mx={16} mt={20} mb={24}>
                    <Text numberOfLines={1}
-                         style={[textStyles.H3, {marginRight: scale(8)}]}>{isShowAmount ? toFormattedCurrency(totalFiatBalance, {maximumFractionDigits: 2}, Config.defaultLocale) : '$*****00'}</Text>
+                         style={[textStyles.H3, {marginRight: scale(8)}]}>{isShowAmount ? toFormattedCurrency(totalFiatBalance) : '$*****00'}</Text>
                    {/*TODO: follow the figma's design*/}
                    {/*<CButton onPress={onToggleAmount}>
                         {isShowAmount ? <IconEye width={scale(20)} height={scale(14)}/> :
