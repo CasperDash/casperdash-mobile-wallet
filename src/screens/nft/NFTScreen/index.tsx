@@ -1,4 +1,4 @@
-import {CInput} from 'components';
+import {CInput, Row} from 'components';
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {colors, IconArrowUp, IconSearch, textStyles} from 'assets';
+import {colors, IconArrowUp, IconLogo, IconSearch, textStyles} from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
 import NFTItem from './ListItem';
@@ -23,7 +23,6 @@ import {useDispatch} from 'react-redux';
 
 function NFTScreen() {
   const dispatch = useDispatch();
-
   const [isLoading, setLoading] = useState(true);
   const [nfts, setNFTs] = useState([]);
   const listNFTs = useRef<any>();
@@ -101,7 +100,10 @@ function NFTScreen() {
         barStyle="dark-content"
         animated={true}
       />
-      <Text style={styles.title}>My NFT</Text>
+      <Row ml={24} mt={3} mb={16} style={{alignItems: 'center'}}>
+        <IconLogo width={scale(28)} height={scale(28)}/>
+        <Text style={[textStyles.H3, {marginLeft: scale(16)}]}>My NFT</Text>
+      </Row>
       <View style={styles.searchWrapper}>
         <IconSearch style={styles.iconSearch} />
         <CInput
