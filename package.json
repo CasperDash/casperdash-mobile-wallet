@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "yarn env:testnet && react-native run-android",
+    "ios": "yarn env:testnet && react-native run-ios",
     "start": "react-native start",
+    "ios:mainnet": "yarn env:mainnet && react-native run-ios",
+    "android:mainnet": "yarn env:mainnet && react-native run-android",
     "ss": "watchman watch-del-all && react-native start --reset-cache",
     "c": "adb reverse tcp:8081 tcp:8081",
     "format": "prettier --write **/*.{ts,tsx,js,json,md}",
@@ -15,7 +17,11 @@
     "encode-ios": "react-native bundle --dev false --entry-file index.js --bundle-output ios/main.jsbundle --platform ios",
     "encode-android": "react-native bundle --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --platform android --assets-dest android/app/src/main/res/",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "env:mainnet": "node scripts/set-env.js mainnet",
+    "env:testnet": "node scripts/set-env.js testnet",
+    "fastlane:beta": "yarn env:testnet && cd ios/fastlane && fastlane beta",
+    "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.5.0",

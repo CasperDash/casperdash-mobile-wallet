@@ -1,71 +1,56 @@
-import { useNavigation } from '@react-navigation/native';
-import { colors, images } from 'assets';
+import React from 'react';
+import {colors, images, textStyles} from 'assets';
 import { device, scale } from 'device';
-import NFTRouter from 'navigation/NFTNavigation/NFTRouter';
 import { navigate } from 'navigation/RootNavigation';
-
-import React, { useState } from 'react';
-
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import MainRouter from 'navigation/stack/MainRouter';
+import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNFTContactAdress } from 'redux_manager/nft/nft_action';
+import {CFastImage} from 'components';
 
 export const getMetadataByKey = (metadata: any[], key: any) => {
   const data = metadata.find(item => item.key === key) || {};
   return data.value;
 };
 
-function NFTItem({ data }: any) {
-  const dispatch = useDispatch();
-  const [valid, setValid] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  if (!data) {
-    return null;
-  }
+function NFTItem({ data, index }: any) {
 
   const nftBackground = getMetadataByKey(data.metadata, 'background');
-  const metadata = data.metadata.filter(
-    item =>
-      item.key !== 'name' && item.key !== 'image' && item.key !== 'background',
-  );
+  const metadata = data.metadata.filter((item: any) => item.key !== 'name' && item.key !== 'image' && item.key !== 'background',);
 
   const onNavigationDetail = () => {
-    navigate(NFTRouter.NFT_DETAIL, {
+    navigate(MainRouter.NFTDETAIL_SCREEN, {
       ...data,
       metadata: metadata,
       background: nftBackground,
       totalSupply: parseInt(data.totalSupply.hex, 16),
     });
   };
+
   const { nftImage, nftName, nftContractName } = data;
+
   return (
-    <View style={styles.nftItemWrapper}>
+    <View style={[styles.nftItemWrapper, index % 2 === 0 && {marginRight: scale(15)}]}>
       <TouchableOpacity onPress={onNavigationDetail}>
         <View style={styles.imageWrapper}>
-          <Image
-            source={valid ? { uri: nftImage } : images.imgnft}
+          <CFastImage
+            colorDef={'transparent'}
+            source={nftImage}
+            resizeMode={'cover'}
+            sourceDef={images.imgnft}
             style={styles.nftImage}
-            onError={() => setValid(false)}
-            onLoadStart={() => setLoading(true)}
-            onLoadEnd={() => setLoading(false)}
+            width={scale(164)}
+            height={scale(128)}
           />
-          {loading && (
-            <View style={styles.loading}>
-              <ActivityIndicator size="small" color={colors.N2} />
-            </View>
-          )}
         </View>
         <View style={styles.nftItemContent}>
-          <Text style={styles.nftName}>{nftName}</Text>
+          <Text style={styles.nftName} numberOfLines={1}>{nftName}</Text>
           <Text style={styles.contractNameNFT}>{nftContractName}</Text>
         </View>
       </TouchableOpacity>
     </View>
   );
 }
-export default NFTItem;
+export default React.memo(NFTItem);
 
 const styles = StyleSheet.create({
   nftItemWrapper: {
@@ -75,7 +60,6 @@ const styles = StyleSheet.create({
     borderColor: colors.N5,
     borderRadius: scale(16),
   },
-
   nftItemContent: {
     padding: scale(16),
   },
@@ -83,27 +67,18 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   nftImage: {
-    width: '100%',
-    height: scale(128),
     borderRadius: scale(16),
+    overflow: 'hidden',
   },
   nftName: {
+    ...textStyles.Sub1,
     fontSize: scale(16),
     fontWeight: '500',
     color: colors.N2,
     marginBottom: scale(12),
   },
   contractNameNFT: {
+    ...textStyles.Body2,
     color: colors.N3,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
   },
 });
