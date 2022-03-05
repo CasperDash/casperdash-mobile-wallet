@@ -59,6 +59,40 @@ const tabIcon25 = {
     height: scale(25),
 };
 
+const listTabs = [
+    {
+        name: 'Home',
+        component: HomeNavigation,
+        tabItemActive: <IconMenuHomeActive {...tabIcon24}/>,
+        tabItemInActive:  <IconMenuHome {...tabIcon24}/>,
+    },
+    //TODO: enabled when these tabs are completed.
+    /*{
+        name: 'Staking',
+        component: StakingNavigation,
+        tabItemActive: <IconMenuStakingActive {...tabIcon24}/>,
+        tabItemInActive:  <IconMenuStaking {...tabIcon24}/>,
+    },*/
+    {
+        name: 'NFT',
+        component: NFTNavigation,
+        tabItemActive: <IconMenuNFTActive {...tabIcon25}/>,
+        tabItemInActive:  <IconMenuNFT {...tabIcon25}/>,
+    },
+    /*{
+        name: 'Market',
+        component: MarketNavigation,
+        tabItemActive: <IconMenuMarketActive {...tabIcon24}/>,
+        tabItemInActive:  <IconMenuMarket {...tabIcon24}/>,
+    },
+    {
+        name: 'KeyManager',
+        component: KeyManagerNavigation,
+        tabItemActive: <IconMenuKeyManagerActive {...tabIcon25}/>,
+        tabItemInActive:  <IconMenuKeyManager {...tabIcon25}/>,
+    },*/
+];
+
 const HomeTabs = () => {
     const insets = useSafeAreaInsets();
 
@@ -76,71 +110,23 @@ const HomeTabs = () => {
                     ],
                     keyboardHidesTabBar: Platform.OS === 'android',
                 }}>
-                <Tab.Screen
-                    name="Home"
-                    component={HomeNavigation}
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <TabItem {...{focused}} label={'Home'}>
-                                {
-                                    focused ? <IconMenuHomeActive {...tabIcon24}/> : <IconMenuHome {...tabIcon24}/>
-                                }
-                            </TabItem>
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Staking"
-                    component={StakingNavigation}
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <TabItem {...{focused}} label={'Staking'}>
-                                {
-                                    focused ? <IconMenuStakingActive {...tabIcon24}/> : <IconMenuStaking {...tabIcon24}/>
-                                }
-                            </TabItem>
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="NFT"
-                    component={NFTNavigation}
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <TabItem {...{focused}} label={'NFT'}>
-                                {
-                                    focused ? <IconMenuNFTActive {...tabIcon25}/> : <IconMenuNFT {...tabIcon25}/>
-                                }
-                            </TabItem>
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Market"
-                    component={MarketNavigation}
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <TabItem {...{focused}} label={'Market'}>
-                                {
-                                    focused ? <IconMenuMarketActive {...tabIcon24}/> : <IconMenuMarket {...tabIcon24}/>
-                                }
-                            </TabItem>
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="KeyManager"
-                    component={KeyManagerNavigation}
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <TabItem {...{focused}} label={'Manager'}>
-                                {
-                                    focused ? <IconMenuKeyManagerActive {...tabIcon25}/> : <IconMenuKeyManager {...tabIcon25}/>
-                                }
-                            </TabItem>
-                        ),
-                    }}
-                />
+                {
+                    listTabs.map((tab) => {
+                        return <Tab.Screen
+                            name={tab.name}
+                            component={tab.component}
+                            options={{
+                                tabBarIcon: ({focused}) => (
+                                    <TabItem {...{focused}} label={tab.name}>
+                                        {
+                                            focused ? tab.tabItemActive : tab.tabItemInActive
+                                        }
+                                    </TabItem>
+                                ),
+                            }}
+                        />;
+                    })
+                }
             </Tab.Navigator>
 
         </View>
