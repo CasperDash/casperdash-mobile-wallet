@@ -260,12 +260,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: scale(60),
+    marginBottom: scale(20),
   },
-  imageNoNFT: {},
-  imageNFT: {
-    width: '100%',
-    height: scale(126),
-    borderRadius: scale(16),
+  imageNoNFT: {
+    width: scale(200),
+    height: scale(200),
   },
   textNoNFT: {
     ...textStyles.Body1,
