@@ -10,7 +10,6 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
-import {isValidPublicKey} from 'utils/validator';
 
 function AddCustomTokenScreen() {
 
@@ -22,7 +21,6 @@ function AddCustomTokenScreen() {
 
     const onChange = (value?: string) => {
         setTokenAddress(value ?? '');
-        setError(isValidPublicKey(value) ? '' : 'Invalid public key');
     };
 
     const onAddPublicKey = async () => {
