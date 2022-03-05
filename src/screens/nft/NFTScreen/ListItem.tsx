@@ -35,7 +35,7 @@ function NFTItem({ data, index }: any) {
           <CFastImage
             colorDef={'transparent'}
             source={nftImage}
-            resizeMode={'cover'}
+            resizeMode={'contain'}
             sourceDef={images.imgnft}
             style={styles.nftImage}
             width={scale(164)}
