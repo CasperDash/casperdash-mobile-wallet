@@ -77,9 +77,8 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
         replace(MainRouter.CONFIRM_SEND_SCREEN, {
             ...values,
             transferAmount: values.transferAmount.replace(/,/, '.'),
-            selectedToken: selectedToken,
-            networkFee: token ? token.transferFee : 1,
-            token,
+            token: selectedToken,
+            networkFee: selectedToken ? selectedToken.transferFee : 1,
         });
     };
 
@@ -158,7 +157,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({route}) => {
                         {...{values, errors, touched, handleBlur, handleChange}}
                         containerStyle={styles.rowPicker}/>
                     <Text style={[styles.title, {marginBottom: scale(8)}]}>Network Fee</Text>
-                    <Text style={[styles.title, styles.networkFee]}>{`${token ? token.transferFee : 1} CSPR`}</Text>
+                    <Text style={[styles.title, styles.networkFee]}>{`${selectedToken ? selectedToken.transferFee : 1} CSPR`}</Text>
                 </KeyboardAwareScrollView>
                 <CTextButton
                     style={[styles.btnConfirm, {marginBottom: bottom + scale(10)}]}
