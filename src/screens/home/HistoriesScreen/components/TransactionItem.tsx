@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {Row, Col, CButton} from 'components';
-import {colors, IconStatusReceive, textStyles} from 'assets';
+import {colors, textStyles} from 'assets';
 import {scale} from 'device';
 import _ from 'lodash';
 import {STATUS_MAPPING} from 'screens/home/HistoriesScreen';
@@ -15,11 +15,11 @@ interface Props {
 
 const TransactionItem = ({onPress, value}: Props) => {
     const mappingStatus = STATUS_MAPPING.find(i => i.value === value.status);
-
+    const StatusIcon = value.icon;
     return (
         <CButton onPress={() => onPress(value)}>
             <Row px={16} py={10} style={styles.container}>
-                <IconStatusReceive width={scale(24)} height={scale(24)}/>
+                <StatusIcon width={scale(24)} height={scale(24)}/>
                 <Row.LR pl={16} style={{flex: 1}}>
                     <Col.TL>
                         <Text style={styles.title} numberOfLines={1}
