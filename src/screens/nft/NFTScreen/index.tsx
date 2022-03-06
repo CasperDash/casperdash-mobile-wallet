@@ -20,9 +20,11 @@ import {nonAccentText} from 'utils/helpers/format';
 import _ from 'lodash';
 import {allActions} from 'redux_manager';
 import {useDispatch} from 'react-redux';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 function NFTScreen() {
   const dispatch = useDispatch();
+  const {top} = useSafeAreaInsets();
   const [isLoading, setLoading] = useState(true);
   const [nfts, setNFTs] = useState([]);
   const listNFTs = useRef<any>();
@@ -93,14 +95,14 @@ function NFTScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {paddingTop: top}]}>
       <StatusBar
         backgroundColor={'rgba(52, 52, 52, 0)'}
         translucent={true}
         barStyle="dark-content"
         animated={true}
       />
-      <Row ml={24} mt={3} mb={16} style={{alignItems: 'center'}}>
+      <Row ml={24} mt={10} mb={16} style={{alignItems: 'center'}}>
         <IconLogo width={scale(28)} height={scale(28)}/>
         <Text style={[textStyles.H3, {marginLeft: scale(16)}]}>My NFT</Text>
       </Row>
@@ -174,7 +176,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: device.h,
     position: 'relative',
-    paddingTop: scale(46),
   },
   sortWrapper: {
     display: 'flex',

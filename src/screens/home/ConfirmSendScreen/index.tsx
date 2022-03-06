@@ -28,15 +28,14 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
 
     const {
         token,
-        selectedToken,
         transferAmount: amount,
         receivingAddress: toAddress,
         transferID,
         networkFee: fee,
     } = route.params;
 
-    const price = (selectedToken && selectedToken.price) || 0;
-    const symbol = selectedToken && selectedToken.symbol ? selectedToken.symbol : '';
+    const price = (token && token.price) || 0;
+    const symbol = token && token.symbol ? token.symbol : '';
 
     const {executeDeploy, isDeploying} = useConfirmDeploy();
 
@@ -96,11 +95,11 @@ const ConfirmSendScreen: React.FC<ScreenProps<MainRouter.CONFIRM_SEND_SCREEN>> =
                 const routes = navigation.getState().routes;
                 if (routes.length > 0) {
                     if (routes[1] && routes[1].name === MainRouter.HISTORIES_SCREEN){
-                        navigation.navigate(MainRouter.HISTORIES_SCREEN, {token});
+                        navigation.navigate(MainRouter.HISTORIES_SCREEN, {token: token});
                         return;
                     }
                 }
-                navigation.replace(MainRouter.HISTORIES_SCREEN, {token});
+                navigation.replace(MainRouter.HISTORIES_SCREEN, {token: token});
             }
         } catch (error: any) {
             showMessage(error && error.message || 'Transaction Failed', MessageType.error);
