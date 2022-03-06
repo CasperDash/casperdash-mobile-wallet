@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDeploysWithStatus} from 'utils/hooks/useTransferDeploys';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import TokenInfoComponent from 'screens/home/HistoriesScreen/components/TokenInfoComponent';
+import {enrichTransactionWithIcon} from 'utils/helpers/transaction';
 
 export const STATUS_MAPPING = [
     {value: '', label: 'All', color: colors.N2},
@@ -75,8 +76,8 @@ const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ro
                 </Row>
                 <FlatList
                     contentContainerStyle={{paddingBottom: insets.bottom + scale(20)}}
-                    data={transferList}
-                    extraData={transferList}
+                    data={enrichTransactionWithIcon(transferList)}
+                    extraData={enrichTransactionWithIcon(transferList)}
                     ListEmptyComponent={<NoDataComponent/>}
                     renderItem={renderItem}
                 />

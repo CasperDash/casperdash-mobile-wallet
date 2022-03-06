@@ -10,8 +10,6 @@ import com.polidea.reactnativeble.BlePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
-import com.microsoft.codepush.react.CodePush;
-import com.microsoft.codepush.react.CodePush;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -20,8 +18,6 @@ import com.facebook.soloader.SoLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -48,11 +44,6 @@ public class MainApplication extends Application implements ReactApplication {
                 @Override
                 protected String getJSMainModuleName() {
                     return "index";
-                }
-
-                @Override
-                protected String getJSBundleFile() {
-                    return CodePush.getJSBundleFile();
                 }
             };
 

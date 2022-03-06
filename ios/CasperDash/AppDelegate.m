@@ -12,7 +12,6 @@
 #import <React/RCTLinkingManager.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
-#import <CodePush/CodePush.h>
 //#import <FBSDKCoreKit/FBSDKCoreKit.h>
 //#import <RNGoogleSignin/RNGoogleSignin.h>
 #import "Orientation.h"
@@ -152,8 +151,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
-return [CodePush bundleURL];
-//  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+ return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
 #endif
 }
