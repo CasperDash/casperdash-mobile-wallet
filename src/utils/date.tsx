@@ -6,14 +6,14 @@
  * @return {String} Formatted date.
  */
 export const toFormattedDate = (
-    dateString: string,
-    locales?: string,
-    options: any = { dateStyle: 'short', timeStyle: 'medium', hour12: false },
+  dateString: string,
+  locales?: string,
+  options: any = { dateStyle: 'short', timeStyle: 'medium', hour12: false },
 ) => {
-    let date = new Date(dateString);
+  let date = new Date(dateString);
 
-    if (!(date instanceof Date)) {
-        date = new Date();
-    }
-    return new Intl.DateTimeFormat(locales, options).format(date);
+  if (!(date instanceof Date)) {
+    date = new Date();
+  }
+  return new Intl.DateTimeFormat(locales, options).format(date);
 };

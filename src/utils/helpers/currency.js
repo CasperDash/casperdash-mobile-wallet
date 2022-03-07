@@ -13,13 +13,16 @@ import { MOTE_RATE } from '../constants/key';
  * @param {Number|String} amount
  * @returns {BigNumberis|String} Return "-" if it's the invalid big number input.
  */
-export const toMotes = (amount) => {
-	try {
-		const bigAmount = Big(amount).times(MOTE_RATE).round(0, Big.roundDown).toString();
-		return BigNumber.from(bigAmount);
-	} catch (error) {
-		return '-';
-	}
+export const toMotes = amount => {
+  try {
+    const bigAmount = Big(amount)
+      .times(MOTE_RATE)
+      .round(0, Big.roundDown)
+      .toString();
+    return BigNumber.from(bigAmount);
+  } catch (error) {
+    return '-';
+  }
 };
 
 /**
@@ -28,11 +31,14 @@ export const toMotes = (amount) => {
  * @param {Number|String} amount
  * @returns {BigNumberis|String} Return "-" if it's the invalid big number input.
  */
-export const toCSPR = (amount) => {
-	try {
-		const bigAmount = Big(amount).div(MOTE_RATE).round(0, Big.roundDown).toString();
-		return BigNumber.from(bigAmount);
-	} catch (error) {
-		return '-';
-	}
+export const toCSPR = amount => {
+  try {
+    const bigAmount = Big(amount)
+      .div(MOTE_RATE)
+      .round(0, Big.roundDown)
+      .toString();
+    return BigNumber.from(bigAmount);
+  } catch (error) {
+    return '-';
+  }
 };

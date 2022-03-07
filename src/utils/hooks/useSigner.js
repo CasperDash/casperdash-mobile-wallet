@@ -8,22 +8,22 @@ import { signDeployByLedger } from '../services/ledgerServices';
  * @returns The signed deploy is being returned.
  */
 const useSigner = () => {
-	const loginOptions = useSelector(getLoginOptions);
+  const loginOptions = useSelector(getLoginOptions);
 
-	const sign = async (deploy, mainAccountHex, setAccountHex) => {
-		switch (loginOptions.connectionType) {
-			case CONNECTION_TYPES.ledger: {
-				return await signDeployByLedger(deploy, {
-					publicKey: mainAccountHex,
-					keyIndex: loginOptions.keyIndex,
-				});
-			}
-			default:
-				throw Error('Can not find signer');
-		}
-	};
+  const sign = async (deploy, mainAccountHex, setAccountHex) => {
+    switch (loginOptions.connectionType) {
+      case CONNECTION_TYPES.ledger: {
+        return await signDeployByLedger(deploy, {
+          publicKey: mainAccountHex,
+          keyIndex: loginOptions.keyIndex,
+        });
+      }
+      default:
+        throw Error('Can not find signer');
+    }
+  };
 
-	return { sign };
+  return { sign };
 };
 
 export default useSigner;
