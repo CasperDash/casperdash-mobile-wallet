@@ -1,6 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import { Config } from 'utils';
-import {NETWORK_URL} from 'utils/constants/key';
+import { NETWORK_URL } from 'utils/constants/key';
 
 type RequestMethod = 'POST' | 'GET' | 'PUT' | 'DELETE';
 

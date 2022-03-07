@@ -5,17 +5,17 @@ import Modal from 'react-native-modal';
 
 export default function Index() {
   return (
-      <Modal
-          useNativeDriver={true}
-          hideModalContentWhileAnimating
-          coverScreen={true}
-          animationIn={'fadeIn'}
-          animationOut={'fadeOut'}
-          isVisible={true}>
-        <View style={styles.container}>
-          <ActivityIndicator size="small" color="#FFFFFF" />
-        </View>
-      </Modal>
+    <Modal
+      useNativeDriver={true}
+      hideModalContentWhileAnimating
+      coverScreen={true}
+      animationIn={'fadeIn'}
+      animationOut={'fadeOut'}
+      isVisible={true}>
+      <View style={styles.container}>
+        <ActivityIndicator size="small" color="#FFFFFF" />
+      </View>
+    </Modal>
   );
 }
 
