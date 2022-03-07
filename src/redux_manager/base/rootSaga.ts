@@ -19,8 +19,8 @@ import {
     watchGetTokenAddressInfo,
     watchPushTransferToLocalStorage,
 } from '../home/home_saga';
-import {  watchgetNFTsaga } from '../nft/nft_saga';
 
+import {  watchFetchNFTInfo } from '../nft/nft_saga';
 import { watchGetValidatorsInformation } from 'redux_manager/staking/staking_saga';
 
 
@@ -42,7 +42,7 @@ export default function* rootSaga() {
         //wallet
 
         //NFTs
-        watchgetNFTsaga(),
+        watchFetchNFTInfo(),
 
         //Staking
         watchGetValidatorsInformation(),

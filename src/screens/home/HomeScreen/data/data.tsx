@@ -17,7 +17,7 @@ const AccountActions: Array<AccountAction> = [
     {
         id: 0,
         icon: IconSend,
-        title: 'Sent',
+        title: 'Send',
         screen: MainRouter.SEND_SCREEN,
     },
     {
