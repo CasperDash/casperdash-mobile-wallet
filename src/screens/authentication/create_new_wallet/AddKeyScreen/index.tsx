@@ -46,7 +46,6 @@ function AddKeyScreen() {
                         showBack: true,
                     },
                 });
-                dispatch(allActions.nft.fetchNFTInfo(publicKey));
             } else {
                 setLoading(false);
                 Config.alertMess(err);
