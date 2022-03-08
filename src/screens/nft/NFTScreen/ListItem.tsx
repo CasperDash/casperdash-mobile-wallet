@@ -1,11 +1,11 @@
 import React from 'react';
-import {colors, images, textStyles} from 'assets';
+import { colors, images, textStyles } from 'assets';
 import { device, scale } from 'device';
 import { navigate } from 'navigation/RootNavigation';
 import MainRouter from 'navigation/stack/MainRouter';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import {CFastImage} from 'components';
+import { CFastImage } from 'components';
 
 export const getMetadataByKey = (metadata: any[], key: any) => {
   const data = metadata.find(item => item.key === key) || {};
@@ -13,9 +13,11 @@ export const getMetadataByKey = (metadata: any[], key: any) => {
 };
 
 function NFTItem({ data, index }: any) {
-
   const nftBackground = getMetadataByKey(data.metadata, 'background');
-  const metadata = data.metadata.filter((item: any) => item.key !== 'name' && item.key !== 'image' && item.key !== 'background',);
+  const metadata = data.metadata.filter(
+    (item: any) =>
+      item.key !== 'name' && item.key !== 'image' && item.key !== 'background',
+  );
 
   const onNavigationDetail = () => {
     navigate(MainRouter.NFTDETAIL_SCREEN, {
@@ -29,7 +31,11 @@ function NFTItem({ data, index }: any) {
   const { nftImage, nftName, nftContractName } = data;
 
   return (
-    <View style={[styles.nftItemWrapper, index % 2 === 0 && {marginRight: scale(15)}]}>
+    <View
+      style={[
+        styles.nftItemWrapper,
+        index % 2 === 0 && { marginRight: scale(15) },
+      ]}>
       <TouchableOpacity onPress={onNavigationDetail}>
         <View style={styles.imageWrapper}>
           <CFastImage
@@ -43,7 +49,9 @@ function NFTItem({ data, index }: any) {
           />
         </View>
         <View style={styles.nftItemContent}>
-          <Text style={styles.nftName} numberOfLines={1}>{nftName}</Text>
+          <Text style={styles.nftName} numberOfLines={1}>
+            {nftName}
+          </Text>
           <Text style={styles.contractNameNFT}>{nftContractName}</Text>
         </View>
       </TouchableOpacity>

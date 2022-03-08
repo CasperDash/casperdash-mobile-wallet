@@ -1,5 +1,5 @@
-import {CInput, Row} from 'components';
-import React, {useState, useEffect, useRef} from 'react';
+import { CInput, Row } from 'components';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -11,20 +11,20 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {colors, IconArrowUp, IconLogo, IconSearch, textStyles} from 'assets';
+import { colors, IconArrowUp, IconLogo, IconSearch, textStyles } from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
 import NFTItem from './ListItem';
 import { orderBy } from 'lodash';
-import {nonAccentText} from 'utils/helpers/format';
+import { nonAccentText } from 'utils/helpers/format';
 import _ from 'lodash';
-import {allActions} from 'redux_manager';
-import {useDispatch} from 'react-redux';
-import {useSafeAreaInsets} from "react-native-safe-area-context";
+import { allActions } from 'redux_manager';
+import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function NFTScreen() {
   const dispatch = useDispatch();
-  const {top} = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   const [isLoading, setLoading] = useState(true);
   const [nfts, setNFTs] = useState([]);
   const listNFTs = useRef<any>();
@@ -38,20 +38,21 @@ function NFTScreen() {
   }, []);
 
   const getData = (isRefresh: boolean) => {
-    dispatch(allActions.nft.fetchNFTInfo((error: any, data: any) => {
-      if (data) {
-        listNFTs.current = data;
-        if (isRefresh){
-          // @ts-ignore
-          setNFTs(orderBy(data, 'nftName', 'asc'));
+    dispatch(
+      allActions.nft.fetchNFTInfo((error: any, data: any) => {
+        if (data) {
+          listNFTs.current = data;
+          if (isRefresh) {
+            // @ts-ignore
+            setNFTs(orderBy(data, 'nftName', 'asc'));
+          } else {
+            setNFTs(data);
+          }
         }
-        else {
-          setNFTs(data);
-        }
-      }
-      setReload(false);
-      setLoading(false);
-    }));
+        setReload(false);
+        setLoading(false);
+      }),
+    );
   };
 
   const onFilterWith = (type: string) => {
@@ -68,12 +69,14 @@ function NFTScreen() {
   };
 
   const onChangeText = (text: string) => {
-    if (!text){
+    if (!text) {
       setNFTs(listNFTs.current);
       return;
     }
-    if (text && listNFTs.current){
-      const newFilterArr = listNFTs.current.filter((x: any) => nonAccentText(x.nftName).includes(nonAccentText(text)));
+    if (text && listNFTs.current) {
+      const newFilterArr = listNFTs.current.filter((x: any) =>
+        nonAccentText(x.nftName).includes(nonAccentText(text)),
+      );
       setNFTs(newFilterArr);
     }
   };
@@ -83,28 +86,32 @@ function NFTScreen() {
     getData(true);
   };
 
-  const renderItem = ({item, index}: { item: any, index: number }) => {
-    return <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index}/>;
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
+    return (
+      <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index} />
+    );
   };
 
   const renderNoData = () => {
-    return <View style={styles.noNFT}>
-      <Image source={images.nonft} style={styles.imageNoNFT} />
-      <Text style={styles.textNoNFT}>There is no NFT</Text>
-    </View>;
+    return (
+      <View style={styles.noNFT}>
+        <Image source={images.nonft} style={styles.imageNoNFT} />
+        <Text style={styles.textNoNFT}>There is no NFT</Text>
+      </View>
+    );
   };
 
   return (
-    <View style={[styles.container, {paddingTop: top}]}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <StatusBar
         backgroundColor={'rgba(52, 52, 52, 0)'}
         translucent={true}
         barStyle="dark-content"
         animated={true}
       />
-      <Row ml={24} mt={10} mb={16} style={{alignItems: 'center'}}>
-        <IconLogo width={scale(28)} height={scale(28)}/>
-        <Text style={[textStyles.H3, {marginLeft: scale(16)}]}>My NFT</Text>
+      <Row ml={24} mt={10} mb={16} style={{ alignItems: 'center' }}>
+        <IconLogo width={scale(28)} height={scale(28)} />
+        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>My NFT</Text>
       </Row>
       <View style={styles.searchWrapper}>
         <IconSearch style={styles.iconSearch} />
@@ -140,25 +147,25 @@ function NFTScreen() {
           />
         </TouchableOpacity>
       </View>
-      <View style={[styles.nftListWrapper, {minHeight: scale(315)}]}>
-        {isLoading ? <View style={styles.flexCenter}>
-          <ActivityIndicator size="small" color={colors.N2}/>
-        </View> : (
+      <View style={[styles.nftListWrapper, { minHeight: scale(315) }]}>
+        {isLoading ? (
+          <View style={styles.flexCenter}>
+            <ActivityIndicator size="small" color={colors.N2} />
+          </View>
+        ) : (
           <View>
-            <Text style={styles.numNft}>
-              {nfts.length + ' NFTs'}
-            </Text>
+            <Text style={styles.numNft}>{nfts.length + ' NFTs'}</Text>
             <FlatList
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.nftsList}
-                data={nfts}
-                refreshing={reload}
-                extraData={nfts}
-                onRefresh={onReload}
-                keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
-                ListEmptyComponent={renderNoData}
-                renderItem={renderItem}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.nftsList}
+              data={nfts}
+              refreshing={reload}
+              extraData={nfts}
+              onRefresh={onReload}
+              keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
+              ListEmptyComponent={renderNoData}
+              renderItem={renderItem}
             />
           </View>
         )}
@@ -273,7 +280,7 @@ const styles = StyleSheet.create({
     ...textStyles.Body1,
     color: colors.N4,
   },
-  titleSelect:  {
+  titleSelect: {
     ...textStyles.Body1,
     fontSize: scale(14),
   },
