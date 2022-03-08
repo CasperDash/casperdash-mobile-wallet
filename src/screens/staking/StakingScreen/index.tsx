@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { colors, fonts, IconArrowDown, IconLogo, textStyles } from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton } from 'components';
-import { scale } from 'device';
+import { device, scale } from 'device';
 import { useFormik } from 'formik';
 import MainRouter from 'navigation/stack/MainRouter';
 import { View, Text, StyleSheet } from 'react-native';
@@ -9,7 +9,11 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMassagedUserDetails, getPublicKey } from 'utils/selectors';
+import {
+  checkIfLoadingSelector,
+  getMassagedUserDetails,
+  getPublicKey,
+} from 'utils/selectors';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { getConfigKey } from 'utils/selectors/configurations';
 import { toFormattedNumber } from 'utils/helpers/format';
@@ -18,6 +22,8 @@ import { MessageType } from 'components/CMessge/types';
 import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import StakingInformation from 'screens/staking/StakingScreen/StakingInformation';
+import { types as stakingTypes } from 'redux_manager/staking/staking_action';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const initialValues = {
   amount: '0',
@@ -29,7 +35,8 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   route,
 }) => {
   const { selectedValidator } = route?.params || {};
-  const { navigate } = useNavigation();
+  const { bottom } = useSafeAreaInsets();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
@@ -40,6 +47,11 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const balance =
     userDetails && userDetails.balance && userDetails.balance.displayBalance;
   const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
+
+  const isLoading = useSelector((state: any) =>
+    // @ts-ignore
+    checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
+  );
 
   const validationSchema = yup.object().shape({
     amount: yup
@@ -92,22 +104,27 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   }, [selectedValidator, setFieldValue]);
 
   useEffect(() => {
-    dispatch(
-      allActions.staking.getValidatorsInformation(
-        { refreshing: false },
-        (error: any, _: any) => {
-          if (error) {
-            dispatch(
-              allActions.main.showMessage({
-                message: error.message,
-                type: MessageType.error,
-              }),
-            );
-          }
-        },
-      ),
-    );
-  }, [dispatch]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (!isLoading) {
+        dispatch(
+          allActions.staking.getValidatorsInformation(
+            { refreshing: false },
+            (error: any, _: any) => {
+              if (error) {
+                dispatch(
+                  allActions.main.showMessage({
+                    message: error.message,
+                    type: MessageType.error,
+                  }),
+                );
+              }
+            },
+          ),
+        );
+      }
+    });
+    return unsubscribe;
+  }, [dispatch, navigation, isLoading]);
 
   const setBalance = () => {
     setFieldValue('amount', `${balance - fee}`);
@@ -115,11 +132,11 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   };
 
   const selectValidator = () => {
-    navigate(MainRouter.VALIDATOR_SCREEN);
+    navigation.navigate(MainRouter.VALIDATOR_SCREEN);
   };
 
   const onConfirm = () => {
-    navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
+    navigation.navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
       name: 'Delegate',
       validator: values.validator,
       amount: values.amount.replace(/,/, '.'),
@@ -147,7 +164,11 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           style={{ marginTop: scale(22) }}
-          contentContainerStyle={styles.contentContainerStyle}>
+          contentContainerStyle={[
+            styles.contentContainerStyle,
+            { minHeight: device.h - scale(220) - bottom },
+            !isLoading && { paddingBottom: scale(100) },
+          ]}>
           <Row.LR mb={16}>
             <Text style={styles.title}>Validator</Text>
             <Text style={textStyles.Body1}>Network Fee: {fee} CSPR</Text>
@@ -208,7 +229,6 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingHorizontal: scale(16),
-    paddingBottom: scale(70),
   },
   btnMax: {
     height: scale(28),

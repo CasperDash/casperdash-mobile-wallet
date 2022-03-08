@@ -26,6 +26,7 @@ const getStakedValidators = (validators, pendingStakes, publicKey) => {
   if (!publicKey || !validators.length) {
     return stakedValidators;
   }
+  console.log('zo day', validators);
   validators.forEach(validator => {
     if (!validator.bidInfo) {
       return;
@@ -35,28 +36,31 @@ const getStakedValidators = (validators, pendingStakes, publicKey) => {
         delegator.public_key &&
         delegator.public_key.toLowerCase() === publicKey.toLowerCase(),
     );
-
+    console.log('foundDelegator', foundDelegator);
     if (!foundDelegator) {
       return;
     }
 
     const { public_key: validatorPublicKey } = validator;
+    console.log('validatorPublicKey', validatorPublicKey);
     const pendingStake = pendingStakes.find(
       pendingStake => pendingStake.validator === validatorPublicKey,
     );
+    console.log('pendingStake ===', pendingStake);
     let stakedValidator = {
       validator: validatorPublicKey,
       stakedAmount: moteToCspr(foundDelegator.staked_amount),
       icon: IconStatusReceive,
     };
     if (pendingStake) {
-      stakedValidator.pendingAmount =
+      console.log('pendingStake pendingStake pendingStake', pendingStake);
+      const pendingAmount =
         pendingStake.entryPoint === ENTRY_POINT_UNDELEGATE
           ? -pendingStake.amount
           : pendingStake.amount;
-      stakedValidator.icon = getStakeIcon(pendingStake.amount);
+      stakedValidator.pendingAmount = pendingAmount;
+      stakedValidator.icon = getStakeIcon(pendingAmount);
     }
-
     stakedValidators.push(stakedValidator);
   });
 
@@ -70,6 +74,7 @@ const getStakedValidators = (validators, pendingStakes, publicKey) => {
       stakedValidators.push({
         validator: newStakedValidator.validator,
         pendingAmount: newStakedValidator.amount,
+        // icon: getStakeIcon(newStakedValidator.amount),
       }),
     );
 
@@ -80,13 +85,15 @@ export const useStakeFromValidators = publicKey => {
   const dispatch = useDispatch();
 
   const validators = useSelector(getListValidators());
+  console.log('validators', validators);
   const stakeDeployList = useSelector(state =>
     getDeployStakes(state, { publicKey }),
   );
-  const pendingStakes = stakeDeployList
-    .filter(stake => stake.status === 'pending')
-    .map(deploy => deploy.deployHash);
-
+  console.log('stakeDeployList', stakeDeployList);
+  const pendingStakes = stakeDeployList.filter(
+    stake => stake.status === 'pending',
+  );
+  console.log('pendingStakes', pendingStakes);
   useEffect(() => {
     if (pendingStakes && pendingStakes.length > 0) {
       (async () => {

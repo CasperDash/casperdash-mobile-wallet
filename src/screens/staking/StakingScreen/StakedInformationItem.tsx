@@ -25,44 +25,41 @@ function StakedInformationItem({ value }: Props) {
   };
 
   return (
-    <CButton>
-      <Row py={16} style={styles.container}>
-        <StatusIcon width={scale(24)} height={scale(24)} />
-        <Row.LR pl={16} style={{ flex: 1 }}>
-          <Col.TL>
-            <Text
-              style={styles.title}
-              numberOfLines={1}
-              ellipsizeMode={'middle'}>
-              {value.validator ?? ''}
-            </Text>
-            <CTextButton
-              onPress={undelegate}
-              text={'Undelegate'}
-              type={'line'}
-              textStyle={styles.textStyle}
-              style={styles.btnUnDelegate}
-            />
-          </Col.TL>
-          <Col.TR>
+    <Row py={16} style={styles.container}>
+      {StatusIcon && <StatusIcon width={scale(24)} height={scale(24)} />}
+      <Row.LR pl={16} style={{ flex: 1 }}>
+        <Col.TL>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
+            {value.validator ?? ''}
+          </Text>
+          <CTextButton
+            onPress={undelegate}
+            text={'Undelegate'}
+            type={'line'}
+            textStyle={styles.textStyle}
+            style={styles.btnUnDelegate}
+          />
+        </Col.TL>
+        <Col.TR>
+          {value.stakedAmount !== null && value.stakedAmount !== undefined && (
             <Text style={textStyles.Sub1}>{`${toFormattedNumber(
-              value.stakedAmount,
+              value.stakedAmount ?? 0,
             )} CSPR`}</Text>
-            {value.pendingAmount !== null && value.pendingAmount !== undefined && (
-              <Text
-                style={[
-                  textStyles.Body2,
-                  {
-                    marginTop: scale(4),
-                  },
-                ]}>
-                {`${toFormattedNumber(value.pendingAmount)} CSPR`}
-              </Text>
-            )}
-          </Col.TR>
-        </Row.LR>
-      </Row>
-    </CButton>
+          )}
+          {value.pendingAmount !== null && value.pendingAmount !== undefined && (
+            <Text
+              style={[
+                textStyles.Body2,
+                {
+                  marginTop: scale(4),
+                },
+              ]}>
+              {`${toFormattedNumber(value.pendingAmount)} CSPR`}
+            </Text>
+          )}
+        </Col.TR>
+      </Row.LR>
+    </Row>
   );
 }
 
