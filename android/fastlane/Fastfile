@@ -1,0 +1,65 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Increase build number"
+  private_lane :increase_version_code do
+    path = '../app/build.gradle'
+    re = /versionCode\s+(\d+)/
+
+    s = File.read(path)
+    versionCode = s[re, 1].to_i
+    s[re, 1] = (versionCode + 1).to_s
+
+    f = File.new(path, 'w')
+    f.write(s)
+    f.close
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :internal do
+    gradle(task: "clean assembleRelease")
+    increase_version_code()
+    gradle(task: 'bundle', build_type: 'Release')
+    upload_to_play_store(track: 'internal', aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH], skip_upload_apk: true, release_status: 'draft')
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  # Runs after all tasks. This block is called only when the executed lane is successful
+  after_all do |lane|
+    # Slack action
+    slack(message: ":rocket: Successful Deployment on Android! :rocket:")
+  end
+
+  error do |lane, exception|
+    slack(
+      message: exception.message,
+      success: false
+    )
+  end
+
+end

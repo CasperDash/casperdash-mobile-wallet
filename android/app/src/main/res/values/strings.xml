@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CasperDash</string>
+    <string name="default_notification_channel_id">CasperDash_channel</string>
+</resources>
