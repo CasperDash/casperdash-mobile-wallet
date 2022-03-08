@@ -10,6 +10,7 @@ import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 
 const StakingInformation = ({ publicKey }: any) => {
   const stackingList = useStakeFromValidators(publicKey);
+  console.log('stackingList', stackingList)
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
     checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
@@ -30,7 +31,7 @@ const StakingInformation = ({ publicKey }: any) => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Text style={[styles.title, { marginVertical: scale(16) }]}>
         Staked Information
       </Text>
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    height: scale(200),
     justifyContent: 'center',
     alignItems: 'center',
   },

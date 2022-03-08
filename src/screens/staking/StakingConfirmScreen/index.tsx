@@ -112,7 +112,6 @@ const StakingConfirmScreen: React.FC<
         name === 'Undelegate'
           ? Number(values.amount.replace(/,/, '.'))
           : amount;
-
       const buildDeployFn = () =>
         getStakeDeploy({
           fromAddress: publicKey,
@@ -130,7 +129,7 @@ const StakingConfirmScreen: React.FC<
       if (deployHash) {
         dispatch(
           allActions.staking.pushStakeToLocalStorage(publicKey, {
-            amount: amountDeploy.amount,
+            amount: Number(amountDeploy),
             entryPoint,
             fee: fee,
             fromAddress: publicKey,
