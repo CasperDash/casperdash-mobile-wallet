@@ -83,7 +83,7 @@ function NFTDetail({ route }: Props) {
               disabled
               colorDef={'transparent'}
               source={nftImage}
-              resizeMode={'cover'}
+              resizeMode={'contain'}
               sourceDef={images.imgnft}
               style={styles.nftImage}
               width={device.w}
