@@ -3,7 +3,7 @@ import {types} from './home_action';
 
 const initialState = {
     CSPRMarketInfo: null,
-    tokenInfoWithBalance: null
+    tokenInfoWithBalance: null,
 };
 
 export default function (
@@ -14,13 +14,13 @@ export default function (
         case types.FETCH_CSPR_MARKET_INFO_SUCCESS:
             return {
                 ...state,
-                CSPRMarketInfo: action.payload
+                CSPRMarketInfo: action.payload,
             };
         case types.GET_TOKEN_INFO_WITH_BALANCE_SUCCESS:
             return {
                 ...state,
-                tokenInfoWithBalance: action.payload
-            }
+                tokenInfoWithBalance: action.payload,
+            };
         default:
             return state;
     }

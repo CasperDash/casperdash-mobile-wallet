@@ -1,1 +1,1 @@
-export {default as PhraseInputItem} from './PhraseInputItem';
+export { default as PhraseInputItem } from './PhraseInputItem';
