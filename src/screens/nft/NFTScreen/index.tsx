@@ -96,7 +96,7 @@ function NFTScreen() {
     return (
       <View style={styles.noNFT}>
         <Image source={images.nonft} style={styles.imageNoNFT} />
-        <Text style={styles.textNoNFT}>There is no NFT</Text>
+        <Text style={styles.textNoNFT}>There are no NFT</Text>
       </View>
     );
   };
@@ -154,7 +154,9 @@ function NFTScreen() {
           </View>
         ) : (
           <View>
-            <Text style={styles.numNft}>{nfts.length + ' NFTs'}</Text>
+            <Text style={styles.numNft}>
+              {nfts.length + ` ${nfts.length < 2 ? 'NFT' : 'NFTs'}`}
+            </Text>
             <FlatList
               numColumns={2}
               showsVerticalScrollIndicator={false}
