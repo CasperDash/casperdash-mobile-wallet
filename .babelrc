@@ -1,0 +1,18 @@
+{
+    "plugins": [
+      ["module-resolver", {
+        "root": ["./src"],
+        "alias": {
+          "assets": "./src/assets",
+          "components": "./src/components",
+          "navigation": "./src/navigation",
+          "redux_manager": "./src/redux_manager",
+          "screens": "./src/screens",
+          "services": "./src/services",
+          "device": "./src/device",
+          // "types": "./src/types",
+          "utils": "./src/utils"
+        }
+      }]
+    ]
+}
