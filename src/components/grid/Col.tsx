@@ -1,16 +1,16 @@
 import React from 'react';
-import BaseCol, {ColComponent} from 'react-native-col';
-import {isFunction, isString} from 'lodash';
-import {ViewProps} from 'react-native';
-import {useSpacingStyle} from '../useSpacingStyle';
-import {BaseProps} from '../base.props';
+import BaseCol, { ColComponent } from 'react-native-col';
+import { isFunction, isString } from 'lodash';
+import { ViewProps } from 'react-native';
+import { useSpacingStyle } from 'components';
+import { BaseProps } from '../base.props';
 
 export interface ColProps extends BaseProps, ViewProps {}
 
 const wrapView =
   (component: any): ColComponent<ColProps> =>
   // @ts-ignore
-  ({style, ...rest}: ColProps) => {
+  ({ style, ...rest }: ColProps) => {
     const Container = component;
     const spacingStyle = useSpacingStyle(rest);
     const newStyle = [style, spacingStyle];
