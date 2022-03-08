@@ -22,7 +22,9 @@
     "env:testnet": "node scripts/set-env.js testnet",
     "env:beta": "node scripts/set-env.js beta",
     "fastlane:beta": "yarn env:beta && cd ios/fastlane && fastlane beta",
-    "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta"
+    "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
+    "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
+    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && fastlane internal"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.5.0",
