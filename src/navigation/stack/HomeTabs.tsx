@@ -111,8 +111,9 @@ const HomeTabs = () => {
                     keyboardHidesTabBar: Platform.OS === 'android',
                 }}>
                 {
-                    listTabs.map((tab) => {
+                    listTabs.map((tab, index) => {
                         return <Tab.Screen
+                            key={index}
                             name={tab.name}
                             component={tab.component}
                             options={{

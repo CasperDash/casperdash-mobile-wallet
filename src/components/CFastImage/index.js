@@ -107,7 +107,7 @@ function CFastImage(props) {
             {
                 load &&
                 <View style={[styles.indicator, {width: widthState, height: heightState}]}>
-                    <ActivityIndicator color={'white'}/>
+                    <ActivityIndicator/>
                 </View>
             }
         </TouchableOpacity>
