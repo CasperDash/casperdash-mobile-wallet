@@ -14,6 +14,7 @@ export { default as TransferHistoryScreen } from './home/TransferHistoryScreen';
 //Staking
 export { default as StakingScreen } from './staking/StakingScreen';
 export { default as ValidatorScreen } from './staking/ValidatorScreen';
+export { default as StakingConfirmScreen } from './staking/StakingConfirmScreen';
 
 //NFT
 export { default as NFTScreen } from './nft/NFTScreen';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { colors, fonts, IconArrowDown, IconLogo, textStyles } from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton } from 'components';
 import { scale } from 'device';
@@ -10,14 +10,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMassagedUserDetails, getPublicKey } from 'utils/selectors';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { getConfigKey } from 'utils/selectors/configurations';
 import { toFormattedNumber } from 'utils/helpers/format';
-import StakedInformationItem from './StakedInformationItem';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
 import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
+import StakingInformation from 'screens/staking/StakingScreen/StakingInformation';
 
 const initialValues = {
   amount: '0',
@@ -31,6 +31,8 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const { selectedValidator } = route?.params || {};
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
+  const scrollViewRef = useRef<any>();
+  useScrollToTop(scrollViewRef);
 
   // Selector
   const publicKey = useSelector(getPublicKey);
@@ -42,6 +44,12 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const validationSchema = yup.object().shape({
     amount: yup
       .number()
+      .transform((_, value) => {
+        if (value && value.includes('.')) {
+          return parseFloat(value);
+        }
+        return +value.replace(/,/, '.');
+      })
       .required('Amount must be more than 0 CSPR')
       .test('max', 'Not enough balance.', function (value: any) {
         return value + fee <= balance;
@@ -61,6 +69,8 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     touched,
     setFieldValue,
     setErrors,
+    setTouched,
+    resetForm,
   } = useFormik({
     initialValues,
     validationSchema,
@@ -68,11 +78,18 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   });
 
   useEffect(() => {
-    setFieldValue(
-      'validator',
-      selectedValidator && selectedValidator.public_key,
-    );
-  }, [selectedValidator]);
+    if (selectedValidator) {
+      setFieldValue(
+        'validator',
+        selectedValidator && selectedValidator.public_key,
+      );
+      setFieldValue('amount', '0');
+      setErrors({ ...errors, validator: '' });
+      setTouched({ ...touched, validator: false });
+    } else {
+      resetForm();
+    }
+  }, [selectedValidator, setFieldValue]);
 
   useEffect(() => {
     dispatch(
@@ -93,7 +110,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   }, [dispatch]);
 
   const setBalance = () => {
-    setFieldValue('amount', balance - fee);
+    setFieldValue('amount', `${balance - fee}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -101,7 +118,13 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     navigate(MainRouter.VALIDATOR_SCREEN);
   };
 
-  const onConfirm = () => {};
+  const onConfirm = () => {
+    navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
+      name: 'Delegate',
+      validator: values.validator,
+      amount: values.amount.replace(/,/, '.'),
+    });
+  };
 
   const _renderBtnMax = () => {
     return (
@@ -115,14 +138,15 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   return (
     <CLayout statusBgColor={colors.cF8F8F8} bgColor={colors.cF8F8F8}>
-      <Row pl={24} pr={16} pt={10} pb={24} style={styles.alignCenter}>
+      <Row pl={24} pr={16} pt={10} pb={22} style={styles.alignCenter}>
         <IconLogo width={scale(28)} height={scale(28)} />
         <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Staking</Text>
       </Row>
       <Col style={styles.container}>
         <KeyboardAwareScrollView
+          ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
-          style={{ marginTop: scale(24) }}
+          style={{ marginTop: scale(22) }}
           contentContainerStyle={styles.contentContainerStyle}>
           <Row.LR mb={16}>
             <Text style={styles.title}>Validator</Text>
@@ -142,7 +166,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
               <IconArrowDown />
             </View>
           </CButton>
-          {errors.validator && touched.validator && (
+          {!!errors.validator && touched.validator && (
             <Text style={styles.error}>{errors.validator}</Text>
           )}
           <Row.LR mt={24} mb={16}>
@@ -165,14 +189,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             style={styles.btnStaking}
           />
           <View style={styles.line} />
-          <Text
-            style={[
-              styles.title,
-              { marginTop: scale(24), marginBottom: scale(15) },
-            ]}>
-            Staked Information
-          </Text>
-          <StakedInformationItem value={{}} />
+          <StakingInformation publicKey={publicKey} />
         </KeyboardAwareScrollView>
       </Col>
     </CLayout>
@@ -237,8 +254,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnStaking: {
-    marginTop: scale(40),
-    marginBottom: scale(32),
+    marginTop: scale(22),
+    marginBottom: scale(20),
   },
   line: {
     width: '100%',

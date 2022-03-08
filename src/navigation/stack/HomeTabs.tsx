@@ -62,19 +62,19 @@ const listTabs = [
     tabItemActive: <IconMenuHomeActive {...tabIcon24} />,
     tabItemInActive: <IconMenuHome {...tabIcon24} />,
   },
-  //TODO: enabled when these tabs are completed.
-  /*{
-        name: 'Staking',
-        component: StakingNavigation,
-        tabItemActive: <IconMenuStakingActive {...tabIcon24}/>,
-        tabItemInActive:  <IconMenuStaking {...tabIcon24}/>,
-    },*/
+  {
+    name: 'Staking',
+    component: StakingNavigation,
+    tabItemActive: <IconMenuStakingActive {...tabIcon24} />,
+    tabItemInActive: <IconMenuStaking {...tabIcon24} />,
+  },
   {
     name: 'NFT',
     component: NFTNavigation,
     tabItemActive: <IconMenuNFTActive {...tabIcon25} />,
     tabItemInActive: <IconMenuNFT {...tabIcon25} />,
   },
+  //TODO: enabled when these tabs are completed.
   /*{
         name: 'Market',
         component: MarketNavigation,

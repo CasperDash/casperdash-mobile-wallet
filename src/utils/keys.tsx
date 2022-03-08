@@ -7,6 +7,7 @@ const Keys = {
   ledger: 'transport',
   deploysTransfer: 'deploys.transfers',
   nfts: 'nfts',
+  deploysStakes: 'deploys.stakes',
 };
 
 export default Keys;
