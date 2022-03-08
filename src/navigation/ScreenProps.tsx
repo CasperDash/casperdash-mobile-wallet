@@ -33,6 +33,12 @@ export type ScreenParams = {
   STAKING_SCREEN: {
     selectValidator?: any;
   };
+  STAKING_CONFIRM_SCREEN: {
+    stakedAmount: number;
+    validator: string;
+    name: string;
+    amount: number;
+  };
 };
 
 type ScreenNavigationProp<T extends keyof ScreenParams> = StackNavigationProp<
