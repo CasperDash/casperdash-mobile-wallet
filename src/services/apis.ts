@@ -18,6 +18,28 @@ function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
   });
 }
 
+/**
+ *  Fetch accounts information by passing public keys.
+ * `NetworkPromiseResponse<T>`
+ * @param {any} params - any
+ * @returns A promise.
+ */
+function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
+  return new Promise((resolve, reject) => {
+    network
+      .authorizedRequest('users/', 'POST', params)
+      .then((res: any) => {
+        if (!res || (res && res.status >= 400)) {
+          return reject(res);
+        }
+        resolve(res as any);
+      })
+      .catch((err: any) => {
+        reject(err);
+      });
+  });
+}
+
 function getTokenInfoWithBalanceAPI<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
@@ -140,6 +162,7 @@ function getTransferDeploysStatusAPI<T>(
 
 export default {
   getAccountInformation,
+  getAccounts,
   getTokenInfoWithBalanceAPI,
   fetchCSPRMarketInfoAPI,
   getTokenAddressInfoAPI,
