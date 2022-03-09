@@ -16,6 +16,7 @@ import Col from 'react-native-col';
 import { ScrollView } from 'react-native-gesture-handler';
 import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { convertBalanceFromHex } from 'utils/helpers/balance';
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
@@ -62,8 +63,42 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
       }
       if (ledgerPublicKey) {
         setError(null);
+        setIsLoading(false);
         const keys = await getListKeys(casperApp, listKeys.length, 5);
-        setListKeys(keys);
+        setIsLoading(true);
+        dispatch(
+          allActions.user.getAccounts(
+            { publicKeys: keys },
+            async (err: any, data: any) => {
+              if (err) {
+                setError(err);
+                return;
+              }
+
+              if (!data || !data.length) {
+                setListKeys(keys);
+                return;
+              }
+
+              const keysWithBalance = keys.map(key => {
+                const found = data.find(
+                  (item: { publicKey: string }) =>
+                    item.publicKey === key.publicKey,
+                );
+                const balance =
+                  found && found.balance
+                    ? convertBalanceFromHex(found.balance.hex)
+                    : 0;
+                return {
+                  ...key,
+                  balance,
+                };
+              });
+              setIsLoading(false);
+              setListKeys(keysWithBalance);
+            },
+          ),
+        );
         unmountRef.current = true;
       } else {
         setTransport(null);
@@ -158,7 +193,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
   return (
     <View style={styles.ShowAddressScreen}>
       {isLoading ? (
-        <Text style={styles.loading}>Loading your account</Text>
+        <Text style={styles.loading}>Loading...</Text>
       ) : (
         !publicKey &&
         error && (
