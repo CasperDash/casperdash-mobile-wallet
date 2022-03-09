@@ -4,6 +4,8 @@ import { scale } from 'device';
 import { Row, Col, CButton } from 'components';
 import { colors, textStyles } from 'assets';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { toFormattedNumber } from 'utils/helpers/format';
+import { CASPER_SYMBOL } from 'utils/constants/key';
 
 interface Props {
   value: any;
@@ -20,7 +22,6 @@ const KeyComponent = ({ value, onPress }: Props) => {
             style={styles.symbol}
           />
           <Col mx={12}>
-            {/* <Text style={styles.sub1}>{value.publicKey ?? ''}</Text> */}
             <Text
               numberOfLines={1}
               ellipsizeMode={'middle'}
@@ -32,8 +33,7 @@ const KeyComponent = ({ value, onPress }: Props) => {
         </Row>
         <Col.R mx={12}>
           <Text style={styles.sub1}>
-            {/* {toFormattedCurrency(value.totalPrice ?? 0, {maximumFractionDigits: 2}, 'en-US')} */}
-            {/* 300 CSPR */}
+            {`${toFormattedNumber(value.balance)} ${CASPER_SYMBOL}`}
           </Text>
         </Col.R>
       </Row.LR>
