@@ -1,5 +1,8 @@
 import { all } from 'redux-saga/effects';
-import { watchGetAccountInformation } from '../user/user_saga';
+import {
+  watchGetAccountInformation,
+  watchGetAccounts,
+} from '../user/user_saga';
 
 import {
   watchGetConfigurations,
@@ -20,6 +23,7 @@ export default function* rootSaga() {
   yield all([
     //user
     watchGetAccountInformation(),
+    watchGetAccounts(),
 
     // main
     watchShowMessage(),
