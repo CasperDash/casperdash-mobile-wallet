@@ -17,6 +17,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { convertBalanceFromHex } from 'utils/helpers/balance';
+import CLoading from 'components/CLoading';
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
@@ -63,9 +64,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
       }
       if (ledgerPublicKey) {
         setError(null);
-        setIsLoading(false);
         const keys = await getListKeys(casperApp, listKeys.length, 5);
-        setIsLoading(true);
         dispatch(
           allActions.user.getAccounts(
             { publicKeys: keys },
@@ -104,14 +103,13 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
         setTransport(null);
       }
     } catch (err) {
+      setIsLoading(false);
       if (unmountRef.current) {
         return;
       }
       setError(err);
       return null;
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   const getAccountInformation = async (key: any) => {
@@ -193,7 +191,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
   return (
     <View style={styles.ShowAddressScreen}>
       {isLoading ? (
-        <Text style={styles.loading}>Loading...</Text>
+        <CLoading />
       ) : (
         !publicKey &&
         error && (
