@@ -10,7 +10,6 @@ import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 
 const StakingInformation = ({ publicKey }: any) => {
   const stackingList = useStakeFromValidators(publicKey);
-  console.log('stackingList', stackingList)
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
     checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
