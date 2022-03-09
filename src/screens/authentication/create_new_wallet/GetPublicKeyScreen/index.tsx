@@ -109,7 +109,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
       }
       setError(err);
       return null;
-    } 
+    }
   };
 
   const getAccountInformation = async (key: any) => {
