@@ -16,6 +16,11 @@ export default function (
         ...state,
         info: action.payload,
       };
+    case types.GET_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        accounts: action.payload,
+      };
     case typesMain.LOAD_LOCAL_STORAGE_SUCCESS: {
       return {
         ...state,
