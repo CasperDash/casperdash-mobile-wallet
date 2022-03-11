@@ -25,7 +25,7 @@ function StakedInformationItem({ value }: Props) {
   };
 
   return (
-    <Row py={16} style={styles.container}>
+    <Row mx={16} py={16} style={styles.container}>
       {StatusIcon && <StatusIcon width={scale(24)} height={scale(24)} />}
       <Row.LR pl={16} style={{ flex: 1 }}>
         <Col.TL>
@@ -67,10 +67,8 @@ export default StakedInformationItem;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: scale(375 - 16 * 2),
     alignItems: 'center',
-    borderBottomWidth: scale(1),
-    borderBottomColor: colors.N5,
   },
   title: {
     ...textStyles.Sub1,
