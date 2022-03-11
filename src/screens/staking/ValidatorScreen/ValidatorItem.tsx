@@ -10,7 +10,7 @@ function ValidatorItem({ data, onSelectValidator }: any) {
     <CButton onPress={() => onSelectValidator(data)}>
       <Row px={16} py={16} style={styles.container}>
         <Image source={{ uri: data.icon }} style={styles.icon} />
-        <Row.LRT pl={12} style={styles.rightContainer}>
+        <Row.LR pl={12} style={styles.rightContainer}>
           <Text
             ellipsizeMode={'middle'}
             numberOfLines={1}
@@ -31,7 +31,7 @@ function ValidatorItem({ data, onSelectValidator }: any) {
               CSPR
             </Text>
           </Col.R>
-        </Row.LRT>
+        </Row.LR>
       </Row>
     </CButton>
   );

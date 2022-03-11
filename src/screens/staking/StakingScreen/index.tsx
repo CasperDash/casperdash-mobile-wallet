@@ -1,16 +1,31 @@
 import React, { useEffect, useRef } from 'react';
-import { colors, fonts, IconArrowDown, IconLogo, textStyles } from 'assets';
+import {
+  colors,
+  fonts,
+  IconArrowDown,
+  IconLogo,
+  images,
+  textStyles,
+} from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton } from 'components';
-import { device, scale } from 'device';
+import { scale } from 'device';
 import { useFormik } from 'formik';
 import MainRouter from 'navigation/stack/MainRouter';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Image,
+  Platform,
+} from 'react-native';
 import * as yup from 'yup';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   checkIfLoadingSelector,
+  checkIfRefreshingSelector,
   getMassagedUserDetails,
   getPublicKey,
 } from 'utils/selectors';
@@ -21,9 +36,10 @@ import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
 import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
-import StakingInformation from 'screens/staking/StakingScreen/StakingInformation';
 import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useStakeFromValidators } from 'utils/hooks/useStakeDeploys';
+import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
 
 const initialValues = {
   amount: '0',
@@ -43,6 +59,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   // Selector
   const publicKey = useSelector(getPublicKey);
+  const stackingList = useStakeFromValidators(publicKey);
   const userDetails = useSelector(getMassagedUserDetails);
   const balance =
     userDetails && userDetails.balance && userDetails.balance.displayBalance;
@@ -51,6 +68,11 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
     checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
+  );
+
+  const isRefreshing = useSelector((state: any) =>
+    // @ts-ignore
+    checkIfRefreshingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
   );
 
   const validationSchema = yup.object().shape({
@@ -104,27 +126,32 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   }, [selectedValidator, setFieldValue]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      if (!isLoading) {
-        dispatch(
-          allActions.staking.getValidatorsInformation(
-            { refreshing: false },
-            (error: any, _: any) => {
-              if (error) {
-                dispatch(
-                  allActions.main.showMessage({
-                    message: error.message,
-                    type: MessageType.error,
-                  }),
-                );
-              }
-            },
-          ),
-        );
-      }
-    });
-    return unsubscribe;
-  }, [dispatch, navigation, isLoading]);
+    getData(false);
+  }, [dispatch, selectedValidator]);
+
+  const getData = (refreshing: boolean) => {
+    if (refreshing) {
+      resetForm();
+    }
+    if (isLoading && !refreshing) {
+      return;
+    }
+    dispatch(
+      allActions.staking.getValidatorsInformation(
+        { refreshing },
+        (error: any, _: any) => {
+          if (error) {
+            dispatch(
+              allActions.main.showMessage({
+                message: error.message,
+                type: MessageType.error,
+              }),
+            );
+          }
+        },
+      ),
+    );
+  };
 
   const setBalance = () => {
     setFieldValue('amount', `${balance - fee}`);
@@ -153,22 +180,38 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     );
   };
 
-  return (
-    <CLayout statusBgColor={colors.cF8F8F8} bgColor={colors.cF8F8F8}>
-      <Row pl={24} pr={16} pt={10} pb={22} style={styles.alignCenter}>
-        <IconLogo width={scale(28)} height={scale(28)} />
-        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Staking</Text>
-      </Row>
-      <Col style={styles.container}>
-        <KeyboardAwareScrollView
-          ref={scrollViewRef}
-          showsVerticalScrollIndicator={false}
-          style={{ marginTop: scale(22) }}
-          contentContainerStyle={[
-            styles.contentContainerStyle,
-            { minHeight: device.h - scale(220) - bottom },
-            !isLoading && { paddingBottom: scale(100) },
-          ]}>
+  const _renderNoData = () => {
+    return (
+      <View
+        style={[styles.loadingContainer, { minHeight: scale(150) + bottom }]}>
+        {isLoading ? (
+          <ActivityIndicator size="small" color={colors.N2} />
+        ) : (
+          <>
+            <Image source={images.nonft} style={styles.imgNoData} />
+            <Text
+              style={[
+                {
+                  ...textStyles.Body1,
+                  color: colors.N4,
+                },
+              ]}>
+              No Data
+            </Text>
+          </>
+        )}
+      </View>
+    );
+  };
+
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
+    return <StakedInformationItem value={item} key={index} />;
+  };
+
+  const _renderHeader = () => {
+    return (
+      <>
+        <Col px={16} pt={isRefreshing && Platform.OS === 'ios' ? 16 : 0}>
           <Row.LR mb={16}>
             <Text style={styles.title}>Validator</Text>
             <Text style={textStyles.Body1}>Network Fee: {fee} CSPR</Text>
@@ -209,9 +252,36 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             text={'Stake Now'}
             style={styles.btnStaking}
           />
-          <View style={styles.line} />
-          <StakingInformation publicKey={publicKey} />
-        </KeyboardAwareScrollView>
+        </Col>
+        <View style={styles.line} />
+        <Text style={[styles.title, { margin: scale(16) }]}>
+          Staked Information
+        </Text>
+      </>
+    );
+  };
+
+  return (
+    <CLayout statusBgColor={colors.cF8F8F8} bgColor={colors.cF8F8F8}>
+      <Row pl={24} pr={16} pt={10} pb={22} style={styles.alignCenter}>
+        <IconLogo width={scale(28)} height={scale(28)} />
+        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Staking</Text>
+      </Row>
+      <Col style={styles.container}>
+        <FlatList
+          ListHeaderComponent={_renderHeader}
+          ref={scrollViewRef}
+          showsVerticalScrollIndicator={false}
+          style={{ marginTop: scale(22) }}
+          contentContainerStyle={styles.contentContainerStyle}
+          data={stackingList}
+          extraData={stackingList}
+          refreshing={isRefreshing}
+          onRefresh={() => getData(true)}
+          keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
+          ListEmptyComponent={_renderNoData}
+          renderItem={renderItem}
+        />
       </Col>
     </CLayout>
   );
@@ -228,7 +298,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: scale(40),
   },
   contentContainerStyle: {
-    paddingHorizontal: scale(16),
+    paddingBottom: scale(100),
   },
   btnMax: {
     height: scale(28),
@@ -268,7 +338,7 @@ const styles = StyleSheet.create({
     color: colors.N3,
     fontSize: scale(16),
     lineHeight: scale(30),
-    width: scale(280),
+    width: scale(295),
   },
   alignCenter: {
     alignItems: 'center',
@@ -278,7 +348,7 @@ const styles = StyleSheet.create({
     marginBottom: scale(20),
   },
   line: {
-    width: '100%',
+    width: scale(375),
     height: scale(2),
     backgroundColor: colors.N5,
   },
@@ -288,5 +358,15 @@ const styles = StyleSheet.create({
     marginTop: scale(12),
     fontWeight: '400',
     fontFamily: fonts.Poppins.regular,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imgNoData: {
+    width: scale(180),
+    height: scale(180),
+    resizeMode: 'contain',
   },
 });
