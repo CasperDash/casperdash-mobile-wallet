@@ -1,4 +1,4 @@
-import { CInput, Row } from 'components';
+import { CButton, CInput, Row } from 'components';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
@@ -11,7 +11,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { colors, IconArrowUp, IconLogo, IconSearch, textStyles } from 'assets';
+import {
+  colors,
+  IconArrowUp,
+  IconCloseFilledN2,
+  IconLogo,
+  IconSearch,
+  textStyles,
+} from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
 import NFTItem from './ListItem';
@@ -21,6 +28,8 @@ import _ from 'lodash';
 import { allActions } from 'redux_manager';
 import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const hitSlop = { top: 10, bottom: 10, right: 10 };
 
 function NFTScreen() {
   const dispatch = useDispatch();
@@ -32,6 +41,8 @@ function NFTScreen() {
   const [reload, setReload] = useState(false);
   const [filterName, setFilterName] = useState(false);
   const [filterContractName, setFilterContractName] = useState(false);
+  const [search, setSearch] = useState<string>('');
+  const inputRef = useRef<any>();
 
   useEffect(() => {
     getData(false);
@@ -68,7 +79,7 @@ function NFTScreen() {
     setSort(type);
   };
 
-  const onChangeText = (text: string) => {
+  const onChangeText = _.debounce((text: string) => {
     if (!text) {
       setNFTs(listNFTs.current);
       return;
@@ -79,6 +90,13 @@ function NFTScreen() {
       );
       setNFTs(newFilterArr);
     }
+  }, 500);
+
+  const onClearSearch = () => {
+    setSearch('');
+    inputRef.current?.setText('');
+    inputRef.current?.blur();
+    setNFTs(listNFTs.current);
   };
 
   const onReload = () => {
@@ -116,11 +134,26 @@ function NFTScreen() {
       <View style={styles.searchWrapper}>
         <IconSearch style={styles.iconSearch} />
         <CInput
-          onChangeText={_.debounce(onChangeText, 500)}
+          ref={inputRef}
+          onChangeText={text => {
+            setSearch(text);
+            onChangeText(text);
+          }}
           placeholder="Enter name"
           placeholderTextColor={colors.N4}
           containerStyle={styles.containerInputStyle}
           inputStyle={styles.inputSearch}
+          rightComponent={
+            !!search && (
+              <CButton onPress={onClearSearch} hitSlop={hitSlop}>
+                <IconCloseFilledN2
+                  width={scale(20)}
+                  height={scale(20)}
+                  style={styles.icClearText}
+                />
+              </CButton>
+            )
+          }
         />
       </View>
       <View style={styles.sortWrapper}>
@@ -214,11 +247,11 @@ const styles = StyleSheet.create({
   iconSearch: {
     position: 'absolute',
     top: '50%',
-    left: 20,
+    left: scale(20),
     zIndex: 2,
-    width: 20,
-    height: 15,
-    transform: [{ translateY: -15 }],
+    width: scale(20),
+    height: scale(15),
+    transform: [{ translateY: -scale(15) }],
   },
   filter: {
     transform: [{ rotate: '180deg' }],
@@ -238,7 +271,7 @@ const styles = StyleSheet.create({
     paddingLeft: scale(54),
     backgroundColor: colors.W1,
     borderRadius: scale(50),
-    paddingHorizontal: scale(30),
+    paddingRight: scale(30),
   },
   btnFilter: {
     backgroundColor: colors.cFFFFFF,
@@ -260,7 +293,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: scale(40),
   },
   nftsList: {
-    paddingBottom: scale(310),
+    paddingBottom: scale(330),
   },
   numNft: {
     ...textStyles.Sub1,
@@ -290,5 +323,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  icClearText: {
+    right: scale(20),
   },
 });
