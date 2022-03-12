@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import Clipboard from '@react-native-clipboard/clipboard';
 import { colors, IconAttributes, IconCopy, images, textStyles } from 'assets';
-import { CFastImage, CHeader, CLayout, Row } from 'components';
+import { CButton, CFastImage, CHeader, CLayout, Row } from 'components';
 import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
 
@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props {
   route: any;
@@ -26,7 +27,7 @@ function NFTDetail({ route }: Props) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [showAttributes, setShowAttributes] = useState(true);
-
+  const { bottom } = useSafeAreaInsets();
   const data = route.params;
 
   const {
@@ -83,8 +84,11 @@ function NFTDetail({ route }: Props) {
             height={scale(189)}
           />
         </TouchableOpacity>
-        <ScrollView style={styles.scrollView}>
-          <View style={{ width: '100%' }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: bottom + scale(60) }}
+          style={styles.scrollView}>
+          <View style={{ width: '100%', paddingTop: scale(10) }}>
             {/* TODO:follow the figma's design
           <View style={styles.headerInformation}>
             <Text style={styles.title}>Current Price</Text>
@@ -111,31 +115,31 @@ function NFTDetail({ route }: Props) {
             <Text style={styles.textPriceConvert}>(~$111)</Text>
           </View>
           <Text style={styles.time}>2021-11-09 23:45</Text> */}
-            <View style={styles.headerInformation}>
-              <Text style={styles.totalSupply}>
-                Total Supply: {totalSupply}
-              </Text>
+            <View style={styles.flexStart}>
+              <Text style={styles.labelContract}>Total Supply:</Text>
+              <Text style={styles.contractContent}> {totalSupply}</Text>
             </View>
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Name:</Text>
               <Text style={styles.contractContent}> {nftContractName}</Text>
             </View>
-            <View style={{ marginVertical: scale(20) }}>
+            <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Address:</Text>
-              <Row.C mt={14}>
-                <Text
-                  onPress={copyToClipboard}
-                  numberOfLines={1}
-                  ellipsizeMode={'middle'}
-                  style={styles.contractAddressText}>
-                  {contractAddress}
-                </Text>
-                <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
-              </Row.C>
+              <CButton onPress={copyToClipboard}>
+                <Row.C mt={6}>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode={'middle'}
+                    style={styles.contractAddressText}>
+                    {`${contractAddress}  `}
+                    <IconCopy style={styles.iconCopy} />
+                  </Text>
+                </Row.C>
+              </CButton>
             </View>
 
             <TouchableOpacity
-              style={{ marginBottom: scale(24) }}
+              style={{ marginBottom: scale(24), marginTop: scale(16) }}
               onPress={() => setShowAttributes(!showAttributes)}>
               <View style={styles.titleWrapper}>
                 <Text style={styles.title}>Attributes</Text>
@@ -201,7 +205,7 @@ const styles = StyleSheet.create({
     color: colors.N3,
     fontSize: scale(16),
     fontWeight: '500',
-    marginRight: scale(25),
+    marginRight: scale(16),
   },
   arrow: {
     transform: [{ rotateX: '180deg' }],
@@ -223,6 +227,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    marginTop: scale(16),
   },
 
   totalSupply: {
@@ -284,10 +289,9 @@ const styles = StyleSheet.create({
     fontSize: scale(16),
     fontWeight: '400',
     color: colors.N2,
-    marginRight: scale(10),
-    width: device.w - 75,
   },
   contractContent: {
+    ...textStyles.Body1,
     fontSize: scale(16),
     color: colors.N2,
   },
