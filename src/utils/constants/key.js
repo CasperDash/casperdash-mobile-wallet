@@ -20,3 +20,4 @@ export const CASPERDASH_URL = 'https://casperdash.io/';
 export const NETWORK_URL = APP_CONFIGS.NETWORK_URL;
 export const NETWORK_NAME = APP_CONFIGS.NETWORK_NAME;
 export const EXPLORER_URL = APP_CONFIGS.EXPLORER_URL;
+export const AUCTION_HASH = APP_CONFIGS.AUCTION_HASH;

@@ -11,6 +11,7 @@ const initialState = {
   tokensAddressList: [],
   casperdash: null,
   deploysTransfer: null,
+  deploysStakes: null,
 };
 
 export default function (

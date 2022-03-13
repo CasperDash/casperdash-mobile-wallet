@@ -16,6 +16,7 @@ interface Props extends React.FC<TouchableOpacityProps> {
   disabled?: boolean;
   style?: any;
   children?: any;
+  hitSlop?: any,
 }
 
 const Button = ({
@@ -23,10 +24,12 @@ const Button = ({
   style,
   enabledOpacity = false,
   children,
+  hitSlop,
   ...rest
 }: Props) => {
   return (
     <TouchableOpacity
+      hitSlop={hitSlop}
       {...rest}
       {...{ disabled }}
       activeOpacity={0.85}

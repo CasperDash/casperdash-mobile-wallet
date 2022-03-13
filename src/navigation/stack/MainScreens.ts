@@ -8,6 +8,8 @@ import {
   SendScreen,
   HistoriesScreen,
   TransferHistoryScreen,
+  ValidatorScreen,
+  StakingConfirmScreen,
 } from 'screens';
 import NFTDetail from 'screens/nft/NFTDetailScreen';
 
@@ -21,6 +23,8 @@ const {
   HISTORIES_SCREEN,
   NFTDETAIL_SCREEN,
   TRANSFER_HISTORY_SCREEN,
+  VALIDATOR_SCREEN,
+  STAKING_CONFIRM_SCREEN,
 } = MainRouter;
 
 export const MainScreens = {
@@ -53,5 +57,11 @@ export const MainScreens = {
   },
   [TRANSFER_HISTORY_SCREEN]: {
     screen: TransferHistoryScreen,
+  },
+  [VALIDATOR_SCREEN]: {
+    screen: ValidatorScreen,
+  },
+  [STAKING_CONFIRM_SCREEN]: {
+    screen: StakingConfirmScreen,
   },
 };

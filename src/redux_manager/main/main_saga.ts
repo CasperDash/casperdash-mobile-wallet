@@ -3,6 +3,7 @@ import { types } from './main_action';
 import { Config, Keys } from 'utils';
 import { apis } from 'services';
 import { types as typesHome } from '../home/home_action';
+import { types as typesStaking } from '../staking/staking_action';
 
 export function* showMessage(data: any) {
   yield put({ type: types.SHOW_MESSAGE_SUCCESS, payload: data.message });
@@ -23,6 +24,8 @@ export function* loadLocalStorage() {
   const configurations = yield Config.getItem(Keys.configurations);
   // @ts-ignore
   const deploysTransfer = yield Config.getItem(Keys.deploysTransfer);
+  // @ts-ignore
+  const deploysStakes = yield Config.getItem(Keys.deploysStakes);
 
   if (!configurations) {
     yield put({ type: types.GET_CONFIGURATIONS });
@@ -32,6 +35,7 @@ export function* loadLocalStorage() {
     tokensAddressList: tokensAddressList,
     configurations: configurations,
     deploysTransfer: deploysTransfer,
+    deploysStakes: deploysStakes,
   };
   yield put({ type: types.LOAD_LOCAL_STORAGE_SUCCESS, payload: data });
 }
@@ -43,6 +47,7 @@ export function* watchLoadLocalStorage() {
       [
         types.LOAD_LOCAL_STORAGE,
         typesHome.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS,
+        typesStaking.PUSH_STAKE_TO_LOCAL_STORAGE_SUCCESS,
       ],
       loadLocalStorage,
     );
