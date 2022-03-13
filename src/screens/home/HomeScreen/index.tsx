@@ -47,6 +47,7 @@ function HomeScreen() {
       homeTypes.GET_TOKEN_INFO_WITH_BALANCE,
       homeTypes.FETCH_CSPR_MARKET_INFO,
       userTypes.GET_ACCOUNT_INFORMATION,
+      userTypes.GET_ACCOUNTS,
     ]),
   );
   // @ts-ignore
@@ -56,6 +57,7 @@ function HomeScreen() {
       homeTypes.GET_TOKEN_INFO_WITH_BALANCE,
       homeTypes.FETCH_CSPR_MARKET_INFO,
       userTypes.GET_ACCOUNT_INFORMATION,
+      userTypes.GET_ACCOUNTS,
     ]),
   );
 

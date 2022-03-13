@@ -16,6 +16,8 @@ import Col from 'react-native-col';
 import { ScrollView } from 'react-native-gesture-handler';
 import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { convertBalanceFromHex } from 'utils/helpers/balance';
+import CLoading from 'components/CLoading';
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
@@ -54,28 +56,59 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
 
   const fetchAddress = async () => {
     try {
-      setIsLoading(true);
       const casperApp = new CasperApp(transport);
       const ledgerPublicKey = await getLedgerPublicKey(casperApp);
       if (unmountRef.current) {
         return;
       }
+      setIsLoading(true);
       if (ledgerPublicKey) {
         setError(null);
         const keys = await getListKeys(casperApp, listKeys.length, 5);
-        setListKeys(keys);
+        dispatch(
+          allActions.user.getAccounts(
+            { publicKeys: keys },
+            async (err: any, data: any) => {
+              if (err) {
+                setError(err.message);
+                return;
+              }
+
+              if (!data || !data.length) {
+                setListKeys(keys);
+                return;
+              }
+
+              const keysWithBalance = keys.map(key => {
+                const found = data.find(
+                  (item: { publicKey: string }) =>
+                    item.publicKey === key.publicKey,
+                );
+                const balance =
+                  found && found.balance
+                    ? convertBalanceFromHex(found.balance.hex)
+                    : 0;
+                return {
+                  ...key,
+                  balance,
+                };
+              });
+              setIsLoading(false);
+              setListKeys(keysWithBalance);
+            },
+          ),
+        );
         unmountRef.current = true;
       } else {
         setTransport(null);
       }
     } catch (err) {
+      setIsLoading(false);
       if (unmountRef.current) {
         return;
       }
       setError(err);
       return null;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -158,7 +191,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
   return (
     <View style={styles.ShowAddressScreen}>
       {isLoading ? (
-        <Text style={styles.loading}>Loading your account</Text>
+        <CLoading />
       ) : (
         !publicKey &&
         error && (
