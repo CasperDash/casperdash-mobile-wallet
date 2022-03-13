@@ -58,3 +58,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+/ios/CasperDash.app.dSYM.zip
+/src/utils/config/env.*.js
