@@ -19,6 +19,7 @@ Follow instructions for your given `development OS` and `target OS`.
 
 Assuming you have all the requirements installed, you can run the project by running:
 
+- `yarn setup-env` to setup the environment files for mainnet and testnet
 - `yarn start` to start the metro bundler, in a dedicated terminal
 - `cd ios && pod install` to run the pod installation
 - go to the project root and run `yarn <platform>` to run the *platform* application (remember to start a simulator or connect a device). Platform should be `ios` or `android`.
