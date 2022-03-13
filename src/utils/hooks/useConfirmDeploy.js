@@ -9,6 +9,12 @@ export const useConfirmDeploy = () => {
 
   const signer = useSigner();
 
+  /**
+   * It takes a signed deploy and sends it to the deploy API
+   * @param signedDeploy - The signed deploy that you want to deploy.
+   * @param cb - callback function that will be called with the result of the deploy.
+   * @returns The deployHash.
+   */
   const putSignedDeploy = async (signedDeploy, cb) => {
     try {
       const data = await apis.deployAPI(signedDeploy);
@@ -21,6 +27,15 @@ export const useConfirmDeploy = () => {
     }
   };
 
+  /**
+   * It builds a deploy, signs it with the signer, and puts it on-chain
+   * @param buildDeployFn - A function that returns a deploy.
+   * @param fromPublicKey - The public key of the account that is sending the deploy.
+   * @param toPublicKey - The public key of the account that will receive the deploy.
+   * @param showMessage - a function that takes a message and a message type and displays it to the
+   * user.
+   * @returns The deploy hash and the signed deploy.
+   */
   const executeDeploy = async (
     buildDeployFn,
     fromPublicKey,
@@ -48,7 +63,7 @@ export const useConfirmDeploy = () => {
       showMessage(error.message, MessageType.error);
       setDeployError(true);
       setIsDeploying(false);
-      console.error(error);
+
       return {};
     }
   };

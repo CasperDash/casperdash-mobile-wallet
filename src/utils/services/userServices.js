@@ -26,7 +26,6 @@ export const getTransferDeploy = (transactionDetail = {}) => {
       fee,
     );
   } catch (error) {
-    console.error(error);
     throw new Error('Failed to build transfer deploy.');
   }
 };
