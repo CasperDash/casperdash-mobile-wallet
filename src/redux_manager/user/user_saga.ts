@@ -48,6 +48,49 @@ export function* getAccountInformation(data: any) {
   }
 }
 
+export function* getAccounts(data: any) {
+  try {
+    yield put(
+      data.params && data.params.refreshing
+        ? refreshActionStart(types.GET_ACCOUNTS)
+        : startAction(types.GET_ACCOUNTS),
+    );
+
+    console.log('pARAMs', data.params.publicKeys);
+    const publicKeys =
+      data.params && data.params.publicKeys
+        ? data.params.publicKeys.map(
+            (key: { keyIndex: number; publicKey: string }) => key.publicKey,
+          )
+        : [];
+    // @ts-ignore
+    const response = yield apis.getAccounts({
+      publicKeys,
+    });
+    if (response) {
+      yield put({
+        type: types.GET_ACCOUNTS + '_SUCCESS',
+        payload: response,
+      });
+      data.cb && data.cb(null, response);
+    } else {
+      data.cb && data.cb(true, null);
+    }
+  } catch (error: any) {
+    if (error && error.data) {
+      data.cb && data.cb(error.data, null);
+    } else {
+      data.cb && data.cb(error, null);
+    }
+  } finally {
+    yield put(
+      data.params && data.params.refreshing
+        ? refreshActionStop(types.GET_ACCOUNTS)
+        : stopAction(types.GET_ACCOUNTS),
+    );
+  }
+}
+
 export function* watchGetAccountInformation() {
   while (true) {
     // @ts-ignore
@@ -55,6 +98,15 @@ export function* watchGetAccountInformation() {
       types.GET_ACCOUNT_INFORMATION,
       getAccountInformation,
     );
+    yield take(['LOGOUT', 'NETWORK']);
+    yield cancel(watcher);
+  }
+}
+
+export function* watchGetAccounts() {
+  while (true) {
+    // @ts-ignore
+    const watcher = yield takeLatest(types.GET_ACCOUNTS, getAccounts);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }

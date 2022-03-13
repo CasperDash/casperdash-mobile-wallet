@@ -24,6 +24,7 @@ function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
 }
 
 /**
+<<<<<<< HEAD
  *  Fetch accounts information by passing public keys.
  * `NetworkPromiseResponse<T>`
  * @param {any} params - any
@@ -45,7 +46,7 @@ function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
   });
 }
 
-/**
+=======
  * Get Token Info With Balance
  * @param {any} params - {
  * @returns The response is a JSON object with the following structure:
@@ -60,6 +61,7 @@ function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
  *       "totalSupply": "1000000000000000000000000000",
  *      }
  */
+>>>>>>> 9936f49aed6bd81c9a3b49120afc33ca67a4aaf2
 function getTokenInfoWithBalanceAPI<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
