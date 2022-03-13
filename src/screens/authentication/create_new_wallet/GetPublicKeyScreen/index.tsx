@@ -56,12 +56,12 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
 
   const fetchAddress = async () => {
     try {
-      setIsLoading(true);
       const casperApp = new CasperApp(transport);
       const ledgerPublicKey = await getLedgerPublicKey(casperApp);
       if (unmountRef.current) {
         return;
       }
+      setIsLoading(true);
       if (ledgerPublicKey) {
         setError(null);
         const keys = await getListKeys(casperApp, listKeys.length, 5);
