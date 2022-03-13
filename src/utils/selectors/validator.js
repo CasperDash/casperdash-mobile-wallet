@@ -5,6 +5,8 @@ import Fuse from 'fuse.js';
 
 export const stakingReducer = state => state.staking;
 
+/* This is memoization. It is a technique used to improve the performance of your application by
+caching the result of a function call. */
 const addValidatorIcon = memoizeOne(validators => {
   return validators.map(validator => {
     return {
@@ -14,6 +16,8 @@ const addValidatorIcon = memoizeOne(validators => {
   });
 });
 
+/* This is memoization. It is a technique used to improve the performance of your application by
+caching the result of a function call. */
 const searchValidator = memoizeOne((validators, searchTerm) => {
   if (!searchTerm) {
     return validators;

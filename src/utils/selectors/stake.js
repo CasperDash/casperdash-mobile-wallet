@@ -1,6 +1,20 @@
 import { createSelector } from 'reselect';
 import { Config, Keys } from 'utils';
 
+/**
+ * It takes in a stakes object and returns an array of objects, where each object represents a
+ * validator and the amount of tokens delegated to that validator
+ * @returns An array of objects with the following structure:
+ * ```
+ * [
+ *   {
+ *     validator: 'validator_address',
+ *     delegatingAmount: '0',
+ *     undelegatingAmount: '0',
+ *     pendingUndelegationAmount: '0',
+ *     totalAmount: '0',
+ *   },
+ */
 export const getConfirmedStakesGroupByValidator =
   () =>
   ({ stakes = {} }) => {
@@ -32,6 +46,7 @@ export const getConfirmedStakesGroupByValidator =
     return [];
   };
 
+/* A selector that returns the stakes of a user. */
 export const getDeployStakes = createSelector(
   state => state.main,
   (_, params) => params,
@@ -50,6 +65,12 @@ export const getDeployStakes = createSelector(
   },
 );
 
+/**
+ * Update the deploy status of the stakes in the deployStorageValue object
+ * @param publicKey - The public key of the user who deployed the stakes.
+ * @param path - The path to the file that was deployed.
+ * @param [listHash] - A list of hashes of the deployed stakes.
+ */
 export const updateStakesDeployStatus = async (
   publicKey,
   path,

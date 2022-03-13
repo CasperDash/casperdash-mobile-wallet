@@ -26,7 +26,6 @@ export const getTransferTokenDeploy = (transactionDetail = {}) => {
       fee,
     );
   } catch (error) {
-    console.error(error);
     throw new Error('Failed to get token transfer deploy.');
   }
 };

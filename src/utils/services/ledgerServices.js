@@ -28,7 +28,6 @@ export const signDeployByLedger = async (deploy, options = {}) => {
   );
 
   if (!responseDeploy.signatureRS) {
-    console.error(responseDeploy.errorMessage);
     transport.close();
     throw Error(
       getLedgerError(

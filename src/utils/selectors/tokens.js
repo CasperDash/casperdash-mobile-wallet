@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 
 export const tokensSelector = state => state.home;
 
+/* A selector that returns an array of objects. */
 export const getMassagedTokenData = createSelector(
   tokensSelector,
   ({ tokenInfoWithBalance: data }) => {
@@ -50,6 +51,10 @@ export const getMassagedTokenData = createSelector(
   },
 );
 
+/**
+ * It returns a list of unique tokens addresses.
+ * @returns An array of unique tokens addresses.
+ */
 export const getTokensAddressList = ({ main }) => {
   const tokensAddress = (main && main.tokensAddressList) || [];
   return [...new Set([...tokensAddress])];

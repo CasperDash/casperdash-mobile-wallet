@@ -53,7 +53,6 @@ export const getStakeDeploy = ({
       toMotes(fee),
     );
   } catch (error) {
-    console.error(error);
     throw new Error('Failed to get stake deploy.');
   }
 };
