@@ -138,6 +138,22 @@ function getTransferDeploysStatusAPI<T>(
   });
 }
 
+function getValidatorsInformationAPI<T>(): NetworkPromiseResponse<T> {
+  return new Promise((resolve, reject) => {
+    network
+      .authorizedRequest('/validators', 'GET')
+      .then((res: any) => {
+        if (!res || (res && res.status >= 400)) {
+          return reject(res);
+        }
+        resolve(res as any);
+      })
+      .catch((err: any) => {
+        reject(err);
+      });
+  });
+}
+
 export default {
   getAccountInformation,
   getTokenInfoWithBalanceAPI,
@@ -147,4 +163,5 @@ export default {
   deployAPI,
   getListNFTsAPI,
   getTransferDeploysStatusAPI,
+  getValidatorsInformationAPI,
 };

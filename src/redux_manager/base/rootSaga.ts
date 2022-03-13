@@ -15,6 +15,10 @@ import {
 } from '../home/home_saga';
 
 import { watchFetchNFTInfo } from '../nft/nft_saga';
+import {
+  watchGetValidatorsInformation,
+  watchPushStakeToLocalStorage,
+} from 'redux_manager/staking/staking_saga';
 
 export default function* rootSaga() {
   yield all([
@@ -35,5 +39,9 @@ export default function* rootSaga() {
 
     //NFTs
     watchFetchNFTInfo(),
+
+    //Staking
+    watchGetValidatorsInformation(),
+    watchPushStakeToLocalStorage(),
   ]);
 }
