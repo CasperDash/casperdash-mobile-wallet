@@ -70,7 +70,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
             { publicKeys: keys },
             async (err: any, data: any) => {
               if (err) {
-                setError(err);
+                setError(err.message);
                 return;
               }
 
