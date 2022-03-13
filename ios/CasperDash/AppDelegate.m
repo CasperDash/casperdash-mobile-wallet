@@ -1,4 +1,6 @@
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"  // here
+#import "Orientation.h"
 
 #if RCT_DEV
  #import <React/RCTDevLoadingView.h>
@@ -10,7 +12,6 @@
 #import <React/RCTLinkingManager.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
-#import <CodePush/CodePush.h>
 //#import <FBSDKCoreKit/FBSDKCoreKit.h>
 //#import <RNGoogleSignin/RNGoogleSignin.h>
 #import "Orientation.h"
@@ -72,10 +73,11 @@ static void InitializeFlipper(UIApplication *application) {
 //  [[FBSDKApplicationDelegate sharedInstance] application:application
 //                            didFinishLaunchingWithOptions:launchOptions];
 
+  //TODO: enable if using notification
   // Define UNUserNotificationCenter
-   UNUserNotificationCenter *center =
-  [UNUserNotificationCenter currentNotificationCenter];
-  center.delegate = self;
+//   UNUserNotificationCenter *center =
+//  [UNUserNotificationCenter currentNotificationCenter];
+//  center.delegate = self;
 
   //this code clear stored information in keychain when using react-native-sensitive-info (uninstall app and reinstall, stored information remained)
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HAS_RUN_BEFORE"] == NO) {
@@ -113,33 +115,35 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 // Required for the register event.
-- (void)application:(UIApplication *)application
-    didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  [RNCPushNotificationIOS
-      didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-}
+//TODO: enable below code if using notification.
+//- (void)application:(UIApplication *)application
+//    didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+//  [RNCPushNotificationIOS
+//      didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+//}
 // Required for the notification event. You must call the completion handler
 // after handling the remote notification.
-- (void)application:(UIApplication *)application
-    didReceiveRemoteNotification:(NSDictionary *)userInfo
-          fetchCompletionHandler:
-              (void (^)(UIBackgroundFetchResult))completionHandler {
-  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo
-                                fetchCompletionHandler:completionHandler];
-}
-// Required for the registrationError event.
-- (void)application:(UIApplication *)application
-    didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-  [RNCPushNotificationIOS
-      didFailToRegisterForRemoteNotificationsWithError:error];
-}
-// Required for local notification tapped event
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-    didReceiveNotificationResponse:(UNNotificationResponse *)response
-             withCompletionHandler:(void (^)(void))completionHandler {
-  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
-  completionHandler();
-}
+//
+//- (void)application:(UIApplication *)application
+//    didReceiveRemoteNotification:(NSDictionary *)userInfo
+//          fetchCompletionHandler:
+//              (void (^)(UIBackgroundFetchResult))completionHandler {
+//  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo
+//                                fetchCompletionHandler:completionHandler];
+//}
+//// Required for the registrationError event.
+//- (void)application:(UIApplication *)application
+//    didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+//  [RNCPushNotificationIOS
+//      didFailToRegisterForRemoteNotificationsWithError:error];
+//}
+//// Required for local notification tapped event
+//- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+//    didReceiveNotificationResponse:(UNNotificationResponse *)response
+//             withCompletionHandler:(void (^)(void))completionHandler {
+//  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
+//  completionHandler();
+//}
 
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -147,8 +151,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
-return [CodePush bundleURL];
-//  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+ return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
 #endif
 }

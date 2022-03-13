@@ -1,31 +1,47 @@
-import {all} from 'redux-saga/effects';
-import {
-    watchGetAccountInformation,
-} from '../user/user_saga';
+import { all } from 'redux-saga/effects';
+import { watchGetAccountInformation } from '../user/user_saga';
 
 import {
-    watchShowMessage,
+  watchGetConfigurations,
+  watchLoadLocalStorage,
+  watchShowMessage,
 } from '../main/main_saga';
 
 import {
-
-} from '../wallet/wallet_saga';
-
-import {
-
+  watchGetTokenInfoWithBalance,
+  watchFetchCSPRMarketInfo,
+  watchGetTokenAddressInfo,
+  watchPushTransferToLocalStorage,
 } from '../home/home_saga';
 
+import { watchFetchNFTInfo } from '../nft/nft_saga';
+import {
+  watchGetValidatorsInformation,
+  watchPushStakeToLocalStorage,
+} from 'redux_manager/staking/staking_saga';
+
 export default function* rootSaga() {
-    yield all([
-        //user
-        watchGetAccountInformation(),
+  yield all([
+    //user
+    watchGetAccountInformation(),
 
-        // main
-        watchShowMessage(),
+    // main
+    watchShowMessage(),
+    watchLoadLocalStorage(),
+    watchGetConfigurations(),
 
-        //home
+    //home
+    watchGetTokenInfoWithBalance(),
+    watchFetchCSPRMarketInfo(),
+    watchGetTokenAddressInfo(),
+    watchPushTransferToLocalStorage(),
+    //wallet
 
-        //wallet
+    //NFTs
+    watchFetchNFTInfo(),
 
-    ]);
+    //Staking
+    watchGetValidatorsInformation(),
+    watchPushStakeToLocalStorage(),
+  ]);
 }

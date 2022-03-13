@@ -1,32 +1,43 @@
 import React from 'react';
-import {StyleSheet, StatusBar, SafeAreaView, StatusBarStyle} from 'react-native';
-import {colors} from 'assets';
+import { StyleSheet, StatusBar, StatusBarStyle } from 'react-native';
+import { colors } from 'assets';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type LProps = {
-    children: React.ReactNode;
-    bgColor?: string;
-    statusBgColor?: string;
-    barStyle?: StatusBarStyle,
+  children: React.ReactNode;
+  bgColor?: string;
+  statusBgColor?: string;
+  barStyle?: StatusBarStyle;
+  edges?: any;
 };
 
-const CLayout = ({children, bgColor, statusBgColor, barStyle = 'dark-content'}: LProps) => {
-    return (
-        <SafeAreaView
-            style={[{backgroundColor: bgColor || colors.cFFFFFF}, styles.layout]}>
-            <StatusBar
-                animated
-                backgroundColor={statusBgColor || colors.cFFFFFF}
-                barStyle={barStyle}
-            />
-            {children}
-        </SafeAreaView>
-    );
+const defaultEdges = ['right', 'top', 'left', 'bottom'];
+
+const CLayout = ({
+  children,
+  bgColor,
+  statusBgColor,
+  barStyle = 'dark-content',
+  edges = defaultEdges,
+}: LProps) => {
+  return (
+    <SafeAreaView
+      edges={edges}
+      style={[{ backgroundColor: bgColor || colors.cFFFFFF }, styles.layout]}>
+      <StatusBar
+        animated
+        backgroundColor={statusBgColor || colors.cFFFFFF}
+        barStyle={barStyle}
+      />
+      {children}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-    layout: {
-        flex: 1,
-    },
+  layout: {
+    flex: 1,
+  },
 });
 
 export default CLayout;
