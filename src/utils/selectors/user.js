@@ -12,10 +12,18 @@ const CSPR_INFO = {
   icon: require('../../assets/images/ic_cspr.png'),
 };
 
+/**
+ * It returns the login options for the user
+ * @returns The login options for the user.
+ */
 export const getLoginOptions = ({ user }) => {
   return (user.casperdash && user.casperdash.loginOptions) || {};
 };
 
+/**
+ * Given a user object, return the user's public key
+ * @returns The public key of the user.
+ */
 export const getPublicKey = ({ user }) => {
   return user.casperdash && user.casperdash.publicKey;
 };
@@ -35,6 +43,8 @@ const massageUserDetails = userDetails => {
 
 export const userDetailsSelector = state => state.user;
 
+/* This is a selector that returns a function. The function takes in the state and returns the user
+details. */
 export const getMassagedUserDetails = createSelector(
   userDetailsSelector,
   userDetails => {
@@ -42,6 +52,7 @@ export const getMassagedUserDetails = createSelector(
   },
 );
 
+/* `getAllTokenInfo` is a selector that returns an array of objects. */
 export const getAllTokenInfo = createSelector(
   getMassagedUserDetails,
   getCurrentPrice,
@@ -87,6 +98,8 @@ export const getAllTokenInfo = createSelector(
   },
 );
 
+/* This selector is a function that takes in the state and returns the total balance of the user in
+fiat. */
 export const getAccountTotalBalanceInFiat = createSelector(
   getAllTokenInfo,
   allTokenInfo => {

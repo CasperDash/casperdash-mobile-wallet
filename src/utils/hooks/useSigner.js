@@ -10,6 +10,13 @@ import { signDeployByLedger } from '../services/ledgerServices';
 const useSigner = () => {
   const loginOptions = useSelector(getLoginOptions);
 
+  /**
+   * It signs the deploy with the main account.
+   * @param deploy - The deploy object that you want to sign.
+   * @param mainAccountHex - The public key of the account that will be used to sign the deploy.
+   * @param setAccountHex - The hex of the account that will be used to sign the deploy.
+   * @returns The `sign` function returns a `Promise` that resolves to a `Deploy` object.
+   */
   const sign = async (deploy, mainAccountHex, setAccountHex) => {
     switch (loginOptions.connectionType) {
       case CONNECTION_TYPES.ledger: {

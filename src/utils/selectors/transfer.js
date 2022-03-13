@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { Config, Keys } from 'utils';
 
+/* It's a selector, which is a function that returns a value from a state. */
 export const getDeploysTransfer = createSelector(
   state => state.main,
   (_, params) => params,
@@ -19,6 +20,12 @@ export const getDeploysTransfer = createSelector(
   },
 );
 
+/**
+ * Update the deploy status of the transfer deploys
+ * @param publicKey - The public key of the user who initiated the transfer.
+ * @param path - The path to the file that contains the deploy.
+ * @param [listHash] - A list of deploys that have been deployed.
+ */
 export const updateTransferDeployStatus = async (
   publicKey,
   path,
