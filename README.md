@@ -2,7 +2,7 @@
 
 # Welcome to first Casper Mobile Wallet 👋
 
-![](https://imgur.com/gallery/uP2uMfc)
+![](https://i.imgur.com/uP2uMfc.jpeg)
 
 Development workflow: https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 
@@ -182,7 +182,7 @@ c. Click on Change my environment variables
 
 d. Click on New... to create a new ANDROID_HOME user variable that points to the path to your Android SDK:
 
-![](https://imgur.com/uP2uMfc)
+![](https://i.imgur.com/gak5SWC.png)
 
 The SDK is installed, by default, at the following location:
 
