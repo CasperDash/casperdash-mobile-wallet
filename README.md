@@ -196,7 +196,7 @@ b. Copy and paste Get-ChildItem -Path Env:\ into powershell
 
 c. Verify ANDROID_HOME has been added
 
-4. Add platform-tools to Path
+**4. Add platform-tools to Path**
 
 a. Open the Windows Control Panel
 
