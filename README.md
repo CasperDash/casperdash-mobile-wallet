@@ -2,7 +2,7 @@
 
 # Welcome to first Casper Mobile Wallet 👋
 
-![](https://imgur.com/a/DnmzVJ7)
+![](https://imgur.com/gallery/uP2uMfc)
 
 Development workflow: https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 
