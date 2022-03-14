@@ -2,7 +2,7 @@
 
 # Welcome to first Casper Mobile Wallet 👋
 
-![](https://i.imgur.com/uP2uMfc.jpeg)
+![](https://i.imgur.com/lZh9LSc.png)
 
 ## Features / Road map
 
