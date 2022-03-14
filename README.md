@@ -182,7 +182,7 @@ c. Click on Change my environment variables
 
 d. Click on New... to create a new ANDROID_HOME user variable that points to the path to your Android SDK:
 
-![](https://imgur.com/a/qvJwvDG)
+![](https://imgur.com/uP2uMfc)
 
 The SDK is installed, by default, at the following location:
 
