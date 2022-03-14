@@ -4,10 +4,6 @@
 
 ![](https://i.imgur.com/uP2uMfc.jpeg)
 
-Development workflow: https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
-
-Project: https://github.com/orgs/CasperDash/projects/2
-
 ## Features / Road map
 
 - [x] Connect with Ledger
