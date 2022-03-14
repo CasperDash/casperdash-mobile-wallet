@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "yarn env:testnet && react-native run-android",
-    "ios": "yarn env:testnet && react-native run-ios",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "start": "react-native start",
     "ios:mainnet": "yarn env:mainnet && react-native run-ios",
     "android:mainnet": "yarn env:mainnet && react-native run-android",
@@ -21,10 +21,12 @@
     "env:mainnet": "node scripts/set-env.js mainnet",
     "env:testnet": "node scripts/set-env.js testnet",
     "env:beta": "node scripts/set-env.js beta",
+    "env:local": "node scripts/set-env.js local",
+    "setup-env": "yarn env:mainnet && yarn env:testnet",
     "fastlane:beta": "yarn env:beta && cd ios/fastlane && fastlane beta",
     "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
     "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
-    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && fastlane internal"
+    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && fastlane internal --verbose"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.5.0",
