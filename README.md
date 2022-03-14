@@ -216,6 +216,26 @@ The default location for this folder is:
 %LOCALAPPDATA%\Android\Sdk\platform-tools
 ```
 
+**Notes**
+
+Run android might caught this issue.
+
+> SDK location not found. Define location with sdk.dir in the local.properties file or with an ANDROID_HOME environment variable.
+
+Sometimes, configure the ANDROID_HOME environment variables are not enough. You can resolve the issue by following these steps:
+
+1. Go to your React-native Project -> Android
+2. Create a file local.properties
+3. Open the file paste your Android SDK path like below:
+
+Windows: `sdk.dir = C:\Users\<USERNAME>\AppData\Local\Android\sdk`
+
+macOS: `sdk.dir = /Users/<USERNAME>/Library/Android/sdk`
+
+Linux: `sdk.dir = /home/USERNAME/Android/Sdk`
+
+_USERNAME_ is your current user name.
+
 ## Quick start
 
 Assuming you have all the requirements installed, you can run the project by running:
