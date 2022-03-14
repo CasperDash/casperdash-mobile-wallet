@@ -21,6 +21,7 @@
     "env:mainnet": "node scripts/set-env.js mainnet",
     "env:testnet": "node scripts/set-env.js testnet",
     "env:beta": "node scripts/set-env.js beta",
+    "env:local": "node scripts/set-env.js local",
     "setup-env": "yarn env:mainnet && yarn env:testnet",
     "fastlane:beta": "yarn env:beta && cd ios/fastlane && fastlane beta",
     "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
