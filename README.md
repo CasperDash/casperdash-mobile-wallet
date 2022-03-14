@@ -38,7 +38,7 @@ You can also follow our below quick guide setup.
 
 ### macOS & Android
 
-**Node & Watchman**:
+**Node & Watchman**
 
 We recommend installing Node and Watchman using Homebrew. Run the following commands in a Terminal after installing Homebrew:
 
@@ -47,7 +47,7 @@ brew install node
 brew install watchman
 ```
 
-**Java Development Kit**:
+**Java Development Kit**
 
 We recommend installing JDK using Homebrew. Run the following commands in a Terminal after installing Homebrew:
 
@@ -57,7 +57,7 @@ brew install --cask adoptopenjdk/openjdk/adoptopenjdk11
 
 **Android development environment**
 
-1. Install Android Studio
+**1. Install Android Studio**
 
 Download and install Android Studio. While on Android Studio installation wizard, make sure the boxes next to all of the following items are checked:
 
@@ -65,7 +65,7 @@ Download and install Android Studio. While on Android Studio installation wizard
 - Android SDK Platform
 - Android Virtual Device
 
-2. Install the Android SDK
+**2. Install the Android SDK**
 
 Android Studio installs the latest Android SDK by default. Building a React Native app with native code, however, requires the Android 11 (R) SDK in particular. Additional Android SDKs can be installed through the SDK Manager in Android Studio.
 
@@ -85,7 +85,7 @@ sdkmanager "platforms;android-30" "system-images;android-30;default;x86_64" "sys
 sdkmanager "cmdline-tools;latest" "build-tools;30.0.2"
 ```
 
-3. Configure the ANDROID_HOME environment variable
+**3. Configure the ANDROID_HOME environment variable**
 
 Add the following lines to your $HOME/.bash_profile or $HOME/.bashrc (if you are using zsh then ~/.zprofile or ~/.zshrc) config file:
 
@@ -142,7 +142,7 @@ choco install -y nodejs-lts openjdk11
 
 **Android development environment**
 
-1. Install Android Studio
+**1. Install Android Studio**
 
 Download and install Android Studio. While on Android Studio installation wizard, make sure the boxes next to all of the following items are checked:
 
@@ -151,7 +151,7 @@ Download and install Android Studio. While on Android Studio installation wizard
 - Android Virtual Device
 - If you are not already using Hyper-V: Performance (Intel ® HAXM) (See here for AMD or Hyper-V)
 
-2. Install the Android SDK
+**2. Install the Android SDK**
 
 Android Studio installs the latest Android SDK by default. Building a React Native app with native code, however, requires the Android 11 (R) SDK in particular. Additional Android SDKs can be installed through the SDK Manager in Android Studio.
 
@@ -166,7 +166,7 @@ Next, select the "SDK Tools" tab and check the box next to "Show Package Details
 
 Finally, click "Apply" to download and install the Android SDK and related build tools.
 
-3. Configure the ANDROID_HOME environment variable
+**3. Configure the ANDROID_HOME environment variable**
 
 The React Native tools require some environment variables to be set up in order to build apps with native code.
 
