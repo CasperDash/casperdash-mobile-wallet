@@ -237,14 +237,14 @@ Modify the environment variables files in `scripts/configs/env.[environment].js`
 
 ## Folder structure
 
-- `src`: This folder is the main container of all the code inside your application.
+- `src`: This folder is the main container of all the code inside the application.
   - `assets`: Asset folder to store all images, vectors, etc.
-  - `components`: Folder to store any common component that you use through your app (such as a generic button).
+  - `components`: Folder to store any common component that you use through the app (such as a generic button).
   - `device`: Folder to store any kind of constant that you have.
   - `navigation`: Folder to store the navigators.
   - `redux_manager`: Folder to manage redux state.
-  - `screens`: Folder to store the languages files.
-  - `services`: This folder should have all your reducers, and expose the combined result using its `index.js`
+  - `screens`: Folder to store the screens components.
+  - `services`: This folder should have all services, and expose the combined result using its `index.js`
   - `utils`: Folder to contains utility and helper functions.
 
 ## Workflow and contributions
