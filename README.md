@@ -233,6 +233,8 @@ testnet: `yarn env:testnet`
 
 mainnet: `yarn env:mainnet`
 
+local: `yarn env:local`
+
 Modify the environment variables files in `scripts/configs/env.[environment].js` and run the above commands.
 
 ## API Server
