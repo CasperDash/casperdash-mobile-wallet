@@ -235,6 +235,12 @@ mainnet: `yarn env:mainnet`
 
 Modify the environment variables files in `scripts/configs/env.[environment].js` and run the above commands.
 
+## API Server
+
+By default, the app will connect to testnet or mainnet API server hosted in this repo https://github.com/CasperDash/casperdash-api.
+
+You can run the local API Server and change the environment variable `NETWORK_URL` in `scripts/configs/env.[environment].js` and re-generate the env files.
+
 ## Folder structure
 
 - `src`: This folder is the main container of all the code inside the application.
