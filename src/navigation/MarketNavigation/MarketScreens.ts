@@ -1,11 +1,11 @@
-import {MarketScreen} from 'screens';
+import { MarketScreen } from 'screens';
 import MarketRouter from './MarketRouter';
 
-const {MARKET_SCREEN} = MarketRouter;
+const { MARKET_SCREEN } = MarketRouter;
 
 export const MarketScreens = {
-    [MARKET_SCREEN]: {
-        screen: MarketScreen,
-        title: '',
-    },
+  [MARKET_SCREEN]: {
+    screen: MarketScreen,
+    title: '',
+  },
 };

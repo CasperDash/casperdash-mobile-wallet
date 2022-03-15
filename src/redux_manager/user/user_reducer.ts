@@ -1,28 +1,33 @@
-import {types} from './user_action';
-import {types as typesMain} from '../main/main_action';
+import { types } from './user_action';
+import { types as typesMain } from '../main/main_action';
 
 const initialState = {
-    info: null,
-    casperdash: null
+  info: null,
+  casperdash: null,
 };
 
 export default function (
-    state = initialState,
-    action = {type: '', payload: {}},
+  state = initialState,
+  action = { type: '', payload: {} },
 ) {
-    switch (action.type) {
-        case types.GET_ACCOUNT_INFORMATION_SUCCESS:
-            return {
-                ...state,
-                info: action.payload,
-            };
-        case typesMain.LOAD_LOCAL_STORAGE_SUCCESS: {
-            return {
-                ...state,
-                casperdash: action.payload.casperdash,
-            }
-        }
-        default:
-            return state;
+  switch (action.type) {
+    case types.GET_ACCOUNT_INFORMATION_SUCCESS:
+      return {
+        ...state,
+        info: action.payload,
+      };
+    case types.GET_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        accounts: action.payload,
+      };
+    case typesMain.LOAD_LOCAL_STORAGE_SUCCESS: {
+      return {
+        ...state,
+        casperdash: action.payload.casperdash,
+      };
     }
+    default:
+      return state;
+  }
 }

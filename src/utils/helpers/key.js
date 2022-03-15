@@ -1,6 +1,8 @@
 import { KEY_PREFIX } from '../constants/key';
 
-const KEY_PREFIX_REGEX = new RegExp(KEY_PREFIX.map((prefix) => `^${prefix}`).join('|'));
+const KEY_PREFIX_REGEX = new RegExp(
+  KEY_PREFIX.map(prefix => `^${prefix}`).join('|'),
+);
 
 /**
  * Remove key prefix.
@@ -8,5 +10,5 @@ const KEY_PREFIX_REGEX = new RegExp(KEY_PREFIX.map((prefix) => `^${prefix}`).joi
  * @return {String} Key without prefix.
  */
 export const formatKeyByPrefix = (key = '') => {
-	return key.replace(KEY_PREFIX_REGEX, '');
+  return key.replace(KEY_PREFIX_REGEX, '');
 };

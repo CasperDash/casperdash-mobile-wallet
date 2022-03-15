@@ -1,22 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import Clipboard from '@react-native-clipboard/clipboard';
-import {
-  colors,
-  IconArrowLeft,
-  IconAttributes,
-  IconCopy,
-  IconFacebook,
-  IconInstagram,
-  IconTwitter,
-  images, textStyles,
-} from 'assets';
-import {CFastImage, CHeader, CLayout, Row} from 'components';
+import { colors, IconAttributes, IconCopy, images, textStyles } from 'assets';
+import { CButton, CFastImage, CHeader, CLayout, Row } from 'components';
 import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
 
 import React, { useState } from 'react';
 import {
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -26,6 +16,7 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props {
   route: any;
@@ -36,7 +27,7 @@ function NFTDetail({ route }: Props) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [showAttributes, setShowAttributes] = useState(true);
-
+  const { bottom } = useSafeAreaInsets();
   const data = route.params;
 
   const {
@@ -73,25 +64,31 @@ function NFTDetail({ route }: Props) {
   // };
 
   return (
-    <CLayout statusBgColor={colors.cF8F8F8}
-             edges={['right', 'top', 'left']}
-             bgColor={colors.cF8F8F8}>
+    <CLayout
+      statusBgColor={colors.cF8F8F8}
+      edges={['right', 'top', 'left']}
+      bgColor={colors.cF8F8F8}>
       <View style={styles.container}>
-        <CHeader title={nftName} style={{backgroundColor: colors.cF8F8F8}}/>
-        <TouchableOpacity onPress={onOpenModal} style={{ position: 'relative', marginTop: scale(24) }}>
+        <CHeader title={nftName} style={{ backgroundColor: colors.cF8F8F8 }} />
+        <TouchableOpacity
+          onPress={onOpenModal}
+          style={{ position: 'relative', marginTop: scale(24) }}>
           <CFastImage
-              disabled
-              colorDef={'transparent'}
-              source={nftImage}
-              resizeMode={'contain'}
-              sourceDef={images.imgnft}
-              style={styles.nftImage}
-              width={device.w}
-              height={scale(189)}
+            disabled
+            colorDef={'transparent'}
+            source={nftImage}
+            resizeMode={'contain'}
+            sourceDef={images.imgnft}
+            style={styles.nftImage}
+            width={device.w}
+            height={scale(189)}
           />
         </TouchableOpacity>
-        <ScrollView style={styles.scrollView}>
-          <View style={{ width: '100%' }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: bottom + scale(60) }}
+          style={styles.scrollView}>
+          <View style={{ width: '100%', paddingTop: scale(10) }}>
             {/* TODO:follow the figma's design
           <View style={styles.headerInformation}>
             <Text style={styles.title}>Current Price</Text>
@@ -118,64 +115,66 @@ function NFTDetail({ route }: Props) {
             <Text style={styles.textPriceConvert}>(~$111)</Text>
           </View>
           <Text style={styles.time}>2021-11-09 23:45</Text> */}
-            <View style={styles.headerInformation}>
-              <Text style={styles.totalSupply}>Total Supply: {totalSupply}</Text>
+            <View style={styles.flexStart}>
+              <Text style={styles.labelContract}>Total Supply:</Text>
+              <Text style={styles.contractContent}> {totalSupply}</Text>
             </View>
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Name:</Text>
               <Text style={styles.contractContent}> {nftContractName}</Text>
             </View>
-            <View style={{ marginVertical: scale(20) }}>
+            <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Address:</Text>
-              <Row.C mt={14}>
-                <Text
-                    onPress={copyToClipboard}
+              <CButton onPress={copyToClipboard}>
+                <Row.C mt={6}>
+                  <Text
                     numberOfLines={1}
                     ellipsizeMode={'middle'}
                     style={styles.contractAddressText}>
-                  {contractAddress}
-                </Text>
-                <IconCopy onPress={copyToClipboard} style={styles.iconCopy} />
-              </Row.C>
+                    {`${contractAddress}  `}
+                    <IconCopy style={styles.iconCopy} />
+                  </Text>
+                </Row.C>
+              </CButton>
             </View>
 
             <TouchableOpacity
-                style={{marginBottom: scale(24)}}
-                onPress={() => setShowAttributes(!showAttributes)}>
+              style={{ marginBottom: scale(24), marginTop: scale(16) }}
+              onPress={() => setShowAttributes(!showAttributes)}>
               <View style={styles.titleWrapper}>
                 <Text style={styles.title}>Attributes</Text>
                 <IconAttributes
-                    style={
-                      showAttributes ? styles.showAttribute : styles.hideAttribute
-                    }
+                  style={
+                    showAttributes ? styles.showAttribute : styles.hideAttribute
+                  }
                 />
               </View>
             </TouchableOpacity>
             {showAttributes && (
-                <View style={styles.metaData}>
-                  {metadata.map(
-                      (item: { name: string; key: string; value: string }) => (
-                          <View key={item.name} style={styles.metaDataItem}>
-                            <Text style={styles.keyMetaData}>{item.key}</Text>
-                            <Text style={styles.valueMetaData}>{item.value}</Text>
-                          </View>
-                      ),
-                  )}
-                </View>
+              <View style={styles.metaData}>
+                {metadata.map(
+                  (item: { name: string; key: string; value: string }) => (
+                    <View key={item.name} style={styles.metaDataItem}>
+                      <Text style={styles.keyMetaData}>{item.key}</Text>
+                      <Text style={styles.valueMetaData}>{item.value}</Text>
+                    </View>
+                  ),
+                )}
+              </View>
             )}
           </View>
         </ScrollView>
         <Modal animationType="fade" transparent={true} visible={open}>
           <TouchableOpacity onPress={onOpenModal} style={styles.modal}>
             <CFastImage
-                disabled
-                colorDef={'transparent'}
-                source={nftImage}
-                resizeMode={'contain'}
-                sourceDef={images.imgnft}
-                style={styles.nftImage}
-                width={device.w - scale(60)}
-                height={device.h - scale(60)}
+              disabled
+              colorDef={'transparent'}
+              source={nftImage}
+              resizeMode={'contain'}
+              sourceDef={images.imgnft}
+              style={styles.nftImage}
+              width={device.w - scale(60)}
+              height={device.h - scale(60)}
             />
           </TouchableOpacity>
         </Modal>
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
     color: colors.N3,
     fontSize: scale(16),
     fontWeight: '500',
-    marginRight: scale(25),
+    marginRight: scale(16),
   },
   arrow: {
     transform: [{ rotateX: '180deg' }],
@@ -228,6 +227,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    marginTop: scale(16),
   },
 
   totalSupply: {
@@ -289,10 +289,9 @@ const styles = StyleSheet.create({
     fontSize: scale(16),
     fontWeight: '400',
     color: colors.N2,
-    marginRight: scale(10),
-    width: device.w - 75,
   },
   contractContent: {
+    ...textStyles.Body1,
     fontSize: scale(16),
     color: colors.N2,
   },

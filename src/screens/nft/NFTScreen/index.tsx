@@ -1,5 +1,5 @@
-import {CInput, Row} from 'components';
-import React, {useState, useEffect, useRef} from 'react';
+import { CButton, CInput, Row } from 'components';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -11,20 +11,29 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {colors, IconArrowUp, IconLogo, IconSearch, textStyles} from 'assets';
+import {
+  colors,
+  IconArrowUp,
+  IconCloseFilledN2,
+  IconLogo,
+  IconSearch,
+  textStyles,
+} from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
 import NFTItem from './ListItem';
 import { orderBy } from 'lodash';
-import {nonAccentText} from 'utils/helpers/format';
+import { nonAccentText } from 'utils/helpers/format';
 import _ from 'lodash';
-import {allActions} from 'redux_manager';
-import {useDispatch} from 'react-redux';
-import {useSafeAreaInsets} from "react-native-safe-area-context";
+import { allActions } from 'redux_manager';
+import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const hitSlop = { top: 10, bottom: 10, right: 10 };
 
 function NFTScreen() {
   const dispatch = useDispatch();
-  const {top} = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   const [isLoading, setLoading] = useState(true);
   const [nfts, setNFTs] = useState([]);
   const listNFTs = useRef<any>();
@@ -32,26 +41,29 @@ function NFTScreen() {
   const [reload, setReload] = useState(false);
   const [filterName, setFilterName] = useState(false);
   const [filterContractName, setFilterContractName] = useState(false);
+  const [search, setSearch] = useState<string>('');
+  const inputRef = useRef<any>();
 
   useEffect(() => {
     getData(false);
   }, []);
 
   const getData = (isRefresh: boolean) => {
-    dispatch(allActions.nft.fetchNFTInfo((error: any, data: any) => {
-      if (data) {
-        listNFTs.current = data;
-        if (isRefresh){
-          // @ts-ignore
-          setNFTs(orderBy(data, 'nftName', 'asc'));
+    dispatch(
+      allActions.nft.fetchNFTInfo((error: any, data: any) => {
+        if (data) {
+          listNFTs.current = data;
+          if (isRefresh) {
+            // @ts-ignore
+            setNFTs(orderBy(data, 'nftName', 'asc'));
+          } else {
+            setNFTs(data);
+          }
         }
-        else {
-          setNFTs(data);
-        }
-      }
-      setReload(false);
-      setLoading(false);
-    }));
+        setReload(false);
+        setLoading(false);
+      }),
+    );
   };
 
   const onFilterWith = (type: string) => {
@@ -67,15 +79,24 @@ function NFTScreen() {
     setSort(type);
   };
 
-  const onChangeText = (text: string) => {
-    if (!text){
+  const onChangeText = _.debounce((text: string) => {
+    if (!text) {
       setNFTs(listNFTs.current);
       return;
     }
-    if (text && listNFTs.current){
-      const newFilterArr = listNFTs.current.filter((x: any) => nonAccentText(x.nftName).includes(nonAccentText(text)));
+    if (text && listNFTs.current) {
+      const newFilterArr = listNFTs.current.filter((x: any) =>
+        nonAccentText(x.nftName).includes(nonAccentText(text)),
+      );
       setNFTs(newFilterArr);
     }
+  }, 500);
+
+  const onClearSearch = () => {
+    setSearch('');
+    inputRef.current?.setText('');
+    inputRef.current?.blur();
+    setNFTs(listNFTs.current);
   };
 
   const onReload = () => {
@@ -83,37 +104,56 @@ function NFTScreen() {
     getData(true);
   };
 
-  const renderItem = ({item, index}: { item: any, index: number }) => {
-    return <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index}/>;
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
+    return (
+      <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index} />
+    );
   };
 
   const renderNoData = () => {
-    return <View style={styles.noNFT}>
-      <Image source={images.nonft} style={styles.imageNoNFT} />
-      <Text style={styles.textNoNFT}>There is no NFT</Text>
-    </View>;
+    return (
+      <View style={styles.noNFT}>
+        <Image source={images.nonft} style={styles.imageNoNFT} />
+        <Text style={styles.textNoNFT}>There are no NFT</Text>
+      </View>
+    );
   };
 
   return (
-    <View style={[styles.container, {paddingTop: top}]}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <StatusBar
         backgroundColor={'rgba(52, 52, 52, 0)'}
         translucent={true}
         barStyle="dark-content"
         animated={true}
       />
-      <Row ml={24} mt={10} mb={16} style={{alignItems: 'center'}}>
-        <IconLogo width={scale(28)} height={scale(28)}/>
-        <Text style={[textStyles.H3, {marginLeft: scale(16)}]}>My NFT</Text>
+      <Row ml={24} mt={10} mb={16} style={{ alignItems: 'center' }}>
+        <IconLogo width={scale(28)} height={scale(28)} />
+        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>My NFT</Text>
       </Row>
       <View style={styles.searchWrapper}>
         <IconSearch style={styles.iconSearch} />
         <CInput
-          onChangeText={_.debounce(onChangeText, 500)}
+          ref={inputRef}
+          onChangeText={text => {
+            setSearch(text);
+            onChangeText(text);
+          }}
           placeholder="Enter name"
           placeholderTextColor={colors.N4}
           containerStyle={styles.containerInputStyle}
           inputStyle={styles.inputSearch}
+          rightComponent={
+            !!search && (
+              <CButton onPress={onClearSearch} hitSlop={hitSlop}>
+                <IconCloseFilledN2
+                  width={scale(20)}
+                  height={scale(20)}
+                  style={styles.icClearText}
+                />
+              </CButton>
+            )
+          }
         />
       </View>
       <View style={styles.sortWrapper}>
@@ -140,25 +180,27 @@ function NFTScreen() {
           />
         </TouchableOpacity>
       </View>
-      <View style={[styles.nftListWrapper, {minHeight: scale(315)}]}>
-        {isLoading ? <View style={styles.flexCenter}>
-          <ActivityIndicator size="small" color={colors.N2}/>
-        </View> : (
+      <View style={[styles.nftListWrapper, { minHeight: scale(315) }]}>
+        {isLoading ? (
+          <View style={styles.flexCenter}>
+            <ActivityIndicator size="small" color={colors.N2} />
+          </View>
+        ) : (
           <View>
             <Text style={styles.numNft}>
-              {nfts.length + ' NFTs'}
+              {nfts.length + ` ${nfts.length < 2 ? 'NFT' : 'NFTs'}`}
             </Text>
             <FlatList
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.nftsList}
-                data={nfts}
-                refreshing={reload}
-                extraData={nfts}
-                onRefresh={onReload}
-                keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
-                ListEmptyComponent={renderNoData}
-                renderItem={renderItem}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.nftsList}
+              data={nfts}
+              refreshing={reload}
+              extraData={nfts}
+              onRefresh={onReload}
+              keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
+              ListEmptyComponent={renderNoData}
+              renderItem={renderItem}
             />
           </View>
         )}
@@ -205,11 +247,11 @@ const styles = StyleSheet.create({
   iconSearch: {
     position: 'absolute',
     top: '50%',
-    left: 20,
+    left: scale(20),
     zIndex: 2,
-    width: 20,
-    height: 15,
-    transform: [{ translateY: -15 }],
+    width: scale(20),
+    height: scale(15),
+    transform: [{ translateY: -scale(15) }],
   },
   filter: {
     transform: [{ rotate: '180deg' }],
@@ -229,7 +271,7 @@ const styles = StyleSheet.create({
     paddingLeft: scale(54),
     backgroundColor: colors.W1,
     borderRadius: scale(50),
-    paddingHorizontal: scale(30),
+    paddingRight: scale(30),
   },
   btnFilter: {
     backgroundColor: colors.cFFFFFF,
@@ -251,7 +293,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: scale(40),
   },
   nftsList: {
-    paddingBottom: scale(310),
+    paddingBottom: scale(330),
   },
   numNft: {
     ...textStyles.Sub1,
@@ -273,7 +315,7 @@ const styles = StyleSheet.create({
     ...textStyles.Body1,
     color: colors.N4,
   },
-  titleSelect:  {
+  titleSelect: {
     ...textStyles.Body1,
     fontSize: scale(14),
   },
@@ -281,5 +323,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  icClearText: {
+    right: scale(20),
   },
 });
