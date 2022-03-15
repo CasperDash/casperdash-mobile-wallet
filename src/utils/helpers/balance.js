@@ -5,11 +5,11 @@ import { MOTE_RATE } from '../constants/key';
  * @param {String} balanceHex - Balance hex.
  * @return {Float} Balance in float.
  */
-export const convertBalanceFromHex = (balanceHex) => {
-	const balance = parseInt(balanceHex);
-	return moteToCspr(balance);
+export const convertBalanceFromHex = balanceHex => {
+  const balance = parseInt(balanceHex);
+  return moteToCspr(balance);
 };
 
-export const moteToCspr = (balanceInCSPR) => {
-	return parseFloat(balanceInCSPR / MOTE_RATE);
+export const moteToCspr = balanceInCSPR => {
+  return parseFloat(balanceInCSPR / MOTE_RATE);
 };

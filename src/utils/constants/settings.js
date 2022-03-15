@@ -7,8 +7,8 @@ ledger : Ledger device
 default: custom adding, view mode
 */
 export const CONNECTION_TYPES = {
-	casperSigner: 'caspersigner',
-	ledger: 'ledger',
+  casperSigner: 'caspersigner',
+  ledger: 'ledger',
 };
 
 export const CONNECTED_ACCOUNT_STORAGE_PATH = 'connectedAccount';

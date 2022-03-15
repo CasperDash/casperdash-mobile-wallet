@@ -1,55 +1,47 @@
 import React from 'react';
-import {
-    images,
-    IconImportPhrase,
-    IconPlusCircle,
-    IconConnectLedger,
-} from 'assets';
-import {scale} from 'device';
+import { images, IconPlusCircle, IconConnectLedger } from 'assets';
+import { scale } from 'device';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 
 export interface Intro {
-    id: number,
-    image: any,
-    title: string,
+  id: number;
+  image: any;
+  title: string;
 }
 
-
-export interface NFT{
-    id:number,
-    image:any,
-    title:string,
-    time:string,
+export interface NFT {
+  id: number;
+  image: any;
+  title: string;
+  time: string;
 }
 const ListIntro: Array<Intro> = [
-    {
-        id: 0,
-        image: images.intro1,
-        title: 'The new NFT marketplace',
-    },
-    {
-        id: 1,
-        image: images.intro2,
-        title: 'Get success in the crypto art',
-    },
-    {
-        id: 2,
-        image: images.intro3,
-        title: 'Stake to earn more money',
-    },
+  {
+    id: 0,
+    image: images.intro1,
+    title: 'The new NFT marketplace',
+  },
+  {
+    id: 1,
+    image: images.intro2,
+    title: 'Get success in the crypto art',
+  },
+  {
+    id: 2,
+    image: images.intro3,
+    title: 'Stake to earn more money',
+  },
 ];
 
-
-const ListNFT:Array
 export interface CreateNewWalletMenu {
-    id: number,
-    icon: any,
-    title: string,
-    screen: string,
+  id: number;
+  icon: any;
+  title: string;
+  screen: string;
 }
 
 const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
-    /*{
+  /*{
         id: 0,
         icon: () => <IconPlusCircle width={scale(22)} height={scale(22)}/>,
         title: 'Create new wallet',
@@ -61,26 +53,23 @@ const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
         title: 'Import Phrase',
         screen: CreateNewWalletRouter.IMPORT_PHRASE_SCREEN,
     },*/
-    {
-        id: 3,
-        icon: () => <IconPlusCircle width={scale(22)} height={scale(22)}/>,
-        title: 'View Mode',
-        screen: CreateNewWalletRouter.ADD_KEY_SCREEN,
-    },
-    {
-        id: 2,
-        icon: () => <IconConnectLedger width={scale(23)} height={scale(23)}/>,
-        title: 'Connect Ledger',
-        screen: CreateNewWalletRouter.CONNECT_LEDGER_SCREEN,
-    },
+  {
+    id: 3,
+    icon: () => <IconPlusCircle width={scale(22)} height={scale(22)} />,
+    title: 'View Mode',
+    screen: CreateNewWalletRouter.ADD_KEY_SCREEN,
+  },
+  {
+    id: 2,
+    icon: () => <IconConnectLedger width={scale(23)} height={scale(23)} />,
+    title: 'Connect Ledger',
+    screen: CreateNewWalletRouter.CONNECT_LEDGER_SCREEN,
+  },
 ];
 
 export interface Phrase {
-    id: number,
-    word: string
+  id: number;
+  word: string;
 }
 
-export {
-    ListIntro,
-    ListCreateNewWalletMenu,
-};
+export { ListIntro, ListCreateNewWalletMenu };
