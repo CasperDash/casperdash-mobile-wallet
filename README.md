@@ -277,9 +277,8 @@ You can run the local API Server and generate the environment file by running th
 
 ## Workflow and contributions
 
-Development workflow: https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
+https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 
-Project: https://github.com/orgs/CasperDash/projects/2
 
 ## License
 
