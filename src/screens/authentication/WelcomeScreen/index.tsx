@@ -144,7 +144,7 @@ function WelcomeScreen() {
         />
       </Row.LR>
       <Col style={[styles.footer, { bottom: insets.bottom }]}>
-        {currentIndex === arrayImgSlider.length -1 ? _renderGetStarted() : _renderNavigatorButton()}
+        {currentIndex === arrayImgSlider.length - 1 ? _renderGetStarted() : _renderNavigatorButton()}
       </Col>
     </View>
   );
