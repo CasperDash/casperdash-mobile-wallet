@@ -130,7 +130,7 @@ function WelcomeScreen() {
         </CButton>
         <CPaginationDot
           lineStyle
-          length={3}
+          length={arrayImgSlider.length}
           style={styles.pagination}
           active={currentIndex}
           activeLineWidth={scale(24)}
@@ -144,7 +144,7 @@ function WelcomeScreen() {
         />
       </Row.LR>
       <Col style={[styles.footer, { bottom: insets.bottom }]}>
-        {currentIndex === 2 ? _renderGetStarted() : _renderNavigatorButton()}
+        {currentIndex === arrayImgSlider.length - 1 ? _renderGetStarted() : _renderNavigatorButton()}
       </Col>
     </View>
   );
