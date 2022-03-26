@@ -16,11 +16,12 @@ export interface NFT {
   time: string;
 }
 const ListIntro: Array<Intro> = [
-  {
-    id: 0,
-    image: images.intro1,
-    title: 'The new NFT marketplace',
-  },
+  // TODO: enable in the next version.
+  // {
+  //   id: 0,
+  //   image: images.intro1,
+  //   title: 'The new NFT marketplace',
+  // },
   {
     id: 1,
     image: images.intro2,
