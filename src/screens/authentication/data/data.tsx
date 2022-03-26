@@ -16,6 +16,7 @@ export interface NFT {
   time: string;
 }
 const ListIntro: Array<Intro> = [
+  // TODO: enable in the next version.
   // {
   //   id: 0,
   //   image: images.intro1,
