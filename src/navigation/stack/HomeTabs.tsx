@@ -68,13 +68,12 @@ const listTabs = [
     tabItemActive: <IconMenuStakingActive {...tabIcon24} />,
     tabItemInActive: <IconMenuStaking {...tabIcon24} />,
   },
-  //TODO: enable NFT
-  /*{
+  {
     name: 'NFT',
     component: NFTNavigation,
     tabItemActive: <IconMenuNFTActive {...tabIcon25} />,
     tabItemInActive: <IconMenuNFT {...tabIcon25} />,
-  },*/
+  },
   //TODO: enabled when these tabs are completed.
   /*{
         name: 'Market',
