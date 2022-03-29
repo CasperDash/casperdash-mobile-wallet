@@ -29,6 +29,7 @@ function AddKeyScreen() {
 
   const onAddPublicKey = async () => {
     setLoading(true);
+
     dispatch(
       allActions.user.getAccountInformation(
         { publicKey },
