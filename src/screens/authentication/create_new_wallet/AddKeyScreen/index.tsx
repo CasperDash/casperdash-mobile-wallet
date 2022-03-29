@@ -23,13 +23,12 @@ function AddKeyScreen() {
   const dispatch = useDispatch();
 
   const onChange = (value?: string) => {
-    setPublicKey('02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38');
-    // setError(isValidPublicKey(value) ? '' : 'Invalid public key');
+    setPublicKey(value ?? '');
+    setError(isValidPublicKey(value) ? '' : 'Invalid public key');
   };
 
   const onAddPublicKey = async () => {
     setLoading(true);
-    console.log('Hi', publicKey);
 
     dispatch(
       allActions.user.getAccountInformation(
