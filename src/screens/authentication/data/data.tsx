@@ -19,7 +19,7 @@ const ListIntro: Array<Intro> = [
   {
     id: 0,
     image: images.intro1,
-    title: 'The new NFT marketplace',
+    title: 'The new marketplace',
   },
   {
     id: 1,
