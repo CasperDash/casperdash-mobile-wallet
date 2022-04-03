@@ -114,7 +114,7 @@ function NFTScreen() {
     return (
       <View style={styles.noNFT}>
         <Image source={images.nonft} style={styles.imageNoNFT} />
-        <Text style={styles.textNoNFT}>There are no item</Text>
+        <Text style={styles.textNoNFT}>There are no item to display</Text>
       </View>
     );
   };
