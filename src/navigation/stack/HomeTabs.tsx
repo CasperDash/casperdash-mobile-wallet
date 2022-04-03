@@ -69,7 +69,7 @@ const listTabs = [
     tabItemInActive: <IconMenuStaking {...tabIcon24} />,
   },
   {
-    name: 'NFT',
+    name: 'Collection',
     component: NFTNavigation,
     tabItemActive: <IconMenuNFTActive {...tabIcon25} />,
     tabItemInActive: <IconMenuNFT {...tabIcon25} />,
