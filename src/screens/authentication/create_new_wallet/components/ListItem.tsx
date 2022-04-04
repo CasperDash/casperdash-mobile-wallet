@@ -34,15 +34,13 @@ function ListItem({ data, onPress }: ListItemProps) {
           });
           break;
         case 'Unauthorized':
-          await requestPermission();
-          break;
         case 'PoweredOn':
-          navigate();
+          await requestPermission();
           break;
         default:
           Config.alertMess(
             { message: 'Please turn on Bluetooth to continue' },
-            { submit: 'Turn on', cancel: 'Cancel' },
+            { submit: 'Go to Settings', cancel: 'Cancel' },
             goToBluetoothSettings,
             () => {
               return;
