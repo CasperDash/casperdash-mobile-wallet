@@ -8,8 +8,7 @@ import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNe
 import { Config } from 'utils';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import AndroidOpenSettings from 'react-native-android-open-settings';
-// @ts-ignore
-import { BluetoothStatus } from 'react-native-bluetooth-status';
+import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 
 interface ListItemProps {
   onPress: (screen: string) => void;
@@ -28,8 +27,14 @@ function ListItem({ data, onPress }: ListItemProps) {
     const message =
       'CasperDash is requesting permission to turn on Bluetooth. Allow?';
     if (data.screen === CreateNewWalletRouter.CONNECT_LEDGER_SCREEN) {
-      const isBluetoothEnabled = await BluetoothStatus.state();
-      if (!isBluetoothEnabled) {
+      const bluetoothState = await BluetoothStateManager.getState();
+      if (bluetoothState === 'Unsupported' || bluetoothState === 'Unknown') {
+        Config.alertMess({
+          message: 'Bluetooth is not available on this device',
+        });
+        return;
+      }
+      if (bluetoothState !== 'PoweredOn') {
         Config.alertMess(
           { message: 'Please turn on Bluetooth to continue' },
           { submit: 'Turn on', cancel: 'Cancel' },
