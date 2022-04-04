@@ -24,66 +24,31 @@ function ListItem({ data, onPress }: ListItemProps) {
       : AndroidOpenSettings.bluetoothSettings();
 
   const checkPermissions = async () => {
-    const message =
-      'CasperDash is requesting permission to turn on Bluetooth. Allow?';
     if (data.screen === CreateNewWalletRouter.CONNECT_LEDGER_SCREEN) {
       const bluetoothState = await BluetoothStateManager.getState();
-      if (bluetoothState === 'Unsupported' || bluetoothState === 'Unknown') {
-        Config.alertMess({
-          message: 'Bluetooth is not available on this device',
-        });
-        return;
-      }
-      if (bluetoothState !== 'PoweredOn') {
-        Config.alertMess(
-          { message: 'Please turn on Bluetooth to continue' },
-          { submit: 'Turn on', cancel: 'Cancel' },
-          goToBluetoothSettings,
-          () => {
-            return;
-          },
-        );
-        return;
-      }
-      if (Platform.OS === 'ios' && parseInt(Platform.Version, 10) > 12) {
-        Config.requestPermission(
-          PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL,
-          { message },
-          navigate,
-        );
-      }
-      if (Platform.OS === 'android') {
-        const status = await requestMultiple([
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-          PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
-          PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
-          PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE,
-        ]);
-        if (
-          status[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'granted' &&
-          ['granted', 'unavailable'].includes(
-            status[PERMISSIONS.ANDROID.BLUETOOTH_CONNECT],
-          ) &&
-          ['granted', 'unavailable'].includes(
-            status[PERMISSIONS.ANDROID.BLUETOOTH_SCAN],
-          ) &&
-          ['granted', 'unavailable'].includes(
-            status[PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE],
-          )
-        ) {
+      switch (bluetoothState) {
+        case 'Unsupported':
+        case 'Unknown':
+          Config.alertMess({
+            message: 'Bluetooth is not available on this device',
+          });
+          break;
+        case 'Unauthorized':
+          await requestPermission();
+          break;
+        case 'PoweredOn':
           navigate();
-        } else {
+          break;
+        default:
           Config.alertMess(
-            { message },
-            { submit: 'Allow', cancel: 'Cancel' },
-            () => {
-              Linking.openSettings();
-            },
+            { message: 'Please turn on Bluetooth to continue' },
+            { submit: 'Turn on', cancel: 'Cancel' },
+            goToBluetoothSettings,
             () => {
               return;
             },
           );
-        }
+          break;
       }
       return;
     }
@@ -92,6 +57,51 @@ function ListItem({ data, onPress }: ListItemProps) {
 
   const navigate = () => {
     onPress(data.screen);
+  };
+
+  const requestPermission = async () => {
+    const message =
+      'CasperDash is requesting permission to turn on Bluetooth. Allow?';
+    if (Platform.OS === 'ios' && parseInt(Platform.Version, 10) > 12) {
+      Config.requestPermission(
+        PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL,
+        { message },
+        navigate,
+      );
+    }
+    if (Platform.OS === 'android') {
+      const status = await requestMultiple([
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
+        PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
+        PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE,
+      ]);
+      if (
+        status[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'granted' &&
+        ['granted', 'unavailable'].includes(
+          status[PERMISSIONS.ANDROID.BLUETOOTH_CONNECT],
+        ) &&
+        ['granted', 'unavailable'].includes(
+          status[PERMISSIONS.ANDROID.BLUETOOTH_SCAN],
+        ) &&
+        ['granted', 'unavailable'].includes(
+          status[PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE],
+        )
+      ) {
+        navigate();
+      } else {
+        Config.alertMess(
+          { message },
+          { submit: 'Allow', cancel: 'Cancel' },
+          () => {
+            Linking.openSettings();
+          },
+          () => {
+            return;
+          },
+        );
+      }
+    }
   };
 
   return (
