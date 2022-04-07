@@ -114,7 +114,7 @@ function NFTScreen() {
     return (
       <View style={styles.noNFT}>
         <Image source={images.nonft} style={styles.imageNoNFT} />
-        <Text style={styles.textNoNFT}>There are no NFT</Text>
+        <Text style={styles.textNoNFT}>There are no item to display</Text>
       </View>
     );
   };
@@ -129,7 +129,9 @@ function NFTScreen() {
       />
       <Row ml={24} mt={10} mb={16} style={{ alignItems: 'center' }}>
         <IconLogo width={scale(28)} height={scale(28)} />
-        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>My NFT</Text>
+        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>
+          My Collection
+        </Text>
       </Row>
       <View style={styles.searchWrapper}>
         <IconSearch style={styles.iconSearch} />
@@ -188,7 +190,7 @@ function NFTScreen() {
         ) : (
           <View>
             <Text style={styles.numNft}>
-              {nfts.length + ` ${nfts.length < 2 ? 'NFT' : 'NFTs'}`}
+              {nfts.length + ` ${nfts.length < 2 ? 'Item' : 'Items'}`}
             </Text>
             <FlatList
               numColumns={2}
@@ -205,7 +207,7 @@ function NFTScreen() {
           </View>
         )}
       </View>
-      <Image source={images.bgnft} style={styles.bg} />
+      <Image source={images.bgnft2} style={styles.bg} />
     </View>
   );
 }
