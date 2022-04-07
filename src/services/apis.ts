@@ -196,6 +196,28 @@ function getValidatorsInformationAPI<T>(): NetworkPromiseResponse<T> {
   });
 }
 
+function getPriceHistoryAPI<T>(): NetworkPromiseResponse<T> {
+  return new Promise((resolve, reject) => {
+    network
+      .unAuthorizedRequest(
+        'api/v3/coins/casper-network/market_chart?vs_currency=usd&days=30&interval=hourly',
+        'GET',
+        undefined,
+        undefined,
+        'https://api.coingecko.com/',
+      )
+      .then((res: any) => {
+        if (!res || (res && res.status >= 400)) {
+          return reject(res);
+        }
+        resolve(res as any);
+      })
+      .catch((err: any) => {
+        reject(err);
+      });
+  });
+}
+
 export default {
   getAccountInformation,
   getAccounts,
@@ -207,4 +229,5 @@ export default {
   getListNFTsAPI,
   getTransferDeploysStatusAPI,
   getValidatorsInformationAPI,
+  getPriceHistoryAPI,
 };

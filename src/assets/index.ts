@@ -47,6 +47,8 @@ import IconStatusSwap from './images/ic_status_swap.svg';
 import IconViewExplorer from './images/ic_view_explorer.svg';
 import IconArrowLeft2 from './images/ic_arrow_left_2.svg';
 import IconCloseFilledN2 from './images/ic_close_filled_n2.svg';
+import IconUp from './images/ic_up.svg';
+import IconDown from './images/ic_down.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -234,4 +236,6 @@ export {
   IconViewExplorer,
   IconArrowLeft2,
   IconCloseFilledN2,
+  IconUp,
+  IconDown,
 };
