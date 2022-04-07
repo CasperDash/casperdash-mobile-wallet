@@ -207,7 +207,7 @@ function NFTScreen() {
           </View>
         )}
       </View>
-      <Image source={images.bgnft} style={styles.bg} />
+      <Image source={images.bgnft2} style={styles.bg} />
     </View>
   );
 }

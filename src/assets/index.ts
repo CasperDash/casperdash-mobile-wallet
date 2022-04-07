@@ -59,6 +59,7 @@ const images = {
   logo: require('./images/logo.png'),
   nonft: require('./images/nonft.png'),
   bgnft: require('./images/bgnft.png'),
+  bgnft2: require('./images/bgnft2.png'),
   imgnft: require('./images/img_nft.png'),
   symbol_cspr: require('./images/ic_symbol_CSPR.png'),
   nodata: require('./images/ic_no_data.png'),
