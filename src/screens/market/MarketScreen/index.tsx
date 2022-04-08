@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,61 +6,67 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
-import { CButton, CLayout, Row, Col } from 'components';
+import { CLayout, Row, Col } from 'components';
 import { scale } from 'device';
 import TransactionComponent from 'screens/market/components/TransactionComponent';
 import ChartComponent from 'screens/market/components/ChartComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentPrice } from 'utils/selectors';
-import { getCSPRMarketInfo, getPriceHistory } from 'utils/selectors/price';
+import { getPriceHistory } from 'utils/selectors/price';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
+import { useScrollToTop } from '@react-navigation/native';
+import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
+
+const getIcon = (type: string) => {
+  return type === 'up' ? (
+    <IconUp width={scale(10)} height={scale(10)} style={styles.iconArrow} />
+  ) : (
+    <IconDown width={scale(10)} height={scale(10)} style={styles.iconArrow} />
+  );
+};
 
 function MarketScreen() {
-  const insets = useSafeAreaInsets();
-  const [isRefreshing, setRefreshing] = useState<boolean>(false);
-
-  const onRefresh = () => {
-    setRefreshing(false);
-  };
-
-  const rowInfo = [
-    {
-      title: 'MarketCap',
-      value: '$512.89 B',
-    },
-    {
-      title: '24h Volume',
-      value: '$12.89 B',
-    },
-    {
-      title: 'Total Supply',
-      value: '10,522,076,853',
-    },
-    {
-      title: 'Circulating supply',
-      value: '2,777,948,726',
-    },
-  ];
-
   const dispatch = useDispatch();
+  const scrollViewRef = useRef<any>();
+  useScrollToTop(scrollViewRef);
+
   const priceHistory = useSelector(getPriceHistory);
   const currentPrice = useSelector(getCurrentPrice);
   const data = useSelector((state: any) => state.home.CSPRMarketInfo);
   const csprMarketInfo = data && data.length ? data[0] : {};
-  console.log('priceHistory', priceHistory);
-  console.log('currentPrice', currentPrice);
-  console.log('csprMarketInfo', csprMarketInfo);
-  console.log('data', data);
+
+  const [isScrollable, setScrollable] = useState<boolean>(true);
+  const [isRefreshing, setRefreshing] = useState<boolean>(false);
+
+  const rowInfo = [
+    {
+      title: 'MarketCap',
+      value: toFormattedCurrency(csprMarketInfo.market_cap),
+    },
+    {
+      title: '24h Volume',
+      value: toFormattedCurrency(csprMarketInfo.total_volume),
+    },
+    {
+      title: 'Total Supply',
+      value: toFormattedNumber(csprMarketInfo.total_supply),
+    },
+    {
+      title: 'Circulating supply',
+      value: toFormattedNumber(csprMarketInfo.circulating_supply),
+    },
+  ];
+
   useEffect(() => {
     getPriceHistoryInfo();
   }, []);
 
   const getPriceHistoryInfo = () => {
     dispatch(
-      allActions.market.getPriceHistory((error: any, data: any) => {
+      allActions.market.getPriceHistory((error: any) => {
+        setRefreshing(false);
         if (error) {
           const message = {
             message: error && error.message ? error.message : 'Error',
@@ -70,6 +76,23 @@ function MarketScreen() {
         }
       }),
     );
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getPriceHistoryInfo();
+  };
+
+  const onActivated = () => {
+    if (isScrollable) {
+      setScrollable(false);
+    }
+  };
+
+  const onDeactivated = () => {
+    if (!isScrollable) {
+      setScrollable(true);
+    }
   };
 
   const _renderRowInfo = () => {
@@ -88,9 +111,17 @@ function MarketScreen() {
   };
 
   return (
-    <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
+    <CLayout
+      edges={['top', 'left', 'right']}
+      bgColor={colors.cF8F8F8}
+      statusBgColor={colors.cF8F8F8}>
       <View style={styles.container}>
-        <Row.L pl={24} pr={16} pt={10} pb={20}>
+        <Row.L
+          pl={24}
+          pr={16}
+          pt={10}
+          pb={16}
+          style={{ backgroundColor: colors.cF8F8F8 }}>
           <Row style={styles.alignCenter}>
             <IconLogo width={scale(28)} height={scale(28)} />
             <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>
@@ -99,23 +130,39 @@ function MarketScreen() {
           </Row>
         </Row.L>
         <ScrollView
-          nestedScrollEnabled={true}
+          ref={scrollViewRef}
+          scrollEnabled={isScrollable}
           refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              style={{ backgroundColor: colors.cF8F8F8 }}
+            />
           }
           showsVerticalScrollIndicator={false}>
-          <Col px={16}>
+          <Col px={24} style={{ backgroundColor: colors.cF8F8F8 }}>
             <Text style={styles.head1}>CASPER (CSPR)</Text>
-            <Row mt={16} style={styles.alignCenter}>
-              <Text style={textStyles.H5}>$32,128.80</Text>
-              <IconUp
-                width={scale(10)}
-                height={scale(10)}
-                style={styles.iconArrow}
-              />
-              <Text style={styles.label}>2.5%</Text>
+            <Row mt={8} style={styles.alignCenter}>
+              <Text style={textStyles.H5}>
+                {toFormattedCurrency(currentPrice, {
+                  maximumSignificantDigits: 4,
+                })}
+              </Text>
+              {csprMarketInfo.price_change_percentage_24h < 0
+                ? getIcon('down')
+                : getIcon('up')}
+              <Text style={styles.label}>
+                {toFormattedNumber(csprMarketInfo.price_change_percentage_24h, {
+                  maximumSignificantDigits: 3,
+                })}
+                %
+              </Text>
             </Row>
-            <ChartComponent data={priceHistory} />
+            <ChartComponent
+              data={priceHistory}
+              onDeactivated={onDeactivated}
+              onActivated={onActivated}
+            />
             {_renderRowInfo()}
           </Col>
           <TransactionComponent />
@@ -131,6 +178,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flex: 1,
+    backgroundColor: colors.W1,
   },
   topContainer: {},
   alignCenter: {
@@ -146,8 +194,8 @@ const styles = StyleSheet.create({
     color: colors.N3,
   },
   iconArrow: {
-    marginLeft: scale(13),
-    marginRight: scale(8),
+    marginLeft: scale(10),
+    marginRight: scale(5),
   },
   value: {
     ...textStyles.Sub1,

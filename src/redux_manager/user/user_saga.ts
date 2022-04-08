@@ -56,7 +56,6 @@ export function* getAccounts(data: any) {
         : startAction(types.GET_ACCOUNTS),
     );
 
-    console.log('pARAMs', data.params.publicKeys);
     const publicKeys =
       data.params && data.params.publicKeys
         ? data.params.publicKeys.map(

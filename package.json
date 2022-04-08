@@ -121,6 +121,7 @@
     "rn-material-ui-textfield": "^1.0.5",
     "rxjs": "^7.5.2",
     "text-encoding": "^0.7.0",
+    "victory-native": "^36.3.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {

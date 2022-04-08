@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, ScrollView, FlatList, StyleSheet } from 'react-native';
+import { Text, ScrollView, StyleSheet } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
@@ -33,9 +33,9 @@ const TransactionComponent = () => {
   };
 
   return (
-    <Col>
+    <Col style={{ backgroundColor: colors.cF8F8F8 }}>
       <Text style={styles.title}>Transaction</Text>
-      <Col mt={16} style={styles.container}>
+      <Col mt={16} style={[styles.container, { paddingBottom: insets.bottom }]}>
         <Row px={6} pt={24} pb={12}>
           <ScrollView
             alwaysBounceHorizontal={false}
