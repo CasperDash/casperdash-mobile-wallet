@@ -24,9 +24,8 @@ const ChartComponent = ({ data, onActivated, onDeactivated }: any) => {
         }}
         containerComponent={
           <VictoryVoronoiContainer
-            onActivated={onActivated}
-            onDeactivated={onDeactivated}
-            mouseFollowTooltips={true}
+            onTouchStart={onActivated}
+            onTouchEnd={onDeactivated}
             labels={({ datum }) =>
               `${moment(datum.x).format('ddd DD MMM YY, HH:mm')} \n ${datum.y}`
             }
@@ -35,6 +34,7 @@ const ChartComponent = ({ data, onActivated, onDeactivated }: any) => {
                 style={{
                   fill: colors.N2,
                 }}
+                pointerLength={40}
                 constrainToVisibleArea
               />
             }

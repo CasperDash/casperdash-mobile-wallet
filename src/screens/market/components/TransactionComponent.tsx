@@ -35,7 +35,12 @@ const TransactionComponent = () => {
   return (
     <Col style={{ backgroundColor: colors.cF8F8F8 }}>
       <Text style={styles.title}>Transaction</Text>
-      <Col mt={16} style={[styles.container, { paddingBottom: insets.bottom }]}>
+      <Col
+        mt={16}
+        style={[
+          styles.container,
+          { paddingBottom: insets.bottom > 0 ? insets.bottom : scale(20) },
+        ]}>
         <Row px={6} pt={24} pb={12}>
           <ScrollView
             alwaysBounceHorizontal={false}
