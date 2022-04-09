@@ -23,6 +23,8 @@ import {
   watchPushStakeToLocalStorage,
 } from 'redux_manager/staking/staking_saga';
 
+import { watchGetPriceHistory } from 'redux_manager/market/market_saga';
+
 export default function* rootSaga() {
   yield all([
     //user
@@ -47,5 +49,8 @@ export default function* rootSaga() {
     //Staking
     watchGetValidatorsInformation(),
     watchPushStakeToLocalStorage(),
+
+    //market
+    watchGetPriceHistory(),
   ]);
 }
