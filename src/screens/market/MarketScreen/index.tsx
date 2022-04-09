@@ -140,9 +140,9 @@ function MarketScreen() {
             />
           }
           showsVerticalScrollIndicator={false}>
-          <Col px={24} style={{ backgroundColor: colors.cF8F8F8 }}>
+          <Col px={16} style={{ backgroundColor: colors.cF8F8F8 }}>
             <Text style={styles.head1}>CASPER (CSPR)</Text>
-            <Row mt={8} style={styles.alignCenter}>
+            <Row mt={8} ml={8} style={styles.alignCenter}>
               <Text style={textStyles.H5}>
                 {toFormattedCurrency(currentPrice, {
                   maximumSignificantDigits: 4,
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     ...textStyles.Sub2,
     fontWeight: '700',
     fontFamily: fonts.Poppins.bold,
+    marginLeft: scale(8),
   },
   label: {
     ...textStyles.Body2,
