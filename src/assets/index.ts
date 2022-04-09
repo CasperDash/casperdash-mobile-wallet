@@ -106,6 +106,9 @@ const colors = {
   Neutrals8: '#FCFCFD',
 
   gray6: '#F2F2F2',
+
+  c5FC88F: '#5FC88F',
+  cFA2852: '#FA2852',
 };
 
 const fonts = {

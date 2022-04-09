@@ -151,7 +151,16 @@ function MarketScreen() {
               {csprMarketInfo.price_change_percentage_24h < 0
                 ? getIcon('down')
                 : getIcon('up')}
-              <Text style={styles.label}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color:
+                      csprMarketInfo.price_change_percentage_24h >= 0
+                        ? colors.c5FC88F
+                        : colors.cFA2852,
+                  },
+                ]}>
                 {toFormattedNumber(csprMarketInfo.price_change_percentage_24h, {
                   maximumSignificantDigits: 3,
                 })}
