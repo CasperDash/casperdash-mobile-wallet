@@ -37,7 +37,9 @@ const TokenComponent = ({ value, onPress }: Props) => {
             {toFormattedCurrency(value.totalPrice ?? 0)}
           </Text>
           <Text style={styles.body2}>
-            {toFormattedCurrency(value.price ?? 0)}
+            {toFormattedCurrency(value.price ?? 0, {
+              minimumFractionDigits: 4,
+            })}
           </Text>
         </Col.R>
       </Row.LR>
