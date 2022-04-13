@@ -11,12 +11,14 @@ import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNe
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Phrase } from '../../data/data';
 import { Config } from 'utils';
-
-const phraseString =
-  'House Ego Assits Repair Respond Attitude Different Difficult Opposition Resident Populate Inhabit Situated Problem Failed Name Octupus Doctor Strange Ironman Capital Dimondhand Flash Vision';
+import { KeyFactory } from 'casper-storage';
+// const phraseString =
+//   'House Ego Assits Repair Respond Attitude Different Difficult Opposition Resident Populate Inhabit Situated Problem Failed Name Octupus Doctor Strange Ironman Capital Dimondhand Flash Vision';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const keyManager = KeyFactory.getInstance();
+  const phraseString = keyManager.generate(12);
 
   const [data, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
@@ -40,6 +42,7 @@ const RecoveryPhraseScreen = () => {
       if (data && data.length > 0) {
         navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {
           data: JSON.parse(JSON.stringify(data)),
+          rawData: phraseString,
         });
       }
     } catch (e) {

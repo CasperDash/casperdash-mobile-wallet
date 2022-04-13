@@ -41,18 +41,18 @@ export interface CreateNewWalletMenu {
 }
 
 const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
+  {
+    id: 0,
+    icon: () => <IconPlusCircle width={scale(22)} height={scale(22)} />,
+    title: 'Create new wallet',
+    screen: CreateNewWalletRouter.RECOVERY_PHRASE_SCREEN,
+  },
   /*{
-        id: 0,
-        icon: () => <IconPlusCircle width={scale(22)} height={scale(22)}/>,
-        title: 'Create new wallet',
-        screen: CreateNewWalletRouter.RECOVERY_PHRASE_SCREEN,
-    },
-    {
-        id: 1,
-        icon: () => <IconImportPhrase width={scale(22)} height={scale(22)}/>,
-        title: 'Import Phrase',
-        screen: CreateNewWalletRouter.IMPORT_PHRASE_SCREEN,
-    },*/
+      id: 1,
+      icon: () => <IconImportPhrase width={scale(22)} height={scale(22)}/>,
+      title: 'Import Phrase',
+      screen: CreateNewWalletRouter.IMPORT_PHRASE_SCREEN,
+  },*/
   {
     id: 3,
     icon: () => <IconPlusCircle width={scale(22)} height={scale(22)} />,

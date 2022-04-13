@@ -9,9 +9,11 @@ export type ScreenParams = {
   };
   CHOOSE_PIN_SCREEN: {
     hideBackButton?: boolean;
+    showBack?: boolean;
   };
   CONFIRM_PIN_SCREEN: {
     pin: number;
+    phrases: string,
   };
   CONFIRM_SEND_SCREEN: {
     transferAmount: number;

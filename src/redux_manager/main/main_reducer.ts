@@ -12,6 +12,7 @@ const initialState = {
   casperdash: null,
   deploysTransfer: null,
   deploysStakes: null,
+  accountIndex: 0,
 };
 
 export default function (
