@@ -82,36 +82,13 @@ const DoubleCheckItScreen: React.FC<
       (previous: string, current: Phrase) => previous + current.word + ' ',
       '',
     );
-    const publicKey =
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'; //TODO: get publicKey from phrases string
-    setLoading(true);
-    dispatch(
-      allActions.user.getAccountInformation(
-        { publicKey },
-        async (err: any, res: any) => {
-          if (res) {
-            setLoading(false);
-            const info = {
-              publicKey: publicKey,
-              loginOptions: {
-                connectionType: 'passphase',
-                passphase: phrases,
-              },
-            };
-            await Config.saveItem(Keys.casperdash, info);
-            navigate(AuthenticationRouter.CHOOSE_PIN, {
-              screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-              params: {
-                showBack: true,
-              },
-            });
-          } else {
-            setLoading(false);
-            Config.alertMess(err);
-          }
-        },
-      ),
-    );
+    navigate(AuthenticationRouter.CHOOSE_PIN, {
+      screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+      params: {
+        showBack: true,
+        phrases: phrases.trim(),
+      },
+    });
   };
 
   return (

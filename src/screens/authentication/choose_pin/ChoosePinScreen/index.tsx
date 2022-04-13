@@ -16,11 +16,11 @@ const ChoosePinScreen: React.FC<
   const [pin, setPin] = useState<string>();
   const pinLength = 6;
   const { navigate } = useNavigation();
-  const { showBack } = route.params;
+  const { showBack, phrases } = route.params;
 
   useEffect(() => {
     if (pin && pin.length === pinLength) {
-      navigate(ChoosePinRouter.CONFIRM_PIN_SCREEN, { pin });
+      navigate(ChoosePinRouter.CONFIRM_PIN_SCREEN, { pin, phrases });
     }
   }, [pin]);
 

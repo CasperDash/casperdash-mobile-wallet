@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenProps } from 'navigation/ScreenProps';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
-import { CHeader, CLayout, Col } from 'components';
+import { CHeader, CLayout, CLoading, Col } from 'components';
 import { colors, fonts, textStyles } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
@@ -13,37 +13,101 @@ import { Config, Keys } from 'utils';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
+import {
+  EncryptionType,
+  IWallet,
+  User,
+  ValidationResult,
+} from 'casper-storage';
+import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
+import { IHDKey } from 'casper-storage/src/bips/bip32';
+import { set } from 'lodash';
 
 const ConfirmPinScreen: React.FC<
   // @ts-ignore
   ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>
 > = ({ route }) => {
-  const { pin } = route.params;
+  const { pin, phrases } = route.params;
   const [pinConfirm, setPinConfirm] = useState<string>();
+  const [isLoading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
   const pinLength = 6;
 
-  useEffect(() => {
-    if (pinConfirm && pin && pin === pinConfirm) {
-      Config.saveItem(Keys.pinCode, pinConfirm);
-      navigation.dispatch(
-        CommonActions.reset({
-          routes: [
-            {
-              name: 'MainStack',
-            },
-          ],
-        }),
+  const onTextChange = async (text: string) => {
+    setPinConfirm(text);
+    if (text && pin && pin === text) {
+      await setupUser(text);
+    }
+  };
+
+  const setupUser = async (txtConfirmPin: string) => {
+    try {
+      setLoading(true);
+
+      const user = new User(pin, {
+        passwordOptions: {
+          // @ts-ignore
+          passwordValidator: () => new ValidationResult(true),
+        },
+      });
+
+      user.setHDWallet(phrases, EncryptionType.Ed25519);
+      user.addWalletAccount(0, new WalletDescriptor('Account 1'));
+      const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
+      const publicKey = await acc0.getPublicKey();
+      const hashingOptions = user.getPasswordHashingOptions();
+      dispatch(
+        allActions.user.getAccountInformation(
+          { publicKey },
+          async (err: any, res: any) => {
+            if (res) {
+              setLoading(false);
+              const userInfo = user.serialize();
+              const info = {
+                publicKey: publicKey,
+                loginOptions: {
+                  connectionType: 'passphase',
+                  passphase: phrases,
+                  hashingOptions,
+                },
+                userInfo: userInfo,
+              };
+              await Config.saveItem(Keys.casperdash, info);
+              await Config.saveItem(Keys.pinCode, txtConfirmPin);
+              await Config.saveItem(Keys.accountIndex, 0);
+              navigation.dispatch(
+                CommonActions.reset({
+                  routes: [
+                    {
+                      name: 'MainStack',
+                    },
+                  ],
+                }),
+              );
+
+              dispatch(allActions.main.loadLocalStorage());
+              const message = {
+                message: 'Logged in successfully',
+                type: MessageType.success,
+              };
+              dispatch(allActions.main.showMessage(message));
+            } else {
+              setLoading(false);
+              Config.alertMess(err);
+            }
+          },
+        ),
       );
-      dispatch(allActions.main.loadLocalStorage());
+    } catch (e: any) {
+      setLoading(false);
       const message = {
-        message: 'Logged in successfully',
-        type: MessageType.success,
+        message: e && e.message ? e.message : 'Error',
+        type: MessageType.error,
       };
       dispatch(allActions.main.showMessage(message));
     }
-  }, [pinConfirm, pin]);
+  };
 
   return (
     <CLayout>
@@ -67,7 +131,7 @@ const ConfirmPinScreen: React.FC<
           cellSpacing={0}
           restrictToNumbers
           cellStyleFocused={null}
-          onTextChange={setPinConfirm}
+          onTextChange={onTextChange}
           textStyle={styles.textStyle}
         />
         {!!pinConfirm &&
@@ -83,6 +147,7 @@ const ConfirmPinScreen: React.FC<
             </Text>
           )}
       </Col.C>
+      {isLoading && <CLoading />}
     </CLayout>
   );
 };

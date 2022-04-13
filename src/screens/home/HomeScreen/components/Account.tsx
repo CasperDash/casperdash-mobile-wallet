@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -29,8 +29,9 @@ import {
   getAllTokenInfo,
   getPublicKey,
 } from 'utils/selectors/user';
-import { toFormattedCurrency} from 'utils/helpers/format';
+import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
+import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -44,6 +45,7 @@ function Account() {
   const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
   const allTokenInfo = useSelector(getAllTokenInfo);
   const { navigate } = useNavigation();
+  const selectAccountModalRef = useRef<any>();
 
   {
     /*TODO: follow the figma's design*/
@@ -69,17 +71,22 @@ function Account() {
     navigate(screen, params);
   };
 
+  const onShowSelectAccountModal = () => {
+    selectAccountModalRef.current.show();
+  };
+
   return (
     <View style={styles.container}>
       <Col px={16} py={16} style={styles.accountContainer}>
         <Row.LR>
-          <CButton style={{ maxWidth: scale(343 - 16) / 2 }}>
+          <CButton
+            onPress={onShowSelectAccountModal}
+            style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
                 Account 1
               </Text>
-              {/*TODO: follow the figma's design*/}
-              {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
+              <IconPencilFilled width={scale(16)} height={scale(16)} />
             </Row.C>
           </CButton>
 
@@ -119,6 +126,7 @@ function Account() {
           })}
         </Row.C>
       </Col>
+      <SelectAccountModal ref={selectAccountModalRef} />
     </View>
   );
 }

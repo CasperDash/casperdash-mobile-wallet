@@ -29,7 +29,7 @@ const SplashScreen = () => {
     const user = await Config.getItem(Keys.casperdash);
 
     let screen = AuthenticationRouter.WELCOME_SCREEN;
-    if (overview === 1) {
+    if (overview === 1 || !user) {
       screen = AuthenticationRouter.CREATE_NEW_WALLET;
     }
     if (!isEmpty(pinCode)) {
