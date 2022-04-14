@@ -21,7 +21,6 @@ import {
 } from 'casper-storage';
 import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { IHDKey } from 'casper-storage/src/bips/bip32';
-import { set } from 'lodash';
 
 const ConfirmPinScreen: React.FC<
   // @ts-ignore
@@ -53,9 +52,12 @@ const ConfirmPinScreen: React.FC<
       });
 
       user.setHDWallet(phrases, EncryptionType.Ed25519);
-      user.addWalletAccount(0, new WalletDescriptor('Account 1'));
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
-      const publicKey = await acc0.getPublicKey();
+      user.setWalletInfo(
+        acc0.getReferenceKey(),
+        new WalletDescriptor('Account 1'),
+      );
+      const publicKey = await acc0.getPublicAddress();
       const hashingOptions = user.getPasswordHashingOptions();
       dispatch(
         allActions.user.getAccountInformation(
@@ -69,7 +71,7 @@ const ConfirmPinScreen: React.FC<
                 loginOptions: {
                   connectionType: 'passphase',
                   passphase: phrases,
-                  hashingOptions,
+                  hashingOptions: hashingOptions,
                 },
                 userInfo: userInfo,
               };
@@ -105,7 +107,7 @@ const ConfirmPinScreen: React.FC<
         message: e && e.message ? e.message : 'Error',
         type: MessageType.error,
       };
-      dispatch(allActions.main.showMessage(message));
+      dispatch(allActions.main.showMessage(message, 10000));
     }
   };
 

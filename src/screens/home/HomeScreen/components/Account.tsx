@@ -28,6 +28,7 @@ import {
   getAccountTotalBalanceInFiat,
   getAllTokenInfo,
   getPublicKey,
+  getWalletInfo,
 } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
@@ -46,6 +47,7 @@ function Account() {
   const allTokenInfo = useSelector(getAllTokenInfo);
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();
+  const walletInfo = useSelector(getWalletInfo());
 
   {
     /*TODO: follow the figma's design*/
@@ -84,7 +86,11 @@ function Account() {
             style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                Account 1
+                {walletInfo &&
+                walletInfo.descriptor &&
+                walletInfo.descriptor.name
+                  ? walletInfo.descriptor.name
+                  : ''}
               </Text>
               <IconPencilFilled width={scale(16)} height={scale(16)} />
             </Row.C>

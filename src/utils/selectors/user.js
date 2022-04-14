@@ -12,6 +12,17 @@ const CSPR_INFO = {
   icon: require('../../assets/images/ic_cspr.png'),
 };
 
+export const getWalletInfo = (index = 0) =>
+  createSelector(
+    state => state.main,
+    ({ currentAccount }) => {
+      if (currentAccount) {
+        const walletsInfo = currentAccount.getHDWallet()?.derivedWallets || [];
+        return walletsInfo[index] || null;
+      }
+      return null;
+    },
+  );
 /**
  * It returns the login options for the user
  * @returns The login options for the user.
