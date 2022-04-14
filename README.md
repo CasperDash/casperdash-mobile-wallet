@@ -240,6 +240,7 @@ _USERNAME_ is your current user name.
 
 Assuming you have all the requirements installed, you can run the project by running:
 
+- `yarn install` install packages
 - `yarn setup-env` to setup the environment files for mainnet and testnet
 - `yarn start` to start the metro bundler, in a dedicated terminal
 - `cd ios && pod install` to run the pod installation
