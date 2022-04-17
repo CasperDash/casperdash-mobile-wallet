@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
 import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
 import { colors, textStyles } from 'assets';
 
-const AccountItem = ({ data, isCurrentAccount }: any) => {
+const AccountItem = ({ data, isCurrentAccount, onSelectWallet }: any) => {
   return (
-    <CButton>
+    <CButton onPress={() => onSelectWallet(data)}>
       <Row.LR my={10} style={styles.container}>
         <Text style={[styles.sub, isCurrentAccount && { color: colors.B1 }]}>
-          Account 1
+          {data && data.descriptor && data.descriptor.name
+            ? data.descriptor.name
+            : ''}
         </Text>
         <Col style={styles.rightContent}>
           <Text style={[styles.body, isCurrentAccount && { color: colors.B1 }]}>
-            0.45698 CSPR
+            {/*TODO: replace key with balance*/}
+            {data && data.key ? data.key : ''}
           </Text>
         </Col>
       </Row.LR>

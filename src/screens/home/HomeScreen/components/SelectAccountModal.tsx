@@ -11,9 +11,20 @@ import {
 } from 'assets';
 import { CButton, Col, Row } from 'components';
 import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
+import { useNavigation } from '@react-navigation/native';
+import MainRouter from 'navigation/stack/MainRouter';
+import { getListWallets } from 'utils/selectors/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { WalletInfo } from 'casper-storage';
+import { Config, Keys } from 'utils';
+import { allActions } from 'redux_manager';
 
-const SelectAccountModal = forwardRef(({ onCancel, onConfirm }: any, ref) => {
+const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
+  const { navigate } = useNavigation();
+  const listWallets = useSelector(getListWallets);
+  const dispatch = useDispatch();
+  const selectedWallet = useSelector((state: any) => state.main.selectedWallet);
 
   useImperativeHandle(ref, () => ({
     show: show,
@@ -27,14 +38,15 @@ const SelectAccountModal = forwardRef(({ onCancel, onConfirm }: any, ref) => {
     setVisible(false);
   };
 
-  const cancel = () => {
+  const openImportAccount = () => {
     hide();
-    onCancel && onCancel();
+    navigate(MainRouter.IMPORT_ACCOUNT_SCREEN);
   };
 
-  const confirm = () => {
+  const onSelectWallet = async (wallet: WalletInfo) => {
+    await Config.saveItem(Keys.selectedWallet, wallet);
+    dispatch(allActions.main.loadLocalStorage());
     hide();
-    onConfirm && onConfirm();
   };
 
   return (
@@ -59,8 +71,18 @@ const SelectAccountModal = forwardRef(({ onCancel, onConfirm }: any, ref) => {
             showsVerticalScrollIndicator={false}
             style={{ maxHeight: scale(220) }}
             contentContainerStyle={{ paddingVertical: scale(10) }}>
-            <AccountItem isCurrentAccount={true} />
-            <AccountItem isCurrentAccount={false} />
+            {listWallets &&
+              listWallets.length > 0 &&
+              listWallets.map((wallet: WalletInfo, index: number) => {
+                return (
+                  <AccountItem
+                    isCurrentAccount={selectedWallet?.key === wallet.key}
+                    data={wallet}
+                    key={index}
+                    onSelectWallet={onSelectWallet}
+                  />
+                );
+              })}
           </ScrollView>
         </Col>
         <CButton>
@@ -71,7 +93,7 @@ const SelectAccountModal = forwardRef(({ onCancel, onConfirm }: any, ref) => {
             </Text>
           </Row>
         </CButton>
-        <CButton>
+        <CButton onPress={openImportAccount}>
           <Row style={styles.rowItem}>
             <IconImportAccount width={scale(17)} height={scale(17)} />
             <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>
