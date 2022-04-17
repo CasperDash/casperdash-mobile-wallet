@@ -28,7 +28,7 @@ export function* loadLocalStorage() {
   // @ts-ignore
   const deploysStakes = yield Config.getItem(Keys.deploysStakes);
   // @ts-ignore
-  const accountIndex = yield Config.getItem(Keys.accountIndex);
+  const selectedWallet = yield Config.getItem(Keys.selectedWallet);
 
   if (!configurations) {
     yield put({ type: types.GET_CONFIGURATIONS });
@@ -55,7 +55,7 @@ export function* loadLocalStorage() {
     configurations: configurations,
     deploysTransfer: deploysTransfer,
     deploysStakes: deploysStakes,
-    accountIndex: accountIndex,
+    selectedWallet: selectedWallet,
     currentAccount: currentAccount,
   };
   yield put({ type: types.LOAD_LOCAL_STORAGE_SUCCESS, payload: data });

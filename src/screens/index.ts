@@ -10,7 +10,7 @@ export { default as ConfirmSendScreen } from './home/ConfirmSendScreen';
 export { default as ReceiveScreen } from './home/ReceiveScreen';
 export { default as HistoriesScreen } from './home/HistoriesScreen';
 export { default as TransferHistoryScreen } from './home/TransferHistoryScreen';
-
+export { default as ImportAccountScreen } from './home/ImportAccountScreen';
 //Staking
 export { default as StakingScreen } from './staking/StakingScreen';
 export { default as ValidatorScreen } from './staking/ValidatorScreen';

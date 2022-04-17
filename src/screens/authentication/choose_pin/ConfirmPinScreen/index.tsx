@@ -77,7 +77,11 @@ const ConfirmPinScreen: React.FC<
               };
               await Config.saveItem(Keys.casperdash, info);
               await Config.saveItem(Keys.pinCode, txtConfirmPin);
-              await Config.saveItem(Keys.accountIndex, 0);
+
+              const wallets = user.getHDWallet()?.derivedWallets || [];
+              const selectedWallet = wallets[0];
+              await Config.saveItem(Keys.selectedWallet, selectedWallet);
+
               navigation.dispatch(
                 CommonActions.reset({
                   routes: [
