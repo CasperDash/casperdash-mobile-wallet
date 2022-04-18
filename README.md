@@ -242,7 +242,7 @@ Assuming you have all the requirements installed, you can run the project by run
 
 - `yarn setup-env` to setup the environment files for mainnet and testnet
 - `yarn start` to start the metro bundler, in a dedicated terminal
-- `cd ios && pod install` to run the pod installation. Notes you can run this command `arch -x86_64 pod instal` under macOS M1 architecture.
+- `cd ios && pod install` to run the pod installation. You can run this command `arch -x86_64 pod instal` under macOS M1 architecture.
 - go to the project root and run `yarn <platform>` to run the _platform_ application (remember to start a simulator or connect a device). Platform should be `ios` or `android`.
 
 ## Setup environments
