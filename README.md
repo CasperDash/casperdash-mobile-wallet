@@ -242,7 +242,7 @@ Assuming you have all the requirements installed, you can run the project by run
 
 - `yarn setup-env` to setup the environment files for mainnet and testnet
 - `yarn start` to start the metro bundler, in a dedicated terminal
-- `cd ios && pod install` to run the pod installation
+- `cd ios && pod install` to run the pod installation. If you have the problem on macOS M1, please have a look the [solution here](#-On-macOS-M1-cannot-build-the-project-due-to-arm64-issue.).
 - go to the project root and run `yarn <platform>` to run the _platform_ application (remember to start a simulator or connect a device). Platform should be `ios` or `android`.
 
 ## Setup environments
@@ -279,6 +279,34 @@ You can run the local API Server and generate the environment file by running th
 
 https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 
+## Trouble Shooting
+
+### - On MacOS, cannot run android simulator due to the error "Unrecognized VM option 'MaxPermSize=512m' Error: Could not create the Java Virtual Machine. Error: A fatal exception has occurred. Program will exit."
+
+**Root cause:** You seem to be using JDK version > 16. The option MaxPermSize=size was marked as obsolete in JDK version 16, and removed in JDK 17 (https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#removed-java-options).
+
+**Solution**
+
+1. Install JDK 8: brew install --cask adoptopenjdk8
+2. Switch to JDK 8: https://docs.oracle.com/javase/8/docs/technotes/guides/install/mac_jdk.html
+3. Run yarn android in the project root
+
+### - On macOS M1, cannot build the project due to arm64 issue.
+
+**Solution:**
+
+1. Open by Rosetta on XCode by enable option "Open using Rosetta"
+2. Add arrm64 in "Excluded Architectures" under the Build Settings tab.
+
+Or you could install the pod files (under ios folder) by using this command
+
+```bash
+arch -x86_64 pod instal
+```
+
+### - Cannot copy and paste on Simulator with iOS version > 14
+
+**Solution:** install and using Simulator with iOS version < 14
 
 ## License
 
