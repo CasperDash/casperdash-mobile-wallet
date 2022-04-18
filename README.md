@@ -242,7 +242,7 @@ Assuming you have all the requirements installed, you can run the project by run
 
 - `yarn setup-env` to setup the environment files for mainnet and testnet
 - `yarn start` to start the metro bundler, in a dedicated terminal
-- `cd ios && pod install` to run the pod installation
+- `cd ios && pod install` to run the pod installation. Notes you can run this command `arch -x86_64 pod instal` under macOS M1 architecture.
 - go to the project root and run `yarn <platform>` to run the _platform_ application (remember to start a simulator or connect a device). Platform should be `ios` or `android`.
 
 ## Setup environments
@@ -296,9 +296,9 @@ https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 **Solution:**
 
 1. Open by Rosetta on XCode by enable option "Open using Rosetta"
-2. Add arrm64 in "Excluded Architectures" under Build Settings tab.
+2. Add arrm64 in "Excluded Architectures" under the Build Settings tab.
 
-Or you could install the pod files by using this command
+Or you could install the pod files (under ios folder) by using this command
 
 ```bash
 arch -x86_64 pod instal
