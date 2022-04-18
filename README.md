@@ -279,6 +279,30 @@ You can run the local API Server and generate the environment file by running th
 
 https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 
+## Trouble Shooting
+
+### On MacOS, cannot run android simulator due to the error "Unrecognized VM option 'MaxPermSize=512m' Error: Could not create the Java Virtual Machine. Error: A fatal exception has occurred. Program will exit."
+
+**Root cause:** You seem to be using JDK version > 16. The option MaxPermSize=size was marked as obsolete in JDK version 16, and removed in JDK 17 (https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#removed-java-options).
+
+**Solution**
+
+1. Install JDK 8: brew install --cask adoptopenjdk8
+2. Switch to JDK 8: https://docs.oracle.com/javase/8/docs/technotes/guides/install/mac_jdk.html
+3. Run yarn android in the project root
+
+### On macOS M1, cannot build the project due to arm64 issue.
+
+**Solution:**
+
+1. Open by Rosetta on XCode by enable option "Open using Rosetta"
+2. Add arrm64 in "Excluded Architectures" under Build Settings tab.
+
+Or you could install the pod files by using this command
+
+```bash
+arch -x86_64 pod instal
+```
 
 ## License
 
