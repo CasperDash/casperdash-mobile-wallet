@@ -304,6 +304,10 @@ Or you could install the pod files (under ios folder) by using this command
 arch -x86_64 pod instal
 ```
 
+### - Cannot copy and paste on Simulator with iOS version > 14
+
+**Solution:** install and using Simulator with iOS version < 14
+
 ## License
 
 [MIT](https://raw.githubusercontent.com/CasperDash/casperdash-api/master/LICENSE)
