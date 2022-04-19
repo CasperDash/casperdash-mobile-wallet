@@ -280,6 +280,9 @@ You can run the local API Server and generate the environment file by running th
 
 https://github.com/CasperDash/casperdash-client/wiki/Development-Workflow
 
+## User Guides
+
+Check out our user guides here: https://docs.casperdash.io/user-guides/casperdash-mobile-wallet.
 
 ## License
 
