@@ -308,6 +308,10 @@ arch -x86_64 pod instal
 
 **Solution:** install and using Simulator with iOS version < 14
 
+## User Guides
+
+Check out our user guides here: https://docs.casperdash.io/user-guides/casperdash-mobile-wallet.
+
 ## License
 
 [MIT](https://raw.githubusercontent.com/CasperDash/casperdash-api/master/LICENSE)
