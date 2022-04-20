@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import "RNSplashScreen.h"  // here
+#import "RNSplashScreen.h"
 #import "Orientation.h"
 
 #if RCT_DEV
@@ -12,11 +12,8 @@
 #import <React/RCTLinkingManager.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
-//#import <FBSDKCoreKit/FBSDKCoreKit.h>
-//#import <RNGoogleSignin/RNGoogleSignin.h>
 #import "Orientation.h"
 #import "RNSplashScreen.h"
-//@import Firebase;
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -68,10 +65,6 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
-//  [FIRApp configure];
-//  [[FBSDKApplicationDelegate sharedInstance] application:application
-//                            didFinishLaunchingWithOptions:launchOptions];
 
   //TODO: enable if using notification
   // Define UNUserNotificationCenter
@@ -160,9 +153,6 @@ static void InitializeFlipper(UIApplication *application) {
    openURL:(NSURL *)url
    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-//  if ([[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] || [RNGoogleSignin application:application openURL:url options:options]) {
-//    return YES;
-//  }
   if ([RCTLinkingManager application:application openURL:url options:options]) {
     return YES;
   }
