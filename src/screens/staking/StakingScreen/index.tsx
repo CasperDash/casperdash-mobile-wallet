@@ -19,6 +19,8 @@ import {
   ActivityIndicator,
   Image,
   Platform,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 import * as yup from 'yup';
 import CTextButton from 'components/CTextButton';
@@ -268,20 +270,24 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
         <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Staking</Text>
       </Row>
       <Col style={styles.container}>
-        <FlatList
-          ListHeaderComponent={_renderHeader}
+        <ScrollView
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           style={{ marginTop: scale(22) }}
           contentContainerStyle={styles.contentContainerStyle}
-          data={stackingList}
-          extraData={stackingList}
-          refreshing={isRefreshing}
-          onRefresh={() => getData(true)}
-          keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
-          ListEmptyComponent={_renderNoData}
-          renderItem={renderItem}
-        />
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={() => getData(true)}
+            />
+          }>
+          {_renderHeader()}
+          {stackingList && stackingList.length > 0
+            ? stackingList.map((item, index) => {
+                return <StakedInformationItem value={item} key={index} />;
+              })
+            : _renderNoData()}
+        </ScrollView>
       </Col>
     </CLayout>
   );
