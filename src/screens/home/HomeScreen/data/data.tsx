@@ -22,13 +22,12 @@ const AccountActions: Array<AccountAction> = [
     title: 'Receive',
     screen: MainRouter.RECEIVE_SCREEN,
   },
-  //TODO: follow the figma's design
-  /*{
-        id: 2,
-        icon: IconSwap,
-        title: 'Swap',
-        screen: 'SwapScreen',
-    },*/
+  {
+    id: 2,
+    icon: IconSwap,
+    title: 'Swap',
+    screen: MainRouter.SWAP_SCREEN,
+  },
 ];
 
 export { AccountActions };
