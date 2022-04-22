@@ -47,3 +47,4 @@ export { default as KeyManagerScreen } from './key_manager/KeyManagerScreen';
 
 //swap
 export { default as SwapScreen } from './home/SwapScreen';
+export { default as TransactionSettingScreen } from './home/TransactionSettingScreen';

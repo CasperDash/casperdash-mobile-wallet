@@ -11,6 +11,7 @@ import {
   ValidatorScreen,
   StakingConfirmScreen,
   SwapScreen,
+  TransactionSettingScreen,
 } from 'screens';
 import NFTDetail from 'screens/nft/NFTDetailScreen';
 
@@ -27,6 +28,7 @@ const {
   VALIDATOR_SCREEN,
   STAKING_CONFIRM_SCREEN,
   SWAP_SCREEN,
+  TRANSACTION_SETTING_SCREEN,
 } = MainRouter;
 
 export const MainScreens = {
@@ -67,6 +69,9 @@ export const MainScreens = {
     screen: StakingConfirmScreen,
   },
   [SWAP_SCREEN]: {
-    screen: SwapScreen
+    screen: SwapScreen,
+  },
+  [TRANSACTION_SETTING_SCREEN]: {
+    screen: TransactionSettingScreen,
   },
 };
