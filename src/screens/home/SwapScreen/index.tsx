@@ -13,7 +13,6 @@ import {
 import { CButton, CHeader, CLayout, Col, Row } from 'components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SelectDropdown from 'react-native-select-dropdown';
-import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
@@ -79,6 +78,10 @@ const SwapScreen: React.FC<ScreenProps<MainRouter.SWAP_SCREEN>> = ({
 
   const onSelectedTokenSwapTo = (item: any) => {
     setSwapToTokenAddress(item && item.address ? item.address : '');
+  };
+
+  const openTransactionSetting = () => {
+    navigate(MainRouter.TRANSACTION_SETTING_SCREEN);
   };
 
   const _renderSwapFrom = () => {
@@ -199,7 +202,7 @@ const SwapScreen: React.FC<ScreenProps<MainRouter.SWAP_SCREEN>> = ({
   const _renderRightHeader = () => {
     return (
       <Row>
-        <CButton onPress={() => {}} style={styles.circleBtn}>
+        <CButton onPress={openTransactionSetting} style={styles.circleBtn}>
           <IconSetting width={scale(21)} height={scale(21)} />
         </CButton>
         <CButton
