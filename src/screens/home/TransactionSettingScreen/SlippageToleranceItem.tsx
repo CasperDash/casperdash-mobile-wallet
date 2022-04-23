@@ -19,7 +19,7 @@ const SlippageToleranceItem = ({ item, onSelect, isSelected }: Props) => {
           isSelected && { backgroundColor: colors.B1 },
         ]}>
         <Text style={[styles.title, isSelected && { color: colors.W1 }]}>
-          {item}%
+          {item}
         </Text>
       </Row.C>
     </CButton>
