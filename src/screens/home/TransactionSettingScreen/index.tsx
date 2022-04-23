@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, fonts, textStyles } from 'assets';
 import { CHeader, Col, CLayout, Row, CInput } from 'components';
@@ -13,7 +13,25 @@ const listSlippageTolerance = ['0.1', '0.5', '1.0'];
 const TransactionSettingScreen = () => {
   const { bottom } = useSafeAreaInsets();
   const [selectedItem, setSelectedItem] = useState<string>('');
-  console.log('selectedItem', selectedItem);
+  const [transactionDeadline, setTransactionDeadline] = useState<string>('');
+  const percentRef = useRef<any>();
+
+  const onChangeText = (text: string, rawText?: string) => {
+    if (rawText && parseFloat(rawText) >= 100) {
+      setSelectedItem('100.0');
+      return;
+    }
+    setSelectedItem(text);
+  };
+
+  const onChangeTransactionDeadline = (text: string, rawText?: string) => {
+    if (rawText && parseFloat(rawText) >= 60) {
+      setTransactionDeadline('60');
+      return;
+    }
+    setTransactionDeadline(text);
+  };
+
   return (
     <CLayout
       statusBgColor={colors.cF8F8F8}
@@ -30,47 +48,45 @@ const TransactionSettingScreen = () => {
             styles.contentContainerStyle,
             { paddingBottom: bottom + scale(20) },
           ]}>
-          <Text style={styles.title}>Slippage Tolerance</Text>
+          <Text style={styles.title}>Slippage Tolerance (%)</Text>
           <Row style={styles.rowItems}>
             {listSlippageTolerance.map((item, index) => {
               return (
                 <SlippageToleranceItem
                   item={item}
                   isSelected={selectedItem === item}
-                  onSelect={setSelectedItem}
+                  onSelect={onChangeText}
                   key={index}
                 />
               );
             })}
           </Row>
           <TextInputMask
-            type={'custom'}
+            ref={percentRef}
+            type={'money'}
             value={selectedItem}
             options={{
               precision: 1,
-              separator: ',',
-              delimiter: '.',
-              suffixUnit: '%',
+              separator: '.',
+              delimiter: ',',
               unit: '',
-              mask: '999 AAA SSS',
             }}
+            includeRawValueInChangeText={true}
             style={styles.input}
-            onChangeText={setSelectedItem}
+            onChangeText={onChangeText}
           />
-          <Text style={styles.title}>Transaction Deadline</Text>
+          <Text style={styles.title}>Transaction Deadline (Minutes)</Text>
           <TextInputMask
+            ref={percentRef}
             type={'custom'}
-            value={selectedItem}
             options={{
-              precision: 1,
-              separator: ',',
-              delimiter: '.',
-              suffixUnit: 'Minutes',
-              unit: '',
-              mask: '999 AAA SSS',
+              mask: '99',
             }}
+            keyboardType={'numeric'}
+            value={transactionDeadline}
             style={styles.input}
-            onChangeText={setSelectedItem}
+            includeRawValueInChangeText={true}
+            onChangeText={onChangeTransactionDeadline}
           />
         </KeyboardAwareScrollView>
       </Col>
@@ -101,14 +117,15 @@ const styles = StyleSheet.create({
   },
   input: {
     height: scale(48),
-    flex: 1,
-    fontFamily: fonts.Poppins.regular,
-    color: colors.c000000,
     paddingVertical: 0,
-    fontSize: scale(18),
     textAlignVertical: 'center',
-    paddingHorizontal: scale(16),
+    paddingRight: 0,
+    paddingLeft: scale(20),
+    minWidth: scale(90),
     borderRadius: scale(16),
     backgroundColor: colors.N5,
+    fontFamily: fonts.Poppins.regular,
+    color: colors.c000000,
+    fontSize: scale(18),
   },
 });
