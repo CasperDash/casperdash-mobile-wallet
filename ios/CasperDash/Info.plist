@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>2</string>
 	<key>CodePushDeploymentKey</key>
 	<string>PEuhtbin9q4psJtEqhufLI5PozrJuSlMrrVUY</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -65,12 +65,12 @@
 	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) need to access your camera for scanning QR Code to get receiver’s public key</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) use to save image to your library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) use to upload your avatar</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your camera for scanning QR Code to get receiver’s public key</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
