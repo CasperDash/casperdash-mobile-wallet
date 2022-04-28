@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { CButton, CHeader, CInputFormik, CLayout, Col } from 'components';
-import { colors, textStyles } from 'assets';
+import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+import { CButton, CHeader, CInputFormik, CLayout, Col, Row } from 'components';
+import { colors, IconScanQRCode, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -18,6 +18,9 @@ import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { isValidPublicKey } from 'utils/validator';
+import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
+import { Config } from 'utils';
+import { PERMISSIONS } from 'react-native-permissions';
 
 const initialValues = {
   transferAmount: '0',
@@ -34,6 +37,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
   const { bottom } = useSafeAreaInsets();
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const { token } = route.params;
+  const scanQRCodeModalRef = useRef<any>();
 
   const [selectedTokenAddress, setSelectedTokenAddress] = useState(
     token ? token.address : 'CSPR',
@@ -126,6 +130,25 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
     setSelectedTokenAddress(item && item.address ? item.address : '');
   };
 
+  const onShowQRCodeModal = async () => {
+    Config.requestPermission(
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.CAMERA
+        : PERMISSIONS.ANDROID.CAMERA,
+      {
+        title: 'Camera Permissions',
+        message: 'CasperDash need access to camera to scan QR Code',
+      },
+      () => {
+        scanQRCodeModalRef?.current?.open();
+      },
+    );
+  };
+
+  const onScanSuccess = (address: string) => {
+    setFieldValue('receivingAddress', address);
+  };
+
   const _renderBtnMax = () => {
     return (
       <CButton onPress={setBalance} style={{ marginRight: scale(16) }}>
@@ -184,6 +207,14 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
             {...{ values, errors, touched, handleBlur, handleChange }}
             containerStyle={styles.rowPicker}
           />
+          <Row.L mt={16}>
+            <CButton onPress={onShowQRCodeModal}>
+              <Row.C style={styles.scanQRCodeContainer}>
+                <IconScanQRCode />
+                <Text style={styles.txtQRCode}>QR code</Text>
+              </Row.C>
+            </CButton>
+          </Row.L>
           <Text style={styles.title}>Transfer ID (optional)</Text>
           <CInputFormik
             name={'transferID'}
@@ -205,6 +236,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
           text={'Confirm'}
         />
       </Col>
+      <ScanQrCodeModal ref={scanQRCodeModalRef} onScanSuccess={onScanSuccess} />
     </CLayout>
   );
 };
@@ -258,5 +290,16 @@ const styles = StyleSheet.create({
   },
   dropdownStyle: {
     borderRadius: scale(10),
+  },
+  scanQRCodeContainer: {
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(12),
+    borderRadius: scale(24),
+    borderWidth: scale(1),
+    borderColor: colors.N4,
+  },
+  txtQRCode: {
+    ...textStyles.Body2,
+    marginLeft: scale(10),
   },
 });
