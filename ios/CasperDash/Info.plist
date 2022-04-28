@@ -65,8 +65,8 @@
 	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) need to access your camera for scanning QR Code to get receiver’s public key</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) use to save image to your library</string>
 	<key>NSPhotoLibraryUsageDescription</key>

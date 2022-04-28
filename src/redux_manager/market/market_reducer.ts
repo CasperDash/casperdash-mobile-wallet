@@ -1,15 +1,20 @@
-/* eslint-disable prettier/prettier */
-import {types} from './nft_action';
+import { types } from './market_action';
 
 const initialState = {
+  priceHistoryData: null,
 };
 
 export default function (
-    state = initialState,
-    action = {type: '', payload: null},
+  state = initialState,
+  action = { type: '', payload: null },
 ) {
-    switch (action.type) {
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case types.GET_PRICE_HISTORY_SUCCESS:
+      return {
+        ...state,
+        priceHistoryData: action.payload,
+      };
+    default:
+      return state;
+  }
 }
