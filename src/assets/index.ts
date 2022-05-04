@@ -52,6 +52,8 @@ import IconCloseFilledN4 from './images/ic_close_filled_n4.svg';
 import IconScanCameraTimeout from './images/ic_scan_camera_timeout.svg';
 import IconUp from './images/ic_up.svg';
 import IconDown from './images/ic_down.svg';
+import IconReload from './images/ic_reload.svg';
+import IconExchange from './images/ic_exchange.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -248,4 +250,6 @@ export {
   IconScanCameraTimeout,
   IconUp,
   IconDown,
+  IconReload,
+  IconExchange,
 };
