@@ -9,14 +9,22 @@ function ValidatorItem({ data, onSelectValidator }: any) {
   return (
     <CButton onPress={() => onSelectValidator(data)}>
       <Row px={16} py={16} style={styles.container}>
-        <Image source={{ uri: data.icon }} style={styles.icon} />
+        <Image source={{ uri: data.logo || data.icon }} style={styles.icon} />
         <Row.LR pl={12} style={styles.rightContainer}>
-          <Text
-            ellipsizeMode={'middle'}
-            numberOfLines={1}
-            style={[styles.title, { width: scale(130) }]}>
-            {data.public_key}
-          </Text>
+          <Col.L>
+            <Text
+              ellipsizeMode={'middle'}
+              numberOfLines={1}
+              style={[styles.title, { width: scale(130) }]}>
+              {data.name ? `${data.name} ✅` : data.public_key}
+            </Text>
+            <Text
+              ellipsizeMode={'middle'}
+              numberOfLines={1}
+              style={[textStyles.Body1, { width: scale(130) }]}>
+              {data.public_key}
+            </Text>
+          </Col.L>
           <Col.R>
             <Text style={textStyles.Body1}>
               {getValueByFormat(data.bidInfo?.bid?.delegation_rate || 0, {
