@@ -68,6 +68,7 @@ const images = {
   imgnft: require('./images/img_nft.png'),
   symbol_cspr: require('./images/ic_symbol_CSPR.png'),
   nodata: require('./images/ic_no_data.png'),
+  verifiedValidator: require('./images/red-casper.png'),
 };
 
 const colors = {
