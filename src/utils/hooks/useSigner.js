@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from '../constants/settings';
-import { getLoginOptions } from '../selectors/user';
+import { getLoginOptions, getSelectedWallet } from '../selectors/user';
 import { signDeployByLedger } from '../services/ledgerServices';
 
 /**
@@ -9,7 +9,7 @@ import { signDeployByLedger } from '../services/ledgerServices';
  */
 const useSigner = () => {
   const loginOptions = useSelector(getLoginOptions);
-
+  const selectedWallet = useSelector(getSelectedWallet);
   /**
    * It signs the deploy with the main account.
    * @param deploy - The deploy object that you want to sign.
@@ -24,6 +24,9 @@ const useSigner = () => {
           publicKey: mainAccountHex,
           keyIndex: loginOptions.keyIndex,
         });
+      }
+      case CONNECTION_TYPES.passPhase: {
+        console.log('selectedWallet', selectedWallet);
       }
       default:
         throw Error('Can not find signer');
