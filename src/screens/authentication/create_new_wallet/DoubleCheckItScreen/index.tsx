@@ -77,7 +77,7 @@ const DoubleCheckItScreen: React.FC<
       dispatch(allActions.main.showMessage(message));
       return;
     }
-    const { data } = route.params;
+    const { data, algorithm } = route.params;
     const phrases = data.reduce(
       (previous: string, current: Phrase) => previous + current.word + ' ',
       '',
@@ -87,6 +87,7 @@ const DoubleCheckItScreen: React.FC<
       params: {
         showBack: true,
         phrases: phrases.trim(),
+        algorithm,
       },
     });
   };

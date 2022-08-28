@@ -26,7 +26,7 @@ const ConfirmPinScreen: React.FC<
   // @ts-ignore
   ScreenProps<ChoosePinRouter.CONFIRM_PIN_SCREEN>
 > = ({ route }) => {
-  const { pin, phrases } = route.params;
+  const { pin, phrases, algorithm } = route.params;
   const [pinConfirm, setPinConfirm] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -51,7 +51,7 @@ const ConfirmPinScreen: React.FC<
         },
       });
 
-      user.setHDWallet(phrases, EncryptionType.Ed25519);
+      user.setHDWallet(phrases, algorithm);
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
       user.setWalletInfo(
         acc0.getReferenceKey(),
