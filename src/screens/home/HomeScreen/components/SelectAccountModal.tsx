@@ -1,4 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import { View, Text, StyleSheet, Platform, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
 import { scale } from 'device';
@@ -15,9 +20,10 @@ import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { getListWallets } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { WalletInfo } from 'casper-storage';
+import { WalletDescriptor, WalletInfo } from 'casper-storage';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
+import { MessageType } from 'components/CMessge/types';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
@@ -25,6 +31,23 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   const listWallets = useSelector(getListWallets);
   const dispatch = useDispatch();
   const selectedWallet = useSelector((state: any) => state.main.selectedWallet);
+  const currentAccount = useSelector((state: any) => state.main.currentAccount);
+
+  const createNewAccount = useCallback(async () => {
+    const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
+
+    await currentAccount.addWalletAccount(
+      wallets.length,
+      new WalletDescriptor(`Account ${wallets.length + 1}`),
+    );
+
+    const casperDashInfo = await Config.getItem(Keys.casperdash);
+    casperDashInfo.userInfo = currentAccount.serialize();
+
+    await Config.saveItem(Keys.casperdash, casperDashInfo);
+
+    dispatch(allActions.main.loadLocalStorage());
+  }, [currentAccount, dispatch]);
 
   useImperativeHandle(ref, () => ({
     show: show,
@@ -41,6 +64,18 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   const openImportAccount = () => {
     hide();
     navigate(MainRouter.IMPORT_ACCOUNT_SCREEN);
+  };
+
+  const handleOnCreateAccount = () => {
+    createNewAccount()
+      .then(() => {
+        const message = {
+          message: 'Your account has been created successfully',
+          type: MessageType.success,
+        };
+        dispatch(allActions.main.showMessage(message));
+      })
+      .catch(err => console.log(err));
   };
 
   const onSelectWallet = async (wallet: WalletInfo) => {
@@ -85,7 +120,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
               })}
           </ScrollView>
         </Col>
-        <CButton>
+        <CButton onPress={handleOnCreateAccount}>
           <Row style={styles.rowItem}>
             <IconPlusCircle width={scale(17)} height={scale(17)} />
             <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>
