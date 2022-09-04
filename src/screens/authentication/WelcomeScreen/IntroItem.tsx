@@ -6,7 +6,7 @@ import { colors, textStyles } from 'assets';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const introDescription =
-  'Casper Dash is a platform that aims to build a new creative economy.';
+  'CasperDash is a platform that aims to build a new creative economy.';
 
 const IntroItem = (data: Intro) => {
   const { top, bottom } = useSafeAreaInsets();
