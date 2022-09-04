@@ -1,5 +1,10 @@
 import React from 'react';
-import { images, IconPlusCircle, IconConnectLedger } from 'assets';
+import {
+  images,
+  IconPlusCircle,
+  IconConnectLedger,
+  IconImportPhrase,
+} from 'assets';
 import { scale } from 'device';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 
@@ -47,17 +52,11 @@ const ListCreateNewWalletMenu: Array<CreateNewWalletMenu> = [
     title: 'Create new wallet',
     screen: CreateNewWalletRouter.RECOVERY_PHRASE_SCREEN,
   },
-  /*{
-      id: 1,
-      icon: () => <IconImportPhrase width={scale(22)} height={scale(22)}/>,
-      title: 'Import Phrase',
-      screen: CreateNewWalletRouter.IMPORT_PHRASE_SCREEN,
-  },*/
   {
-    id: 3,
-    icon: () => <IconPlusCircle width={scale(22)} height={scale(22)} />,
-    title: 'View Mode',
-    screen: CreateNewWalletRouter.ADD_KEY_SCREEN,
+    id: 1,
+    icon: () => <IconImportPhrase width={scale(22)} height={scale(22)} />,
+    title: 'Import Phrase',
+    screen: CreateNewWalletRouter.IMPORT_PHRASE_SCREEN,
   },
   {
     id: 2,
