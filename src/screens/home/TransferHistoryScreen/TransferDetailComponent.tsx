@@ -26,7 +26,7 @@ const TransferDetailComponent = ({ data, deploy, index }: Props) => {
     : deployValue;
 
   const copy = async () => {
-    await Clipboard.setString(formattedValue);
+    Clipboard.setString(formattedValue);
     const message = {
       message: 'Copied to Clipboard',
       type: MessageType.normal,

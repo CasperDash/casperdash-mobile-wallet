@@ -24,6 +24,11 @@ export const getListWallets = createSelector(
   },
 );
 
+export const getSelectedWallet = createSelector(
+  state => state.main,
+  ({ selectedWallet }) => selectedWallet,
+);
+
 /**
  * It returns the login options for the user
  * @returns The login options for the user.

@@ -1,9 +1,13 @@
-import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { CLayout, CHeader } from 'components';
-import { colors } from 'assets';
+import { colors, textStyles } from 'assets';
 import { scale } from 'device';
-import { PhraseItem } from '../components';
+import {
+  PhraseItem,
+  SelectDropdownComponent,
+  DropdownItem,
+} from '../components';
 import { Row } from 'components';
 import CButton2 from 'components/CTextButton';
 import { useNavigation } from '@react-navigation/native';
@@ -11,14 +15,22 @@ import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNe
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Phrase } from '../../data/data';
 import { Config } from 'utils';
-import { KeyFactory } from 'casper-storage';
-// const phraseString =
-//   'House Ego Assits Repair Respond Attitude Different Difficult Opposition Resident Populate Inhabit Situated Problem Failed Name Octupus Doctor Strange Ironman Capital Dimondhand Flash Vision';
+import SelectDropdown from 'react-native-select-dropdown';
+import { EncryptionType, KeyFactory } from 'casper-storage';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { MessageType } from 'components/CMessge/types';
+import { allActions } from 'redux_manager';
+import { useDispatch } from 'react-redux';
+import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const dispatch = useDispatch();
+  const [algorithm, setAlgorithm] = useState<EncryptionType>(
+    EncryptionType.Ed25519,
+  );
   const keyManager = KeyFactory.getInstance();
-  const phraseString = keyManager.generate(12);
+  const phraseString = keyManager.generate(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
 
   const [data, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
@@ -35,7 +47,11 @@ const RecoveryPhraseScreen = () => {
         ? listWords.slice(left.length, listWords.length)
         : [];
     return [listWords, left, right];
-  }, []);
+  }, [phraseString]);
+
+  const handleOnSelectAlgo = (algorithmSelected: EncryptionType) => {
+    setAlgorithm(algorithmSelected);
+  };
 
   const openDoubleCheckIt = () => {
     try {
@@ -43,6 +59,7 @@ const RecoveryPhraseScreen = () => {
         navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {
           data: JSON.parse(JSON.stringify(data)),
           rawData: phraseString,
+          algorithm,
         });
       }
     } catch (e) {
@@ -54,6 +71,43 @@ const RecoveryPhraseScreen = () => {
     <CLayout>
       <CHeader title={'Recovery Phrase'} />
       <View style={styles.container}>
+        <Row.LR pt={16} px={16}>
+          <View style={styles.selectType}>
+            <Text style={styles.algorithmLabel}>Encryption Type</Text>
+            <Text style={styles.algorithmDescription}>
+              We recommend to choose ed25519 over secp256k1 for stronger
+              security and better performance, unless you explicitly want to use
+              secp256k1 in order to compatible with Bitcoin, Ethereum chains
+            </Text>
+            <SelectDropdown
+              dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+              buttonStyle={styles.rowPicker}
+              dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+              data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
+              onSelect={(selectedItem, _index) => {
+                handleOnSelectAlgo(selectedItem);
+              }}
+              renderCustomizedButtonChild={(item: any, index) => {
+                if (!item) {
+                  return null;
+                }
+                return <SelectDropdownComponent item={item} key={index} />;
+              }}
+              renderCustomizedRowChild={(item: any, index) => (
+                <DropdownItem item={item} key={index} />
+              )}
+              defaultValueByIndex={1}
+              buttonTextAfterSelection={(selectedItem, _index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, _index) => {
+                return item;
+              }}
+              defaultValue={algorithm}
+            />
+          </View>
+        </Row.LR>
+
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}>
@@ -76,11 +130,26 @@ const RecoveryPhraseScreen = () => {
             </View>
           </Row.LR>
         </ScrollView>
-        <CButton2
-          style={styles.btnNext}
-          onPress={openDoubleCheckIt}
-          text={'Next'}
-        />
+        <Row.C>
+          <CButton2
+            type={'line'}
+            style={[styles.btnNext, { marginRight: scale(15) }]}
+            text={'Copy'}
+            onPress={async () => {
+              const message = {
+                message: 'Copied to Clipboard',
+                type: MessageType.normal,
+              };
+              Clipboard.setString(phraseString);
+              dispatch(allActions.main.showMessage(message, 1000));
+            }}
+          />
+          <CButton2
+            style={styles.btnNext}
+            onPress={openDoubleCheckIt}
+            text={'Next'}
+          />
+        </Row.C>
       </View>
     </CLayout>
   );
@@ -107,7 +176,33 @@ const styles = StyleSheet.create({
     paddingVertical: scale(25),
   },
   btnNext: {
+    width: scale(164),
     alignSelf: 'center',
     marginVertical: scale(20),
+  },
+  selectType: {
+    flexDirection: 'column',
+  },
+  rowPicker: {
+    minWidth: '100%',
+    minHeight: scale(48),
+    maxHeight: scale(100),
+    backgroundColor: colors.N5,
+    color: colors.W1,
+    borderRadius: scale(16),
+    borderWidth: 0,
+  },
+  dropdownStyle: {
+    borderRadius: scale(10),
+    color: colors.W1,
+  },
+  algorithmLabel: {
+    ...textStyles.Sub2,
+    color: colors.N3,
+    marginBottom: scale(12),
+  },
+  algorithmDescription: {
+    ...textStyles.Cap2,
+    marginBottom: scale(12),
   },
 });
