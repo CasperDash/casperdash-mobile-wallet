@@ -17,7 +17,7 @@ const ReceiveScreen = () => {
   const dispatch = useDispatch();
 
   const onCopy = async () => {
-    await Clipboard.setString(publicKey);
+    Clipboard.setString(publicKey);
     const message = {
       message: 'Copied to Clipboard',
       type: MessageType.normal,
