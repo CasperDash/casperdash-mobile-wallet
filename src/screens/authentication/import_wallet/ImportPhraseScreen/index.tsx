@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CHeader, CLayout, CLoading, Row } from 'components';
+import {
+  SelectDropdownComponent,
+  DropdownItem,
+} from '../../create_new_wallet/components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
@@ -16,23 +20,33 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import SelectDropdown from 'react-native-select-dropdown';
+import { EncryptionType } from 'casper-storage';
 
 const ImportPhraseScreen = () => {
   const dispatch = useDispatch();
-  const numberOfPhrases = 24;
+
+  const [algorithm, setAlgorithm] = useState<EncryptionType>(
+    EncryptionType.Ed25519,
+  );
   const [isLoading, setLoading] = useState<boolean>(false);
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
 
+  const handleOnSelectAlgo = (algorithmSelected: EncryptionType) => {
+    setAlgorithm(algorithmSelected);
+  };
+
   const [listLeft, setListLeft] = useState<Array<Phrase>>(
-    Array.from({ length: numberOfPhrases / 2 }, (_, idx) => ({
+    Array.from({ length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 }, (_, idx) => ({
       id: idx,
       word: '',
     })),
   );
   const [listRight, setListRight] = useState<Array<Phrase>>(
-    Array.from({ length: numberOfPhrases / 2 }, (_, idx) => ({
-      id: idx + numberOfPhrases / 2,
+    Array.from({ length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 }, (_, idx) => ({
+      id: idx + DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2,
       word: '',
     })),
   );
@@ -65,6 +79,7 @@ const ImportPhraseScreen = () => {
     ) {
       //paste phrase
       const phraseString = await Clipboard.getString();
+      console.info(phraseString);
       if (phraseString && phraseString.length > 0) {
         let listWords: Array<Phrase> = phraseString
           .split(/\s+/)
@@ -72,9 +87,9 @@ const ImportPhraseScreen = () => {
             id: index,
             word: word,
           }));
-        if (listWords.length < numberOfPhrases) {
+        if (listWords.length < DEFAULT_NUMBER_OF_RECOVERY_WORDS) {
           const lastEmptyList = Array.from(
-            { length: numberOfPhrases - listWords.length },
+            { length: DEFAULT_NUMBER_OF_RECOVERY_WORDS - listWords.length },
             (_, idx) => ({
               id: listWords.length + idx,
               word: '',
@@ -82,11 +97,14 @@ const ImportPhraseScreen = () => {
           );
           listWords = listWords.concat(lastEmptyList);
         } else {
-          listWords = listWords.slice(0, numberOfPhrases);
+          listWords = listWords.slice(0, DEFAULT_NUMBER_OF_RECOVERY_WORDS);
         }
         const left: Array<Phrase> =
           listWords.length > 0
-            ? listWords.slice(0, Math.round(numberOfPhrases / 2))
+            ? listWords.slice(
+                0,
+                Math.round(DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2),
+              )
             : [];
         const right: Array<Phrase> =
           listWords.length > 0 && left.length > 0
@@ -118,7 +136,7 @@ const ImportPhraseScreen = () => {
     dispatch(
       allActions.user.getAccountInformation(
         { publicKey },
-        async (err: any, res: any) => {
+        async (_err: any, res: any) => {
           if (res) {
             setLoading(false);
             const info = {
@@ -149,16 +167,22 @@ const ImportPhraseScreen = () => {
       setWrongPhrase(false);
     }
     setListLeft(
-      Array.from({ length: numberOfPhrases / 2 }, (_, idx) => ({
-        id: idx,
-        word: '',
-      })),
+      Array.from(
+        { length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 },
+        (_, idx) => ({
+          id: idx,
+          word: '',
+        }),
+      ),
     );
     setListRight(
-      Array.from({ length: numberOfPhrases / 2 }, (_, idx) => ({
-        id: idx + numberOfPhrases / 2,
-        word: '',
-      })),
+      Array.from(
+        { length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 },
+        (_, idx) => ({
+          id: idx + DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2,
+          word: '',
+        }),
+      ),
     );
   };
 
@@ -166,6 +190,42 @@ const ImportPhraseScreen = () => {
     <CLayout>
       <CHeader title={'Import Phrase'} />
       <View style={styles.container}>
+        <Row.LR pt={16} px={16}>
+          <View style={styles.selectType}>
+            <Text style={styles.algorithmLabel}>Encryption Type</Text>
+            <Text style={styles.algorithmDescription}>
+              We recommend to choose ed25519 over secp256k1 for stronger
+              security and better performance, unless you explicitly want to use
+              secp256k1 in order to compatible with Bitcoin, Ethereum chains
+            </Text>
+            <SelectDropdown
+              dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+              buttonStyle={styles.rowPicker}
+              dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+              data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
+              onSelect={(selectedItem, _index) => {
+                handleOnSelectAlgo(selectedItem);
+              }}
+              renderCustomizedButtonChild={(item: any, index) => {
+                if (!item) {
+                  return null;
+                }
+                return <SelectDropdownComponent item={item} key={index} />;
+              }}
+              renderCustomizedRowChild={(item: any, index) => (
+                <DropdownItem item={item} key={index} />
+              )}
+              defaultValueByIndex={1}
+              buttonTextAfterSelection={(selectedItem, _index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, _index) => {
+                return item;
+              }}
+              defaultValue={algorithm}
+            />
+          </View>
+        </Row.LR>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}>
@@ -203,7 +263,7 @@ const ImportPhraseScreen = () => {
           <CTextButton
             type={'line'}
             style={[styles.btnNext, { marginRight: scale(15) }]}
-            text={'Cancel'}
+            text={'Clear'}
             onPress={onCancel}
           />
           <CTextButton
@@ -254,5 +314,30 @@ const styles = StyleSheet.create({
     marginTop: scale(8),
     alignSelf: 'flex-start',
     marginLeft: scale(16),
+  },
+  selectType: {
+    flexDirection: 'column',
+  },
+  rowPicker: {
+    minWidth: '100%',
+    minHeight: scale(48),
+    maxHeight: scale(100),
+    backgroundColor: colors.N5,
+    color: colors.W1,
+    borderRadius: scale(16),
+    borderWidth: 0,
+  },
+  dropdownStyle: {
+    borderRadius: scale(10),
+    color: colors.W1,
+  },
+  algorithmLabel: {
+    ...textStyles.Sub2,
+    color: colors.N3,
+    marginBottom: scale(12),
+  },
+  algorithmDescription: {
+    ...textStyles.Cap2,
+    marginBottom: scale(12),
   },
 });

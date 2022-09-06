@@ -60,6 +60,7 @@ function Account() {
 
   const saveKey = () => {
     Clipboard.setString(publicKey);
+
     const message = {
       message: 'Copied to Clipboard',
       type: MessageType.normal,

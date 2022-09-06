@@ -40,7 +40,7 @@ function NFTDetail({ route }: Props) {
   } = data;
 
   const copyToClipboard = async () => {
-    await Clipboard.setString(contractAddress);
+    Clipboard.setString(contractAddress);
     const message = {
       message: 'Copied to Clipboard',
       type: MessageType.normal,
