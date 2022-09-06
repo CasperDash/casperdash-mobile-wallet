@@ -22,7 +22,7 @@ const ChoosePinScreen: React.FC<
     if (pin && pin.length === pinLength) {
       navigate(ChoosePinRouter.CONFIRM_PIN_SCREEN, { pin, phrases, algorithm });
     }
-  }, [pin]);
+  }, [pin, algorithm, phrases, navigate]);
 
   return (
     <CLayout>
