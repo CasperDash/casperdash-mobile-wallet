@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import {
   colors,
   fonts,
@@ -15,10 +15,11 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   ActivityIndicator,
   Image,
   Platform,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 import * as yup from 'yup';
 import CTextButton from 'components/CTextButton';
@@ -64,6 +65,18 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const balance =
     userDetails && userDetails.balance && userDetails.balance.displayBalance;
   const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
+  const minCSPRDelegateToNewValidator = useSelector(
+    getConfigKey('MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR'),
+  );
+  const maxDelegatorPerValidator = useSelector(
+    getConfigKey('MAX_DELEGATOR_PER_VALIDATOR'),
+  );
+
+  const hasDelegated = useMemo(() => {
+    return selectedValidator?.bidInfo?.bid?.delegators?.find(
+      (delegator: any) => delegator.public_key === publicKey,
+    );
+  }, [publicKey, selectedValidator]);
 
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
@@ -88,10 +101,26 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
       .test('max', 'Not enough balance.', function (value: any) {
         return value + fee <= balance;
       })
-      .test('min', 'Amount must be more than 0 CSPR', function (value: any) {
-        return value > 0;
+      .test('min', 'Amount must be more than 2.5 CSPR', function (value: any) {
+        return value > 2.5;
+      })
+      .test(
+        'minByNewValidator',
+        `Amount must be more than or equal ${minCSPRDelegateToNewValidator} CSPR`,
+        function (value: any) {
+          return hasDelegated || value >= minCSPRDelegateToNewValidator;
+        },
+      ),
+    validator: yup
+      .string()
+      .required('Validator is required')
+      .test('maxDelegator', 'Max delegators', () => {
+        return (
+          hasDelegated ||
+          selectedValidator?.bidInfo.bid?.delegators?.length <=
+            maxDelegatorPerValidator
+        );
       }),
-    validator: yup.string().required('Validator is required'),
   });
 
   const {
@@ -204,10 +233,6 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     );
   };
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
-    return <StakedInformationItem value={item} key={index} />;
-  };
-
   const _renderHeader = () => {
     return (
       <>
@@ -268,20 +293,24 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
         <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Staking</Text>
       </Row>
       <Col style={styles.container}>
-        <FlatList
-          ListHeaderComponent={_renderHeader}
+        <ScrollView
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           style={{ marginTop: scale(22) }}
           contentContainerStyle={styles.contentContainerStyle}
-          data={stackingList}
-          extraData={stackingList}
-          refreshing={isRefreshing}
-          onRefresh={() => getData(true)}
-          keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
-          ListEmptyComponent={_renderNoData}
-          renderItem={renderItem}
-        />
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={() => getData(true)}
+            />
+          }>
+          {_renderHeader()}
+          {stackingList && stackingList.length > 0
+            ? stackingList.map((item, index) => {
+                return <StakedInformationItem value={item} key={index} />;
+              })
+            : _renderNoData()}
+        </ScrollView>
       </Col>
     </CLayout>
   );
