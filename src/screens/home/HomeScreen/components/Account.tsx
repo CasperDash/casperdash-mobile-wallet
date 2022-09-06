@@ -9,15 +9,7 @@ import {
 } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
-import {
-  colors,
-  textStyles,
-  IconEyeOff,
-  IconEye,
-  IconPencilFilled,
-  IconCopy,
-  images,
-} from 'assets';
+import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import Clipboard from '@react-native-clipboard/clipboard';

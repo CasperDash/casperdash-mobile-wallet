@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenProps } from 'navigation/ScreenProps';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
@@ -13,12 +13,7 @@ import { Config, Keys } from 'utils';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
-import {
-  EncryptionType,
-  IWallet,
-  User,
-  ValidationResult,
-} from 'casper-storage';
+import { IWallet, User, ValidationResult } from 'casper-storage';
 import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { IHDKey } from 'casper-storage/src/bips/bip32';
 
@@ -57,7 +52,7 @@ const ConfirmPinScreen: React.FC<
         acc0.getReferenceKey(),
         new WalletDescriptor('Account 1'),
       );
-      const publicKey = await acc0.getPublicAddress();
+      const publicKey = await acc0.getPublicKey();
       const hashingOptions = user.getPasswordHashingOptions();
       dispatch(
         allActions.user.getAccountInformation(
@@ -70,7 +65,6 @@ const ConfirmPinScreen: React.FC<
                 publicKey: publicKey,
                 loginOptions: {
                   connectionType: 'passphase',
-                  passphase: phrases,
                   hashingOptions: hashingOptions,
                 },
                 userInfo: userInfo,

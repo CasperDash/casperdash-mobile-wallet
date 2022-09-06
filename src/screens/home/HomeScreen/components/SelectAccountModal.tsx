@@ -4,7 +4,7 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import { View, Text, StyleSheet, Platform, ScrollView } from 'react-native';
+import { Text, StyleSheet, Platform, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
 import { scale } from 'device';
 import {

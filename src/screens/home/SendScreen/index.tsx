@@ -17,10 +17,10 @@ import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { isValidPublicKey } from 'utils/validator';
 import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
+import { isValidPublicKey } from 'utils/validator';
 
 const initialValues = {
   transferAmount: '0',
@@ -80,10 +80,12 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
           ? value + fee <= displayValue
           : true;
       }),
-    receivingAddress: yup.string().required('Required.'),
-    // .test('isValidPublicKey', 'Invalid address.', function (value: any) {
-    //   return isValidPublicKey(value);
-    // }),
+    receivingAddress: yup
+      .string()
+      .required('Required.')
+      .test('isValidPublicKey', 'Invalid address.', function (value: any) {
+        return isValidPublicKey(value);
+      }),
     transferID: yup.string(),
   });
 
@@ -105,8 +107,6 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
   const onConfirm = () => {
     replace(MainRouter.CONFIRM_SEND_SCREEN, {
       ...values,
-      receivingAddress:
-        '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
       transferAmount: values.transferAmount.replace(/,/, '.'),
       token: selectedToken,
       networkFee: selectedToken ? selectedToken.transferFee : 1,
