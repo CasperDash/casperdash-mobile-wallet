@@ -9,19 +9,20 @@ import {
   DropdownItem,
 } from '../components';
 import { Row } from 'components';
-import CButton2 from 'components/CTextButton';
+import CTextButton from 'components/CTextButton';
 import { useNavigation } from '@react-navigation/native';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
-import { EncryptionType, KeyFactory } from 'casper-storage';
+import { EncryptionType } from 'casper-storage';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
 import { useDispatch } from 'react-redux';
 import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import { getRecoveryPhase } from '../../../../utils/helpers/account';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
@@ -29,10 +30,10 @@ const RecoveryPhraseScreen = () => {
   const [algorithm, setAlgorithm] = useState<EncryptionType>(
     EncryptionType.Ed25519,
   );
-  const keyManager = KeyFactory.getInstance();
-  const phraseString = keyManager.generate(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
 
-  const [data, listLeft, listRight] = useMemo(() => {
+  const phraseString = getRecoveryPhase(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
+
+  const [wordArray, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
       ? phraseString
           .split(/\s+/)
@@ -55,10 +56,10 @@ const RecoveryPhraseScreen = () => {
 
   const openDoubleCheckIt = () => {
     try {
-      if (data && data.length > 0) {
+      if (wordArray && wordArray.length > 0) {
         navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {
-          data: JSON.parse(JSON.stringify(data)),
-          rawData: phraseString,
+          wordArray: JSON.parse(JSON.stringify(wordArray)),
+          recoveryPhase: phraseString,
           algorithm,
         });
       }
@@ -131,7 +132,7 @@ const RecoveryPhraseScreen = () => {
           </Row.LR>
         </ScrollView>
         <Row.C>
-          <CButton2
+          <CTextButton
             type={'line'}
             style={[styles.btnNext, { marginRight: scale(15) }]}
             text={'Copy'}
@@ -144,7 +145,7 @@ const RecoveryPhraseScreen = () => {
               dispatch(allActions.main.showMessage(message, 1000));
             }}
           />
-          <CButton2
+          <CTextButton
             style={styles.btnNext}
             onPress={openDoubleCheckIt}
             text={'Next'}

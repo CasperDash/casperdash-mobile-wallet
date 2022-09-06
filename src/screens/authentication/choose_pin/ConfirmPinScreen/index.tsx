@@ -13,9 +13,12 @@ import { Config, Keys } from 'utils';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
-import { IWallet, User, ValidationResult } from 'casper-storage';
+import { IWallet } from 'casper-storage';
 import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { IHDKey } from 'casper-storage/src/bips/bip32';
+import { PIN_LENGTH } from 'utils/constants/key';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { createNewUserWithHdWallet } from 'utils/helpers/account';
 
 const ConfirmPinScreen: React.FC<
   // @ts-ignore
@@ -26,7 +29,6 @@ const ConfirmPinScreen: React.FC<
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
-  const pinLength = 6;
 
   const onTextChange = async (text: string) => {
     setPinConfirm(text);
@@ -39,14 +41,7 @@ const ConfirmPinScreen: React.FC<
     try {
       setLoading(true);
 
-      const user = new User(pin, {
-        passwordOptions: {
-          // @ts-ignore
-          passwordValidator: () => new ValidationResult(true),
-        },
-      });
-
-      user.setHDWallet(phrases, algorithm);
+      const user = createNewUserWithHdWallet(pin, phrases, algorithm);
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
       user.setWalletInfo(
         acc0.getReferenceKey(),
@@ -54,44 +49,44 @@ const ConfirmPinScreen: React.FC<
       );
       const publicKey = await acc0.getPublicKey();
       const hashingOptions = user.getPasswordHashingOptions();
+      const userInfo = user.serialize();
+      const info = {
+        publicKey: publicKey,
+        loginOptions: {
+          connectionType: CONNECTION_TYPES.passPhase,
+          hashingOptions: hashingOptions,
+        },
+        userInfo: userInfo,
+      };
+      await Config.saveItem(Keys.casperdash, info);
+      await Config.saveItem(Keys.pinCode, txtConfirmPin);
+
+      const wallets = user.getHDWallet()?.derivedWallets || [];
+      const selectedWallet = wallets[0];
+      await Config.saveItem(Keys.selectedWallet, selectedWallet);
+
+      navigation.dispatch(
+        CommonActions.reset({
+          routes: [
+            {
+              name: 'MainStack',
+            },
+          ],
+        }),
+      );
+      dispatch(allActions.main.loadLocalStorage());
+      const message = {
+        message: 'Logged in successfully',
+        type: MessageType.success,
+      };
+      dispatch(allActions.main.showMessage(message));
+
       dispatch(
         allActions.user.getAccountInformation(
           { publicKey },
           async (err: any, res: any) => {
             if (res) {
               setLoading(false);
-              const userInfo = user.serialize();
-              const info = {
-                publicKey: publicKey,
-                loginOptions: {
-                  connectionType: 'passphase',
-                  hashingOptions: hashingOptions,
-                },
-                userInfo: userInfo,
-              };
-              await Config.saveItem(Keys.casperdash, info);
-              await Config.saveItem(Keys.pinCode, txtConfirmPin);
-
-              const wallets = user.getHDWallet()?.derivedWallets || [];
-              const selectedWallet = wallets[0];
-              await Config.saveItem(Keys.selectedWallet, selectedWallet);
-
-              navigation.dispatch(
-                CommonActions.reset({
-                  routes: [
-                    {
-                      name: 'MainStack',
-                    },
-                  ],
-                }),
-              );
-
-              dispatch(allActions.main.loadLocalStorage());
-              const message = {
-                message: 'Logged in successfully',
-                type: MessageType.success,
-              };
-              dispatch(allActions.main.showMessage(message));
             } else {
               setLoading(false);
               Config.alertMess(err);
@@ -127,7 +122,7 @@ const ConfirmPinScreen: React.FC<
           keyboardType={'number-pad'}
           autoFocus
           value={pinConfirm}
-          codeLength={pinLength}
+          codeLength={PIN_LENGTH}
           cellSpacing={0}
           restrictToNumbers
           cellStyleFocused={null}
