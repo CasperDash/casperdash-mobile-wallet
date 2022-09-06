@@ -5,17 +5,17 @@ import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNe
 import _ from 'lodash';
 import { CLayout, CHeader } from 'components';
 import { scale } from 'device';
-import CButton2 from 'components/CTextButton';
+import CTextButton from 'components/CTextButton';
 import { useNavigation } from '@react-navigation/native';
 import { CheckItem } from 'screens/authentication/create_new_wallet/components';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getArrayNotInArray } from 'utils/collections';
 import { allActions } from 'redux_manager';
 import { useDispatch } from 'react-redux';
-import { Phrase } from 'screens/authentication/data/data';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { MessageType } from 'components/CMessge/types';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import { NUMBER_WORDS_PER_ROW } from 'utils/constants/key';
 
 const DoubleCheckItScreen: React.FC<
   // @ts-ignore
@@ -23,7 +23,9 @@ const DoubleCheckItScreen: React.FC<
 > = ({ route }) => {
   const [listData, setListData] = useState<any>([]);
   const [listDataSelected, setListDataSelected] = useState<any>([]);
-  const numberOfWords = Math.floor(route.params.data.length / 3);
+  const { wordArray, algorithm, recoveryPhase } = route.params;
+  const numberOfWords = Math.floor(wordArray?.length / NUMBER_WORDS_PER_ROW);
+
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
 
@@ -31,9 +33,8 @@ const DoubleCheckItScreen: React.FC<
     listDataSelected.filter((i: any) => !!i).length === numberOfWords;
 
   useEffect(() => {
-    const { data } = route.params;
-    const randomList = _.sampleSize(data, numberOfWords);
-    let restList = getArrayNotInArray(data, randomList);
+    const randomList = _.sampleSize(wordArray, numberOfWords);
+    let restList = getArrayNotInArray(wordArray, randomList);
     restList = _.shuffle(restList);
 
     const list = randomList.map(item => {
@@ -45,7 +46,7 @@ const DoubleCheckItScreen: React.FC<
       return listWords;
     });
     setListData(list);
-  }, [numberOfWords, route.params]);
+  }, [numberOfWords, wordArray]);
 
   const onSelectWords = (rowIndex: number, id: any) => {
     if (listData && listData[rowIndex]) {
@@ -68,7 +69,7 @@ const DoubleCheckItScreen: React.FC<
     }
   };
 
-  const getAccountInformation = () => {
+  const onNext = () => {
     if (!isCheckingSuccess) {
       const message = {
         message: 'Invalid',
@@ -77,16 +78,12 @@ const DoubleCheckItScreen: React.FC<
       dispatch(allActions.main.showMessage(message));
       return;
     }
-    const { data, algorithm } = route.params;
-    const phrases = data.reduce(
-      (previous: string, current: Phrase) => previous + current.word + ' ',
-      '',
-    );
+
     navigate(AuthenticationRouter.CHOOSE_PIN, {
       screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
       params: {
         showBack: true,
-        phrases: phrases.trim(),
+        phrases: recoveryPhase,
         algorithm,
       },
     });
@@ -119,8 +116,8 @@ const DoubleCheckItScreen: React.FC<
             );
           })}
       </ScrollView>
-      <CButton2
-        onPress={getAccountInformation}
+      <CTextButton
+        onPress={onNext}
         style={styles.btnNext}
         disabled={!isCheckingSuccess}
         text={'Next'}

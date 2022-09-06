@@ -8,18 +8,18 @@ import { scale } from 'device';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import { useNavigation } from '@react-navigation/native';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import { PIN_LENGTH } from 'utils/constants/key';
 
 const ChoosePinScreen: React.FC<
   // @ts-ignore
   ScreenProps<ChoosePinRouter.CHOOSE_PIN_SCREEN>
 > = ({ route }) => {
   const [pin, setPin] = useState<string>();
-  const pinLength = 6;
   const { navigate } = useNavigation();
   const { showBack, phrases, algorithm } = route.params;
 
   useEffect(() => {
-    if (pin && pin.length === pinLength) {
+    if (pin && pin.length === PIN_LENGTH) {
       navigate(ChoosePinRouter.CONFIRM_PIN_SCREEN, { pin, phrases, algorithm });
     }
   }, [pin, algorithm, phrases, navigate]);
@@ -42,7 +42,7 @@ const ChoosePinScreen: React.FC<
           autoFocus
           keyboardType={'number-pad'}
           value={pin}
-          codeLength={pinLength}
+          codeLength={PIN_LENGTH}
           cellSpacing={0}
           restrictToNumbers
           cellStyleFocused={null}
