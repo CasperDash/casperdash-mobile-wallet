@@ -27,6 +27,7 @@ const useSigner = () => {
       }
       case CONNECTION_TYPES.passPhase: {
         console.log('selectedWallet', selectedWallet);
+        break;
       }
       default:
         throw Error('Can not find signer');

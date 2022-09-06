@@ -17,14 +17,20 @@ import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType, KeyFactory } from 'casper-storage';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { MessageType } from 'components/CMessge/types';
+import { allActions } from 'redux_manager';
+import { useDispatch } from 'react-redux';
+import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const dispatch = useDispatch();
   const [algorithm, setAlgorithm] = useState<EncryptionType>(
     EncryptionType.Ed25519,
   );
   const keyManager = KeyFactory.getInstance();
-  const phraseString = keyManager.generate(12);
+  const phraseString = keyManager.generate(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
 
   const [data, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
@@ -67,7 +73,7 @@ const RecoveryPhraseScreen = () => {
       <View style={styles.container}>
         <Row.LR pt={16} px={16}>
           <View style={styles.selectType}>
-            <Text style={styles.algorithmLabel}>Select Encryption Type</Text>
+            <Text style={styles.algorithmLabel}>Encryption Type</Text>
             <Text style={styles.algorithmDescription}>
               We recommend to choose ed25519 over secp256k1 for stronger
               security and better performance, unless you explicitly want to use
@@ -97,6 +103,7 @@ const RecoveryPhraseScreen = () => {
               rowTextForSelection={(item, _index) => {
                 return item;
               }}
+              defaultValue={algorithm}
             />
           </View>
         </Row.LR>
@@ -123,11 +130,26 @@ const RecoveryPhraseScreen = () => {
             </View>
           </Row.LR>
         </ScrollView>
-        <CButton2
-          style={styles.btnNext}
-          onPress={openDoubleCheckIt}
-          text={'Next'}
-        />
+        <Row.C>
+          <CButton2
+            type={'line'}
+            style={[styles.btnNext, { marginRight: scale(15) }]}
+            text={'Copy'}
+            onPress={async () => {
+              const message = {
+                message: 'Copied to Clipboard',
+                type: MessageType.normal,
+              };
+              Clipboard.setString(phraseString);
+              dispatch(allActions.main.showMessage(message, 1000));
+            }}
+          />
+          <CButton2
+            style={styles.btnNext}
+            onPress={openDoubleCheckIt}
+            text={'Next'}
+          />
+        </Row.C>
       </View>
     </CLayout>
   );
@@ -154,6 +176,7 @@ const styles = StyleSheet.create({
     paddingVertical: scale(25),
   },
   btnNext: {
+    width: scale(164),
     alignSelf: 'center',
     marginVertical: scale(20),
   },
