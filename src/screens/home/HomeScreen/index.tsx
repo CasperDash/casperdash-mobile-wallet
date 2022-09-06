@@ -1,17 +1,15 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  FlatList,
   RefreshControl,
 } from 'react-native';
 import {
   colors,
   textStyles,
-  IconScanCode,
   IconSetting,
   IconPlusCircle,
   IconLogo,
@@ -61,19 +59,21 @@ function HomeScreen() {
     ]),
   );
 
-  useEffect(() => {
-    getData(false);
-  }, []);
-
-  const getData = (refreshing: boolean) => {
-    fetchCSPRMarketInfo(refreshing);
-    getTokenInfoWithBalance(refreshing);
-  };
-
   const onRefresh = () => {
     getAccountInformation(true);
     getData(true);
   };
+
+  const showErrorMessage = useCallback(
+    (error: any) => {
+      const message = {
+        message: error && error.message ? error.message : 'Error',
+        type: MessageType.error,
+      };
+      dispatch(allActions.main.showMessage(message));
+    },
+    [dispatch],
+  );
 
   const getAccountInformation = (refreshing: boolean) => {
     dispatch(
@@ -85,33 +85,46 @@ function HomeScreen() {
     );
   };
 
-  const getTokenInfoWithBalance = (refreshing: boolean) => {
-    dispatch(
-      allActions.home.getTokenInfoWithBalance({ refreshing }, (error: any) => {
-        if (error) {
-          showErrorMessage(error);
-        }
-      }),
-    );
-  };
+  const getTokenInfoWithBalance = useCallback(
+    (refreshing: boolean) => {
+      dispatch(
+        allActions.home.getTokenInfoWithBalance(
+          { refreshing },
+          (error: any) => {
+            if (error) {
+              showErrorMessage(error);
+            }
+          },
+        ),
+      );
+    },
+    [dispatch, showErrorMessage],
+  );
 
-  const fetchCSPRMarketInfo = (refreshing: boolean) => {
-    dispatch(
-      allActions.home.fetchCSPRMarketInfo({ refreshing }, (error: any) => {
-        if (error) {
-          showErrorMessage(error);
-        }
-      }),
-    );
-  };
+  const fetchCSPRMarketInfo = useCallback(
+    (refreshing: boolean) => {
+      dispatch(
+        allActions.home.fetchCSPRMarketInfo({ refreshing }, (error: any) => {
+          if (error) {
+            showErrorMessage(error);
+          }
+        }),
+      );
+    },
+    [showErrorMessage, dispatch],
+  );
 
-  const showErrorMessage = (error: any) => {
-    const message = {
-      message: error && error.message ? error.message : 'Error',
-      type: MessageType.error,
-    };
-    dispatch(allActions.main.showMessage(message));
-  };
+  const getData = useCallback(
+    (refreshing: boolean) => {
+      fetchCSPRMarketInfo(refreshing);
+      getTokenInfoWithBalance(refreshing);
+    },
+    [getTokenInfoWithBalance, fetchCSPRMarketInfo],
+  );
+
+  useEffect(() => {
+    getData(false);
+  }, [getData]);
 
   const openHistories = (token: any) => {
     navigate(MainRouter.HISTORIES_SCREEN, { token });
