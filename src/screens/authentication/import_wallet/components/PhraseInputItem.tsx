@@ -20,6 +20,7 @@ function PhraseInputItem({ data, onChangeText }: PhraseInputItemProps) {
         value={data.word}
         onChangeText={onChangeText}
         style={styles.input}
+        autoCapitalize="none"
       />
     </Row>
   );

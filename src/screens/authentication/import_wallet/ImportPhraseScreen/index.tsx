@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { CHeader, CLayout, CLoading, Row } from 'components';
+import { CHeader, CLayout, Row } from 'components';
 import {
   SelectDropdownComponent,
   DropdownItem,
@@ -12,26 +12,26 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Phrase } from 'screens/authentication/data/data';
 import { PhraseInputItem } from 'screens/authentication/import_wallet/components';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { allActions } from 'redux_manager';
 import { useDispatch } from 'react-redux';
-import { Config } from 'utils';
-import Keys from '../../../../utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import SelectDropdown from 'react-native-select-dropdown';
-import { EncryptionType } from 'casper-storage';
+import { EncryptionType, KeyFactory } from 'casper-storage';
+import { MessageType } from 'components/CMessge/types';
+import { allActions } from 'redux_manager';
 
 const ImportPhraseScreen = () => {
   const dispatch = useDispatch();
 
+  const keyManager = KeyFactory.getInstance();
+
   const [algorithm, setAlgorithm] = useState<EncryptionType>(
     EncryptionType.Ed25519,
   );
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const { replace } = useNavigation<StackNavigationProp<any>>();
+  const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
 
   const handleOnSelectAlgo = (algorithmSelected: EncryptionType) => {
@@ -129,37 +129,22 @@ const ImportPhraseScreen = () => {
       '',
     );
     const phrases = (phrasesLeft + phrasesRight).trim();
-    const publicKey =
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'; //TODO: get publicKey from phrases string
-    setLoading(true);
-
-    dispatch(
-      allActions.user.getAccountInformation(
-        { publicKey },
-        async (_err: any, res: any) => {
-          if (res) {
-            setLoading(false);
-            const info = {
-              publicKey: publicKey,
-              loginOptions: {
-                connectionType: 'passphase',
-                passphase: phrases,
-              },
-            };
-            await Config.saveItem(Keys.casperdash, info);
-            replace(AuthenticationRouter.CHOOSE_PIN, {
-              screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-              params: {
-                showBack: false,
-              },
-            });
-          } else {
-            setLoading(false);
-            setWrongPhrase(true);
-          }
+    if (keyManager.validate(phrases)) {
+      navigate(AuthenticationRouter.CHOOSE_PIN, {
+        screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+        params: {
+          showBack: true,
+          phrases: phrases,
+          algorithm,
         },
-      ),
-    );
+      });
+    } else {
+      const message = {
+        message: 'Invalid Recovery Phrase',
+        type: MessageType.error,
+      };
+      dispatch(allActions.main.showMessage(message));
+    }
   };
 
   const onCancel = () => {
@@ -278,7 +263,6 @@ const ImportPhraseScreen = () => {
           />
         </Row.C>
       </View>
-      {isLoading && <CLoading />}
     </CLayout>
   );
 };
