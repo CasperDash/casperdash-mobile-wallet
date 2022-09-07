@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, ActivityIndicator, View } from 'react-native';
 import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
 import { colors, textStyles } from 'assets';
@@ -9,13 +9,16 @@ interface IAccountItemProps {
   data: WalletInfoDetails;
   isCurrentAccount?: boolean;
   onSelectWallet: (data: WalletInfoDetails) => void;
+  isLoadingBalance?: boolean;
 }
 
 const AccountItem = ({
   data,
   isCurrentAccount,
   onSelectWallet,
+  isLoadingBalance,
 }: IAccountItemProps) => {
+  console.info('accountDetails', data);
   return (
     <CButton onPress={() => onSelectWallet(data)}>
       <Row.LR my={10} style={styles.container}>
@@ -26,7 +29,14 @@ const AccountItem = ({
         </Text>
         <Col style={styles.rightContent}>
           <Text style={[styles.body, isCurrentAccount && { color: colors.B1 }]}>
-            {data.balance || 0} CSPR
+            {isLoadingBalance ? (
+              <View>
+                <ActivityIndicator size="small" color={colors.N2} />
+              </View>
+            ) : (
+              data.balance || 0
+            )}{' '}
+            CSPR
           </Text>
         </Col>
       </Row.LR>

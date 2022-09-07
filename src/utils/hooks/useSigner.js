@@ -38,7 +38,7 @@ const useSigner = () => {
           throw Error('Can not find signer');
       }
     } catch (error) {
-      console.info('Error on signing deploy', error);
+      console.error(error);
       throw Error('Error on signing deploy');
     }
   };

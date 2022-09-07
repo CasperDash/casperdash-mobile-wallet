@@ -57,11 +57,9 @@ export function* getAccounts(data: any) {
     );
 
     const publicKeys =
-      data.params && data.params.publicKeys
-        ? data.params.publicKeys.map(
-            (key: { keyIndex: number; publicKey: string }) => key.publicKey,
-          )
-        : [];
+      data?.params?.publicKeys?.map(
+        (key: { keyIndex: number; publicKey: string }) => key.publicKey,
+      ) || [];
     // @ts-ignore
     const response = yield apis.getAccounts({
       publicKeys,
