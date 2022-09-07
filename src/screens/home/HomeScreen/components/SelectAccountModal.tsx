@@ -73,7 +73,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
         );
       },
     );
-  }, [JSON.stringify(listWallets), dispatch]);
+  }, [JSON.stringify(listWallets), dispatch, user]);
 
   const createNewAccount = useCallback(async () => {
     const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
