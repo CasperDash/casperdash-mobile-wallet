@@ -55,15 +55,11 @@ function SettingsScreen() {
   };
 
   const deleteAllData = () => {
-    Promise.all([
-      Config.deleteItem(Keys.casperdash),
-      Config.deleteItem(Keys.pinCode),
-      Config.deleteItem(Keys.tokensAddressList),
-      Config.deleteItem(Keys.ledger),
-      Config.deleteItem(Keys.deploysTransfer),
-      Config.deleteItem(Keys.nfts),
-      Config.deleteItem(Keys.selectedWallet),
-    ]).then(async () => {
+    Promise.all(
+      Object.entries(Keys).map(key => {
+        return Config.deleteItem(key[1]);
+      }),
+    ).then(async () => {
       resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
     });
   };

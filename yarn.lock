@@ -3460,10 +3460,10 @@ casper-storage@0.2.4:
     aes-js "^3.1.2"
     key-encoder "^2.0.3"
 
-casperdash-js-sdk@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/casperdash-js-sdk/-/casperdash-js-sdk-0.0.1.tgz#7719ab66961b1b79cbe9e8433487a4a3b353b619"
-  integrity sha512-jrYAUSdz9sI0psqAjhTTSWsVo1a9h09p06vq08yff8lbAgxca8mmh1rUP8Zg1gEtmKm6C7dzlJlngAjdBwtPkQ==
+casperdash-js-sdk@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/casperdash-js-sdk/-/casperdash-js-sdk-0.0.2.tgz#5d859bc724f94d3c6f2808619a2859325480db09"
+  integrity sha512-P8Os6Ih5c+vOIPyp7acTjVm9LZXmVz8FAFgJvQNGWAa8X4kMYsTIuYqGAHg+anH2Rjw9JgW45ws+K1suYWX9Dg==
   dependencies:
     "@ethersproject/bignumber" "^5.0.8"
     "@ethersproject/bytes" "^5.0.5"

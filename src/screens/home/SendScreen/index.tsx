@@ -80,12 +80,11 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
           ? value + fee <= displayValue
           : true;
       }),
-    receivingAddress: yup
-      .string()
-      .required('Required.')
-      .test('isValidPublicKey', 'Invalid address.', function (value: any) {
-        return isValidPublicKey(value);
-      }),
+    receivingAddress: yup.string(),
+    // .required('Required.')
+    // .test('isValidPublicKey', 'Invalid address.', function (value: any) {
+    //   return isValidPublicKey(value);
+    // }),
     transferID: yup.string(),
   });
 
@@ -107,6 +106,8 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
   const onConfirm = () => {
     replace(MainRouter.CONFIRM_SEND_SCREEN, {
       ...values,
+      receivingAddress:
+        '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38',
       transferAmount: values.transferAmount.replace(/,/, '.'),
       token: selectedToken,
       networkFee: selectedToken ? selectedToken.transferFee : 1,

@@ -44,7 +44,7 @@ export const getListWallets = createSelector<any, any>(
 
 export const getSelectedWallet = createSelector(
   (state: any) => state.main,
-  ({ selectedWallet }) => selectedWallet,
+  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet,
 );
 
 export const getUser = createSelector(
@@ -69,6 +69,7 @@ export const getPublicKey = ({ user }: { user: any }) => {
 };
 
 const massageUserDetails = (userDetails: any) => {
+  console.info('userDetails', userDetails);
   const hexBalance =
     userDetails && userDetails.balance ? userDetails.balance.hex : 0;
   return {

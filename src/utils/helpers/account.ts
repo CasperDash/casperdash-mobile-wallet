@@ -1,3 +1,4 @@
+import _, { keys } from 'lodash';
 import {
   KeyFactory,
   User,
@@ -6,7 +7,9 @@ import {
   WalletInfo,
   CasperLegacyWallet,
 } from 'casper-storage';
+import { Keys } from 'casperdash-js-sdk';
 import { WalletType } from 'utils/constants/settings';
+
 export interface WalletInfoDetails {
   walletType: WalletType;
   walletInfo: WalletInfo;
@@ -67,4 +70,41 @@ export const getWalletInfoWithPublicKey = async (
       return { ...walletInfo, publicKey };
     }),
   );
+};
+
+export const getWalletKeyPair = async (
+  user: User,
+  selectedWallet: WalletInfoDetails,
+) => {
+  let publicKey: Uint8Array;
+  let privateKey: Uint8Array;
+  console.info('walletType', selectedWallet.walletInfo.encryptionType);
+  switch (selectedWallet.walletType) {
+    case WalletType.HDWallet: {
+      const wallet = await user.getWalletAccountByRefKey(
+        selectedWallet.walletInfo.key,
+      );
+      publicKey = await wallet.getPublicKeyByteArray();
+      privateKey = wallet.getPrivateKeyByteArray();
+
+      break;
+    }
+    case WalletType.LegacyWallet:
+      const wallet = new CasperLegacyWallet(
+        selectedWallet.walletInfo.key,
+        selectedWallet.walletInfo.encryptionType,
+      );
+      publicKey = await wallet.getPublicKeyByteArray();
+      privateKey = wallet.getPrivateKeyByteArray();
+      break;
+    default:
+      throw 'Error on get Keys';
+  }
+  // need to slice prefix
+  const trimmedPublicKey = publicKey.slice(1);
+  if (selectedWallet.walletInfo.encryptionType === EncryptionType.Ed25519) {
+    return Keys.Ed25519.parseKeyPair(trimmedPublicKey, privateKey);
+  } else {
+    return Keys.Secp256K1.parseKeyPair(trimmedPublicKey, privateKey, 'raw');
+  }
 };

@@ -6,7 +6,7 @@ import { MOTE_RATE } from '../constants/key';
  * @return {Float} Balance in float.
  */
 export const convertBalanceFromHex = (balanceHex: string) => {
-  const balance = parseInt(balanceHex, 10);
+  const balance = parseInt(balanceHex);
   return moteToCspr(balance);
 };
 

@@ -57,7 +57,7 @@
     "big.js": "^6.1.1",
     "buffer": "^6.0.3",
     "casper-storage": "0.2.4",
-    "casperdash-js-sdk": "^0.0.1",
+    "casperdash-js-sdk": "^0.0.2",
     "d3-shape": "^3.0.1",
     "formik": "^2.2.9",
     "fuse.js": "^6.5.3",
