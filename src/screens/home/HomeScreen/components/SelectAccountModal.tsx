@@ -15,7 +15,7 @@ import {
   IconPlusCircle,
   IconImportAccount,
 } from 'assets';
-import { CButton, Col, Row } from 'components';
+import { CButton, Col, Row, CLoading } from 'components';
 import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
@@ -31,6 +31,8 @@ import { convertBalanceFromHex } from 'utils/helpers/balance';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
+
   const { navigate } = useNavigation();
   const listWallets = useSelector(getListWallets);
   const user = useSelector(getUser);
@@ -39,41 +41,50 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     (state: any) => state.main.selectedWallet,
   );
   const currentAccount = useSelector((state: any) => state.main.currentAccount);
+
   const [listWalletsDetails, setListWalletsDetails] =
     useState<WalletInfoDetails[]>(listWallets);
 
   useEffect(() => {
-    getWalletInfoWithPublicKey(user, listWallets).then(
-      walletInfoWithPublicKey => {
-        const publicKeys = walletInfoWithPublicKey
-          .filter(info => info.publicKey)
-          .map(info => info.publicKey);
-
-        dispatch(
-          allActions.user.getAccounts(
-            { publicKeys },
-            async (_err: any, data: any) => {
-              const walletsWithBalance = walletInfoWithPublicKey.map(wallet => {
-                const found = data.find(
-                  (item: { publicKey: string }) =>
-                    item.publicKey === wallet.publicKey,
+    if (isVisible) {
+      getWalletInfoWithPublicKey(user, listWallets).then(
+        walletInfoWithPublicKey => {
+          setIsLoadingBalance(true);
+          const publicKeys = walletInfoWithPublicKey
+            .filter(info => info.publicKey)
+            .map(info => ({
+              publicKey: info.publicKey,
+            }));
+          dispatch(
+            allActions.user.getAccounts(
+              { publicKeys },
+              async (_err: any, data: any) => {
+                const walletsWithBalance = walletInfoWithPublicKey.map(
+                  wallet => {
+                    const found = data.find(
+                      (item: { publicKey: string }) =>
+                        item.publicKey === wallet.publicKey,
+                    );
+                    const balance =
+                      found && found.balance
+                        ? convertBalanceFromHex(found?.balance?.hex)
+                        : 0;
+                    return {
+                      ...wallet,
+                      balance,
+                    };
+                  },
                 );
-                const balance =
-                  found && found.balance
-                    ? convertBalanceFromHex(found?.balance?.hex)
-                    : 0;
-                return {
-                  ...wallet,
-                  balance,
-                };
-              });
-              setListWalletsDetails(walletsWithBalance);
-            },
-          ),
-        );
-      },
-    );
-  }, [JSON.stringify(listWallets), dispatch, user]);
+                setIsLoadingBalance(false);
+                setListWalletsDetails(walletsWithBalance);
+              },
+            ),
+          );
+        },
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(listWallets), dispatch, user, isVisible]);
 
   const createNewAccount = useCallback(async () => {
     const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
@@ -164,6 +175,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
                       data={walletDetails}
                       key={index}
                       onSelectWallet={onSelectWallet}
+                      isLoadingBalance={isLoadingBalance}
                     />
                   );
                 },

@@ -17,7 +17,7 @@ import { IWallet } from 'casper-storage';
 import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { IHDKey } from 'casper-storage/src/bips/bip32';
 import { PIN_LENGTH } from 'utils/constants/key';
-import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
 import { createNewUserWithHdWallet } from 'utils/helpers/account';
 
 const ConfirmPinScreen: React.FC<
@@ -66,6 +66,7 @@ const ConfirmPinScreen: React.FC<
       await Config.saveItem(Keys.selectedWallet, {
         walletInfo: selectedWallet,
         publicKey,
+        walletType: WalletType.HDWallet,
       });
 
       navigation.dispatch(
