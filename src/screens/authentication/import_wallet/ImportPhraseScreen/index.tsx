@@ -79,7 +79,6 @@ const ImportPhraseScreen = () => {
     ) {
       //paste phrase
       const phraseString = await Clipboard.getString();
-      console.info(phraseString);
       if (phraseString && phraseString.length > 0) {
         let listWords: Array<Phrase> = phraseString
           .split(/\s+/)

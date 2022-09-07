@@ -77,7 +77,6 @@ export const getWalletKeyPair = async (
 ) => {
   let publicKey: Uint8Array;
   let privateKey: Uint8Array;
-  console.info('walletType11', selectedWallet.walletType);
   switch (selectedWallet.walletType) {
     case WalletType.HDWallet: {
       const wallet = await user.getWalletAccountByRefKey(

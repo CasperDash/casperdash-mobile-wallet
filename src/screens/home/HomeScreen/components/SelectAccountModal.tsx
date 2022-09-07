@@ -15,7 +15,7 @@ import {
   IconPlusCircle,
   IconImportAccount,
 } from 'assets';
-import { CButton, Col, Row, CLoading } from 'components';
+import { CButton, Col, Row } from 'components';
 import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
@@ -137,6 +137,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     await Config.saveItem(Keys.casperdash, casperDashInfo);
     await Config.saveItem(Keys.selectedWallet, walletInfoDetails);
     dispatch(allActions.main.loadLocalStorage());
+    dispatch(allActions.user.changeAccount());
     hide();
   };
 

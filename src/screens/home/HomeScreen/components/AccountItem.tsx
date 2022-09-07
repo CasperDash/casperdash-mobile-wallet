@@ -18,7 +18,6 @@ const AccountItem = ({
   onSelectWallet,
   isLoadingBalance,
 }: IAccountItemProps) => {
-  console.info('accountDetails', data);
   return (
     <CButton onPress={() => onSelectWallet(data)}>
       <Row.LR my={10} style={styles.container}>

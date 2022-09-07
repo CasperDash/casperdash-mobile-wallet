@@ -69,7 +69,6 @@ export const getPublicKey = ({ user }: { user: any }) => {
 };
 
 const massageUserDetails = (userDetails: any) => {
-  console.info('userDetails', userDetails);
   const hexBalance =
     userDetails && userDetails.balance ? userDetails.balance.hex : 0;
   return {
