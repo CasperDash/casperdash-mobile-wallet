@@ -49,6 +49,7 @@ function ValidatorScreen() {
         { refreshing: true },
         (error: any, _: any) => {
           if (error) {
+            console.error(error);
             dispatch(
               allActions.main.showMessage({
                 message: error.message,

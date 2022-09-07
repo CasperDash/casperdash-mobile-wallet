@@ -23,7 +23,7 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
-import { getAllTokenInfo } from 'utils/selectors/user';
+import { getAllTokenInfo, getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
 import {
   checkIfLoadingSelector,
