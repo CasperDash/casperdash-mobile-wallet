@@ -3,7 +3,16 @@ import {
   User,
   ValidationResult,
   EncryptionType,
+  WalletInfo,
+  CasperLegacyWallet,
 } from 'casper-storage';
+import { WalletType } from 'utils/constants/settings';
+export interface WalletInfoDetails {
+  walletType: WalletType;
+  walletInfo: WalletInfo;
+  publicKey?: string;
+  balance?: number;
+}
 
 export const getRecoveryPhase = (numberOfWords: number) => {
   const keyManager = KeyFactory.getInstance();
@@ -28,4 +37,34 @@ export const createNewUserWithHdWallet = (
   const user = createNewUser(password);
   user.setHDWallet(recoveryPhase, encryptionType);
   return user;
+};
+
+export const getWalletInfoWithPublicKey = async (
+  user: User,
+  WalletList: WalletInfoDetails[],
+) => {
+  return await Promise.all(
+    WalletList.map(async walletInfo => {
+      let publicKey;
+      switch (walletInfo.walletType) {
+        case WalletType.HDWallet: {
+          const wallet = await user.getWalletAccountByRefKey(
+            walletInfo.walletInfo.key,
+          );
+          publicKey = await wallet.getPublicKey();
+          break;
+        }
+        case WalletType.LegacyWallet:
+          const wallet = new CasperLegacyWallet(
+            walletInfo.walletInfo.key,
+            walletInfo.walletInfo.encryptionType,
+          );
+          publicKey = await wallet.getPublicKey();
+          break;
+        default:
+          break;
+      }
+      return { ...walletInfo, publicKey };
+    }),
+  );
 };

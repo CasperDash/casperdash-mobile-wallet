@@ -12,4 +12,9 @@ export const CONNECTION_TYPES = {
   passPhase: 'passphase',
 };
 
+export enum WalletType {
+  HDWallet = 'HDWallet',
+  LegacyWallet = 'LegacyWallet',
+}
+
 export const CONNECTED_ACCOUNT_STORAGE_PATH = 'connectedAccount';
