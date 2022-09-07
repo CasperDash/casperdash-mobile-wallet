@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useState,
 } from 'react';
@@ -18,20 +19,61 @@ import { CButton, Col, Row } from 'components';
 import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
-import { getListWallets } from 'utils/selectors/user';
+import { getListWallets, getUser } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { WalletDescriptor, WalletInfo } from 'casper-storage';
+import { WalletDescriptor } from 'casper-storage';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
+import { getWalletInfoWithPublicKey } from 'utils/helpers/account';
+import { WalletInfoDetails } from 'utils/helpers/account';
+import { convertBalanceFromHex } from 'utils/helpers/balance';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
   const { navigate } = useNavigation();
   const listWallets = useSelector(getListWallets);
+  const user = useSelector(getUser);
   const dispatch = useDispatch();
-  const selectedWallet = useSelector((state: any) => state.main.selectedWallet);
+  const selectedWallet = useSelector<any, WalletInfoDetails>(
+    (state: any) => state.main.selectedWallet,
+  );
   const currentAccount = useSelector((state: any) => state.main.currentAccount);
+  const [listWalletsDetails, setListWalletsDetails] =
+    useState<WalletInfoDetails[]>(listWallets);
+
+  useEffect(() => {
+    getWalletInfoWithPublicKey(user, listWallets).then(
+      walletInfoWithPublicKey => {
+        const publicKeys = walletInfoWithPublicKey
+          .filter(info => info.publicKey)
+          .map(info => info.publicKey);
+
+        dispatch(
+          allActions.user.getAccounts(
+            { publicKeys },
+            async (_err: any, data: any) => {
+              const walletsWithBalance = walletInfoWithPublicKey.map(wallet => {
+                const found = data.find(
+                  (item: { publicKey: string }) =>
+                    item.publicKey === wallet.publicKey,
+                );
+                const balance =
+                  found && found.balance
+                    ? convertBalanceFromHex(found?.balance?.hex)
+                    : 0;
+                return {
+                  ...wallet,
+                  balance,
+                };
+              });
+              setListWalletsDetails(walletsWithBalance);
+            },
+          ),
+        );
+      },
+    );
+  }, [JSON.stringify(listWallets), dispatch]);
 
   const createNewAccount = useCallback(async () => {
     const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
@@ -78,8 +120,11 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
       .catch(err => console.log(err));
   };
 
-  const onSelectWallet = async (wallet: WalletInfo) => {
-    await Config.saveItem(Keys.selectedWallet, wallet);
+  const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
+    const casperDashInfo = await Config.getItem(Keys.casperdash);
+    casperDashInfo.publicKey = walletInfoDetails.publicKey;
+    await Config.saveItem(Keys.casperdash, casperDashInfo);
+    await Config.saveItem(Keys.selectedWallet, walletInfoDetails);
     dispatch(allActions.main.loadLocalStorage());
     hide();
   };
@@ -106,18 +151,23 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
             showsVerticalScrollIndicator={false}
             style={{ maxHeight: scale(220) }}
             contentContainerStyle={{ paddingVertical: scale(10) }}>
-            {listWallets &&
-              listWallets.length > 0 &&
-              listWallets.map((wallet: WalletInfo, index: number) => {
-                return (
-                  <AccountItem
-                    isCurrentAccount={selectedWallet?.key === wallet.key}
-                    data={wallet}
-                    key={index}
-                    onSelectWallet={onSelectWallet}
-                  />
-                );
-              })}
+            {listWalletsDetails &&
+              listWalletsDetails.length > 0 &&
+              listWalletsDetails.map(
+                (walletDetails: WalletInfoDetails, index: number) => {
+                  return (
+                    <AccountItem
+                      isCurrentAccount={
+                        selectedWallet?.walletInfo.key ===
+                        walletDetails.walletInfo.key
+                      }
+                      data={walletDetails}
+                      key={index}
+                      onSelectWallet={onSelectWallet}
+                    />
+                  );
+                },
+              )}
           </ScrollView>
         </Col>
         <CButton onPress={handleOnCreateAccount}>

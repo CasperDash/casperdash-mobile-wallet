@@ -5,6 +5,9 @@ import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { getCurrentPrice } from './price';
 import { getMassagedTokenData } from './tokens';
 import * as DEFAULT_CONFIG from '../constants/key';
+import { WalletInfo, User } from 'casper-storage';
+import { WalletType } from 'utils/constants/settings';
+import { WalletInfoDetails } from 'utils/helpers/account';
 
 const CSPR_INFO = {
   symbol: 'CSPR',
@@ -12,28 +15,48 @@ const CSPR_INFO = {
   icon: require('../../assets/images/ic_cspr.png'),
 };
 
-export const getListWallets = createSelector(
-  state => state.main,
-  ({ currentAccount }) => {
+export const getListWallets = createSelector<any, any>(
+  (state: any) => state.main,
+  ({ currentAccount }: { currentAccount: User }) => {
     if (currentAccount) {
-      const walletsInfo = currentAccount.getHDWallet()?.derivedWallets || [];
+      const hdWalletInfo = currentAccount.getHDWallet()?.derivedWallets || [];
       const legacyWalletsInfo = currentAccount.getLegacyWallets() || [];
-      return walletsInfo.concat(legacyWalletsInfo);
+
+      return hdWalletInfo
+        .map(
+          (wl: WalletInfo): WalletInfoDetails => ({
+            walletInfo: wl,
+            walletType: WalletType.HDWallet,
+          }),
+        )
+        .concat(
+          legacyWalletsInfo.map(
+            (wl: WalletInfo): WalletInfoDetails => ({
+              walletInfo: wl,
+              walletType: WalletType.LegacyWallet,
+            }),
+          ),
+        );
     }
-    return null;
+    return [];
   },
 );
 
 export const getSelectedWallet = createSelector(
-  state => state.main,
+  (state: any) => state.main,
   ({ selectedWallet }) => selectedWallet,
+);
+
+export const getUser = createSelector(
+  (state: any) => state.main,
+  ({ currentAccount }) => currentAccount,
 );
 
 /**
  * It returns the login options for the user
  * @returns The login options for the user.
  */
-export const getLoginOptions = ({ user }) => {
+export const getLoginOptions = ({ user }: { user: any }) => {
   return (user.casperdash && user.casperdash.loginOptions) || {};
 };
 
@@ -41,11 +64,11 @@ export const getLoginOptions = ({ user }) => {
  * Given a user object, return the user's public key
  * @returns The public key of the user.
  */
-export const getPublicKey = ({ user }) => {
+export const getPublicKey = ({ user }: { user: any }) => {
   return user.casperdash && user.casperdash.publicKey;
 };
 
-const massageUserDetails = userDetails => {
+const massageUserDetails = (userDetails: any) => {
   const hexBalance =
     userDetails && userDetails.balance ? userDetails.balance.hex : 0;
   return {
@@ -58,7 +81,7 @@ const massageUserDetails = userDetails => {
   };
 };
 
-export const userDetailsSelector = state => state.user;
+export const userDetailsSelector = (state: any) => state.user;
 
 /* This is a selector that returns a function. The function takes in the state and returns the user
 details. */
@@ -117,20 +140,20 @@ export const getAllTokenInfo = createSelector(
 
 /* This selector is a function that takes in the state and returns the total balance of the user in
 fiat. */
-export const getAccountTotalBalanceInFiat = createSelector(
+export const getAccountTotalBalanceInFiat = createSelector<any, any>(
   getAllTokenInfo,
-  allTokenInfo => {
+  (allTokenInfo: any) => {
     return allTokenInfo && allTokenInfo.length
-      ? allTokenInfo.reduce((out, datum) => {
+      ? allTokenInfo.reduce((out: number, datum: any) => {
           return out + datum.totalPrice;
         }, 0)
       : 0;
   },
 );
 
-export const getTokenInfoByAddress = token =>
-  createSelector(getAllTokenInfo, allTokenInfo => {
+export const getTokenInfoByAddress = (token: any) =>
+  createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {
     return token && allTokenInfo && allTokenInfo.length
-      ? allTokenInfo.find(info => info.address === token.address)
+      ? allTokenInfo.find((info: any) => info.address === token.address)
       : {};
   });

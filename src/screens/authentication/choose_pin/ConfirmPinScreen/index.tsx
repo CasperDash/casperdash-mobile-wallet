@@ -63,7 +63,10 @@ const ConfirmPinScreen: React.FC<
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
-      await Config.saveItem(Keys.selectedWallet, selectedWallet);
+      await Config.saveItem(Keys.selectedWallet, {
+        walletInfo: selectedWallet,
+        publicKey,
+      });
 
       navigation.dispatch(
         CommonActions.reset({

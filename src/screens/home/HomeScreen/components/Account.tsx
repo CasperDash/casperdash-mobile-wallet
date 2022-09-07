@@ -1,12 +1,5 @@
-import React, { useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-} from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
 import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
@@ -24,6 +17,7 @@ import {
 import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
+import { WalletInfoDetails } from 'utils/helpers/account';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -32,23 +26,21 @@ function Account() {
   }
 
   const dispatch = useDispatch();
-  const [isShowAmount, setIsShowAmount] = useState<boolean>(true);
+  //const [isShowAmount, setIsShowAmount] = useState<boolean>(true);
   const publicKey = useSelector(getPublicKey);
   const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
   const allTokenInfo = useSelector(getAllTokenInfo);
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();
-  const selectedWallet = useSelector(
+  const selectedWallet = useSelector<any, WalletInfoDetails>(
     (state: any) => state.main.selectedWallet || {},
   );
 
-  {
-    /*TODO: follow the figma's design*/
-  }
-  const onToggleAmount = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsShowAmount(i => !i);
-  };
+  /*TODO: follow the figma's design*/
+  // const onToggleAmount = () => {
+  //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  //   setIsShowAmount(i => !i);
+  // };
 
   const saveKey = () => {
     Clipboard.setString(publicKey);
@@ -81,9 +73,9 @@ function Account() {
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
                 {selectedWallet &&
-                selectedWallet.descriptor &&
-                selectedWallet.descriptor.name
-                  ? selectedWallet.descriptor.name
+                selectedWallet.walletInfo.descriptor &&
+                selectedWallet.walletInfo.descriptor.name
+                  ? selectedWallet.walletInfo.descriptor.name
                   : ''}
               </Text>
               <IconPencilFilled width={scale(16)} height={scale(16)} />
@@ -106,7 +98,7 @@ function Account() {
           <Text
             numberOfLines={1}
             style={[textStyles.H3, { marginRight: scale(8) }]}>
-            {isShowAmount ? toFormattedCurrency(totalFiatBalance) : '$*****00'}
+            {toFormattedCurrency(totalFiatBalance)}
           </Text>
           {/*TODO: follow the figma's design*/}
           {/*<CButton onPress={onToggleAmount}>
