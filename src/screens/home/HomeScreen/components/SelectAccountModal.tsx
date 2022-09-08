@@ -46,9 +46,9 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   const selectedWallet = useSelector<any, WalletInfoDetails>(
-    (state: any) => state.main.selectedWallet,
+    (state: any) => state.user.selectedWallet,
   );
-  const currentAccount = useSelector((state: any) => state.main.currentAccount);
+  const currentAccount = useSelector((state: any) => state.user.currentAccount);
 
   const [listWalletsDetails, setListWalletsDetails] =
     useState<WalletInfoDetails[]>(listWallets);
@@ -147,8 +147,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     casperDashInfo.publicKey = walletInfoDetails.publicKey;
     await Config.saveItem(Keys.casperdash, casperDashInfo);
     await Config.saveItem(Keys.selectedWallet, walletInfoDetails);
-    dispatch(allActions.main.loadLocalStorage());
-    //dispatch(allActions.user.changeAccount());
+    dispatch(allActions.user.loadSelectedWalletFromStorage());
     hide();
   };
 

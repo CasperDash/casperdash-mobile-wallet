@@ -20,7 +20,7 @@ function ImportAccountScreen() {
   const { goBack } = useNavigation<StackNavigationProp<any>>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const currentAccount = useSelector((state: any) => state.main.currentAccount);
+  const currentAccount = useSelector((state: any) => state.user.currentAccount);
   const casperdash = useSelector((state: any) => state.main.casperdash || {});
 
   const onChange = (value?: string) => {

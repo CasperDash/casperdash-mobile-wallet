@@ -4,7 +4,6 @@ import { Config, Keys } from 'utils';
 import { apis } from 'services';
 import { types as typesHome } from '../home/home_action';
 import { types as typesStaking } from '../staking/staking_action';
-import { User, ValidationResult } from 'casper-storage';
 
 export function* showMessage(data: any) {
   yield put({ type: types.SHOW_MESSAGE_SUCCESS, payload: data.message });
@@ -27,26 +26,9 @@ export function* loadLocalStorage() {
   const deploysTransfer = yield Config.getItem(Keys.deploysTransfer);
   // @ts-ignore
   const deploysStakes = yield Config.getItem(Keys.deploysStakes);
-  // @ts-ignore
-  const selectedWallet = yield Config.getItem(Keys.selectedWallet);
 
   if (!configurations) {
     yield put({ type: types.GET_CONFIGURATIONS });
-  }
-
-  let currentAccount = null;
-  if (casperdash && casperdash.loginOptions?.hashingOptions) {
-    const hashingOptions = casperdash.loginOptions.hashingOptions;
-    const saltData = hashingOptions.salt?.data || [];
-    const salt = new Uint8Array(saltData);
-    const pin: string = yield Config.getItem(Keys.pinCode);
-    currentAccount = User.deserializeFrom(pin, casperdash?.userInfo ?? '', {
-      passwordOptions: {
-        passwordValidator: () => new ValidationResult(true),
-        ...hashingOptions,
-        salt: salt,
-      },
-    });
   }
 
   const data = {
@@ -55,8 +37,6 @@ export function* loadLocalStorage() {
     configurations: configurations,
     deploysTransfer: deploysTransfer,
     deploysStakes: deploysStakes,
-    selectedWallet: selectedWallet,
-    currentAccount: currentAccount,
   };
   yield put({ type: types.LOAD_LOCAL_STORAGE_SUCCESS, payload: data });
 }
@@ -69,6 +49,7 @@ export function* watchLoadLocalStorage() {
         types.LOAD_LOCAL_STORAGE,
         typesHome.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS,
         typesStaking.PUSH_STAKE_TO_LOCAL_STORAGE_SUCCESS,
+        types.INIT_APP_STATE,
       ],
       loadLocalStorage,
     );

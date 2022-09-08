@@ -29,7 +29,7 @@ function Account() {
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();
   const selectedWallet = useSelector<any, WalletInfoDetails>(
-    (state: any) => state.main.selectedWallet || {},
+    (state: any) => state.user.selectedWallet || {},
   );
 
   /*TODO: follow the figma's design*/

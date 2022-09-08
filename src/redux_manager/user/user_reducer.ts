@@ -4,6 +4,8 @@ import { types as typesMain } from '../main/main_action';
 const initialState = {
   info: null,
   casperdash: null,
+  selectedWallet: null,
+  currentAccount: null,
 };
 
 export default function (
@@ -25,6 +27,18 @@ export default function (
       return {
         ...state,
         casperdash: action.payload.casperdash,
+      };
+    }
+    case types.LOAD_USER_SUCCESS: {
+      return {
+        ...state,
+        currentAccount: action.payload,
+      };
+    }
+    case types.GET_SELECTED_WALLET_SUCCESS: {
+      return {
+        ...state,
+        selectedWallet: action.payload,
       };
     }
     default:
