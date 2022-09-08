@@ -5,10 +5,7 @@ import { scale } from 'device';
 import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   getAccountTotalBalanceInFiat,
   getAllTokenInfo,
@@ -18,15 +15,14 @@ import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 import { WalletInfoDetails } from 'utils/helpers/account';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 function Account() {
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-
-  const dispatch = useDispatch();
-  //const [isShowAmount, setIsShowAmount] = useState<boolean>(true);
+  const copyToClipboard = useCopyToClipboard();
   const publicKey = useSelector(getPublicKey);
   const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
   const allTokenInfo = useSelector(getAllTokenInfo);
@@ -43,13 +39,7 @@ function Account() {
   // };
 
   const saveKey = () => {
-    Clipboard.setString(publicKey);
-
-    const message = {
-      message: 'Copied to Clipboard',
-      type: MessageType.normal,
-    };
-    dispatch(allActions.main.showMessage(message, 1000));
+    copyToClipboard(publicKey);
   };
 
   const navigateSendReceive = (screen: string) => {

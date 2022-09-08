@@ -17,19 +17,16 @@ import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType } from 'casper-storage';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
-import { useDispatch } from 'react-redux';
 import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import { getRecoveryPhase } from '../../../../utils/helpers/account';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
-  const dispatch = useDispatch();
   const [algorithm, setAlgorithm] = useState<EncryptionType>(
     EncryptionType.Ed25519,
   );
+  const copyToClipboard = useCopyToClipboard();
 
   const phraseString = getRecoveryPhase(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
 
@@ -137,12 +134,7 @@ const RecoveryPhraseScreen = () => {
             style={[styles.btnNext, { marginRight: scale(15) }]}
             text={'Copy'}
             onPress={async () => {
-              const message = {
-                message: 'Copied to Clipboard',
-                type: MessageType.normal,
-              };
-              Clipboard.setString(phraseString);
-              dispatch(allActions.main.showMessage(message, 1000));
+              copyToClipboard(phraseString);
             }}
           />
           <CTextButton
