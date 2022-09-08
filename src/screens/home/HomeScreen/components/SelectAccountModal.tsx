@@ -5,7 +5,14 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import { Text, StyleSheet, Platform, ScrollView } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  Platform,
+  ScrollView,
+  ActivityIndicator,
+  View,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import { scale } from 'device';
 import {
@@ -32,6 +39,7 @@ import { convertBalanceFromHex } from 'utils/helpers/balance';
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
+  const [isCreateNewAccount, setIsCreateNewAccount] = useState<boolean>(false);
 
   const { navigate } = useNavigation();
   const listWallets = useSelector(getListWallets);
@@ -49,6 +57,8 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     if (isVisible) {
       getWalletInfoWithPublicKey(user, listWallets).then(
         walletInfoWithPublicKey => {
+          setListWalletsDetails(walletInfoWithPublicKey);
+
           setIsLoadingBalance(true);
           const publicKeys = walletInfoWithPublicKey
             .filter(info => info.publicKey)
@@ -87,19 +97,20 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   }, [JSON.stringify(listWallets), dispatch, user, isVisible]);
 
   const createNewAccount = useCallback(async () => {
+    setIsCreateNewAccount(true);
     const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
 
     await currentAccount.addWalletAccount(
       wallets.length,
       new WalletDescriptor(`Account ${wallets.length + 1}`),
     );
-
     const casperDashInfo = await Config.getItem(Keys.casperdash);
     casperDashInfo.userInfo = currentAccount.serialize();
 
     await Config.saveItem(Keys.casperdash, casperDashInfo);
 
     dispatch(allActions.main.loadLocalStorage());
+    setIsCreateNewAccount(false);
   }, [currentAccount, dispatch]);
 
   useImperativeHandle(ref, () => ({
@@ -183,9 +194,15 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
               )}
           </ScrollView>
         </Col>
-        <CButton onPress={handleOnCreateAccount}>
+        <CButton onPress={handleOnCreateAccount} disabled={isCreateNewAccount}>
           <Row style={styles.rowItem}>
-            <IconPlusCircle width={scale(17)} height={scale(17)} />
+            {!isCreateNewAccount ? (
+              <IconPlusCircle width={scale(17)} height={scale(17)} />
+            ) : (
+              <View>
+                <ActivityIndicator size="small" color={colors.N2} />
+              </View>
+            )}
             <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>
               Create New Account
             </Text>
