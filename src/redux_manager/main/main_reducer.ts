@@ -12,7 +12,6 @@ const initialState = {
   casperdash: null,
   deploysTransfer: null,
   deploysStakes: null,
-  selectedWallet: null,
 };
 
 export default function (

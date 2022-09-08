@@ -1,5 +1,6 @@
-import { put, takeLatest, take, cancel } from 'redux-saga/effects';
+import { put, takeLatest, take, cancel, select } from 'redux-saga/effects';
 import { types } from './user_action';
+import { types as mainTypes } from '../main/main_action';
 import { apis } from 'services';
 import { Config, Keys } from 'utils';
 import {
@@ -8,6 +9,8 @@ import {
   startAction,
   stopAction,
 } from 'redux_manager/main/main_action';
+import { User, ValidationResult } from 'casper-storage';
+import { getUser } from 'utils/selectors/user';
 
 export function* getAccountInformation(data: any) {
   try {
@@ -106,5 +109,51 @@ export function* watchGetAccounts() {
     const watcher = yield takeLatest(types.GET_ACCOUNTS, getAccounts);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
+  }
+}
+
+export function* getUserFromStorage() {
+  // @ts-ignore
+  const casperdash = yield Config.getItem(Keys.casperdash);
+  let currentAccount = null;
+  if (casperdash && casperdash.loginOptions?.hashingOptions) {
+    const hashingOptions = casperdash.loginOptions.hashingOptions;
+    const saltData = hashingOptions.salt?.data || [];
+    const salt = new Uint8Array(saltData);
+    const pin: string = yield Config.getItem(Keys.pinCode);
+
+    currentAccount = User.deserializeFrom(pin, casperdash?.userInfo ?? '', {
+      passwordOptions: {
+        passwordValidator: () => new ValidationResult(true),
+        ...hashingOptions,
+        salt: salt,
+      },
+    });
+  }
+  yield put({ type: types.LOAD_USER_SUCCESS, payload: currentAccount });
+}
+
+export function* getSelectedWalletFromStorage() {
+  console.info('get selected wallet');
+  // @ts-ignore
+  const selectedWallet = yield Config.getItem(Keys.selectedWallet);
+  yield put({
+    type: types.GET_SELECTED_WALLET_SUCCESS,
+    payload: selectedWallet,
+  });
+}
+
+export function* watchLoadSelectedWallet() {
+  yield takeLatest(
+    [types.LOAD_SELECTED_WALLET, mainTypes.INIT_APP_STATE],
+    getSelectedWalletFromStorage,
+  );
+}
+
+export function* watchGetUserFromStorage() {
+  // @ts-ignore
+  const user = yield select(getUser);
+  if (!user) {
+    yield takeLatest(mainTypes.INIT_APP_STATE, getUserFromStorage);
   }
 }

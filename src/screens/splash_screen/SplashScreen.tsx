@@ -15,13 +15,8 @@ const SplashScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadLocalStorage();
     setupNavigation();
   }, []);
-
-  const loadLocalStorage = () => {
-    dispatch(allActions.main.loadLocalStorage());
-  };
 
   const setupNavigation = async () => {
     const overview = await Config.getItem(Keys.overview);
@@ -32,6 +27,7 @@ const SplashScreen = () => {
     if (overview === 1 || !user) {
       screen = AuthenticationRouter.CREATE_NEW_WALLET;
     }
+
     if (!isEmpty(pinCode)) {
       screen = AuthenticationRouter.ENTER_PIN;
     }

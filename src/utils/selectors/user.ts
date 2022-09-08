@@ -16,7 +16,7 @@ const CSPR_INFO = {
 };
 
 export const getListWallets = createSelector<any, any>(
-  (state: any) => state.main,
+  (state: any) => state.user,
   ({ currentAccount }: { currentAccount: User }) => {
     if (currentAccount) {
       const hdWalletInfo = currentAccount.getHDWallet()?.derivedWallets || [];
@@ -43,12 +43,12 @@ export const getListWallets = createSelector<any, any>(
 );
 
 export const getSelectedWallet = createSelector(
-  (state: any) => state.main,
+  (state: any) => state.user,
   ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet,
 );
 
 export const getUser = createSelector(
-  (state: any) => state.main,
+  (state: any) => state.user,
   ({ currentAccount }) => currentAccount,
 );
 

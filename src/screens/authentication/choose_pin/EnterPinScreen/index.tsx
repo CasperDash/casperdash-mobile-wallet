@@ -10,16 +10,20 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
 import { useDispatch } from 'react-redux';
-import { MessageType } from 'components/CMessge/types';
 
 // @ts-ignore
 const EnterPinScreen = () => {
-  const [pin, setPink] = useState<string>();
+  const dispatch = useDispatch();
+  const [pin, setPin] = useState<string>();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const pinLength = 6;
   const [error, setError] = useState<boolean>(false);
   const inputRef = useRef<any>();
-  const dispatch = useDispatch();
+
+  const initState = () => {
+    console.info('initState ne');
+    dispatch(allActions.main.initState());
+  };
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -27,22 +31,7 @@ const EnterPinScreen = () => {
         inputRef.current?.focus();
       }, 1000);
     }
-    getAccountInformation();
   }, []);
-
-  const getAccountInformation = () => {
-    dispatch(
-      allActions.user.getAccountInformation(null, (err: any) => {
-        if (err) {
-          const message = {
-            message: err && err.message ? err.message : 'Error',
-            type: MessageType.error,
-          };
-          dispatch(allActions.main.showMessage(message));
-        }
-      }),
-    );
-  };
 
   useEffect(() => {
     if (pin && pin.length === pinLength) {
@@ -51,6 +40,7 @@ const EnterPinScreen = () => {
           setError(savePin !== pin);
           return;
         }
+        initState();
         navigation.dispatch(
           CommonActions.reset({
             routes: [
@@ -89,7 +79,7 @@ const EnterPinScreen = () => {
           cellSpacing={0}
           restrictToNumbers
           cellStyleFocused={null}
-          onTextChange={setPink}
+          onTextChange={setPin}
           textStyle={styles.textStyle}
         />
         {error && (
