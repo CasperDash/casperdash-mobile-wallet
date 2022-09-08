@@ -4,5 +4,6 @@ const AuthenticationRouter = {
   CHOOSE_PIN: 'CHOOSE_PIN',
   ENTER_PIN: 'ENTER_PIN',
   SEND_SCREEN: 'SEND_SCREEN',
+  INIT_ACCOUNT_SCREEN: 'INIT_ACCOUNT_SCREEN',
 };
 export default AuthenticationRouter;

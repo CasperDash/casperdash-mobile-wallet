@@ -30,6 +30,7 @@ export { default as SettingsScreen } from './settings/SettingsScreen';
 export { default as CreateNewWalletScreen } from './authentication/create_new_wallet/CreateNewWalletScreen';
 export { default as RecoveryPhraseScreen } from './authentication/create_new_wallet/RecoveryPhraseScreen';
 export { default as DoubleCheckItScreen } from './authentication/create_new_wallet/DoubleCheckItScreen';
+export { default as InitAccountScreen } from './authentication/create_new_wallet/InitAccountScreen';
 
 //import wallet
 export { default as ImportPhraseScreen } from './authentication/import_wallet/ImportPhraseScreen';

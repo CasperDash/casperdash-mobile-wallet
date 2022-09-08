@@ -1,4 +1,4 @@
-import { SendScreen, WelcomeScreen } from 'screens';
+import { SendScreen, WelcomeScreen, InitAccountScreen } from 'screens';
 import AuthenticationRouter from './AuthenticationRouter';
 import CreateNewWalletNavigation from 'navigation/CreateNewWalletNavigation';
 import ChoosePinNavigation from 'navigation/ChoosePinNavigation';
@@ -10,6 +10,7 @@ const {
   CHOOSE_PIN,
   ENTER_PIN,
   SEND_SCREEN,
+  INIT_ACCOUNT_SCREEN,
 } = AuthenticationRouter;
 
 export const AuthenticationScreens: any = {
@@ -28,5 +29,8 @@ export const AuthenticationScreens: any = {
   },
   [SEND_SCREEN]: {
     screen: SendScreen,
+  },
+  [INIT_ACCOUNT_SCREEN]: {
+    screen: InitAccountScreen,
   },
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -31,11 +31,13 @@ import {
 } from 'utils/selectors';
 import { types as homeTypes } from 'redux_manager/home/home_action';
 import { types as userTypes } from 'redux_manager/user/user_action';
+import { Config } from 'utils';
 
 function HomeScreen() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
+  const publicKey = useSelector(getPublicKey);
 
   const allTokenInfo = useSelector(getAllTokenInfo);
 
@@ -58,6 +60,16 @@ function HomeScreen() {
       userTypes.GET_ACCOUNTS,
     ]),
   );
+
+  useEffect(() => {
+    dispatch(
+      allActions.user.getAccountInformation({ publicKey }, async (err: any) => {
+        if (err) {
+          Config.alertMess(err);
+        }
+      }),
+    );
+  }, [publicKey, dispatch]);
 
   const onRefresh = () => {
     getAccountInformation(true);

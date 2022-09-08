@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenProps } from 'navigation/ScreenProps';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
-import { CHeader, CLayout, CLoading, Col } from 'components';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import { CHeader, CLayout, Col } from 'components';
 import { colors, fonts, textStyles } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
@@ -26,85 +27,19 @@ const ConfirmPinScreen: React.FC<
 > = ({ route }) => {
   const { pin, phrases, algorithm } = route.params;
   const [pinConfirm, setPinConfirm] = useState<string>();
-  const [isLoading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const onTextChange = async (text: string) => {
     setPinConfirm(text);
     if (text && pin && pin === text) {
-      await setupUser(text);
-    }
-  };
-
-  const setupUser = async (txtConfirmPin: string) => {
-    try {
-      setLoading(true);
-
-      const user = createNewUserWithHdWallet(pin, phrases, algorithm);
-      const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
-      user.setWalletInfo(
-        acc0.getReferenceKey(),
-        new WalletDescriptor('Account 1'),
-      );
-      const publicKey = await acc0.getPublicKey();
-      const hashingOptions = user.getPasswordHashingOptions();
-      const userInfo = user.serialize();
-      const info = {
-        publicKey: publicKey,
-        loginOptions: {
-          connectionType: CONNECTION_TYPES.passPhase,
-          hashingOptions: hashingOptions,
-        },
-        userInfo: userInfo,
-      };
-      await Config.saveItem(Keys.casperdash, info);
-      await Config.saveItem(Keys.pinCode, txtConfirmPin);
-
-      const wallets = user.getHDWallet()?.derivedWallets || [];
-      const selectedWallet = wallets[0];
-      await Config.saveItem(Keys.selectedWallet, {
-        walletInfo: selectedWallet,
-        publicKey,
-        walletType: WalletType.HDWallet,
-      });
-
-      navigation.dispatch(
-        CommonActions.reset({
-          routes: [
-            {
-              name: 'MainStack',
-            },
-          ],
-        }),
-      );
-      dispatch(allActions.main.loadLocalStorage());
-      const message = {
-        message: 'Logged in successfully',
-        type: MessageType.success,
-      };
-      dispatch(allActions.main.showMessage(message));
-
-      dispatch(
-        allActions.user.getAccountInformation(
-          { publicKey },
-          async (err: any, res: any) => {
-            if (res) {
-              setLoading(false);
-            } else {
-              setLoading(false);
-              Config.alertMess(err);
-            }
-          },
-        ),
-      );
-    } catch (e: any) {
-      setLoading(false);
-      const message = {
-        message: e && e.message ? e.message : 'Error',
-        type: MessageType.error,
-      };
-      dispatch(allActions.main.showMessage(message, 10000));
+      if (pin && pin.length === PIN_LENGTH) {
+        navigation.navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
+          pin,
+          phrases,
+          algorithm,
+        });
+      }
     }
   };
 
@@ -146,7 +81,6 @@ const ConfirmPinScreen: React.FC<
             </Text>
           )}
       </Col.C>
-      {isLoading && <CLoading />}
     </CLayout>
   );
 };
