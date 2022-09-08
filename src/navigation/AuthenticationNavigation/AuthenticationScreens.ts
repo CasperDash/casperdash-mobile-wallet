@@ -32,5 +32,6 @@ export const AuthenticationScreens: any = {
   },
   [INIT_ACCOUNT_SCREEN]: {
     screen: InitAccountScreen,
+    disabledGesture: true,
   },
 };

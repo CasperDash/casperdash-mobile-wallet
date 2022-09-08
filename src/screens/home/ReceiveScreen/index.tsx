@@ -5,24 +5,17 @@ import { scale } from 'device';
 import { colors, textStyles } from 'assets';
 import QRCode from 'react-native-qrcode-svg';
 import CTextButton from 'components/CTextButton';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useDispatch, useSelector } from 'react-redux';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
+import { useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const ReceiveScreen = () => {
   const publicKey = useSelector(getPublicKey);
 
-  const dispatch = useDispatch();
+  const copyToClipboard = useCopyToClipboard();
 
   const onCopy = async () => {
-    Clipboard.setString(publicKey);
-    const message = {
-      message: 'Copied to Clipboard',
-      type: MessageType.normal,
-    };
-    dispatch(allActions.main.showMessage(message, 1000));
+    copyToClipboard(publicKey);
   };
 
   return (
