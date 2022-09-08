@@ -72,11 +72,7 @@ function Account() {
             style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                {selectedWallet &&
-                selectedWallet.walletInfo.descriptor &&
-                selectedWallet.walletInfo.descriptor.name
-                  ? selectedWallet.walletInfo.descriptor.name
-                  : ''}
+                {selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
               <IconPencilFilled width={scale(16)} height={scale(16)} />
             </Row.C>
