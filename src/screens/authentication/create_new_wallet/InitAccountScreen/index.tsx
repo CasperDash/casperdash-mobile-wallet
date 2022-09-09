@@ -9,7 +9,7 @@ import { scale } from 'device';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Config, Keys } from 'utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
 import { IWallet } from 'casper-storage';
@@ -18,14 +18,16 @@ import { IHDKey } from 'casper-storage/src/bips/bip32';
 import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
 import { createNewUserWithHdWallet } from 'utils/helpers/account';
 import { images } from 'assets';
+import { getUser } from 'utils/selectors/user';
 
 const InitAccountScreen: React.FC<
   // @ts-ignore
   ScreenProps<CreateNewWalletRouter.INIT_ACCOUNT_SCREEN>
 > = ({ route }) => {
-  const { pin, phrases, algorithm } = route.params;
+  const { pin, phrases, algorithm, isLoadUser } = route.params;
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
+  const currentUser = useSelector(getUser);
 
   const setupUser = useCallback(async () => {
     try {
@@ -51,11 +53,14 @@ const InitAccountScreen: React.FC<
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
-      await Config.saveItem(Keys.selectedWallet, {
+      const selectedWalletDetails = {
         walletInfo: selectedWallet,
         publicKey,
         walletType: WalletType.HDWallet,
-      });
+      };
+      await Config.saveItem(Keys.selectedWallet, selectedWalletDetails);
+      dispatch(allActions.user.getUserSuccess(user));
+      dispatch(allActions.user.getSelectedWalletSuccess(selectedWalletDetails));
     } catch (e: any) {
       const message = {
         message: e && e.message ? e.message : 'Error',
@@ -65,28 +70,45 @@ const InitAccountScreen: React.FC<
     }
   }, [algorithm, dispatch, phrases, pin]);
 
+  const loadUser = useCallback(() => {
+    if (!currentUser) {
+      dispatch(allActions.main.initState());
+    }
+  }, [dispatch, currentUser]);
+
+  const onInitSuccess = useCallback(() => {
+    if (currentUser) {
+      navigation.dispatch(
+        CommonActions.reset({
+          routes: [
+            {
+              name: 'MainStack',
+            },
+          ],
+        }),
+      );
+      dispatch(allActions.main.loadLocalStorage());
+      const message = {
+        message: 'Logged in successfully',
+        type: MessageType.success,
+      };
+      dispatch(allActions.main.showMessage(message, 1000));
+    }
+  }, [dispatch, navigation, currentUser]);
+
   useEffect(() => {
     //Need timeout here to prevent stuck at previous screen
     setTimeout(() => {
-      setupUser().then(() => {
-        navigation.dispatch(
-          CommonActions.reset({
-            routes: [
-              {
-                name: 'MainStack',
-              },
-            ],
-          }),
-        );
-        dispatch(allActions.main.loadLocalStorage());
-        const message = {
-          message: 'Logged in successfully',
-          type: MessageType.success,
-        };
-        dispatch(allActions.main.showMessage(message, 1000));
-      });
+      if (isLoadUser) {
+        loadUser();
+        onInitSuccess();
+      } else {
+        setupUser().then(() => {
+          onInitSuccess();
+        });
+      }
     }, 100);
-  }, [setupUser, navigation, dispatch]);
+  }, [loadUser, setupUser, onInitSuccess, isLoadUser]);
 
   return (
     <CLayout>
@@ -95,7 +117,9 @@ const InitAccountScreen: React.FC<
           <Image source={images.logo} style={styles.logo} />
         </Col.C>
         <Col.T>
-          <Text style={styles.title}>Creating your wallet...</Text>
+          <Text style={styles.title}>{`${
+            isLoadUser ? 'Loading' : 'Creating'
+          } your wallet...`}</Text>
         </Col.T>
         <Col.T mt={78}>
           <View style={styles.indicator}>

@@ -134,9 +134,9 @@ export function* getUserFromStorage() {
 }
 
 export function* getSelectedWalletFromStorage() {
-  console.info('get selected wallet');
   // @ts-ignore
   const selectedWallet = yield Config.getItem(Keys.selectedWallet);
+
   yield put({
     type: types.GET_SELECTED_WALLET_SUCCESS,
     payload: selectedWallet,

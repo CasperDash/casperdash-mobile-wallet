@@ -8,18 +8,9 @@ import { colors, fonts, textStyles } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Config, Keys } from 'utils';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
-import { IWallet } from 'casper-storage';
-import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
-import { IHDKey } from 'casper-storage/src/bips/bip32';
 import { PIN_LENGTH } from 'utils/constants/key';
-import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
-import { createNewUserWithHdWallet } from 'utils/helpers/account';
 
 const ConfirmPinScreen: React.FC<
   // @ts-ignore
