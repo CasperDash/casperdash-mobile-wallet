@@ -52,7 +52,11 @@ function SettingsScreen() {
 
   const onDeleteAllData = () => {
     const alert = {
-      alertMessage: 'Are you sure you want to \n Delete All Data?',
+      alertMessage:
+        'Are you sure you want to \n delete your wallet? \n' +
+        'Your current wallet, accounts and assets will be removed from this app permanently.' +
+        'This action cannot be undone.\n' +
+        'Your can ONLY recover this wallet with your Secret Recovery Phase CasperDash does not have your Secret Recovery Phase.',
     };
     alertRef.current.show(alert);
   };

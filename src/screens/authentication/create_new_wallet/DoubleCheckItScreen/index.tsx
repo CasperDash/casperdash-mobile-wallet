@@ -29,8 +29,9 @@ const DoubleCheckItScreen: React.FC<
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
 
-  const isCheckingSuccess =
-    listDataSelected.filter((i: any) => !!i).length === numberOfWords;
+  const isCheckingSuccess = __DEV__
+    ? true
+    : listDataSelected.filter((i: any) => !!i).length === numberOfWords;
 
   useEffect(() => {
     const randomList = _.sampleSize(wordArray, numberOfWords);
