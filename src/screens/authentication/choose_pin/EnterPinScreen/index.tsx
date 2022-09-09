@@ -5,25 +5,18 @@ import { colors, fonts, textStyles } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Config, Keys } from 'utils';
-import { allActions } from 'redux_manager';
-import { useDispatch } from 'react-redux';
+import { PIN_LENGTH } from 'utils/constants/key';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 
 // @ts-ignore
 const EnterPinScreen = () => {
-  const dispatch = useDispatch();
   const [pin, setPin] = useState<string>();
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const pinLength = 6;
   const [error, setError] = useState<boolean>(false);
   const inputRef = useRef<any>();
-
-  const initState = () => {
-    console.info('initState ne');
-    dispatch(allActions.main.initState());
-  };
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -34,27 +27,20 @@ const EnterPinScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (pin && pin.length === pinLength) {
+    if (pin && pin.length === PIN_LENGTH) {
       Config.getItem(Keys.pinCode).then((savePin: string) => {
         if (savePin !== pin) {
           setError(savePin !== pin);
           return;
         }
-        initState();
-        navigation.dispatch(
-          CommonActions.reset({
-            routes: [
-              {
-                name: 'MainStack',
-              },
-            ],
-          }),
-        );
+        navigation.navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
+          isLoadUser: true,
+        });
       });
     } else if (error) {
       setError(false);
     }
-  }, [pin]);
+  }, [pin, error, navigation]);
 
   return (
     <CLayout>
@@ -75,7 +61,7 @@ const EnterPinScreen = () => {
           keyboardType={'number-pad'}
           autoFocus
           value={pin}
-          codeLength={pinLength}
+          codeLength={PIN_LENGTH}
           cellSpacing={0}
           restrictToNumbers
           cellStyleFocused={null}

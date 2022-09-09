@@ -15,10 +15,13 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { Config, Keys } from 'utils';
 import { CASPERDASH_URL } from 'utils/constants/key';
+import { useDispatch } from 'react-redux';
+import { allActions } from 'redux_manager';
 
 function SettingsScreen() {
   const navigation = useNavigation();
   const alertRef = useRef<any>();
+  const dispatch = useDispatch();
 
   const listMenu: Array<SettingMenu> = [
     {
@@ -60,6 +63,7 @@ function SettingsScreen() {
         return Config.deleteItem(key[1]);
       }),
     ).then(async () => {
+      dispatch(allActions.main.clearAllData());
       resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
     });
   };

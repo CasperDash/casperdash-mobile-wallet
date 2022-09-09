@@ -148,6 +148,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     await Config.saveItem(Keys.casperdash, casperDashInfo);
     await Config.saveItem(Keys.selectedWallet, walletInfoDetails);
     dispatch(allActions.user.loadSelectedWalletFromStorage());
+    dispatch(allActions.main.loadLocalStorage());
     hide();
   };
 

@@ -41,6 +41,11 @@ export default function (
         selectedWallet: action.payload,
       };
     }
+    case typesMain.CLEAR_ALL_DATA: {
+      return {
+        initialState,
+      };
+    }
     default:
       return state;
   }
