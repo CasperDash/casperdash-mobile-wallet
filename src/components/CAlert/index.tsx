@@ -29,6 +29,7 @@ const CAlert = forwardRef(({ onCancel, onConfirm }: CAlertProps, ref) => {
 
   useImperativeHandle(ref, () => ({
     show: show,
+    hide: hide,
   }));
 
   const show = (data: AlertType) => {
