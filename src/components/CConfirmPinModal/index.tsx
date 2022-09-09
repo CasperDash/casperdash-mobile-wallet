@@ -17,7 +17,6 @@ interface CAlertProps {
 }
 
 const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
-  console.info('CConfirmPinModal', isShow);
   const [pin, setPin] = useState<string>();
   const [error, setError] = useState<boolean>();
   const inputRef = useRef<any>();
