@@ -95,7 +95,7 @@ export function* watchGetAccountInformation() {
   while (true) {
     // @ts-ignore
     const watcher = yield takeLatest(
-      [types.GET_ACCOUNT_INFORMATION, types.CHANGE_ACCOUNT],
+      [types.GET_ACCOUNT_INFORMATION],
       getAccountInformation,
     );
     yield take(['LOGOUT', 'NETWORK']);

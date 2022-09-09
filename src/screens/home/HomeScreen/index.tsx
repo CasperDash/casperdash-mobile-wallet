@@ -38,7 +38,6 @@ function HomeScreen() {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const publicKey = useSelector(getPublicKey);
-  console.count('render home');
   const allTokenInfo = useSelector(getAllTokenInfo);
 
   const isLoading = useSelector((state: any) =>
@@ -62,15 +61,19 @@ function HomeScreen() {
   );
 
   useEffect(() => {
-    console.info('getAccountInformation2', publicKey);
-    dispatch(
-      allActions.user.getAccountInformation({ publicKey }, async (err: any) => {
-        if (err) {
-          Config.alertMess(err);
-        }
-      }),
-    );
-  }, [publicKey]);
+    if (publicKey) {
+      dispatch(
+        allActions.user.getAccountInformation(
+          { publicKey },
+          async (err: any) => {
+            if (err) {
+              Config.alertMess(err);
+            }
+          },
+        ),
+      );
+    }
+  }, [publicKey, dispatch]);
 
   const onRefresh = () => {
     getAccountInformation(true);

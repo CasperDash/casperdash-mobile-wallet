@@ -43,7 +43,7 @@ export default function (
     }
     case typesMain.CLEAR_ALL_DATA: {
       return {
-        initialState,
+        ...initialState,
       };
     }
     default:
