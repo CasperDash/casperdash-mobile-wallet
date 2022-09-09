@@ -13,7 +13,7 @@ export type ScreenParams = {
   };
   CONFIRM_PIN_SCREEN: {
     pin: number;
-    phrases: string,
+    phrases: string;
   };
   CONFIRM_SEND_SCREEN: {
     transferAmount: number;
@@ -53,3 +53,7 @@ export type ScreenProps<T extends keyof ScreenParams> = {
   route: ScreenRouteProp<T>;
   navigation: ScreenNavigationProp<T>;
 };
+
+export enum StackName {
+  AuthenticationStack = 'AuthenticationStack',
+}

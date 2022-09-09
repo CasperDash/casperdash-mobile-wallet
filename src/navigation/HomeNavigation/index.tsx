@@ -1,37 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import { AppState } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import { HomeScreens } from './HomeScreens';
 import HomeRouter from './HomeRouter';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import { useRestack } from 'utils/hooks/useRestack';
+import { StackName } from 'navigation/ScreenProps';
 
 const Stack = createStackNavigator();
 
 const HomeNavigation = () => {
   const appState = useRef(AppState.currentState);
-  const navigation = useNavigation();
-
-  const resetStack = (name: string) => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [
-          {
-            name: 'AuthenticationStack',
-            state: {
-              routes: [
-                {
-                  name: name,
-                },
-              ],
-            },
-          },
-        ],
-      }),
-    );
-  };
+  const reStack = useRestack();
 
   useEffect(() => {
+    // eslint-disable-next-line no-undef
     let timeOut: NodeJS.Timeout;
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState.match(/inactive|background/)) {
@@ -39,7 +22,10 @@ const HomeNavigation = () => {
           clearTimeout(timeOut);
         }
         timeOut = setTimeout(() => {
-          resetStack(AuthenticationRouter.ENTER_PIN);
+          reStack(
+            StackName.AuthenticationStack,
+            AuthenticationRouter.ENTER_PIN,
+          );
         }, 30000);
       }
       if (nextAppState === 'active') {
@@ -49,7 +35,6 @@ const HomeNavigation = () => {
     });
 
     return () => {
-      //@ts-ignore
       subscription.remove();
     };
   }, []);
