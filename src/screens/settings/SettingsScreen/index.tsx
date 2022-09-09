@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Linking, Text } from 'react-native';
 import {
   colors,
@@ -17,11 +17,13 @@ import { Config, Keys } from 'utils';
 import { CASPERDASH_URL } from 'utils/constants/key';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
+import CConfirmPinModal from 'components/CConfirmPinModal';
 
 function SettingsScreen() {
   const navigation = useNavigation();
   const alertRef = useRef<any>();
   const dispatch = useDispatch();
+  const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
 
   const listMenu: Array<SettingMenu> = [
     {
@@ -50,8 +52,14 @@ function SettingsScreen() {
     resetStack(AuthenticationRouter.ENTER_PIN);
   };
 
+  const onPressNext = () => {
+    alertRef.current.hide();
+    setShowConfirmPin(true);
+  };
+
   const onDeleteAllData = () => {
     const alert = {
+      buttonRight: 'Next',
       alertMessage:
         'Are you sure you want to \n delete your wallet? \n' +
         'Your current wallet, accounts and assets will be removed from this app permanently.' +
@@ -68,6 +76,7 @@ function SettingsScreen() {
       }),
     ).then(async () => {
       dispatch(allActions.main.clearAllData());
+      setShowConfirmPin(false);
       resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
     });
   };
@@ -102,7 +111,15 @@ function SettingsScreen() {
           <Text style={styles.txtDelete}>Delete All Data</Text>
         </CButton>
       </Col>
-      <CAlert ref={alertRef} onConfirm={deleteAllData} />
+      {!showConfirmPin ? (
+        <CAlert ref={alertRef} onConfirm={onPressNext} />
+      ) : (
+        <CConfirmPinModal
+          isShow={showConfirmPin}
+          onConfirm={deleteAllData}
+          onCancel={() => setShowConfirmPin(false)}
+        />
+      )}
     </CLayout>
   );
 }
