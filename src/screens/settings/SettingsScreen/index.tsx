@@ -18,12 +18,15 @@ import { CASPERDASH_URL } from 'utils/constants/key';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 import CConfirmPinModal from 'components/CConfirmPinModal';
+import { useRestack } from 'utils/hooks/useRestack';
+import { StackName } from 'navigation/ScreenProps';
 
 function SettingsScreen() {
   const navigation = useNavigation();
   const alertRef = useRef<any>();
   const dispatch = useDispatch();
   const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
+  const reStack = useRestack();
 
   const listMenu: Array<SettingMenu> = [
     {
@@ -82,22 +85,7 @@ function SettingsScreen() {
   };
 
   const resetStack = (name: string) => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [
-          {
-            name: 'AuthenticationStack',
-            state: {
-              routes: [
-                {
-                  name: name,
-                },
-              ],
-            },
-          },
-        ],
-      }),
-    );
+    reStack(StackName.AuthenticationStack, name);
   };
 
   return (

@@ -9,10 +9,13 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { isEmpty } from 'lodash';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
+import { useRestack } from 'utils/hooks/useRestack';
+import { StackName } from 'navigation/ScreenProps';
 
 const SplashScreen = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
+  const reStack = useRestack();
 
   useEffect(() => {
     setupNavigation();
@@ -35,22 +38,7 @@ const SplashScreen = () => {
     if (user && user.casperdash && user.casperdash.publicKey) {
       dispatch(allActions.nft.fetchNFTInfo(user.casperdash.publicKey));
     }
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [
-          {
-            name: 'AuthenticationStack',
-            state: {
-              routes: [
-                {
-                  name: screen,
-                },
-              ],
-            },
-          },
-        ],
-      }),
-    );
+    reStack(StackName.AuthenticationStack, screen);
     Splash.hide();
   };
 
