@@ -28,14 +28,12 @@ const AccountItem = ({
         </Text>
         <Col style={styles.rightContent}>
           <Text style={[styles.body, isCurrentAccount && { color: colors.B1 }]}>
-            {isLoadingBalance ? (
-              <View>
+            {isLoadingBalance && (
+              <View style={{ marginRight: scale(8) }}>
                 <ActivityIndicator size="small" color={colors.N2} />
               </View>
-            ) : (
-              data.balance || 0
-            )}{' '}
-            CSPR
+            )}
+            {data.balance || 0} CSPR
           </Text>
         </Col>
       </Row.LR>
