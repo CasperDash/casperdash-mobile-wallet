@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScreenProps } from 'navigation/ScreenProps';
-import { CLayout } from 'components';
+import { CHeader, CLayout } from 'components';
 import { useNavigation } from '@react-navigation/native';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
@@ -23,6 +23,7 @@ const ChoosePinScreen: React.FC<
   };
   return (
     <CLayout>
+      <CHeader title="" />
       <PinCodeWrapper
         status={'choose'}
         finishProcess={onFinishedEnterPin}
