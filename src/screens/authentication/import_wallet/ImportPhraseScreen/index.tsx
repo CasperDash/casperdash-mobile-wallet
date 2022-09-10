@@ -249,6 +249,7 @@ const ImportPhraseScreen = () => {
             style={[styles.btnNext, { marginRight: scale(15) }]}
             text={'Clear'}
             onPress={onCancel}
+            variant="secondary"
           />
           <CTextButton
             onPress={onPress}

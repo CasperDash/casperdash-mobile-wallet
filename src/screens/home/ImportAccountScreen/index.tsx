@@ -98,6 +98,7 @@ function ImportAccountScreen() {
               style={styles.btnAdd}
               text={'Cancel'}
               type={'line'}
+              variant="secondary"
             />
             <CTextButton
               onPress={onAddPublicKey}
