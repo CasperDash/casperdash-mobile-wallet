@@ -1,79 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
 import { ScreenProps } from 'navigation/ScreenProps';
-import { CHeader, CLayout, Col } from 'components';
-import { colors, fonts, textStyles } from 'assets';
-import { scale } from 'device';
-// @ts-ignore
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import { CLayout } from 'components';
 import { useNavigation } from '@react-navigation/native';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
-import { PIN_LENGTH } from 'utils/constants/key';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import { Config, Keys } from 'utils';
+import PinCodeWrapper from '../PinCodeWrapper';
 
 const ChoosePinScreen: React.FC<
   // @ts-ignore
   ScreenProps<ChoosePinRouter.CHOOSE_PIN_SCREEN>
 > = ({ route }) => {
-  const [pin, setPin] = useState<string>();
   const { navigate } = useNavigation();
-  const { showBack, phrases, algorithm } = route.params;
+  const { phrases, algorithm } = route.params;
 
-  useEffect(() => {
-    if (pin && pin.length === PIN_LENGTH) {
-      navigate(ChoosePinRouter.CONFIRM_PIN_SCREEN, { pin, phrases, algorithm });
-    }
-  }, [pin, algorithm, phrases, navigate]);
-
+  const onFinishedEnterPin = (pin: string | undefined) => {
+    navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
+      pin,
+      phrases,
+      algorithm,
+    });
+  };
   return (
     <CLayout>
-      <CHeader title={'Choose PIN'} showBack={showBack} />
-      <Col.C mt={78}>
-        <Text style={styles.title}>Input security PIN</Text>
-        <SmoothPinCodeInput
-          placeholder={<View style={styles.pinPlaceholder} />}
-          mask={
-            <View
-              style={[styles.pinPlaceholder, { backgroundColor: colors.R1 }]}
-            />
-          }
-          maskDelay={500}
-          password
-          cellStyle={null}
-          autoFocus
-          keyboardType={'number-pad'}
-          value={pin}
-          codeLength={PIN_LENGTH}
-          cellSpacing={0}
-          restrictToNumbers
-          cellStyleFocused={null}
-          onTextChange={setPin}
-          textStyle={styles.textStyle}
-        />
-      </Col.C>
+      <PinCodeWrapper
+        status={'choose'}
+        finishProcess={onFinishedEnterPin}
+        storePin={(pin: string) => Config.saveItem(Keys.pinCode, pin)}
+      />
     </CLayout>
   );
 };
 
 export default ChoosePinScreen;
-
-const styles = StyleSheet.create({
-  title: {
-    ...textStyles.Body1,
-    color: colors.c232635,
-    marginBottom: scale(20),
-    fontFamily: fonts.Lato.regular,
-  },
-  pinPlaceholder: {
-    width: scale(16),
-    height: scale(16),
-    borderRadius: scale(8),
-    backgroundColor: colors.cFFFFFF,
-    borderColor: colors.R1,
-    borderWidth: scale(1),
-  },
-  textStyle: {
-    color: colors.N1,
-    fontSize: scale(20),
-    fontFamily: fonts.Lato.regular,
-  },
-});

@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.5.0",
+    "@haskkor/react-native-pincode": "^1.22.6",
     "@ledgerhq/hw-app-eth": "^6.23.0",
     "@ledgerhq/react-native-hw-transport-ble": "^6.20.0",
     "@popmotion/popcorn": "^0.4.4",
@@ -89,6 +90,7 @@
     "react-native-image-crop-picker": "^0.37.2",
     "react-native-image-viewing": "^0.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
+    "react-native-keychain": "^8.1.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-localize": "^2.2.0",
     "react-native-masked-text": "^1.13.0",

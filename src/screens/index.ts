@@ -37,7 +37,6 @@ export { default as ImportPhraseScreen } from './authentication/import_wallet/Im
 
 //choose pin
 export { default as ChoosePinScreen } from './authentication/choose_pin/ChoosePinScreen';
-export { default as ConfirmPinScreen } from './authentication/choose_pin/ConfirmPinScreen';
 
 //connect ledger
 export { default as GetPublicKeyScreen } from './authentication/create_new_wallet/GetPublicKeyScreen';
