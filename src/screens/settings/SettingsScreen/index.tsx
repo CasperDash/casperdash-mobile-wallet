@@ -6,6 +6,7 @@ import {
   IconCircleRight,
   IconLock,
   textStyles,
+  fonts,
 } from 'assets';
 import { CAlert, CButton, CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
@@ -61,11 +62,21 @@ function SettingsScreen() {
   const onDeleteAllData = () => {
     const alert = {
       buttonRight: 'Next',
-      alertMessage:
-        'Are you sure you want to \n delete your wallet? \n' +
-        'Your current wallet, accounts and assets will be removed from this app permanently.' +
-        'This action cannot be undone.\n' +
-        'Your can ONLY recover this wallet with your Secret Recovery Phase CasperDash does not have your Secret Recovery Phase.',
+      alertMessage: (
+        <>
+          <Text style={styles.deleteQuestion}>
+            Are you sure you want to delete your wallet ?
+          </Text>
+          <Text style={styles.deleteMessage}>
+            Your current wallet, accounts and assets will be removed from this
+            app permanently. This action cannot be undone.
+          </Text>
+          <Text style={styles.deleteMessage}>
+            Your can ONLY recover this wallet with your Secret Recovery Phase
+            CasperDash does not have your Secret Recovery Phase.
+          </Text>
+        </>
+      ),
     };
     alertRef.current.show(alert);
   };
@@ -137,5 +148,23 @@ const styles = StyleSheet.create({
   },
   txtDelete: {
     ...textStyles.Body2,
+  },
+  messageContainer: {
+    flex: 1,
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+  deleteMessage: {
+    textAlign: 'center',
+    fontSize: scale(16),
+    marginBottom: scale(20),
+    fontFamily: fonts.Lato.regular,
+  },
+  deleteQuestion: {
+    color: colors.R1,
+    fontWeight: '800',
+    fontSize: scale(20),
+    textAlign: 'center',
+    marginBottom: scale(20),
   },
 });

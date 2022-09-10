@@ -98,6 +98,7 @@ const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
             text="Cancel"
             type={'line'}
             style={styles.button}
+            variant="secondary"
           />
           <CTextButton
             onPress={confirm}
@@ -149,7 +150,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: scale(136),
-    height: scale(48),
   },
   title: {
     ...textStyles.Body1,
