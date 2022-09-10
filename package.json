@@ -35,7 +35,6 @@
     "@ledgerhq/react-native-hw-transport-ble": "^6.20.0",
     "@popmotion/popcorn": "^0.4.4",
     "@react-native-async-storage/async-storage": "1.17.3",
-    "@react-native-clipboard/clipboard": "^1.8.4",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/cameraroll": "^4.1.2",
     "@react-native-community/clipboard": "^1.5.1",
