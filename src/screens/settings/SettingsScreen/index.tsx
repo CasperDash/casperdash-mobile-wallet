@@ -11,7 +11,6 @@ import { CAlert, CButton, CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { Config, Keys } from 'utils';
 import { CASPERDASH_URL } from 'utils/constants/key';
@@ -22,7 +21,6 @@ import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 
 function SettingsScreen() {
-  const navigation = useNavigation();
   const alertRef = useRef<any>();
   const dispatch = useDispatch();
   const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
