@@ -10,9 +10,10 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MessageType } from 'components/CMessge/types';
-import { KeyParser, CasperLegacyWallet } from 'casper-storage';
+import { KeyParser, CasperLegacyWallet, User } from 'casper-storage';
 import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { Config, Keys } from 'utils';
+import { WalletType } from 'utils/constants/settings';
 
 function ImportAccountScreen() {
   const [secretKey, setSecretKey] = useState('');
@@ -20,42 +21,62 @@ function ImportAccountScreen() {
   const { goBack } = useNavigation<StackNavigationProp<any>>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const currentAccount = useSelector((state: any) => state.user.currentAccount);
+  const currentAccount = useSelector<any, User>(
+    (state: any) => state.user.currentAccount,
+  );
   const casperdash = useSelector((state: any) => state.main.casperdash || {});
 
   const onChange = (value?: string) => {
     setSecretKey(value ?? '');
   };
 
-  const onAddPublicKey = async () => {
+  const onAddPrivateKey = async () => {
     Keyboard.dismiss();
     try {
       setLoading(true);
+
       const keyParser = KeyParser.getInstance();
       const keyValue = keyParser.convertPEMToPrivateKey(secretKey);
       const wallet = new CasperLegacyWallet(
         keyValue.key,
         keyValue.encryptionType,
       );
+
       currentAccount?.addLegacyWallet(wallet, new WalletDescriptor(name));
       const userInfo = currentAccount.serialize();
+
+      const publicKey = await wallet.getPublicKey();
       const info = {
         ...casperdash,
         userInfo: userInfo,
+        publicKey: publicKey,
       };
       await Config.saveItem(Keys.casperdash, info);
-      setLoading(false);
+
+      const selectedWalletDetails = {
+        walletInfo: currentAccount.getWalletInfo(
+          wallet.getReferenceKey(),
+          true,
+        ),
+        publicKey,
+        walletType: WalletType.LegacyWallet,
+      };
+
+      await Config.saveItem(Keys.selectedWallet, selectedWalletDetails);
+      dispatch(allActions.user.loadSelectedWalletFromStorage());
+      dispatch(allActions.main.loadLocalStorage());
+
       const message = {
         message: 'Success',
         type: MessageType.success,
       };
       dispatch(allActions.main.showMessage(message, 1000));
-      dispatch(allActions.main.loadLocalStorage());
+      setLoading(false);
       goBack();
     } catch (e) {
       setLoading(false);
       const message = {
-        message: 'Invalid',
+        message: 'Invalid secret key',
         type: MessageType.error,
       };
       dispatch(allActions.main.showMessage(message, 1000));
@@ -73,6 +94,13 @@ function ImportAccountScreen() {
       />
       <Col mt={10} py={24} style={styles.container}>
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'}>
+          <Text style={[styles.title, { marginTop: scale(16) }]}>Name</Text>
+          <CInput
+            placeholder={'Enter name'}
+            inputStyle={styles.input}
+            onChangeText={setName}
+            style={styles.inputContainer}
+          />
           <Text style={styles.title}>Secret Key</Text>
           <CInput
             placeholder={'Enter your secret key'}
@@ -82,15 +110,6 @@ function ImportAccountScreen() {
             value={secretKey}
             style={styles.inputContainer}
           />
-          <Text style={[styles.title, { marginTop: scale(16) }]}>
-            Name Imported Account
-          </Text>
-          <CInput
-            placeholder={'Enter name'}
-            inputStyle={styles.input}
-            onChangeText={setName}
-            style={styles.inputContainer}
-          />
 
           <Row.LR px={24} mt={60}>
             <CTextButton
@@ -98,9 +117,10 @@ function ImportAccountScreen() {
               style={styles.btnAdd}
               text={'Cancel'}
               type={'line'}
+              variant="secondary"
             />
             <CTextButton
-              onPress={onAddPublicKey}
+              onPress={onAddPrivateKey}
               disabled={!secretKey || !name}
               style={styles.btnAdd}
               text={'Import'}
@@ -135,7 +155,6 @@ const styles = StyleSheet.create({
   },
   btnAdd: {
     width: scale(154),
-    height: scale(48),
     alignSelf: 'center',
   },
   errorText: {

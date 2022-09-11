@@ -1,34 +1,30 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, Linking, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, Linking, Switch, Image } from 'react-native';
 import {
   colors,
   IconAboutUs,
   IconCircleRight,
   IconLock,
   textStyles,
+  images,
 } from 'assets';
-import { CAlert, CButton, CHeader, CLayout, Col } from 'components';
+import { CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { Config, Keys } from 'utils';
 import { CASPERDASH_URL } from 'utils/constants/key';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
-import CConfirmPinModal from 'components/CConfirmPinModal';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
+import DeleteAllDataButton from '../components/DeleteAllDataButton';
+import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 
 function SettingsScreen() {
-  const navigation = useNavigation();
-  const alertRef = useRef<any>();
-  const dispatch = useDispatch();
-  const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
   const reStack = useRestack();
+  const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } =
+    useBiometry();
 
-  const listMenu: Array<SettingMenu> = [
+  let listMenu: Array<SettingMenu> = [
     {
       id: 0,
       title: 'About Us',
@@ -44,6 +40,30 @@ function SettingsScreen() {
     },
   ];
 
+  if (biometryType) {
+    listMenu.push({
+      id: 2,
+      title: biometryType,
+      icon: () => (
+        <Image
+          source={
+            biometryType === BiometryType.FaceID
+              ? images.faceId
+              : images.touchId
+          }
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+      onPress: () => lockScreen(),
+      actionComp: () => (
+        <Switch
+          value={isBiometryEnabled}
+          onValueChange={onUpdateBiometryStatus}
+        />
+      ),
+    });
+  }
+
   const openUrl = async () => {
     const supported = await Linking.canOpenURL(CASPERDASH_URL);
     if (supported) {
@@ -53,35 +73,6 @@ function SettingsScreen() {
 
   const lockScreen = () => {
     resetStack(AuthenticationRouter.ENTER_PIN);
-  };
-
-  const onPressNext = () => {
-    alertRef.current.hide();
-    setShowConfirmPin(true);
-  };
-
-  const onDeleteAllData = () => {
-    const alert = {
-      buttonRight: 'Next',
-      alertMessage:
-        'Are you sure you want to \n delete your wallet? \n' +
-        'Your current wallet, accounts and assets will be removed from this app permanently.' +
-        'This action cannot be undone.\n' +
-        'Your can ONLY recover this wallet with your Secret Recovery Phase CasperDash does not have your Secret Recovery Phase.',
-    };
-    alertRef.current.show(alert);
-  };
-
-  const deleteAllData = () => {
-    Promise.all(
-      Object.entries(Keys).map(key => {
-        return Config.deleteItem(key[1]);
-      }),
-    ).then(async () => {
-      dispatch(allActions.main.clearAllData());
-      setShowConfirmPin(false);
-      resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
-    });
   };
 
   const resetStack = (name: string) => {
@@ -95,19 +86,8 @@ function SettingsScreen() {
         {listMenu.map((item, index) => {
           return <SettingMenuComponent data={item} key={index} />;
         })}
-        <CButton onPress={onDeleteAllData} style={styles.btnDelete}>
-          <Text style={styles.txtDelete}>Delete All Data</Text>
-        </CButton>
+        <DeleteAllDataButton />
       </Col>
-      {!showConfirmPin ? (
-        <CAlert ref={alertRef} onConfirm={onPressNext} />
-      ) : (
-        <CConfirmPinModal
-          isShow={showConfirmPin}
-          onConfirm={deleteAllData}
-          onCancel={() => setShowConfirmPin(false)}
-        />
-      )}
     </CLayout>
   );
 }
@@ -125,19 +105,5 @@ const styles = StyleSheet.create({
   title: {
     ...textStyles.Body1,
     color: colors.N2,
-  },
-  btnDelete: {
-    paddingVertical: scale(6),
-    paddingHorizontal: scale(16),
-    minWidth: scale(134),
-    height: scale(36),
-    borderRadius: scale(18),
-    borderWidth: scale(1),
-    borderColor: colors.N4,
-    alignSelf: 'center',
-    marginTop: scale(70),
-  },
-  txtDelete: {
-    ...textStyles.Body2,
   },
 });

@@ -63,6 +63,8 @@
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Enabling Face ID allows you quick and secure access to your account.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
 	<key>NSCameraUsageDescription</key>
