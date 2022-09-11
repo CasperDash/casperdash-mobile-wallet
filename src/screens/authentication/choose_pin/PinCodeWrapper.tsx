@@ -22,6 +22,7 @@ const PinCodeWrapper = (props: Partial<IProps>) => {
         alphabetCharsVisible={true}
         stylePinCodeColorTitle={colors.N1}
         stylePinCodeButtonNumber={colors.N1}
+        touchIDDisabled={true}
         {...props}
       />
     </CLayout>

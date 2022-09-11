@@ -70,6 +70,8 @@ const images = {
   symbol_cspr: require('./images/ic_symbol_CSPR.png'),
   nodata: require('./images/ic_no_data.png'),
   verifiedValidator: require('./images/red-casper.png'),
+  touchId: require('./images/touchId.png'),
+  faceId: require('./images/faceId.png'),
 };
 
 const colors = {
