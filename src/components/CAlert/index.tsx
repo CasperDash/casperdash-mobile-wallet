@@ -7,7 +7,7 @@ import { Row, Col, CButton } from 'components';
 import CTextButton from 'components/CTextButton';
 
 interface AlertType {
-  alertMessage: string;
+  alertMessage: string | Text;
   buttonLeft?: string;
   buttonRight?: string;
 }
@@ -68,13 +68,18 @@ const CAlert = forwardRef(({ onCancel, onConfirm }: CAlertProps, ref) => {
             <IconCircleClose width={scale(24)} height={scale(24)} />
           </CButton>
         </Row.R>
-        <Text style={styles.message}>{alert.alertMessage}</Text>
+        {typeof alert.alertMessage === 'string' ? (
+          <Text style={styles.message}>{alert.alertMessage}</Text>
+        ) : (
+          <>{alert.alertMessage}</>
+        )}
         <Row.LR>
           <CTextButton
             onPress={cancel}
             text={alert.buttonLeft}
             type={'line'}
             style={styles.button}
+            variant="secondary"
           />
           <CTextButton
             onPress={confirm}
@@ -125,6 +130,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: scale(136),
-    height: scale(48),
+    height: scale(40),
   },
 });

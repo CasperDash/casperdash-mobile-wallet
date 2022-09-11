@@ -11,7 +11,7 @@ import CTextButton from 'components/CTextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Phrase } from 'screens/authentication/data/data';
 import { PhraseInputItem } from 'screens/authentication/import_wallet/components';
-import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from '@react-native-community/clipboard';
 import { useDispatch } from 'react-redux';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { useNavigation } from '@react-navigation/native';
@@ -249,6 +249,7 @@ const ImportPhraseScreen = () => {
             style={[styles.btnNext, { marginRight: scale(15) }]}
             text={'Clear'}
             onPress={onCancel}
+            variant="secondary"
           />
           <CTextButton
             onPress={onPress}

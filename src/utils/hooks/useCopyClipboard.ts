@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from '@react-native-community/clipboard';
 import { useDispatch } from 'react-redux';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
