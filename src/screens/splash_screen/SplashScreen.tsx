@@ -3,8 +3,6 @@ import { View } from 'react-native';
 
 import Splash from 'react-native-splash-screen';
 import { Config, Keys } from 'utils';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { isEmpty } from 'lodash';
 import { useDispatch } from 'react-redux';
@@ -13,7 +11,6 @@ import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 
 const SplashScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
   const reStack = useRestack();
 

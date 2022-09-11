@@ -32,8 +32,10 @@ import { WalletDescriptor } from 'casper-storage';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
-import { getWalletInfoWithPublicKey } from 'utils/helpers/account';
-import { WalletInfoDetails } from 'utils/helpers/account';
+import {
+  getWalletInfoWithPublicKey,
+  WalletInfoDetails,
+} from 'utils/helpers/account';
 import { convertBalanceFromHex } from 'utils/helpers/balance';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {

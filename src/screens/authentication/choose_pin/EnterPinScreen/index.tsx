@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { CLayout } from 'components';
+import { CLayout, CButton } from 'components';
 import { Image } from 'react-native';
 // @ts-ignore
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,6 @@ import { Config, Keys } from 'utils';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import PinCodeWrapper from '../PinCodeWrapper';
 import { images } from 'assets';
-import { CButton } from 'components';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { scale } from 'device';
 
