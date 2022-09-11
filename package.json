@@ -117,6 +117,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^3.1.1",
     "react-native-toast-message": "^1.4.9",
+    "react-native-touch-id": "^4.4.1",
     "react-native-vector-icons": "^8.1.0",
     "react-native-video": "^5.1.1",
     "react-native-webview": "^11.6.5",

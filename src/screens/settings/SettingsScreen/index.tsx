@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Linking } from 'react-native';
+import { StyleSheet, Linking, Switch, Image } from 'react-native';
 import {
   colors,
   IconAboutUs,
   IconCircleRight,
   IconLock,
   textStyles,
+  images,
 } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
@@ -16,11 +17,14 @@ import { CASPERDASH_URL } from 'utils/constants/key';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
+import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 
 function SettingsScreen() {
   const reStack = useRestack();
+  const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } =
+    useBiometry();
 
-  const listMenu: Array<SettingMenu> = [
+  let listMenu: Array<SettingMenu> = [
     {
       id: 0,
       title: 'About Us',
@@ -35,6 +39,30 @@ function SettingsScreen() {
       onPress: () => lockScreen(),
     },
   ];
+
+  if (biometryType) {
+    listMenu.push({
+      id: 2,
+      title: biometryType,
+      icon: () => (
+        <Image
+          source={
+            biometryType === BiometryType.FaceID
+              ? images.faceId
+              : images.touchId
+          }
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+      onPress: () => lockScreen(),
+      actionComp: () => (
+        <Switch
+          value={isBiometryEnabled}
+          onValueChange={onUpdateBiometryStatus}
+        />
+      ),
+    });
+  }
 
   const openUrl = async () => {
     const supported = await Linking.canOpenURL(CASPERDASH_URL);
