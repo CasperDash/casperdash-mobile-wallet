@@ -43,7 +43,7 @@ const InitAccountScreen: React.FC<
       );
       const publicKey = await acc0.getPublicKey();
       const hashingOptions = user.getPasswordHashingOptions();
-      const userInfo = user.serialize();
+      const userInfo = user.serialize(false);
       const info = {
         publicKey: publicKey,
         loginOptions: {

@@ -11,6 +11,7 @@ import {
 } from 'redux_manager/main/main_action';
 import { User, ValidationResult } from 'casper-storage';
 import { getUser } from 'utils/selectors/user';
+import { createNewUser } from 'utils/helpers/account';
 
 export function* getAccountInformation(data: any) {
   try {
@@ -122,13 +123,14 @@ export function* getUserFromStorage() {
     const salt = new Uint8Array(saltData);
     const pin: string = yield Config.getItem(Keys.pinCode);
 
-    currentAccount = User.deserializeFrom(pin, casperdash?.userInfo ?? '', {
+    currentAccount = new User(pin, {
       passwordOptions: {
         passwordValidator: () => new ValidationResult(true),
         ...hashingOptions,
         salt: salt,
       },
     });
+    currentAccount.deserialize(casperdash?.userInfo, false);
   }
   yield put({ type: types.LOAD_USER_SUCCESS, payload: currentAccount });
 }

@@ -28,7 +28,7 @@ import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { getListWallets, getUser } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { WalletDescriptor } from 'casper-storage';
+import { WalletDescriptor, User } from 'casper-storage';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
@@ -50,7 +50,9 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   const selectedWallet = useSelector<any, WalletInfoDetails>(
     (state: any) => state.user.selectedWallet,
   );
-  const currentAccount = useSelector((state: any) => state.user.currentAccount);
+  const currentAccount = useSelector<any, User>(
+    (state: any) => state.user.currentAccount,
+  );
 
   const [listWalletsDetails, setListWalletsDetails] =
     useState<WalletInfoDetails[]>(listWallets);
@@ -107,10 +109,10 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
       new WalletDescriptor(`Account ${wallets.length + 1}`),
     );
     const casperDashInfo = await Config.getItem(Keys.casperdash);
-    casperDashInfo.userInfo = currentAccount.serialize();
+    casperDashInfo.userInfo = currentAccount.serialize(false);
 
     await Config.saveItem(Keys.casperdash, casperDashInfo);
-
+    dispatch(allActions.user.getUserSuccess(currentAccount));
     dispatch(allActions.main.loadLocalStorage());
     setIsCreateNewAccount(false);
   }, [currentAccount, dispatch]);
@@ -148,7 +150,14 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     const casperDashInfo = await Config.getItem(Keys.casperdash);
     casperDashInfo.publicKey = walletInfoDetails.publicKey;
     await Config.saveItem(Keys.casperdash, casperDashInfo);
-    await Config.saveItem(Keys.selectedWallet, walletInfoDetails);
+    await Config.saveItem(Keys.selectedWallet, {
+      ...walletInfoDetails,
+      walletInfo: {
+        descriptor: walletInfoDetails.walletInfo.descriptor,
+        encryptionType: walletInfoDetails.walletInfo.encryptionType,
+        uid: walletInfoDetails.walletInfo.uid,
+      },
+    });
     dispatch(allActions.user.loadSelectedWalletFromStorage());
     dispatch(allActions.main.loadLocalStorage());
     hide();
@@ -183,8 +192,8 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
                   return (
                     <AccountItem
                       isCurrentAccount={
-                        selectedWallet?.walletInfo.key ===
-                        walletDetails.walletInfo.key
+                        selectedWallet?.walletInfo.uid ===
+                        walletDetails.walletInfo.uid
                       }
                       data={walletDetails}
                       key={index}
