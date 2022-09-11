@@ -6,7 +6,6 @@ import { getCurrentPrice } from './price';
 import { getMassagedTokenData } from './tokens';
 import * as DEFAULT_CONFIG from '../constants/key';
 import { WalletInfo, User } from 'casper-storage';
-import { WalletType } from 'utils/constants/settings';
 import { WalletInfoDetails } from 'utils/helpers/account';
 
 const CSPR_INFO = {
@@ -23,17 +22,16 @@ export const getListWallets = createSelector<any, any>(
       const legacyWalletsInfo = currentAccount.getLegacyWallets() || [];
 
       return hdWalletInfo
+        .concat(legacyWalletsInfo)
         .map(
           (wl: WalletInfo): WalletInfoDetails => ({
             walletInfo: wl,
-            walletType: WalletType.HDWallet,
           }),
         )
         .concat(
           legacyWalletsInfo.map(
             (wl: WalletInfo): WalletInfoDetails => ({
               walletInfo: wl,
-              walletType: WalletType.LegacyWallet,
             }),
           ),
         );

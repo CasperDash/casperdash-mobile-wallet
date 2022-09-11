@@ -43,7 +43,7 @@ function ImportAccountScreen() {
       );
 
       currentAccount?.addLegacyWallet(wallet, new WalletDescriptor(name));
-      const userInfo = currentAccount.serialize();
+      const userInfo = currentAccount.serialize(false);
 
       const publicKey = await wallet.getPublicKey();
       const info = {

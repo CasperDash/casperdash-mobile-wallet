@@ -7,10 +7,8 @@ import {
   CasperLegacyWallet,
 } from 'casper-storage';
 import { Keys } from 'casperdash-js-sdk';
-import { WalletType } from 'utils/constants/settings';
 
 export interface WalletInfoDetails {
-  walletType: WalletType;
   walletInfo: WalletInfo;
   publicKey?: string;
   balance?: number;
@@ -48,24 +46,20 @@ export const getWalletInfoWithPublicKey = async (
   return await Promise.all(
     WalletList.map(async walletInfo => {
       let publicKey;
-      switch (walletInfo.walletType) {
-        case WalletType.HDWallet: {
-          const wallet = await user.getWalletAccountByRefKey(
-            walletInfo.walletInfo.key,
-          );
-          publicKey = await wallet.getPublicKey();
-          break;
-        }
-        case WalletType.LegacyWallet:
-          const wallet = new CasperLegacyWallet(
-            walletInfo.walletInfo.key,
-            walletInfo.walletInfo.encryptionType,
-          );
-          publicKey = await wallet.getPublicKey();
-          break;
-        default:
-          break;
+
+      if (walletInfo.walletInfo.isHDWallet) {
+        const wallet = await user.getWalletAccountByRefKey(
+          walletInfo.walletInfo.id,
+        );
+        publicKey = await wallet.getPublicKey();
+      } else if (walletInfo.walletInfo.isLegacy) {
+        const wallet = new CasperLegacyWallet(
+          walletInfo.walletInfo.id,
+          walletInfo.walletInfo.encryptionType,
+        );
+        publicKey = await wallet.getPublicKey();
       }
+
       return { ...walletInfo, publicKey };
     }),
   );
@@ -77,27 +71,22 @@ export const getWalletKeyPair = async (
 ) => {
   let publicKey: Uint8Array;
   let privateKey: Uint8Array;
-  switch (selectedWallet.walletType) {
-    case WalletType.HDWallet: {
-      const wallet = await user.getWalletAccountByRefKey(
-        selectedWallet.walletInfo.key,
-      );
-      publicKey = await wallet.getPublicKeyByteArray();
-      privateKey = wallet.getPrivateKeyByteArray();
-
-      break;
-    }
-    case WalletType.LegacyWallet:
-      const wallet = new CasperLegacyWallet(
-        selectedWallet.walletInfo.key,
-        selectedWallet.walletInfo.encryptionType,
-      );
-      publicKey = await wallet.getPublicKeyByteArray();
-      privateKey = wallet.getPrivateKeyByteArray();
-      break;
-    default:
-      throw 'Error on get Keys';
+  const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
+  if (fullWalletInfo.isHDWallet) {
+    const wallet = await user.getWalletAccountByRefKey(fullWalletInfo.id);
+    publicKey = await wallet.getPublicKeyByteArray();
+    privateKey = wallet.getPrivateKeyByteArray();
+  } else if (fullWalletInfo.isLegacy) {
+    const wallet = new CasperLegacyWallet(
+      fullWalletInfo.id,
+      fullWalletInfo.encryptionType,
+    );
+    publicKey = await wallet.getPublicKeyByteArray();
+    privateKey = wallet.getPrivateKeyByteArray();
+  } else {
+    throw Error('Error on get Keys');
   }
+
   // need to slice prefix
   const trimmedPublicKey = publicKey.slice(1);
   if (selectedWallet.walletInfo.encryptionType === EncryptionType.Ed25519) {
