@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
 import { ScreenProps } from 'navigation/ScreenProps';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 import { CLayout, Col } from 'components';
-import { colors, fonts, textStyles } from 'assets';
+import { colors, fonts, textStyles, images } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
 import { CommonActions, useNavigation } from '@react-navigation/native';
@@ -17,7 +17,6 @@ import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { IHDKey } from 'casper-storage/src/bips/bip32';
 import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
 import { createNewUserWithHdWallet } from 'utils/helpers/account';
-import { images } from 'assets';
 import { getUser } from 'utils/selectors/user';
 
 const InitAccountScreen: React.FC<

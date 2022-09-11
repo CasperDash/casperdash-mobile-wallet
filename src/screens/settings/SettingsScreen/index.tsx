@@ -39,7 +39,7 @@ function SettingsScreen() {
       onPress: () => lockScreen(),
     },
   ];
-
+  console.info(biometryType);
   if (biometryType) {
     listMenu.push({
       id: 2,
