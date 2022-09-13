@@ -22,7 +22,6 @@ export const getListWallets = createSelector<any, any>(
       const legacyWalletsInfo = currentAccount.getLegacyWallets() || [];
 
       return hdWalletInfo
-        .concat(legacyWalletsInfo)
         .map(
           (wl: WalletInfo): WalletInfoDetails => ({
             walletInfo: wl,
