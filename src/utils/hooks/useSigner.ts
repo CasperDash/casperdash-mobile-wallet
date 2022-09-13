@@ -19,7 +19,7 @@ const useSigner = () => {
    * @param mainAccountHex - The public key of the account that will be used to sign the deploy.
    * @returns The `sign` function returns a `Promise` that resolves to a `Deploy` object.
    */
-  const sign = async (deploy, mainAccountHex) => {
+  const sign = async (deploy: DeployUtil.Deploy, mainAccountHex: string) => {
     try {
       switch (loginOptions.connectionType) {
         case CONNECTION_TYPES.ledger: {
