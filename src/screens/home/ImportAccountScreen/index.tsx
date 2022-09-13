@@ -13,7 +13,6 @@ import { MessageType } from 'components/CMessge/types';
 import { KeyParser, CasperLegacyWallet, User } from 'casper-storage';
 import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
 import { Config, Keys } from 'utils';
-import { WalletType } from 'utils/constants/settings';
 
 function ImportAccountScreen() {
   const [secretKey, setSecretKey] = useState('');
@@ -51,18 +50,21 @@ function ImportAccountScreen() {
         userInfo: userInfo,
         publicKey: publicKey,
       };
+
       await Config.saveItem(Keys.casperdash, info);
+      const walletInfo = currentAccount.getWalletInfo(wallet.getReferenceKey());
 
       const selectedWalletDetails = {
-        walletInfo: currentAccount.getWalletInfo(
-          wallet.getReferenceKey(),
-          true,
-        ),
+        walletInfo: {
+          descriptor: walletInfo.descriptor,
+          encryptionType: walletInfo.encryptionType,
+          uid: walletInfo.uid,
+        },
         publicKey,
-        walletType: WalletType.LegacyWallet,
       };
 
       await Config.saveItem(Keys.selectedWallet, selectedWalletDetails);
+      setLoading(false);
       dispatch(allActions.user.loadSelectedWalletFromStorage());
       dispatch(allActions.main.loadLocalStorage());
 
@@ -71,7 +73,7 @@ function ImportAccountScreen() {
         type: MessageType.success,
       };
       dispatch(allActions.main.showMessage(message, 1000));
-      setLoading(false);
+
       goBack();
     } catch (e) {
       setLoading(false);
