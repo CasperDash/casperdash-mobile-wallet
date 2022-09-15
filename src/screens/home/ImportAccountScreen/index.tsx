@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet, Keyboard } from 'react-native';
 import { CHeader, Col, Row, CInput, CLayout, CLoading } from 'components';
 import { colors, textStyles } from 'assets';
@@ -10,7 +10,12 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MessageType } from 'components/CMessge/types';
-import { KeyParser, CasperLegacyWallet, User, WalletDescriptor } from 'react-native-casper-storage';
+import {
+  KeyParser,
+  CasperLegacyWallet,
+  User,
+  WalletDescriptor,
+} from 'react-native-casper-storage';
 import { Config, Keys } from 'utils';
 
 function ImportAccountScreen() {
@@ -18,6 +23,7 @@ function ImportAccountScreen() {
   const [name, setName] = useState('');
   const { goBack } = useNavigation<StackNavigationProp<any>>();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isImportSuccess, setIsImportSuccess] = useState<boolean>(false);
   const dispatch = useDispatch();
   const currentAccount = useSelector<any, User>(
     (state: any) => state.user.currentAccount,
@@ -27,6 +33,12 @@ function ImportAccountScreen() {
   const onChange = (value?: string) => {
     setSecretKey(value ?? '');
   };
+
+  useEffect(() => {
+    if (isImportSuccess) {
+      goBack();
+    }
+  }, [isImportSuccess, goBack]);
 
   const onAddPrivateKey = async () => {
     Keyboard.dismiss();
@@ -71,9 +83,8 @@ function ImportAccountScreen() {
         message: 'Success',
         type: MessageType.success,
       };
+      setIsImportSuccess(true);
       dispatch(allActions.main.showMessage(message, 1000));
-
-      goBack();
     } catch (e) {
       setLoading(false);
       const message = {
