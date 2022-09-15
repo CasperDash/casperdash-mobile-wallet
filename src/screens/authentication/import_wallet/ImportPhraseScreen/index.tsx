@@ -19,7 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import SelectDropdown from 'react-native-select-dropdown';
-import { EncryptionType, KeyFactory } from 'casper-storage';
+import { EncryptionType, KeyFactory } from 'react-native-casper-storage';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
 

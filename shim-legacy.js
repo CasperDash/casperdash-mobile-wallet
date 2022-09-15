@@ -51,8 +51,3 @@ if (typeof BigInt === 'undefined') {
 import { TextEncoder, TextDecoder } from 'text-encoding';
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
-
-// Override the randomBytes method, which is also only available for browser/node
-import { CryptoUtils } from 'casper-storage';
-import { randomBytes } from 'react-native-randombytes';
-CryptoUtils.randomBytes = randomBytes;
