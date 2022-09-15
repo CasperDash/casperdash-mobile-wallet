@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, StyleSheet, Keyboard } from 'react-native';
-import { CHeader, Col, Row, CInput, CLayout, CLoading } from 'components';
+import { CHeader, Col, Row, CInput, CLayout } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
@@ -23,7 +23,7 @@ function ImportAccountScreen() {
   const [name, setName] = useState('');
   const { goBack } = useNavigation<StackNavigationProp<any>>();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [isImportSuccess, setIsImportSuccess] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const currentAccount = useSelector<any, User>(
     (state: any) => state.user.currentAccount,
@@ -33,12 +33,6 @@ function ImportAccountScreen() {
   const onChange = (value?: string) => {
     setSecretKey(value ?? '');
   };
-
-  useEffect(() => {
-    if (isImportSuccess) {
-      goBack();
-    }
-  }, [isImportSuccess, goBack]);
 
   const onAddPrivateKey = async () => {
     Keyboard.dismiss();
@@ -53,7 +47,7 @@ function ImportAccountScreen() {
       );
 
       currentAccount?.addLegacyWallet(wallet, new WalletDescriptor(name));
-      const userInfo = await currentAccount.serialize(false);
+      const userInfo = await currentAccount.serialize();
 
       const publicKey = await wallet.getPublicKey();
       const info = {
@@ -83,8 +77,9 @@ function ImportAccountScreen() {
         message: 'Success',
         type: MessageType.success,
       };
-      setIsImportSuccess(true);
+
       dispatch(allActions.main.showMessage(message, 1000));
+      goBack();
     } catch (e) {
       setLoading(false);
       const message = {
@@ -112,6 +107,7 @@ function ImportAccountScreen() {
             inputStyle={styles.input}
             onChangeText={setName}
             style={styles.inputContainer}
+            editable={!isLoading}
           />
           <Text style={styles.title}>Secret Key</Text>
           <CInput
@@ -121,6 +117,7 @@ function ImportAccountScreen() {
             multiline
             value={secretKey}
             style={styles.inputContainer}
+            editable={!isLoading}
           />
 
           <Row.LR px={24} mt={60}>
@@ -133,14 +130,13 @@ function ImportAccountScreen() {
             />
             <CTextButton
               onPress={onAddPrivateKey}
-              disabled={!secretKey || !name}
+              disabled={!secretKey || !name || isLoading}
               style={styles.btnAdd}
               text={'Import'}
             />
           </Row.LR>
         </KeyboardAwareScrollView>
       </Col>
-      {isLoading && <CLoading />}
     </CLayout>
   );
 }
