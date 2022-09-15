@@ -11,7 +11,6 @@ import {
 } from 'redux_manager/main/main_action';
 import { User, ValidationResult } from 'react-native-casper-storage';
 import { getUser } from 'utils/selectors/user';
-import { createNewUser } from 'utils/helpers/account';
 
 export function* getAccountInformation(data: any) {
   try {
@@ -114,25 +113,29 @@ export function* watchGetAccounts() {
 }
 
 export function* getUserFromStorage() {
-  // @ts-ignore
-  const casperdash = yield Config.getItem(Keys.casperdash);
-  let currentAccount = null;
-  if (casperdash && casperdash.loginOptions?.hashingOptions) {
-    const hashingOptions = casperdash.loginOptions.hashingOptions;
-    const saltData = hashingOptions.salt?.data || [];
-    const salt = new Uint8Array(saltData);
-    const pin: string = yield Config.getItem(Keys.pinCode);
+  try {
+    // @ts-ignore
+    const casperdash = yield Config.getItem(Keys.casperdash);
+    let currentAccount = null;
+    if (casperdash && casperdash.loginOptions?.hashingOptions) {
+      const hashingOptions = casperdash.loginOptions.hashingOptions;
+      const saltData = hashingOptions.salt?.data || [];
+      const salt = new Uint8Array(saltData);
+      const pin: string = yield Config.getItem(Keys.pinCode);
 
-    currentAccount = new User(pin, {
-      passwordOptions: {
-        passwordValidator: () => new ValidationResult(true),
-        ...hashingOptions,
-        salt: salt,
-      },
-    });
-    yield currentAccount.deserialize(casperdash?.userInfo);
+      currentAccount = new User(pin, {
+        passwordOptions: {
+          passwordValidator: () => new ValidationResult(true),
+          ...hashingOptions,
+          salt: salt,
+        },
+      });
+      yield currentAccount.deserialize(casperdash?.userInfo);
+    }
+    yield put({ type: types.LOAD_USER_SUCCESS, payload: currentAccount });
+  } catch (error) {
+    console.error(error);
   }
-  yield put({ type: types.LOAD_USER_SUCCESS, payload: currentAccount });
 }
 
 export function* getSelectedWalletFromStorage() {

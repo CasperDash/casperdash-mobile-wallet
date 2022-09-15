@@ -292,6 +292,8 @@ PODS:
   - React-jsinspector (0.66.4)
   - React-logger (0.66.4):
     - glog
+  - react-native-aes (2.0.0):
+    - React-Core
   - react-native-background-timer (2.4.1):
     - React-Core
   - react-native-ble-plx (2.0.3):
@@ -529,6 +531,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-aes (from `../node_modules/react-native-aes-crypto`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-ble-plx (from `../node_modules/react-native-ble-plx`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
@@ -644,6 +647,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-aes:
+    :path: "../node_modules/react-native-aes-crypto"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
   react-native-ble-plx:
@@ -777,6 +782,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94ce921e1d8ce7023366873ec371f3441383b396
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
+  react-native-aes: c75c46aa744bef7c2415fdf7f5b2dcb75ca4364d
   react-native-background-timer: 117fffdc9b0d6f144444bb49029f94275a45fdb5
   react-native-ble-plx: f10240444452dfb2d2a13a0e4f58d7783e92d76e
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
@@ -829,6 +835,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d98abee22dccffe5194744723d486fe33abe4e85
+PODFILE CHECKSUM: 6c4d82bbcd4e03d531cacfef2db648f721695c83
 
 COCOAPODS: 1.11.3
