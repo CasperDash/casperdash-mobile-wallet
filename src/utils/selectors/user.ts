@@ -5,7 +5,7 @@ import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { getCurrentPrice } from './price';
 import { getMassagedTokenData } from './tokens';
 import * as DEFAULT_CONFIG from '../constants/key';
-import { WalletInfo, User } from 'casper-storage';
+import { WalletInfo, User } from 'react-native-casper-storage';
 import { WalletInfoDetails } from 'utils/helpers/account';
 
 const CSPR_INFO = {

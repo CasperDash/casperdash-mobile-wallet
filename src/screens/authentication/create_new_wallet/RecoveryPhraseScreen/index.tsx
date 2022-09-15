@@ -16,7 +16,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
-import { EncryptionType } from 'casper-storage';
+import { EncryptionType } from 'react-native-casper-storage';
 import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import { getRecoveryPhase } from '../../../../utils/helpers/account';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';

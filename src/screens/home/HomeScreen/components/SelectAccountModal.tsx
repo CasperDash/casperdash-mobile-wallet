@@ -28,7 +28,7 @@ import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { getListWallets, getUser } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { WalletDescriptor, User } from 'casper-storage';
+import { WalletDescriptor, User } from 'react-native-casper-storage';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
@@ -109,7 +109,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
       new WalletDescriptor(`Account ${wallets.length + 1}`),
     );
     const casperDashInfo = await Config.getItem(Keys.casperdash);
-    casperDashInfo.userInfo = currentAccount.serialize(false);
+    casperDashInfo.userInfo = await currentAccount.serialize();
 
     await Config.saveItem(Keys.casperdash, casperDashInfo);
     dispatch(allActions.user.getUserSuccess(currentAccount));

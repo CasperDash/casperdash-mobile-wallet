@@ -5,7 +5,7 @@ import {
   EncryptionType,
   WalletInfo,
   CasperLegacyWallet,
-} from 'casper-storage';
+} from 'react-native-casper-storage';
 import { Keys } from 'casperdash-js-sdk';
 
 export interface WalletInfoDetails {

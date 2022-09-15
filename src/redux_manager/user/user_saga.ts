@@ -9,7 +9,7 @@ import {
   startAction,
   stopAction,
 } from 'redux_manager/main/main_action';
-import { User, ValidationResult } from 'casper-storage';
+import { User, ValidationResult } from 'react-native-casper-storage';
 import { getUser } from 'utils/selectors/user';
 import { createNewUser } from 'utils/helpers/account';
 
@@ -130,7 +130,7 @@ export function* getUserFromStorage() {
         salt: salt,
       },
     });
-    currentAccount.deserialize(casperdash?.userInfo, false);
+    yield currentAccount.deserialize(casperdash?.userInfo);
   }
   yield put({ type: types.LOAD_USER_SUCCESS, payload: currentAccount });
 }

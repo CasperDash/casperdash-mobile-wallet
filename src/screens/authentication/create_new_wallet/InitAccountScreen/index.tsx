@@ -12,9 +12,7 @@ import { Config, Keys } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
-import { IWallet } from 'casper-storage';
-import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
-import { IHDKey } from 'casper-storage/src/bips/bip32';
+import { IHDKey, IWallet, WalletDescriptor } from 'react-native-casper-storage';
 import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
 import { createNewUserWithHdWallet } from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
@@ -43,7 +41,7 @@ const InitAccountScreen: React.FC<
       );
       const publicKey = await acc0.getPublicKey();
       const hashingOptions = user.getPasswordHashingOptions();
-      const userInfo = user.serialize(false);
+      const userInfo = await user.serialize();
       const info = {
         publicKey: publicKey,
         loginOptions: {

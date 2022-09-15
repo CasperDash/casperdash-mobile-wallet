@@ -10,8 +10,7 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MessageType } from 'components/CMessge/types';
-import { KeyParser, CasperLegacyWallet, User } from 'casper-storage';
-import { WalletDescriptor } from 'casper-storage/dist/tsc/user/wallet-info';
+import { KeyParser, CasperLegacyWallet, User, WalletDescriptor } from 'react-native-casper-storage';
 import { Config, Keys } from 'utils';
 
 function ImportAccountScreen() {
@@ -42,7 +41,7 @@ function ImportAccountScreen() {
       );
 
       currentAccount?.addLegacyWallet(wallet, new WalletDescriptor(name));
-      const userInfo = currentAccount.serialize(false);
+      const userInfo = await currentAccount.serialize(false);
 
       const publicKey = await wallet.getPublicKey();
       const info = {
