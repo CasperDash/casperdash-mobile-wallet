@@ -120,6 +120,7 @@
     "react-native-tab-view": "^3.1.1",
     "react-native-toast-message": "^1.4.9",
     "react-native-touch-id": "^4.4.1",
+    "react-native-v8": "1.4.8",
     "react-native-vector-icons": "^8.1.0",
     "react-native-video": "^5.1.1",
     "react-native-webview": "^11.6.5",
@@ -135,6 +136,7 @@
     "rxjs": "^7.5.2",
     "stream-browserify": "^1.0.0",
     "text-encoding": "^0.7.0",
+    "v8-android-jit": "10.100.1",
     "victory-native": "^36.3.1",
     "yarn": "^1.22.19",
     "yup": "^0.32.9"
