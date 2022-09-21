@@ -78,30 +78,35 @@ const InitAccountScreen: React.FC<
     }
   }, [dispatch, currentUser]);
 
-  const onInitSuccess = useCallback(() => {
-    if (currentUser) {
-      navigation.dispatch(
-        CommonActions.reset({
-          routes: [
-            {
-              name: 'MainStack',
-            },
-          ],
-        }),
-      );
-      dispatch(allActions.main.loadLocalStorage());
-      const message = {
-        message: 'Logged in successfully',
-        type: MessageType.success,
-      };
-      dispatch(allActions.main.showMessage(message, 1000));
-    }
-  }, [dispatch, navigation, currentUser]);
+  const onInitSuccess = useCallback(
+    (isLedger?: boolean) => {
+      if (currentUser || isLedger) {
+        navigation.dispatch(
+          CommonActions.reset({
+            routes: [
+              {
+                name: 'MainStack',
+              },
+            ],
+          }),
+        );
+        dispatch(allActions.main.loadLocalStorage());
+        const message = {
+          message: 'Logged in successfully',
+          type: MessageType.success,
+        };
+        dispatch(allActions.main.showMessage(message, 1000));
+      }
+    },
+    [dispatch, navigation, currentUser],
+  );
 
   useEffect(() => {
     //Need timeout here to prevent stuck at previous screen
-    setTimeout(() => {
-      if (isLoadUser) {
+    Config.getItem(Keys.casperdash).then((info: any) => {
+      if (info?.loginOptions?.connectionType === CONNECTION_TYPES.ledger) {
+        onInitSuccess(true);
+      } else if (isLoadUser) {
         loadUser();
         onInitSuccess();
       } else {
@@ -109,7 +114,7 @@ const InitAccountScreen: React.FC<
           onInitSuccess();
         });
       }
-    }, 100);
+    });
   }, [loadUser, setupUser, onInitSuccess, isLoadUser]);
 
   return (
