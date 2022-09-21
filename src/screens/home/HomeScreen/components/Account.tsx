@@ -56,7 +56,7 @@ function Account() {
   };
 
   const onShowSelectAccountModal = () => {
-    if (isLedger) {
+    if (!isLedger) {
       selectAccountModalRef.current.show();
     }
   };
