@@ -7,11 +7,16 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { isEmpty } from 'lodash';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
+import { useDispatch } from 'react-redux';
+import { allActions } from 'redux_manager';
 
 const SplashScreen = () => {
   const reStack = useRestack();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    //always get new config
+    dispatch(allActions.main.getConfigurations());
     setupNavigation();
   }, []);
 
