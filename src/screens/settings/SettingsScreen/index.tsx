@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Linking, Switch, Image } from 'react-native';
+import { StyleSheet, Linking, Switch, Image, View, Text } from 'react-native';
 import {
   colors,
   IconAboutUs,
@@ -9,6 +9,7 @@ import {
   images,
 } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
+import DeviceInfo from 'react-native-device-info';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
@@ -37,6 +38,21 @@ function SettingsScreen() {
       title: 'Lock',
       icon: () => <IconLock width={scale(32)} height={scale(32)} />,
       onPress: () => lockScreen(),
+    },
+    {
+      id: 3,
+      title: 'Version',
+      icon: () => (
+        <Image
+          source={images.version}
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+      actionComp: () => (
+        <Text>
+          {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
+        </Text>
+      ),
     },
   ];
 
@@ -83,9 +99,11 @@ function SettingsScreen() {
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
       <CHeader title={'Settings'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
-        {listMenu.map((item, index) => {
-          return <SettingMenuComponent data={item} key={index} />;
-        })}
+        {listMenu
+          .sort((a, b) => a.id - b.id)
+          .map((item, index) => {
+            return <SettingMenuComponent data={item} key={index} />;
+          })}
         <DeleteAllDataButton />
       </Col>
     </CLayout>
