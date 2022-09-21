@@ -40,8 +40,11 @@ function Account() {
   //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   //   setIsShowAmount(i => !i);
   // };
-  const isLedger = useMemo(() => {
-    return loginOptions?.connectionType === CONNECTION_TYPES.ledger;
+  const canEditAccount = useMemo(() => {
+    return (
+      loginOptions?.connectionType === CONNECTION_TYPES.ledger ||
+      loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+    );
   }, [loginOptions]);
 
   const saveKey = () => {
@@ -56,7 +59,7 @@ function Account() {
   };
 
   const onShowSelectAccountModal = () => {
-    if (!isLedger) {
+    if (!canEditAccount) {
       selectAccountModalRef.current.show();
     }
   };
@@ -70,11 +73,11 @@ function Account() {
             style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                {isLedger
+                {canEditAccount
                   ? 'Ledger'
                   : selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
-              {!isLedger && (
+              {!canEditAccount && (
                 <IconPencilFilled width={scale(16)} height={scale(16)} />
               )}
             </Row.C>
