@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Linking, Switch, Image, View, Text } from 'react-native';
 import {
   colors,
-  IconAboutUs,
+  IconLogo,
   IconCircleRight,
   IconLock,
   textStyles,
@@ -29,7 +29,7 @@ function SettingsScreen() {
     {
       id: 0,
       title: 'About Us',
-      icon: () => <IconAboutUs width={scale(32)} height={scale(32)} />,
+      icon: () => <IconLogo width={scale(32)} height={scale(32)} />,
       subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)} />,
       onPress: () => openUrl(),
     },
