@@ -72,6 +72,8 @@ const images = {
   verifiedValidator: require('./images/red-casper.png'),
   touchId: require('./images/touchId.png'),
   faceId: require('./images/faceId.png'),
+  build: require('./images/ic-build.png'),
+  version: require('./images/ic-version.png'),
 };
 
 const colors = {
