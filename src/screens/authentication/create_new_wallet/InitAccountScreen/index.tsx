@@ -104,7 +104,10 @@ const InitAccountScreen: React.FC<
   useEffect(() => {
     //Need timeout here to prevent stuck at previous screen
     Config.getItem(Keys.casperdash).then((info: any) => {
-      if (info?.loginOptions?.connectionType === CONNECTION_TYPES.ledger) {
+      if (
+        info?.loginOptions?.connectionType === CONNECTION_TYPES.ledger ||
+        info?.loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+      ) {
         onInitSuccess(true);
       } else if (isLoadUser) {
         loadUser();
