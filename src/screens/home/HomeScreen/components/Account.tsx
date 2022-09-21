@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
@@ -10,12 +10,14 @@ import {
   getAccountTotalBalanceInFiat,
   getAllTokenInfo,
   getPublicKey,
+  getLoginOptions,
 } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 import { WalletInfoDetails } from 'utils/helpers/account';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -24,6 +26,7 @@ function Account() {
   }
   const copyToClipboard = useCopyToClipboard();
   const publicKey = useSelector(getPublicKey);
+  const loginOptions = useSelector(getLoginOptions);
   const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
   const allTokenInfo = useSelector(getAllTokenInfo);
   const { navigate } = useNavigation();
@@ -37,6 +40,9 @@ function Account() {
   //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   //   setIsShowAmount(i => !i);
   // };
+  const isLedger = useMemo(() => {
+    return loginOptions?.connectionType === CONNECTION_TYPES.ledger;
+  }, [loginOptions]);
 
   const saveKey = () => {
     copyToClipboard(publicKey);
@@ -50,7 +56,9 @@ function Account() {
   };
 
   const onShowSelectAccountModal = () => {
-    selectAccountModalRef.current.show();
+    if (isLedger) {
+      selectAccountModalRef.current.show();
+    }
   };
 
   return (
@@ -62,9 +70,13 @@ function Account() {
             style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                {selectedWallet?.walletInfo?.descriptor?.name || ''}
+                {isLedger
+                  ? 'Ledger'
+                  : selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
-              <IconPencilFilled width={scale(16)} height={scale(16)} />
+              {!isLedger && (
+                <IconPencilFilled width={scale(16)} height={scale(16)} />
+              )}
             </Row.C>
           </CButton>
 
