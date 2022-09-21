@@ -10084,7 +10084,7 @@ react-native-crypto@^2.1.0:
     public-encrypt "^4.0.0"
     randomfill "^1.0.3"
 
-react-native-device-info@^8.1.4:
+react-native-device-info@^8.7.1:
   version "8.7.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.7.1.tgz#fbb06f87dbbc4423abe713874699fb2e6e99fd15"
   integrity sha512-cVMZztFa2Qn6qpQa601W61CtUwZQ1KXfqCOeltejAWEXmgIWivC692WGSdtGudj4upSi1UgMSaGcvKjfcpdGjg==
