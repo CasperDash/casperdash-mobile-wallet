@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Linking, Switch, Image, View, Text } from 'react-native';
+import { StyleSheet, Linking, Switch, Image, Text } from 'react-native';
 import {
   colors,
   IconLogo,
@@ -19,9 +19,11 @@ import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
+import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
 
 function SettingsScreen() {
   const reStack = useRestack();
+  const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } =
     useBiometry();
 
@@ -34,13 +36,25 @@ function SettingsScreen() {
       onPress: () => openUrl(),
     },
     {
-      id: 1,
+      id: 2,
       title: 'Lock',
       icon: () => <IconLock width={scale(32)} height={scale(32)} />,
       onPress: () => lockScreen(),
     },
     {
       id: 3,
+      title: 'Recovery Phrase',
+      icon: () => (
+        <Image
+          source={images.backup}
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+      onPress: () => setShowConfirmPin(true),
+      actionComp: ShowRecoveryPhrase,
+    },
+    {
+      id: 4,
       title: 'Version',
       icon: () => (
         <Image
@@ -58,7 +72,7 @@ function SettingsScreen() {
 
   if (biometryType) {
     listMenu.push({
-      id: 2,
+      id: 1,
       title: biometryType,
       icon: () => (
         <Image
@@ -70,7 +84,7 @@ function SettingsScreen() {
           style={{ width: scale(32), height: scale(32) }}
         />
       ),
-      onPress: () => lockScreen(),
+
       actionComp: () => (
         <Switch
           value={isBiometryEnabled}

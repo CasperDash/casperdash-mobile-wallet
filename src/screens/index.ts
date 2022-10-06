@@ -25,6 +25,7 @@ export { default as MarketScreen } from './market/MarketScreen';
 
 //Settings
 export { default as SettingsScreen } from './settings/SettingsScreen';
+export { default as ShowRecoveryPhraseScreen } from './settings/ViewRecoveryPhraseScreen/RecoveryPhraseScreen';
 
 //Create new wallet
 export { default as CreateNewWalletScreen } from './authentication/create_new_wallet/CreateNewWalletScreen';
