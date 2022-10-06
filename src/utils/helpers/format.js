@@ -14,7 +14,7 @@ export const toFormattedNumber = (
   locales = Config.defaultLocale,
 ) => {
   const number = new Intl.NumberFormat(locales, {
-    maximumFractionDigits: 5,
+    maximumFractionDigits: 4,
     ...options,
   });
   return number.format(num) || '0';
