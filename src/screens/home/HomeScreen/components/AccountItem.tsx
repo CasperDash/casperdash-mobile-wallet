@@ -4,6 +4,7 @@ import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
 import { colors, textStyles } from 'assets';
 import { WalletInfoDetails } from 'utils/helpers/account';
+import { toFormattedNumber } from 'utils/helpers/format';
 
 interface IAccountItemProps {
   data: WalletInfoDetails;
@@ -33,7 +34,7 @@ const AccountItem = ({
                 <ActivityIndicator size="small" color={colors.N2} />
               </View>
             )}
-            {data.balance || 0} CSPR
+            {toFormattedNumber(data.balance) || 0} CSPR
           </Text>
         </Col>
       </Row.LR>
