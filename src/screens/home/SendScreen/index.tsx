@@ -122,7 +122,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
     const maxAmount =
       balance / percent -
       (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
-    setFieldValue('transferAmount', maxAmount.toString());
+    setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 
   const onSelectedToken = (item: any) => {
