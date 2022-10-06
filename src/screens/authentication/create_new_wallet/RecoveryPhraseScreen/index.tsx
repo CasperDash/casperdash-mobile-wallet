@@ -112,18 +112,12 @@ const RecoveryPhraseScreen = () => {
           <Row.LR pt={16} px={16} style={styles.body}>
             <View style={styles.flex}>
               {listLeft.map((item, index) => {
-                return <PhraseItem data={item} key={index} index={index} />;
+                return <PhraseItem data={item} key={index} />;
               })}
             </View>
             <View style={styles.flex}>
               {listRight.map((item, index) => {
-                return (
-                  <PhraseItem
-                    data={item}
-                    key={index}
-                    index={listRight.length + index}
-                  />
-                );
+                return <PhraseItem data={item} key={index} />;
               })}
             </View>
           </Row.LR>

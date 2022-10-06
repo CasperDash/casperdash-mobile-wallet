@@ -74,6 +74,8 @@ const images = {
   faceId: require('./images/faceId.png'),
   build: require('./images/ic-build.png'),
   version: require('./images/ic-version.png'),
+  backup: require('./images/ic-backup.png'),
+  showPassword: require('./images/icon-show-password.png'),
 };
 
 const colors = {

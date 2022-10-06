@@ -6,7 +6,6 @@ import { colors, textStyles } from 'assets';
 
 interface PhraseItemProps {
   data: any;
-  index: number;
 }
 
 const PhraseItem = ({ data }: PhraseItemProps) => {
