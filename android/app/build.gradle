@@ -135,7 +135,7 @@ android {
         applicationId "io.casperdash.casperwallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
+        versionCode 22
         versionName "1.1.0"
         setProperty("archivesBaseName", "CasperDash")
         vectorDrawables.useSupportLibrary = true
@@ -216,6 +216,12 @@ dependencies {
 //     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation ("androidx.appcompat:appcompat:1.3.1") {
+        version {
+            strictly '1.3.1'
+        }
+    }
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
