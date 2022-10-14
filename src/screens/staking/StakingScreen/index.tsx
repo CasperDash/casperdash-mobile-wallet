@@ -183,7 +183,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   };
 
   const setBalance = () => {
-    setFieldValue('amount', `${balance - fee}`);
+    setFieldValue('amount', `${balance - fee > 0 ? balance - fee : 0}`);
     setErrors({ ...errors, amount: '' });
   };
 
