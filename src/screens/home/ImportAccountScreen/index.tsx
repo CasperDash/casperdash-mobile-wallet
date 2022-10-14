@@ -101,6 +101,10 @@ function ImportAccountScreen() {
       />
       <Col mt={10} py={24} style={styles.container}>
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'}>
+          <Text style={[styles.noteText, { marginTop: scale(16) }]}>
+            Imported account are viewable in your wallet but are not recoverable
+            with your CasperDash Secret Recovery Phrase.
+          </Text>
           <Text style={[styles.title, { marginTop: scale(16) }]}>Name</Text>
           <CInput
             placeholder={'Enter name'}
@@ -154,6 +158,11 @@ const styles = StyleSheet.create({
   title: {
     ...textStyles.Body1,
     color: colors.N3,
+    marginBottom: scale(8),
+    marginHorizontal: scale(24),
+  },
+  noteText: {
+    ...textStyles.Body1,
     marginBottom: scale(8),
     marginHorizontal: scale(24),
   },
