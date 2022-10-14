@@ -7,7 +7,7 @@ import { MAX_METADATA_ATTRIBUTES } from '../constants/nft';
  * @param {String}  - Public key.
  * @return {Boolean} - Is valid public key
  */
-export const isValidPublicKey = publicKey => {
+export const isValidPublicKey = (publicKey: string) => {
   try {
     const pbKey = CLPublicKey.fromHex(publicKey);
     return pbKey ? true : false;
@@ -20,8 +20,8 @@ export const isValidPublicKey = publicKey => {
  * validate NFT Mint Form
  * @param {object} values
  */
-export const validateNFTMintForm = values => {
-  let errors = {};
+export const validateNFTMintForm = (values: any) => {
+  let errors: any = {};
   if (!values.nftContract) {
     errors.nftContract = 'Required';
   }
@@ -42,7 +42,7 @@ export const validateNFTMintForm = values => {
     errors.toAddress = 'Invalid address.';
   }
 
-  new Array(MAX_METADATA_ATTRIBUTES).fill().forEach((value, index) => {
+  new Array(MAX_METADATA_ATTRIBUTES).fill(undefined).forEach((_, index) => {
     const attrName = `attribute${index}`;
     const attrValue = `value${index}`;
     if (values[attrName] && values[attrName].length > 20) {
@@ -57,7 +57,8 @@ export const validateNFTMintForm = values => {
 };
 
 const COMMON_ERROR_MESSAGE = {
-  MORE_THAN_ZERO: tokenSymbol => `Amount must be more than 0 ${tokenSymbol}.`,
+  MORE_THAN_ZERO: (tokenSymbol: string) =>
+    `Amount must be more than 0 ${tokenSymbol}.`,
   NOT_ENOUGH_BALANCE: 'Not enough balance.',
   NOT_ENOUGH_STAKED_AMOUNT: 'Not enough staked amount.',
 };
@@ -68,6 +69,12 @@ const getSendAmountError = ({
   tokenSymbol,
   displayBalance,
   transferFee,
+}: {
+  sendAmount: number;
+  minAmount: number;
+  tokenSymbol: string;
+  displayBalance: number;
+  transferFee: number;
 }) => {
   if (minAmount && sendAmount < minAmount) {
     return `Amount must be at least ${minAmount} ${tokenSymbol}.`;
@@ -97,8 +104,16 @@ export const validateTransferForm = ({
   minAmount,
   csprBalance,
   transferFee,
+}: {
+  displayBalance: number;
+  toAddress: string;
+  sendAmount: number;
+  tokenSymbol: string;
+  minAmount: number;
+  csprBalance: number;
+  transferFee: number;
 }) => {
-  let errors = {};
+  let errors: any = {};
   // to address
   if (!toAddress) {
     errors.toAddress = 'Required.';
@@ -134,8 +149,14 @@ export const validateStakeForm = ({
   balance,
   fee,
   minAmount,
+}: {
+  amount: number;
+  tokenSymbol: string;
+  balance: number;
+  fee: number;
+  minAmount: number;
 }) => {
-  let errors = {};
+  let errors: any = {};
   if (amount <= 0) {
     errors.amount = COMMON_ERROR_MESSAGE.MORE_THAN_ZERO(tokenSymbol);
   } else if (amount + fee > balance) {
@@ -160,8 +181,15 @@ export const validateUndelegateForm = ({
   fee,
   stakedAmount,
   minAmount,
+}: {
+  amount: number;
+  tokenSymbol: string;
+  balance: number;
+  fee: number;
+  stakedAmount: number;
+  minAmount: number;
 }) => {
-  let errors = {};
+  let errors: any = {};
   if (amount <= 0) {
     errors.amount = COMMON_ERROR_MESSAGE.MORE_THAN_ZERO(tokenSymbol);
   } else if (amount > stakedAmount) {

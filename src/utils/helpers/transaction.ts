@@ -5,7 +5,7 @@ import { IconStatusSend, IconStatusReceive } from 'assets';
  * Get transaction icon
  * @param {string} type
  */
-export const getTransactionIcon = type => {
+export const getTransactionIcon = (type: string) => {
   switch (type) {
     case 'receive':
       return IconStatusReceive;
@@ -19,7 +19,7 @@ export const getTransactionIcon = type => {
  * enrich transaction with Icon
  */
 export const enrichTransactionWithIcon = memoizeOne(transferList => {
-  return transferList.map(transfer => {
+  return transferList.map((transfer: any) => {
     return { ...transfer, icon: getTransactionIcon(transfer.type) };
   });
 });

@@ -68,7 +68,6 @@ const EnterPinScreen = () => {
       <PinCodeWrapper
         status="enter"
         finishProcess={onFinishedEnterPin}
-        //storedPin={pin}
         timeLocked={__DEV__ ? 20000 : undefined}
         maxAttempts={MAX_ATTEMPT}
         delayBetweenAttempts={1000}
