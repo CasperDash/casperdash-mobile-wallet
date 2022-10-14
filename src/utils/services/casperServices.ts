@@ -6,6 +6,7 @@ import {
   CLAccountHash,
   CLKey,
   CLTypeBuilder,
+  CLPublicKey,
 } from 'casperdash-js-sdk';
 import {
   NETWORK_NAME,
@@ -24,11 +25,11 @@ import {
  * @returns {Deploy} transfer deploy
  */
 export const buildTransferDeploy = (
-  fromAccount,
-  toAccount,
-  amount,
-  transferId,
-  fee,
+  fromAccount: CLPublicKey,
+  toAccount: CLPublicKey,
+  amount: number,
+  transferId: any,
+  fee: any,
 ) => {
   const deployParams = new DeployUtil.DeployParams(fromAccount, NETWORK_NAME);
   const transferParams = DeployUtil.ExecutableDeployItem.newTransfer(
@@ -47,39 +48,20 @@ export const buildTransferDeploy = (
  * @param {Object} session hash contract content
  * @returns {Deploy} deploy of the contract
  */
-export const buildContractInstallDeploy = (baseAccount, session) => {
+export const buildContractInstallDeploy = (
+  baseAccount: CLPublicKey,
+  session: any,
+) => {
   const deployParams = new DeployUtil.DeployParams(baseAccount, NETWORK_NAME);
   const payment = DeployUtil.standardPayment(PAYMENT_AMOUNT);
   return DeployUtil.makeDeploy(deployParams, session, payment);
 };
 
 /**
- * Sign a deploy by singer
- * @param {Deploy} deploy main account public key
- * @param {String} mainAccountHex hash contract content
- * @param {String} setAccountHex contract's arguments
- * @param {Object} ledgerOptions ledger's options
- * @returns {Deploy} Signed deploy
- */
-export const signDeployByCasperSigner = async (
-  deploy,
-  mainAccountHex,
-  setAccountHex,
-) => {
-  const deployObj = DeployUtil.deployToJson(deploy);
-  const signedDeploy = await Signer.sign(
-    deployObj,
-    mainAccountHex,
-    setAccountHex,
-  );
-  return signedDeploy;
-};
-
-/**
  * Get Recipient address
  * @param {CLPublicKey} recipient
  */
-export const createRecipientAddress = recipient => {
+export const createRecipientAddress = (recipient: CLPublicKey) => {
   return new CLKey(new CLAccountHash(recipient.toAccountHash()));
 };
 
@@ -92,20 +74,21 @@ export const createRecipientAddress = recipient => {
  * @returns {Deploy} transfer deploy
  */
 export const buildTransferTokenDeploy = (
-  fromAccount,
-  toAccount,
-  amount,
-  contractHash,
-  fee,
+  fromAccount: CLPublicKey,
+  toAccount: CLPublicKey,
+  amount: any,
+  contractHash: string,
+  fee: any,
 ) => {
   // eslint-disable-next-line no-undef
-  const contractHashAsByteArray = [...Buffer.from(contractHash, 'hex')];
+  const contractHashAsByteArray: any = [...Buffer.from(contractHash, 'hex')];
   const deployParams = new DeployUtil.DeployParams(
     fromAccount,
     NETWORK_NAME,
     1,
     DEPLOY_TTL_MS,
   );
+
   const transferParams =
     DeployUtil.ExecutableDeployItem.newStoredContractByHash(
       contractHashAsByteArray,
@@ -126,7 +109,7 @@ export const buildTransferTokenDeploy = (
 export const connectCasperSigner = () => {
   try {
     Signer.sendConnectionRequest();
-  } catch (error) {
+  } catch (error: any) {
     return error.message;
   }
 };
@@ -136,11 +119,12 @@ export const connectCasperSigner = () => {
  * @param map - The map to convert to a CLValue.
  * @returns A CLValue of type `Map<String, String>`
  */
-export const toCLMap = map => {
+export const toCLMap = (map: any) => {
   const clMap = CLValueBuilder.map([
     CLTypeBuilder.string(),
     CLTypeBuilder.string(),
   ]);
+  //@ts-ignore
   for (const [key, value] of Array.from(map.entries())) {
     clMap.set(CLValueBuilder.string(key), CLValueBuilder.string(value));
   }
@@ -151,6 +135,6 @@ export const toCLMap = map => {
  * Convert a contract hash to a byte array
  * @param contractHash - The contract hash of the contract you want to get the bytecode of.
  */
-export const contractHashToByteArray = contractHash =>
+export const contractHashToByteArray = (contractHash: string) =>
   // eslint-disable-next-line no-undef
   Uint8Array.from(Buffer.from(contractHash, 'hex'));

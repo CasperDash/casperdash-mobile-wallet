@@ -1,13 +1,13 @@
 import { CLPublicKey } from 'casperdash-js-sdk';
-import { toMotes } from '../helpers/currency';
 import { buildTransferDeploy } from './casperServices';
+import { MOTE_RATE } from 'utils/constants/key';
 
 /**
  * It builds a transfer deploy.
  * @param transactionDetail
  * @returns The transfer deploy.
  */
-export const getTransferDeploy = (transactionDetail = {}) => {
+export const getTransferDeploy = (transactionDetail: any = {}) => {
   try {
     const {
       fromAddress,
@@ -21,7 +21,7 @@ export const getTransferDeploy = (transactionDetail = {}) => {
     return buildTransferDeploy(
       fromPbKey,
       toPbKey,
-      toMotes(amount),
+      amount * MOTE_RATE,
       transferId,
       fee,
     );
