@@ -5,7 +5,6 @@ import {
   updateTransferDeployStatus,
 } from 'utils/selectors/transfer';
 import { apis } from 'services';
-import { Keys } from 'utils';
 import { allActions } from 'redux_manager';
 
 /**
@@ -43,7 +42,7 @@ export const useDeploysWithStatus = ({
         const data: any = await apis.getTransferDeploysStatusAPI({
           deployHash: pendingTransferDeployHash,
         });
-        await updateTransferDeployStatus(publicKey, Keys.deploysTransfer, data);
+        await updateTransferDeployStatus(publicKey, data);
         dispatch(allActions.main.loadLocalStorage());
       })();
     }

@@ -3,12 +3,12 @@ import memoizeOne from 'memoize-one';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import Fuse from 'fuse.js';
 
-export const stakingReducer = state => state.staking;
+export const stakingReducer = (state: any) => state.staking;
 
 /* This is memoization. It is a technique used to improve the performance of your application by
 caching the result of a function call. */
 const addValidatorIcon = memoizeOne(validators => {
-  return validators.map(validator => {
+  return validators.map((validator: any) => {
     return {
       ...validator,
       icon: getBase64IdentIcon(validator.public_key, { size: 100 }),
@@ -26,7 +26,7 @@ const searchValidator = memoizeOne((validators, searchTerm) => {
   return fuse.search(searchTerm).map(result => result.item);
 });
 
-export const getListValidators = searchTerm =>
+export const getListValidators = (searchTerm?: string) =>
   createSelector(stakingReducer, ({ listValidators }) => {
     if (!listValidators) {
       return [];

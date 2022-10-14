@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import { createSelector } from 'reselect';
 
-export const tokensSelector = state => state.home;
+export const tokensSelector = (state: any) => state.home;
 
 /* A selector that returns an array of objects. */
 export const getMassagedTokenData = createSelector(
@@ -23,9 +23,9 @@ export const getMassagedTokenData = createSelector(
                   ...datum.balance,
                   displayValue:
                     datum.balance && datum.balance.hex
-                      ? parseFloat(datum.balance.hex / 10 ** decimals).toFixed(
-                          2,
-                        )
+                      ? parseFloat(
+                          (datum.balance.hex / 10 ** decimals).toString(),
+                        ).toFixed(2)
                       : 0,
                 }
               : { displayValue: datum.balance || 0 },
@@ -33,14 +33,16 @@ export const getMassagedTokenData = createSelector(
             ...datum.total_supply,
             displayValue:
               datum.total_supply && datum.total_supply.hex
-                ? parseInt(datum.total_supply.hex / 10 ** decimals)
+                ? // eslint-disable-next-line radix
+                  parseInt((datum.total_supply.hex / 10 ** decimals).toString())
                 : 0,
           },
           decimals: {
             ...datum.decimals,
             displayValue:
               datum.decimals && datum.decimals.hex
-                ? parseInt(datum.decimals.hex)
+                ? // eslint-disable-next-line radix
+                  parseInt(datum.decimals.hex)
                 : 0,
           },
         };
@@ -55,7 +57,7 @@ export const getMassagedTokenData = createSelector(
  * It returns a list of unique tokens addresses.
  * @returns An array of unique tokens addresses.
  */
-export const getTokensAddressList = ({ main }) => {
+export const getTokensAddressList = ({ main }: any) => {
   const tokensAddress = (main && main.tokensAddressList) || [];
   return [...new Set([...tokensAddress])];
 };
