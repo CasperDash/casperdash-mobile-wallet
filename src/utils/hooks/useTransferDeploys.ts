@@ -13,7 +13,7 @@ import { allActions } from 'redux_manager';
  * @param a - The first item in the array.
  * @param b - The second item in the comparison.
  */
-const sortByTimeStampDesc = (a, b) =>
+const sortByTimeStampDesc = (a: any, b: any) =>
   b.timestamp && b.timestamp.localeCompare(a.timestamp);
 
 /**
@@ -21,32 +21,39 @@ const sortByTimeStampDesc = (a, b) =>
  * @param [] - [symbol] - symbol of the token
  * @returns An array of deploys.
  */
-export const useDeploysWithStatus = ({ symbol, publicKey, status } = {}) => {
+export const useDeploysWithStatus = ({
+  symbol,
+  publicKey,
+  status,
+}: any = {}) => {
   const dispatch = useDispatch();
 
   const transfersDeployList = useSelector(state =>
+    //@ts-ignore
     getDeploysTransfer(state, { publicKey, symbol }),
   );
 
   const pendingTransferDeployHash = transfersDeployList
-    .filter(deploy => deploy.status === 'pending')
-    .map(deploy => deploy.deployHash);
+    .filter((deploy: any) => deploy.status === 'pending')
+    .map((deploy: any) => deploy.deployHash);
 
   useEffect(() => {
     if (pendingTransferDeployHash && pendingTransferDeployHash.length) {
       (async () => {
-        const data = await apis.getTransferDeploysStatusAPI({
+        const data: any = await apis.getTransferDeploysStatusAPI({
           deployHash: pendingTransferDeployHash,
         });
         await updateTransferDeployStatus(publicKey, Keys.deploysTransfer, data);
         dispatch(allActions.main.loadLocalStorage());
       })();
     }
-  }, [JSON.stringify(pendingTransferDeployHash)]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(pendingTransferDeployHash), dispatch, publicKey]);
 
   return transfersDeployList
     .filter(
-      transfer =>
+      (transfer: any) =>
         (symbol ? transfer.symbol === symbol : true) &&
         (status ? transfer.status === status : true),
     )
