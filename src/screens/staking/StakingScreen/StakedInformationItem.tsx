@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { Row, Col, CButton } from 'components';
+import { Text, StyleSheet, View } from 'react-native';
+import { Row, Col } from 'components';
 import { colors, IconStatusReceive, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
@@ -14,8 +14,8 @@ interface Props {
 
 function StakedInformationItem({ value }: Props) {
   const { navigate } = useNavigation();
-  const StatusIcon = value.icon;
 
+  const StatusIcon = value.icon;
   const undelegate = () => {
     navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
       name: 'Undelegate',
@@ -38,6 +38,7 @@ function StakedInformationItem({ value }: Props) {
             type={'line'}
             textStyle={styles.textStyle}
             style={styles.btnUnDelegate}
+            disabled={!!value.pendingAmount}
           />
         </Col.TL>
         <Col.TR>
@@ -47,15 +48,12 @@ function StakedInformationItem({ value }: Props) {
             )} CSPR`}</Text>
           )}
           {value.pendingAmount !== null && value.pendingAmount !== undefined && (
-            <Text
-              style={[
-                textStyles.Body2,
-                {
-                  marginTop: scale(4),
-                },
-              ]}>
-              {`${toFormattedNumber(value.pendingAmount)} CSPR`}
-            </Text>
+            <View style={styles.pendingContainer}>
+              <View style={styles.circle} />
+              <Text style={[textStyles.Body2]}>
+                {`${toFormattedNumber(value.pendingAmount)} CSPR`}
+              </Text>
+            </View>
           )}
         </Col.TR>
       </Row.LR>
@@ -81,5 +79,18 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     ...textStyles.Body2,
+  },
+  circle: {
+    width: scale(10),
+    height: scale(10),
+    borderRadius: scale(10 / 2),
+    backgroundColor: colors.Y1,
+    marginRight: scale(8),
+  },
+  pendingContainer: {
+    marginTop: scale(4),
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
