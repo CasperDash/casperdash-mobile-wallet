@@ -2,7 +2,6 @@ import { all } from 'redux-saga/effects';
 import {
   watchGetAccountInformation,
   watchGetAccounts,
-  watchGetUserFromStorage,
   watchLoadSelectedWallet,
 } from '../user/user_saga';
 
@@ -32,7 +31,6 @@ export default function* rootSaga() {
     //user
     watchGetAccountInformation(),
     watchGetAccounts(),
-    watchGetUserFromStorage(),
     watchLoadSelectedWallet(),
 
     // main

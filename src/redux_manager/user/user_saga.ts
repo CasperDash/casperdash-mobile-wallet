@@ -1,4 +1,4 @@
-import { put, takeLatest, take, cancel, select } from 'redux-saga/effects';
+import { put, takeLatest, take, cancel } from 'redux-saga/effects';
 import { types } from './user_action';
 import { types as mainTypes } from '../main/main_action';
 import { apis } from 'services';
@@ -9,8 +9,6 @@ import {
   startAction,
   stopAction,
 } from 'redux_manager/main/main_action';
-import { User, ValidationResult } from 'react-native-casper-storage';
-import { getUser } from 'utils/selectors/user';
 
 export function* getAccountInformation(data: any) {
   try {
@@ -112,32 +110,6 @@ export function* watchGetAccounts() {
   }
 }
 
-export function* getUserFromStorage() {
-  try {
-    // @ts-ignore
-    const casperdash = yield Config.getItem(Keys.casperdash);
-    let currentAccount = null;
-    if (casperdash && casperdash.loginOptions?.hashingOptions) {
-      const hashingOptions = casperdash.loginOptions.hashingOptions;
-      const saltData = hashingOptions.salt?.data || [];
-      const salt = new Uint8Array(saltData);
-      const pin: string = yield Config.getItem(Keys.pinCode);
-
-      currentAccount = new User(pin, {
-        passwordOptions: {
-          passwordValidator: () => new ValidationResult(true),
-          ...hashingOptions,
-          salt: salt,
-        },
-      });
-      yield currentAccount.deserialize(casperdash?.userInfo);
-    }
-    yield put({ type: types.LOAD_USER_SUCCESS, payload: currentAccount });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 export function* getSelectedWalletFromStorage() {
   // @ts-ignore
   const selectedWallet = yield Config.getItem(Keys.selectedWallet);
@@ -153,12 +125,4 @@ export function* watchLoadSelectedWallet() {
     [types.LOAD_SELECTED_WALLET, mainTypes.INIT_APP_STATE],
     getSelectedWalletFromStorage,
   );
-}
-
-export function* watchGetUserFromStorage() {
-  // @ts-ignore
-  const user = yield select(getUser);
-  if (!user) {
-    yield takeLatest(mainTypes.INIT_APP_STATE, getUserFromStorage);
-  }
 }

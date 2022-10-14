@@ -1,34 +1,42 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { CLayout, CButton } from 'components';
 import { Image } from 'react-native';
 // @ts-ignore
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Config, Keys } from 'utils';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import PinCodeWrapper from '../PinCodeWrapper';
 import { images } from 'assets';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { scale } from 'device';
+import { getUserFromStorage } from 'utils/helpers/account';
 
 const MAX_ATTEMPT = 5;
 
 const EnterPinScreen = () => {
-  const [pin, setPin] = useState<string>();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const { isBiometryEnabled, biometryType } = useBiometry();
-
-  useEffect(() => {
-    Config.getItem(Keys.pinCode).then((savedPin: string) => {
-      setPin(savedPin);
-    });
-  }, []);
+  const [pin, setPin] = useState<string>();
 
   const onFinishedEnterPin = () => {
     navigation.navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
       isLoadUser: true,
+      pin,
     });
   };
+
+  const validatePin = async (pinCode?: string) => {
+    if (pinCode) {
+      setPin(pinCode);
+      const user = await getUserFromStorage(pinCode);
+      if (user) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  };
+
   const touchIdButton = useCallback(
     (launchTouchID: () => void) => {
       return (
@@ -60,11 +68,12 @@ const EnterPinScreen = () => {
       <PinCodeWrapper
         status="enter"
         finishProcess={onFinishedEnterPin}
-        storedPin={pin}
+        //storedPin={pin}
         timeLocked={__DEV__ ? 20000 : undefined}
         maxAttempts={MAX_ATTEMPT}
         delayBetweenAttempts={1000}
         bottomLeftComponent={touchIdButton}
+        handleResultEnterPin={validatePin}
       />
     </CLayout>
   );

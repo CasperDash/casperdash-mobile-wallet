@@ -18,19 +18,21 @@ const SplashScreen = () => {
     //always get new config
     dispatch(allActions.main.getConfigurations());
     setupNavigation();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setupNavigation = async () => {
     const overview = await Config.getItem(Keys.overview);
-    const pinCode = await Config.getItem(Keys.pinCode);
+
     const casperDashInfo = await Config.getItem(Keys.casperdash);
 
     let screen = AuthenticationRouter.WELCOME_SCREEN;
-    if (overview === 1 || !casperDashInfo) {
+    if (overview === 1 && !casperDashInfo) {
       screen = AuthenticationRouter.CREATE_NEW_WALLET;
     }
 
-    if (!isEmpty(pinCode) && !isEmpty(casperDashInfo)) {
+    if (!isEmpty(casperDashInfo)) {
       screen = AuthenticationRouter.ENTER_PIN;
     }
 
