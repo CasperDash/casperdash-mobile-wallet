@@ -4,7 +4,6 @@ import { CHeader, CLayout } from 'components';
 import { useNavigation } from '@react-navigation/native';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { Config, Keys } from 'utils';
 import PinCodeWrapper from '../PinCodeWrapper';
 
 const ChoosePinScreen: React.FC<
@@ -27,7 +26,8 @@ const ChoosePinScreen: React.FC<
       <PinCodeWrapper
         status={'choose'}
         finishProcess={onFinishedEnterPin}
-        storePin={(pin: string) => Config.saveItem(Keys.pinCode, pin)}
+        //no need to store pin
+        storePin={() => {}}
       />
     </CLayout>
   );

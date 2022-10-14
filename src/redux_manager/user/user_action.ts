@@ -1,3 +1,5 @@
+import { User } from 'react-native-casper-storage';
+
 export const types = {
   GET_ACCOUNT_INFORMATION: 'GET_ACCOUNT_INFORMATION',
   GET_ACCOUNT_INFORMATION_SUCCESS: 'GET_ACCOUNT_INFORMATION_SUCCESS',
@@ -45,7 +47,7 @@ const getSelectedWalletSuccess = (selectedWallet: any) => {
   };
 };
 
-const getUserSuccess = (user: any) => {
+const getUserSuccess = (user: User) => {
   return {
     type: types.LOAD_USER_SUCCESS,
     payload: user,

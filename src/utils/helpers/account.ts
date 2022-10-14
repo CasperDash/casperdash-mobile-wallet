@@ -8,6 +8,8 @@ import {
 } from 'react-native-casper-storage';
 import { Keys } from 'casperdash-js-sdk';
 
+import { Config, Keys as StorageKeys } from 'utils';
+
 export interface WalletInfoDetails {
   walletInfo: WalletInfo;
   publicKey?: string;
@@ -93,5 +95,32 @@ export const getWalletKeyPair = async (
     return Keys.Ed25519.parseKeyPair(trimmedPublicKey, privateKey);
   } else {
     return Keys.Secp256K1.parseKeyPair(trimmedPublicKey, privateKey, 'raw');
+  }
+};
+
+export const getUserFromStorage = async (
+  pin: string,
+): Promise<User | undefined> => {
+  try {
+    // @ts-ignore
+    const casperdash = await Config.getItem(StorageKeys.casperdash);
+    let currentAccount = null;
+    if (casperdash && casperdash.loginOptions?.hashingOptions) {
+      const hashingOptions = casperdash.loginOptions.hashingOptions;
+      const saltData = hashingOptions.salt?.data || [];
+      const salt = new Uint8Array(saltData);
+
+      currentAccount = new User(pin, {
+        passwordOptions: {
+          passwordValidator: () => new ValidationResult(true),
+          ...hashingOptions,
+          salt: salt,
+        },
+      });
+      await currentAccount.deserialize(casperdash?.userInfo);
+      return currentAccount;
+    }
+  } catch (error) {
+    return undefined;
   }
 };

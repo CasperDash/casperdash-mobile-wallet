@@ -8,7 +8,7 @@ import { colors, IconCircleClose, textStyles, fonts } from 'assets';
 import { Row, Col, CButton } from 'components';
 import CTextButton from 'components/CTextButton';
 import { PIN_LENGTH } from 'utils/constants/key';
-import { Config, Keys } from 'utils';
+import { getUserFromStorage } from 'utils/helpers/account';
 
 interface CAlertProps {
   onCancel?: () => void;
@@ -29,15 +29,14 @@ const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
     }
   }, []);
 
-  const confirm = () => {
+  const confirm = async () => {
     if (pin && pin.length === PIN_LENGTH) {
-      Config.getItem(Keys.pinCode).then((savePin: string) => {
-        if (savePin !== pin) {
-          setError(savePin !== pin);
-          return;
-        }
+      const user = await getUserFromStorage(pin);
+      if (user) {
         onConfirm?.();
-      });
+      } else {
+        setError(true);
+      }
     } else if (error) {
       setError(false);
     }

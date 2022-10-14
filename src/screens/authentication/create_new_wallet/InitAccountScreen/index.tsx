@@ -14,7 +14,10 @@ import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
 import { IHDKey, IWallet, WalletDescriptor } from 'react-native-casper-storage';
 import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
-import { createNewUserWithHdWallet } from 'utils/helpers/account';
+import {
+  createNewUserWithHdWallet,
+  getUserFromStorage,
+} from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
 
 const InitAccountScreen: React.FC<
@@ -51,7 +54,6 @@ const InitAccountScreen: React.FC<
         userInfo: userInfo,
       };
       await Config.saveItem(Keys.casperdash, info);
-      await Config.saveItem(Keys.pinCode, pin);
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
@@ -72,11 +74,15 @@ const InitAccountScreen: React.FC<
     }
   }, [algorithm, dispatch, phrases, pin, currentUser]);
 
-  const loadUser = useCallback(() => {
+  const loadUser = useCallback(async () => {
     if (!currentUser) {
-      dispatch(allActions.main.initState());
+      const loadedUser = await getUserFromStorage(pin);
+      if (loadedUser) {
+        dispatch(allActions.user.getUserSuccess(loadedUser));
+        dispatch(allActions.main.initState());
+      }
     }
-  }, [dispatch, currentUser]);
+  }, [dispatch, currentUser, pin]);
 
   const onInitSuccess = useCallback(
     (isLedger?: boolean) => {
