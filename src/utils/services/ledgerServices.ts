@@ -19,11 +19,12 @@ export const initLedgerApp = async () => {
  * @param {object} deploy
  * @param {object} options
  */
-export const signDeployByLedger = async (deploy, options = {}) => {
+export const signDeployByLedger = async (deploy: any, options: any = {}) => {
   const { casperApp, transport } = await initLedgerApp();
 
   const responseDeploy = await casperApp.sign(
     `${CASPER_KEY_PATH}${options.keyIndex}`,
+    //@ts-ignore
     DeployUtil.deployToBytes(deploy),
   );
 
@@ -37,7 +38,7 @@ export const signDeployByLedger = async (deploy, options = {}) => {
     );
   }
 
-  let signedDeploy = DeployUtil.setSignature(
+  let signedDeploy: any = DeployUtil.setSignature(
     deploy,
     responseDeploy.signatureRS,
     CLPublicKey.fromHex(options.publicKey),
@@ -58,7 +59,7 @@ export const signDeployByLedger = async (deploy, options = {}) => {
  * @param {object} app casper app
  * @param {number} keyIndex ledger key index
  */
-export const getLedgerPublicKey = async (app, keyIndex = 0) => {
+export const getLedgerPublicKey = async (app: any, keyIndex = 0) => {
   const { publicKey = '' } = await app.getAddressAndPubKey(
     `${CASPER_KEY_PATH}${keyIndex}`,
   );
@@ -75,7 +76,7 @@ export const getLedgerPublicKey = async (app, keyIndex = 0) => {
  * @param {number} startPath start index
  * @param {number} numberOfKey number of keys that want to get
  */
-export const getListKeys = async (app, startPath = 0, numberOfKey = 1) => {
+export const getListKeys = async (app: any, startPath = 0, numberOfKey = 1) => {
   let publicKeys = [];
   for (let index = 0; index < numberOfKey; index++) {
     const keyIndex = startPath + index;
@@ -92,7 +93,7 @@ export const getListKeys = async (app, startPath = 0, numberOfKey = 1) => {
  * @param {object} error
  * @param {number} code
  */
-export const getLedgerError = (error, code) => {
+export const getLedgerError = (error: any, code: number) => {
   if (error.name === 'TransportInterfaceNotAvailable' || code === 27014) {
     return CONNECT_ERROR_MESSAGE;
   }

@@ -16,7 +16,12 @@ import { toMotes } from '../helpers/currency';
  * @param paymentAmount - The amount of tokens to send to the contract.
  * @returns The deploy object.
  */
-const buildStakeDeploy = (baseAccount, entryPoint, args, paymentAmount) => {
+const buildStakeDeploy = (
+  baseAccount: any,
+  entryPoint: string,
+  args: any,
+  paymentAmount: any,
+) => {
   const deployParams = new DeployUtil.DeployParams(baseAccount, NETWORK_NAME);
   const runTimeArgs = RuntimeArgs.fromMap(args);
   const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
@@ -38,6 +43,12 @@ export const getStakeDeploy = ({
   fee,
   amount,
   entryPoint = ENTRY_POINT_DELEGATE,
+}: {
+  fromAddress: string;
+  validator: string;
+  fee: any;
+  amount: number;
+  entryPoint: string;
 }) => {
   try {
     const fromAccPk = CLPublicKey.fromHex(fromAddress);

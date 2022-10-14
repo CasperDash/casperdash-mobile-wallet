@@ -6,7 +6,7 @@ import { buildTransferTokenDeploy } from './casperServices';
  * @param [transactionDetail] - {
  * @returns The transaction object.
  */
-export const getTransferTokenDeploy = (transactionDetail = {}) => {
+export const getTransferTokenDeploy = (transactionDetail: any = {}) => {
   try {
     const {
       fromAddress,
