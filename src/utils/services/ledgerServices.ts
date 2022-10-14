@@ -45,7 +45,6 @@ export const signDeployByLedger = async (deploy: any, options: any = {}) => {
   );
   signedDeploy = DeployUtil.validateDeploy(signedDeploy);
   if (signedDeploy.ok) {
-    signedDeploy.val;
     transport.close();
     return DeployUtil.deployToJson(signedDeploy.val);
   } else {
