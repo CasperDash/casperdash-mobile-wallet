@@ -98,6 +98,7 @@ export const buildTransferTokenDeploy = (
   contractHash,
   fee,
 ) => {
+  // eslint-disable-next-line no-undef
   const contractHashAsByteArray = [...Buffer.from(contractHash, 'hex')];
   const deployParams = new DeployUtil.DeployParams(
     fromAccount,
@@ -151,4 +152,5 @@ export const toCLMap = map => {
  * @param contractHash - The contract hash of the contract you want to get the bytecode of.
  */
 export const contractHashToByteArray = contractHash =>
+  // eslint-disable-next-line no-undef
   Uint8Array.from(Buffer.from(contractHash, 'hex'));

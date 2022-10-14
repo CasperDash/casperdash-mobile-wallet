@@ -3,15 +3,15 @@ import { Config, Keys } from 'utils';
 
 /* It's a selector, which is a function that returns a value from a state. */
 export const getDeploysTransfer = createSelector(
-  state => state.main,
-  (_, params) => params,
+  (state: any) => state.main,
+  (_: any, params: any) => params,
   (main, params) => {
     const { publicKey, status, symbol } = params;
     const { deploysTransfer } = main;
     if (deploysTransfer) {
       const transferByPublicKey = deploysTransfer[publicKey] || [];
       return transferByPublicKey.filter(
-        transfer =>
+        (transfer: any) =>
           (symbol ? transfer.symbol === symbol : true) &&
           (status ? transfer.status === status : true),
       );
@@ -27,8 +27,7 @@ export const getDeploysTransfer = createSelector(
  * @param [listHash] - A list of deploys that have been deployed.
  */
 export const updateTransferDeployStatus = async (
-  publicKey,
-  path,
+  publicKey: string,
   listHash = [],
 ) => {
   const deployStorageValue = (await Config.getItem(Keys.deploysTransfer)) || {};
@@ -36,12 +35,12 @@ export const updateTransferDeployStatus = async (
 
   if (deployStorageValueByPublicKey.length > 0) {
     deployStorageValue[publicKey] = deployStorageValueByPublicKey.map(
-      deploy => {
+      (deploy: any) => {
         if (!deploy.deployHash) {
           return deploy;
         }
-        const hashStatus = listHash.find(
-          item =>
+        const hashStatus: any = listHash.find(
+          (item: any) =>
             item.hash &&
             item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
         );

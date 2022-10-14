@@ -17,17 +17,17 @@ import { Config, Keys } from 'utils';
  */
 export const getConfirmedStakesGroupByValidator =
   () =>
-  ({ stakes = {} }) => {
+  ({ stakes = {} }: any) => {
     if (stakes.delegations) {
-      let groupByValidators = [];
-      stakes.delegations.forEach(stake => {
+      let groupByValidators: any = [];
+      stakes.delegations.forEach((stake: any) => {
         const { validator, amount, status } = stake;
         const foundValidator = groupByValidators.findIndex(
-          item => validator === item.validator,
+          (item: any) => validator === item.validator,
         );
         const amountKey = `${status}Amount`;
         if (foundValidator < 0) {
-          const amountObj = {};
+          const amountObj: any = {};
           amountObj[amountKey] = amount;
           groupByValidators.push({
             validator,
@@ -48,15 +48,15 @@ export const getConfirmedStakesGroupByValidator =
 
 /* A selector that returns the stakes of a user. */
 export const getDeployStakes = createSelector(
-  state => state.main,
-  (_, params) => params,
+  (state: any) => state.main,
+  (_: any, params: any) => params,
   (main, params) => {
     const { publicKey, status, symbol } = params;
     const { deploysStakes } = main;
     if (deploysStakes) {
       const stakesByPublicKey = deploysStakes[publicKey] || [];
       return stakesByPublicKey.filter(
-        stake =>
+        (stake: any) =>
           (symbol ? stake.symbol === symbol : true) &&
           (status ? stake.status === status : true),
       );
@@ -72,8 +72,7 @@ export const getDeployStakes = createSelector(
  * @param [listHash] - A list of hashes of the deployed stakes.
  */
 export const updateStakesDeployStatus = async (
-  publicKey,
-  path,
+  publicKey: string,
   listHash = [],
 ) => {
   const deployStorageValue = (await Config.getItem(Keys.deploysStakes)) || {};
@@ -81,12 +80,12 @@ export const updateStakesDeployStatus = async (
 
   if (deployStorageValueByPublicKey.length > 0) {
     deployStorageValue[publicKey] = deployStorageValueByPublicKey.map(
-      deploy => {
+      (deploy: any) => {
         if (!deploy.deployHash) {
           return deploy;
         }
-        const hashStatus = listHash.find(
-          item =>
+        const hashStatus: any = listHash.find(
+          (item: any) =>
             item.hash &&
             item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
         );

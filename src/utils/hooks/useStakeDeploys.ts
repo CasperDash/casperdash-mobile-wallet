@@ -6,7 +6,6 @@ import { getListValidators } from '../selectors/validator';
 import { ENTRY_POINT_UNDELEGATE } from '../constants/key';
 import { IconStatusReceive, IconStatusSend } from 'assets';
 import { apis } from 'services';
-import { Keys } from 'utils';
 import { allActions } from 'redux_manager';
 
 /**
@@ -110,7 +109,7 @@ export const useStakeFromValidators = (publicKey: string) => {
         const data: any = await apis.getTransferDeploysStatusAPI({
           deployHash: pendingStakesDeployHash,
         });
-        await updateStakesDeployStatus(publicKey, Keys.deploysTransfer, data);
+        await updateStakesDeployStatus(publicKey, data);
         dispatch(allActions.main.loadLocalStorage());
       })();
     }
