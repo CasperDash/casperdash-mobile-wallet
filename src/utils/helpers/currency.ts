@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
+//@ts-ignore
 import Big from 'big.js';
 import { MOTE_RATE } from '../constants/key';
 
@@ -13,7 +14,7 @@ import { MOTE_RATE } from '../constants/key';
  * @param {Number|String} amount
  * @returns {BigNumberis|String} Return "-" if it's the invalid big number input.
  */
-export const toMotes = amount => {
+export const toMotes = (amount: number | string) => {
   try {
     const bigAmount = Big(amount)
       .times(MOTE_RATE)
@@ -31,7 +32,7 @@ export const toMotes = amount => {
  * @param {Number|String} amount
  * @returns {BigNumberis|String} Return "-" if it's the invalid big number input.
  */
-export const toCSPR = amount => {
+export const toCSPR = (amount: number | string) => {
   try {
     const bigAmount = Big(amount)
       .div(MOTE_RATE)

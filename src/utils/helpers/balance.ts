@@ -10,6 +10,11 @@ export const convertBalanceFromHex = (balanceHex: string) => {
   return moteToCspr(balance);
 };
 
+/**
+ * Convert a balance in CSPR to a balance in Mote.
+ * @param {number} balanceInCSPR - The balance in CSPR that you want to convert to MOTE.
+ * @returns The balance in CSPR is being converted to the balance in Mote.
+ */
 export const moteToCspr = (balanceInCSPR: number) => {
   return parseFloat((balanceInCSPR / MOTE_RATE).toString());
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { Row, Col } from 'components';
-import { colors, IconStatusReceive, textStyles } from 'assets';
+import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
 import { toFormattedNumber } from 'utils/helpers/format';

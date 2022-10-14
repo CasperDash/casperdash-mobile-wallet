@@ -49,8 +49,8 @@ export const toFormattedCurrency = (
  * @return {String} Formatted date.
  */
 export const toFormattedDate = (
-  dateString,
-  options = { dateStyle: 'short', timeStyle: 'medium', hour12: false },
+  dateString: string,
+  options: any = { dateStyle: 'short', timeStyle: 'medium', hour12: false },
   locales = Config.defaultLocale,
 ) => {
   let date = new Date(dateString);
@@ -65,8 +65,8 @@ export const toFormattedDate = (
  * Return - if NaN
  * @param {number} value
  */
-export const displayNaN = value => {
-  return Number.isNaN(value) || value === 'NaN' ? '-' : value;
+export const displayNaN = (value: number) => {
+  return Number.isNaN(value) || isNaN(value) ? '-' : value;
 };
 
 /**
@@ -74,7 +74,7 @@ export const displayNaN = value => {
  * @param {string} fullString
  * @param {number} end
  */
-export const getEndString = (fullString, end) => {
+export const getEndString = (fullString: string, end: any) => {
   if (typeof fullString !== 'string') {
     return fullString;
   }
@@ -82,7 +82,7 @@ export const getEndString = (fullString, end) => {
     return end;
   } else if (typeof end === 'number') {
     return fullString.slice(-Math.abs(end));
-  } else if (end instanceof window.RegExp) {
+  } else if (end instanceof RegExp) {
     const match = fullString.match(end);
     if (!match) {
       return '';
@@ -97,11 +97,17 @@ export const getEndString = (fullString, end) => {
  * @param {number} mote
  * @param {object} options
  */
-export const toDisplayValueFromMote = (mote, options) => {
+export const toDisplayValueFromMote = (mote: number, options: any) => {
   return toFormattedNumber(mote / MOTE_RATE, options);
 };
 
-export const getValueByFormat = (value, options) => {
+/**
+ * It takes a value and an options object, and returns the value formatted according to the format
+ * specified in the options object
+ * @param {any} value - the value to be formatted
+ * @param {any} options - {
+ */
+export const getValueByFormat = (value: any, options: any) => {
   const { format, ...formatOptions } = options;
   switch (format) {
     case 'currency':
@@ -124,7 +130,11 @@ export const getValueByFormat = (value, options) => {
   }
 };
 
-export const nonAccentText = str => {
+/**
+ * It replaces all Vietnamese characters with their non-accented counterparts
+ * @param {string} str - The string to be converted.
+ */
+export const nonAccentText = (str: string) => {
   if (str) {
     str = str.toLowerCase();
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
