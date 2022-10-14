@@ -8,7 +8,7 @@ import {
 import { allActions } from 'redux_manager';
 import { useEffect } from 'react';
 
-export const useTokenInfo = token => {
+export const useTokenInfo = (token: string) => {
   const dispatch = useDispatch();
 
   // Selector
@@ -28,7 +28,7 @@ export const useTokenInfo = token => {
         }),
       );
     }
-  }, [publicKey]);
+  }, [publicKey, dispatch, tokensAddressList]);
 
   return { allTokenInfo, tokenInfoByAddress };
 };

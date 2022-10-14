@@ -15,9 +15,9 @@ export const useConfirmDeploy = () => {
    * @param cb - callback function that will be called with the result of the deploy.
    * @returns The deployHash.
    */
-  const putSignedDeploy = async (signedDeploy, cb) => {
+  const putSignedDeploy = async (signedDeploy: any) => {
     try {
-      const data = await apis.deployAPI(signedDeploy);
+      const data: any = await apis.deployAPI(signedDeploy);
       if (data) {
         return data.deployHash;
       }
@@ -37,10 +37,9 @@ export const useConfirmDeploy = () => {
    * @returns The deploy hash and the signed deploy.
    */
   const executeDeploy = async (
-    buildDeployFn,
-    fromPublicKey,
-    toPublicKey,
-    showMessage,
+    buildDeployFn: any,
+    fromPublicKey: string,
+    showMessage: any,
   ) => {
     setIsDeploying(true);
     showMessage('Preparing deploy');
@@ -48,18 +47,14 @@ export const useConfirmDeploy = () => {
       const deploy = await buildDeployFn();
       // Sign with signer
       showMessage('Please review the deploy');
-      const signedDeploy = await signer.sign(
-        deploy,
-        fromPublicKey,
-        toPublicKey,
-      );
+      const signedDeploy = await signer.sign(deploy, fromPublicKey);
       showMessage('Putting deploy');
 
       const deployHash = await putSignedDeploy(signedDeploy);
       showMessage(`Deploy hash: ${deployHash}`, MessageType.success);
       setIsDeploying(false);
       return { deployHash, signedDeploy };
-    } catch (error) {
+    } catch (error: any) {
       showMessage(error.message, MessageType.error);
       setDeployError(true);
       setIsDeploying(false);

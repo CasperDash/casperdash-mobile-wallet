@@ -9,7 +9,12 @@ import { apis } from 'services';
 import { Keys } from 'utils';
 import { allActions } from 'redux_manager';
 
-export const getStakeIcon = value => {
+/**
+ * It returns an icon based on the value of the stake
+ * @param {number} value - number - the value of the transaction
+ * @returns the value of the IconStatusReceive or IconStatusSend.
+ */
+export const getStakeIcon = (value: number) => {
   return value > 0 ? IconStatusReceive : IconStatusSend;
 };
 
@@ -21,17 +26,21 @@ export const getStakeIcon = value => {
  * @param {String} publicKey
  * @returns
  */
-const getStakedValidators = (validators, pendingStakes, publicKey) => {
-  let stakedValidators = [];
+const getStakedValidators = (
+  validators: any,
+  pendingStakes: any,
+  publicKey: string,
+) => {
+  let stakedValidators: any = [];
   if (!publicKey || !validators.length) {
     return stakedValidators;
   }
-  validators.forEach(validator => {
+  validators.forEach((validator: any) => {
     if (!validator.bidInfo) {
       return;
     }
     const foundDelegator = validator.bidInfo.bid.delegators.find(
-      delegator =>
+      (delegator: any) =>
         delegator.public_key &&
         delegator.public_key.toLowerCase() === publicKey.toLowerCase(),
     );
@@ -41,9 +50,9 @@ const getStakedValidators = (validators, pendingStakes, publicKey) => {
 
     const { public_key: validatorPublicKey } = validator;
     const pendingStake = pendingStakes.find(
-      stake => stake.validator === validatorPublicKey,
+      (stake: any) => stake.validator === validatorPublicKey,
     );
-    let stakedValidator = {
+    let stakedValidator: any = {
       validator: validatorPublicKey,
       stakedAmount: moteToCspr(foundDelegator.staked_amount),
       icon: IconStatusReceive,
@@ -61,11 +70,12 @@ const getStakedValidators = (validators, pendingStakes, publicKey) => {
 
   pendingStakes
     .filter(
-      stake =>
-        stakedValidators.findIndex(item => item.validator === stake.validator) <
-        0,
+      (stake: any) =>
+        stakedValidators.findIndex(
+          (item: any) => item.validator === stake.validator,
+        ) < 0,
     )
-    .forEach(newStakedValidator =>
+    .forEach((newStakedValidator: any) =>
       stakedValidators.push({
         validator: newStakedValidator.validator,
         pendingAmount: newStakedValidator.amount,
@@ -76,15 +86,16 @@ const getStakedValidators = (validators, pendingStakes, publicKey) => {
   return stakedValidators;
 };
 
-export const useStakeFromValidators = publicKey => {
+export const useStakeFromValidators = (publicKey: string) => {
   const dispatch = useDispatch();
 
   const validators = useSelector(getListValidators());
   const stakeDeployList = useSelector(state =>
+    //@ts-ignore
     getDeployStakes(state, { publicKey }),
   );
   const pendingStakes = stakeDeployList.filter(
-    stake => stake.status === 'pending',
+    (stake: any) => stake.status === 'pending',
   );
 
   useEffect(() => {
@@ -94,16 +105,17 @@ export const useStakeFromValidators = publicKey => {
           return;
         }
         const pendingStakesDeployHash = pendingStakes.map(
-          deploy => deploy.deployHash,
+          (deploy: any) => deploy.deployHash,
         );
-        const data = await apis.getTransferDeploysStatusAPI({
+        const data: any = await apis.getTransferDeploysStatusAPI({
           deployHash: pendingStakesDeployHash,
         });
         await updateStakesDeployStatus(publicKey, Keys.deploysTransfer, data);
         dispatch(allActions.main.loadLocalStorage());
       })();
     }
-  }, [JSON.stringify(pendingStakes), dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(pendingStakes), dispatch, publicKey]);
 
   const stakedValidators = getStakedValidators(
     validators,

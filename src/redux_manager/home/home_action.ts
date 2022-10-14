@@ -16,7 +16,7 @@ export const types = {
     'PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS',
 };
 
-const getTokenInfoWithBalance = (params: any, cb: any) => {
+const getTokenInfoWithBalance = (params: any, cb?: any) => {
   return {
     type: types.GET_TOKEN_INFO_WITH_BALANCE,
     params,
