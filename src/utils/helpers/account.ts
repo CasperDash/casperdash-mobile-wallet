@@ -33,9 +33,9 @@ export const getRecoveryPhase = (numberOfWords: number) => {
  */
 export const createNewUser = (password: string): User => {
   const user = new User(password, {
-    passwordOptions: {
-      passwordValidator: () => new ValidationResult(true),
-    },
+    passwordValidator: {
+      validatorFunc: () => new ValidationResult(true)
+    }
   });
 
   return user;
@@ -157,7 +157,7 @@ export const getUserFromStorage = async (
     if (casperdash && casperdash.loginOptions?.hashingOptions) {
       const hashingOptions = casperdash.loginOptions.hashingOptions;
       const saltData = hashingOptions.salt?.data || [];
-      const salt = new Uint8Array(saltData);
+      const salt = saltData && saltData.length > 0 ? new Uint8Array(saltData) : null;
 
       currentAccount = new User(pin, {
         passwordOptions: {

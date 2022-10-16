@@ -109,7 +109,9 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
       new WalletDescriptor(`Account ${wallets.length + 1}`),
     );
     const casperDashInfo = await Config.getItem(Keys.casperdash);
-    casperDashInfo.userInfo = await currentAccount.serialize();
+    const userInfo = await currentAccount.serialize();
+    casperDashInfo.userInfo = userInfo.value;
+    casperDashInfo.loginOptions.hashingOptions = userInfo.passwordOptions;
 
     await Config.saveItem(Keys.casperdash, casperDashInfo);
     dispatch(allActions.user.getUserSuccess(currentAccount));

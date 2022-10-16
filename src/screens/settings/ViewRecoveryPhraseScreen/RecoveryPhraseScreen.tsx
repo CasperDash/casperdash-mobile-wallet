@@ -20,7 +20,7 @@ const RecoveryPhraseScreen = () => {
 
   const hdWallet = user.getHDWallet();
 
-  const recoveryPhaseArr = hdWallet.id.split(' ');
+  const recoveryPhaseArr = hdWallet.keyPhrase.split(' ');
 
   return (
     <CLayout>
@@ -62,7 +62,7 @@ const RecoveryPhraseScreen = () => {
             style={[{ marginRight: scale(15) }]}
             text={'Copy'}
             onPress={async () => {
-              copyToClipboard(hdWallet.id);
+              copyToClipboard(hdWallet.keyPhrase);
             }}
           />
         </Row.C>
