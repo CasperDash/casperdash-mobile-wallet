@@ -43,15 +43,14 @@ const InitAccountScreen: React.FC<
         new WalletDescriptor('Account 1'),
       );
       const publicKey = await acc0.getPublicKey();
-      const hashingOptions = user.getPasswordHashingOptions();
       const userInfo = await user.serialize();
       const info = {
         publicKey: publicKey,
         loginOptions: {
           connectionType: CONNECTION_TYPES.passPhase,
-          hashingOptions: hashingOptions,
+          hashingOptions: userInfo.passwordOptions,
         },
-        userInfo: userInfo,
+        userInfo: userInfo.value,
       };
       await Config.saveItem(Keys.casperdash, info);
 
