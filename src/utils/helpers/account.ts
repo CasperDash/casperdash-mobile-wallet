@@ -5,6 +5,7 @@ import {
   EncryptionType,
   WalletInfo,
   CasperLegacyWallet,
+  IPasswordOptions,
 } from 'react-native-casper-storage';
 import { Keys } from 'casperdash-js-sdk';
 
@@ -31,11 +32,15 @@ export const getRecoveryPhase = (numberOfWords: number) => {
  * @param {string} password - string - The password to use for the user.
  * @returns A new User object.
  */
-export const createNewUser = (password: string): User => {
+export const createNewUser = (
+  password: string,
+  passwordOptions?: IPasswordOptions,
+): User => {
   const user = new User(password, {
     passwordValidator: {
-      validatorFunc: () => new ValidationResult(true)
-    }
+      validatorFunc: () => new ValidationResult(true),
+    },
+    passwordOptions,
   });
 
   return user;
@@ -157,19 +162,14 @@ export const getUserFromStorage = async (
     if (casperdash && casperdash.loginOptions?.hashingOptions) {
       const hashingOptions = casperdash.loginOptions.hashingOptions;
       const saltData = hashingOptions.salt?.data || [];
-      const salt = saltData && saltData.length > 0 ? new Uint8Array(saltData) : null;
-
-      currentAccount = new User(pin, {
-        passwordOptions: {
-          passwordValidator: () => new ValidationResult(true),
-          ...hashingOptions,
-          salt: salt,
-        },
-      });
+      const salt =
+        saltData && saltData.length > 0 ? new Uint8Array(saltData) : null;
+      currentAccount = createNewUser(pin, { ...hashingOptions, salt: salt });
       await currentAccount.deserialize(casperdash?.userInfo);
       return currentAccount;
     }
   } catch (error) {
+    console.error(error);
     return undefined;
   }
 };

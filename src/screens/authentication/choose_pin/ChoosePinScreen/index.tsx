@@ -28,6 +28,7 @@ const ChoosePinScreen: React.FC<
         finishProcess={onFinishedEnterPin}
         //no need to store pin
         storePin={() => {}}
+        timeLocked={__DEV__ ? 20000 : undefined}
       />
     </CLayout>
   );

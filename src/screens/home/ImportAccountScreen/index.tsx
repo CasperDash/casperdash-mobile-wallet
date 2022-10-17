@@ -53,7 +53,7 @@ function ImportAccountScreen() {
       const info = {
         ...casperdash,
         userInfo: userInfo.value,
-        publicKey: publicKey
+        publicKey: publicKey,
       };
       info.loginOptions.hashingOptions = userInfo.passwordOptions;
 

@@ -44,6 +44,7 @@ const InitAccountScreen: React.FC<
       );
       const publicKey = await acc0.getPublicKey();
       const userInfo = await user.serialize();
+
       const info = {
         publicKey: publicKey,
         loginOptions: {
