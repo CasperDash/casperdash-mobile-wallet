@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { CLayout, CButton } from 'components';
-import { Image, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, Text, NativeModules } from 'react-native';
 // @ts-ignore
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -42,6 +42,7 @@ const EnterPinScreen = () => {
     Object.entries(Keys).map(key => {
       return Config.deleteItem(key[1]);
     });
+    NativeModules.DevSettings.reload();
   };
 
   const touchIdButton = useCallback(
