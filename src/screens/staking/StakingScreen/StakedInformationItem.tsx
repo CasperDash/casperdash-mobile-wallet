@@ -7,6 +7,7 @@ import CTextButton from 'components/CTextButton';
 import { toFormattedNumber } from 'utils/helpers/format';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useNavigation } from '@react-navigation/native';
+import { StakingMode } from 'utils/constants/key';
 
 interface Props {
   value: any;
@@ -18,7 +19,7 @@ function StakedInformationItem({ value }: Props) {
   const StatusIcon = value.icon;
   const undelegate = () => {
     navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
-      name: 'Undelegate',
+      name: StakingMode.Undelegate,
       validator: value.validator,
       stakedAmount: value.stakedAmount,
     });

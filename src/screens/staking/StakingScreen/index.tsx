@@ -41,6 +41,7 @@ import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStakeFromValidators } from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
+import { StakingMode } from 'utils/constants/key';
 
 const initialValues = {
   amount: '0',
@@ -193,7 +194,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   const onConfirm = () => {
     navigation.navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
-      name: 'Delegate',
+      name: StakingMode.Delegate,
       validator: values.validator,
       amount: values.amount.replace(/,/, '.'),
     });
