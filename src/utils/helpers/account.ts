@@ -97,7 +97,7 @@ export const getWalletInfoWithPublicKey = async (
     WalletList.map(async walletInfo => {
       let publicKey;
       const walletDetails = await getWalletDetails(user, walletInfo);
-      publicKey = walletDetails?.getPublicKey();
+      publicKey = await walletDetails?.getPublicKey();
 
       return { ...walletInfo, publicKey };
     }),
