@@ -12,6 +12,7 @@ import {
   StakingConfirmScreen,
   ImportAccountScreen,
   ShowRecoveryPhraseScreen,
+  ShowPrivateKeyScreen,
 } from 'screens';
 import NFTDetail from 'screens/nft/NFTDetailScreen';
 
@@ -29,6 +30,7 @@ const {
   STAKING_CONFIRM_SCREEN,
   IMPORT_ACCOUNT_SCREEN,
   SHOW_RECOVERY_PHRASE_SCREEN,
+  SHOW_PRIVATE_KEY_SCREEN,
 } = MainRouter;
 
 export const MainScreens = {
@@ -73,5 +75,8 @@ export const MainScreens = {
   },
   [SHOW_RECOVERY_PHRASE_SCREEN]: {
     screen: ShowRecoveryPhraseScreen,
+  },
+  [SHOW_PRIVATE_KEY_SCREEN]: {
+    screen: ShowPrivateKeyScreen,
   },
 };

@@ -53,6 +53,7 @@ import IconUp from './images/ic_up.svg';
 import IconDown from './images/ic_down.svg';
 import IconImportAccount from './images/ic_import_account.svg';
 import IconLock from './images/ic-lock.svg';
+import IconKey from './images/ic_key.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -257,4 +258,5 @@ export {
   IconUp,
   IconDown,
   IconImportAccount,
+  IconKey,
 };
