@@ -96,19 +96,8 @@ export const getWalletInfoWithPublicKey = async (
   return await Promise.all(
     WalletList.map(async walletInfo => {
       let publicKey;
-
-      if (walletInfo.walletInfo.isHDWallet) {
-        const wallet = await user.getWalletAccountByRefKey(
-          walletInfo.walletInfo.id,
-        );
-        publicKey = await wallet.getPublicKey();
-      } else if (walletInfo.walletInfo.isLegacy) {
-        const wallet = new CasperLegacyWallet(
-          walletInfo.walletInfo.id,
-          walletInfo.walletInfo.encryptionType,
-        );
-        publicKey = await wallet.getPublicKey();
-      }
+      const walletDetails = await getWalletDetails(user, walletInfo);
+      publicKey = walletDetails?.getPublicKey();
 
       return { ...walletInfo, publicKey };
     }),
@@ -127,28 +116,21 @@ export const getWalletKeyPair = async (
 ) => {
   let publicKey: Uint8Array;
   let privateKey: Uint8Array;
-  const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
-  if (fullWalletInfo.isHDWallet) {
-    const wallet = await user.getWalletAccountByRefKey(fullWalletInfo.id);
-    publicKey = await wallet.getPublicKeyByteArray();
-    privateKey = wallet.getPrivateKeyByteArray();
-  } else if (fullWalletInfo.isLegacy) {
-    const wallet = new CasperLegacyWallet(
-      fullWalletInfo.id,
-      fullWalletInfo.encryptionType,
-    );
-    publicKey = await wallet.getPublicKeyByteArray();
-    privateKey = wallet.getPrivateKeyByteArray();
+  //const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
+  const walletDetails = await getWalletDetails(user, selectedWallet);
+  if (walletDetails) {
+    publicKey = await walletDetails.getPublicKeyByteArray();
+    privateKey = walletDetails.getPrivateKeyByteArray();
+
+    // need to slice prefix
+    const trimmedPublicKey = publicKey.slice(1);
+    if (selectedWallet.walletInfo.encryptionType === EncryptionType.Ed25519) {
+      return Keys.Ed25519.parseKeyPair(trimmedPublicKey, privateKey);
+    } else {
+      return Keys.Secp256K1.parseKeyPair(trimmedPublicKey, privateKey, 'raw');
+    }
   } else {
     throw Error('Error on get Keys');
-  }
-
-  // need to slice prefix
-  const trimmedPublicKey = publicKey.slice(1);
-  if (selectedWallet.walletInfo.encryptionType === EncryptionType.Ed25519) {
-    return Keys.Ed25519.parseKeyPair(trimmedPublicKey, privateKey);
-  } else {
-    return Keys.Secp256K1.parseKeyPair(trimmedPublicKey, privateKey, 'raw');
   }
 };
 
@@ -179,6 +161,12 @@ export const getUserFromStorage = async (
   }
 };
 
+/**
+ * It takes a user object and a wallet object and returns a wallet object
+ * @param {User} user - User - this is the user object that you get from the login function
+ * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
+ * @returns A wallet object
+ */
 export const getWalletDetails = async (
   user: User,
   selectedWallet: WalletInfoDetails,
