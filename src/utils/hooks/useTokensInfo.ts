@@ -28,7 +28,8 @@ export const useTokenInfo = (token: string) => {
         }),
       );
     }
-  }, [publicKey, dispatch, tokensAddressList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicKey]);
 
   return { allTokenInfo, tokenInfoByAddress };
 };
