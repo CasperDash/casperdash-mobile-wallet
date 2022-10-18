@@ -59,7 +59,6 @@ const RecoveryPhraseScreen = () => {
         <Row.C>
           <CTextButton
             type={'line'}
-            style={[{ marginRight: scale(15) }]}
             text={'Copy'}
             onPress={async () => {
               copyToClipboard(hdWallet.keyPhrase);

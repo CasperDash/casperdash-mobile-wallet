@@ -37,6 +37,7 @@ import {
   WalletInfoDetails,
 } from 'utils/helpers/account';
 import { convertBalanceFromHex } from 'utils/helpers/balance';
+import ViewPrivateKeyButton from './ViewPrivateKeyButton';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
@@ -229,6 +230,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
             </Text>
           </Row>
         </CButton>
+        <ViewPrivateKeyButton onConfirm={hide} />
       </Col>
     </Modal>
   );

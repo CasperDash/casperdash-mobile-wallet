@@ -178,3 +178,20 @@ export const getUserFromStorage = async (
     return undefined;
   }
 };
+
+export const getWalletDetails = async (
+  user: User,
+  selectedWallet: WalletInfoDetails,
+) => {
+  const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
+  if (fullWalletInfo.isHDWallet) {
+    const wallet = await user.getWalletAccountByRefKey(fullWalletInfo.id);
+    return wallet;
+  } else if (fullWalletInfo.isLegacy) {
+    const wallet = new CasperLegacyWallet(
+      fullWalletInfo.id,
+      fullWalletInfo.encryptionType,
+    );
+    return wallet;
+  }
+};
