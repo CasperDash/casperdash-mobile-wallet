@@ -28,9 +28,14 @@ export const getRecoveryPhase = (numberOfWords: number) => {
 };
 
 /**
- * It creates a new user with a password and a password validator that always returns true
- * @param {string} password - string - The password to use for the user.
- * @returns A new User object.
+ * "Create a new user with the given password and password options."
+ *
+ * The first parameter is the password. The second parameter is optional. If it's not provided, the
+ * default password options will be used
+ * @param {string} password - string - The password to set for the user.
+ * @param {IPasswordOptions} [passwordOptions] - IPasswordOptions - This is an optional parameter that
+ * allows you to specify the password options.
+ * @returns A new User object
  */
 export const createNewUser = (
   password: string,

@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { CLayout, CButton } from 'components';
-import { Image } from 'react-native';
+import { Image, StyleSheet, Text } from 'react-native';
 // @ts-ignore
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import PinCodeWrapper from '../PinCodeWrapper';
-import { images } from 'assets';
+import { images, colors, textStyles } from 'assets';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { scale } from 'device';
 import { getUserFromStorage } from 'utils/helpers/account';
+import { Keys, Config } from 'utils';
 
 const MAX_ATTEMPT = 5;
 
@@ -35,6 +36,12 @@ const EnterPinScreen = () => {
       return false;
     }
     return false;
+  };
+
+  const onDeleteAllData = () => {
+    Object.entries(Keys).map(key => {
+      return Config.deleteItem(key[1]);
+    });
   };
 
   const touchIdButton = useCallback(
@@ -74,8 +81,30 @@ const EnterPinScreen = () => {
         bottomLeftComponent={touchIdButton}
         handleResultEnterPin={validatePin}
       />
+      {__DEV__ && (
+        <CButton onPress={onDeleteAllData} style={styles.btnDelete}>
+          <Text style={styles.txtDelete}>Delete All Data</Text>
+        </CButton>
+      )}
     </CLayout>
   );
 };
 
 export default EnterPinScreen;
+
+const styles = StyleSheet.create({
+  btnDelete: {
+    paddingVertical: scale(6),
+    paddingHorizontal: scale(16),
+    minWidth: scale(134),
+    height: scale(36),
+    borderRadius: scale(18),
+    borderWidth: scale(1),
+    borderColor: colors.N4,
+    alignSelf: 'center',
+    marginTop: scale(70),
+  },
+  txtDelete: {
+    ...textStyles.Body2,
+  },
+});
