@@ -26,3 +26,7 @@ export const AUCTION_HASH = APP_CONFIGS.AUCTION_HASH;
 export const DEFAULT_NUMBER_OF_RECOVERY_WORDS = 12;
 export const NUMBER_WORDS_PER_ROW = 3;
 export const PIN_LENGTH = 6;
+export enum StakingMode {
+  Undelegate = 'Undelegate',
+  Delegate = 'Delegate',
+}
