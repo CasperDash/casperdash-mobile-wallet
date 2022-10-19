@@ -10,6 +10,7 @@ const Keys = {
   deploysStakes: 'deploys.stakes',
   selectedWallet: 'selectedWallet',
   touchIdEnabled: 'touchIdEnabled',
+  masterPassword: 'masterPassword',
 };
 
 export default Keys;

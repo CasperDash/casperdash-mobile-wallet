@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CLayout, CButton } from 'components';
 import { Image, StyleSheet, Text, NativeModules } from 'react-native';
 // @ts-ignore
@@ -9,7 +9,7 @@ import PinCodeWrapper from '../PinCodeWrapper';
 import { images, colors, textStyles } from 'assets';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { scale } from 'device';
-import { getUserFromStorage } from 'utils/helpers/account';
+import { validatePin } from 'utils/helpers/account';
 import { Keys, Config } from 'utils';
 
 const MAX_ATTEMPT = 5;
@@ -18,6 +18,14 @@ const EnterPinScreen = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const { isBiometryEnabled, biometryType } = useBiometry();
   const [pin, setPin] = useState<string>();
+  const [storedPin, setSotedPin] = useState<string>();
+  const [isBiometry, setIsBiometry] = useState<boolean>(false);
+
+  useEffect(() => {
+    Config.getItem(Keys.masterPassword).then(masterPassword => {
+      setSotedPin(masterPassword.password);
+    });
+  }, []);
 
   const onFinishedEnterPin = () => {
     navigation.navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
@@ -26,14 +34,10 @@ const EnterPinScreen = () => {
     });
   };
 
-  const validatePin = async (pinCode?: string) => {
-    if (pinCode) {
+  const onValidatePin = async (pinCode: string) => {
+    if (pinCode || isBiometry) {
       setPin(pinCode);
-      const user = await getUserFromStorage(pinCode);
-      if (user) {
-        return true;
-      }
-      return false;
+      return await validatePin(pinCode, isBiometry);
     }
     return false;
   };
@@ -50,7 +54,11 @@ const EnterPinScreen = () => {
       return (
         <>
           {biometryType && isBiometryEnabled && (
-            <CButton onPress={launchTouchID}>
+            <CButton
+              onPress={() => {
+                setIsBiometry(true);
+                launchTouchID();
+              }}>
               <Image
                 style={{
                   marginLeft: scale(16),
@@ -80,7 +88,8 @@ const EnterPinScreen = () => {
         maxAttempts={MAX_ATTEMPT}
         delayBetweenAttempts={1000}
         bottomLeftComponent={touchIdButton}
-        handleResultEnterPin={validatePin}
+        handleResultEnterPin={onValidatePin}
+        storedPin={storedPin}
       />
       {__DEV__ && (
         <CButton onPress={onDeleteAllData} style={styles.btnDelete}>

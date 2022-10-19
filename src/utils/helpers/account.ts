@@ -6,6 +6,7 @@ import {
   WalletInfo,
   CasperLegacyWallet,
   IPasswordOptions,
+  PasswordOptions,
 } from 'react-native-casper-storage';
 import { Keys } from 'casperdash-js-sdk';
 
@@ -143,6 +144,7 @@ export const getUserFromStorage = async (
   pin: string,
 ): Promise<User | undefined> => {
   try {
+    console.info('pin222', pin);
     // @ts-ignore
     const casperdash = await Config.getItem(StorageKeys.casperdash);
     let currentAccount = null;
@@ -182,4 +184,39 @@ export const getWalletDetails = async (
     );
     return wallet;
   }
+};
+
+/**
+ * It creates a new instance of the PasswordOptions , and then saves it to storage
+ * @param {string} pin - The pin that the user entered.
+ */
+export const createAndStoreMasterPassword = (pin: string) => {
+  const masterPassword = new PasswordOptions(pin);
+  Config.saveMasterPassword(masterPassword);
+};
+
+/**
+ * It takes a pin, creates a new PasswordOptions object with the pin and the salt, iterations, and key
+ * size from the master password, and then compares the password from the new PasswordOptions object to
+ * the master password
+ * @param {string} pin - The pin that the user entered
+ * @returns The password is being returned.
+ */
+export const validatePin = async (pin: string, isBiometry?: boolean) => {
+  let password;
+  const masterPassword: PasswordOptions = await Config.getItem(
+    StorageKeys.masterPassword,
+  );
+  if (isBiometry) {
+    password = pin;
+  } else {
+    const checkingPassword = new PasswordOptions(pin, {
+      salt: masterPassword.salt,
+      iterations: masterPassword.iterations,
+      keySize: masterPassword.keySize,
+    });
+    password = checkingPassword.password;
+  }
+
+  return masterPassword.password === password;
 };
