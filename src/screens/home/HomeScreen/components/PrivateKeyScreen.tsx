@@ -39,7 +39,7 @@ const PrivateKeyScreen = () => {
         <Text style={[styles.noteText]}>
           {selectedWallet.walletInfo.descriptor.name}
         </Text>
-        <Row.C style={styles.secretKeyContainer} mx={20} py={10}>
+        <Row.C style={styles.secretKeyContainer} mx={20} py={10} px={5}>
           <Text>{privateKey}</Text>
         </Row.C>
         <Row.B style={styles.copyBtnContainer}>
