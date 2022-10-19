@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
+import { getPublicKey, getMassagedUserDetails } from 'utils/selectors';
 import { getConfigKey } from 'utils/selectors/configurations';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { ScreenProps } from 'navigation/ScreenProps';
@@ -48,7 +48,10 @@ const StakingConfirmScreen: React.FC<
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
-
+  const userDetails = useSelector(getMassagedUserDetails);
+  const balance =
+    userDetails && userDetails.balance && userDetails.balance.displayBalance;
+  console.info(fee);
   const [isForm, setIsForm] = useState<boolean>(
     name === StakingMode.Undelegate,
   );
@@ -63,8 +66,8 @@ const StakingConfirmScreen: React.FC<
         return +value.replace(/,/, '.');
       })
       .required('Amount must be more than 0 CSPR')
-      .test('max', 'Not enough balance.', function (value: any) {
-        return value + fee <= stakedAmount;
+      .test('max', 'Not enough balance.', function () {
+        return balance >= fee;
       })
       .test('min', 'Amount must be more than 0 CSPR', function (value: any) {
         return value > 0;
