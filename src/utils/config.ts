@@ -3,6 +3,8 @@ import { check, request, RESULTS } from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
 import * as RNLocalize from 'react-native-localize';
 import { EXPLORER_URL } from 'utils/constants/key';
+import { PasswordOptions } from 'react-native-casper-storage';
+import Keys from './keys';
 
 const locales = RNLocalize.getLocales();
 const defaultLocale = locales && locales[0] && locales[0].languageTag;
@@ -127,6 +129,14 @@ const deleteItem = async (key: string, options?: any) => {
 const getViewExplorerURL = (type: string, value: string) => {
   return `${EXPLORER_URL}/${type}/${value}`;
 };
+
+const saveMasterPassword = (passwordOptions: PasswordOptions) => {
+  saveItem(Keys.masterPassword, {
+    password: passwordOptions.password,
+    ...passwordOptions.getOptions,
+  });
+};
+
 export default {
   alertMess,
   requestPermission,
@@ -135,4 +145,5 @@ export default {
   deleteItem,
   getViewExplorerURL,
   defaultLocale,
+  saveMasterPassword,
 };

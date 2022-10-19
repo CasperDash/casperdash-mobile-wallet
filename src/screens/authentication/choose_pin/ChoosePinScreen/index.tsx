@@ -4,6 +4,7 @@ import { CHeader, CLayout } from 'components';
 import { useNavigation } from '@react-navigation/native';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import { createAndStoreMasterPassword } from 'utils/helpers/account';
 import PinCodeWrapper from '../PinCodeWrapper';
 
 const ChoosePinScreen: React.FC<
@@ -13,9 +14,8 @@ const ChoosePinScreen: React.FC<
   const { navigate } = useNavigation();
   const { phrases, algorithm } = route.params;
 
-  const onFinishedEnterPin = (pin: string | undefined) => {
+  const onFinishedEnterPin = () => {
     navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
-      pin,
       phrases,
       algorithm,
     });
@@ -27,7 +27,9 @@ const ChoosePinScreen: React.FC<
         status={'choose'}
         finishProcess={onFinishedEnterPin}
         //no need to store pin
-        storePin={() => {}}
+        storePin={(pin: string) => {
+          createAndStoreMasterPassword(pin);
+        }}
         timeLocked={__DEV__ ? 20000 : undefined}
       />
     </CLayout>

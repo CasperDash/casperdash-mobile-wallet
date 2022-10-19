@@ -24,19 +24,24 @@ const InitAccountScreen: React.FC<
   // @ts-ignore
   ScreenProps<CreateNewWalletRouter.INIT_ACCOUNT_SCREEN>
 > = ({ route }) => {
-  const { pin, phrases, algorithm, isLoadUser } = route.params;
+  const { phrases, algorithm, isLoadUser } = route.params;
 
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
   const currentUser = useSelector(getUser);
 
   const setupUser = useCallback(async () => {
-    if (!pin || !phrases || !algorithm || currentUser) {
+    if (!phrases || !algorithm || currentUser) {
       return;
     }
 
     try {
-      const user = createNewUserWithHdWallet(pin, phrases, algorithm);
+      const masterPassword = await Config.getItem(Keys.masterPassword);
+      const user = createNewUserWithHdWallet(
+        masterPassword.password,
+        phrases,
+        algorithm,
+      );
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
       user.setWalletInfo(
         acc0.getReferenceKey(),
@@ -63,6 +68,7 @@ const InitAccountScreen: React.FC<
         walletType: WalletType.HDWallet,
       };
       await Config.saveItem(Keys.selectedWallet, selectedWalletDetails);
+
       dispatch(allActions.user.getUserSuccess(user));
       dispatch(allActions.user.getSelectedWalletSuccess(selectedWalletDetails));
     } catch (e: any) {
@@ -72,17 +78,18 @@ const InitAccountScreen: React.FC<
       };
       dispatch(allActions.main.showMessage(message, 10000));
     }
-  }, [algorithm, dispatch, phrases, pin, currentUser]);
+  }, [algorithm, dispatch, phrases, currentUser]);
 
   const loadUser = useCallback(async () => {
     if (!currentUser) {
-      const loadedUser = await getUserFromStorage(pin);
+      const masterPassword = await Config.getItem(Keys.masterPassword);
+      const loadedUser = await getUserFromStorage(masterPassword.password);
       if (loadedUser) {
         dispatch(allActions.user.getUserSuccess(loadedUser));
         dispatch(allActions.main.initState());
       }
     }
-  }, [dispatch, currentUser, pin]);
+  }, [dispatch, currentUser]);
 
   const onInitSuccess = useCallback(
     (isLedger?: boolean) => {
