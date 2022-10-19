@@ -18,12 +18,12 @@ const EnterPinScreen = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const { isBiometryEnabled, biometryType } = useBiometry();
   const [pin, setPin] = useState<string>();
-  const [storedPin, setSotedPin] = useState<string>();
+  const [storedPin, setStoredPin] = useState<string>();
   const [isBiometry, setIsBiometry] = useState<boolean>(false);
 
   useEffect(() => {
     Config.getItem(Keys.masterPassword).then(masterPassword => {
-      setSotedPin(masterPassword.password);
+      setStoredPin(masterPassword.password);
     });
   }, []);
 
