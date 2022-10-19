@@ -51,7 +51,7 @@ const StakingConfirmScreen: React.FC<
   const userDetails = useSelector(getMassagedUserDetails);
   const balance =
     userDetails && userDetails.balance && userDetails.balance.displayBalance;
-  console.info(fee);
+
   const [isForm, setIsForm] = useState<boolean>(
     name === StakingMode.Undelegate,
   );

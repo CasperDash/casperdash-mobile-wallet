@@ -144,7 +144,6 @@ export const getUserFromStorage = async (
   pin: string,
 ): Promise<User | undefined> => {
   try {
-    console.info('pin222', pin);
     // @ts-ignore
     const casperdash = await Config.getItem(StorageKeys.casperdash);
     let currentAccount = null;
