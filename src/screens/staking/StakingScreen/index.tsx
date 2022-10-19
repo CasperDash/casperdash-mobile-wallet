@@ -168,7 +168,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     }
     dispatch(
       allActions.staking.getValidatorsInformation(
-        { refreshing },
+        { refreshing, publicKey },
         (error: any, _: any) => {
           if (error) {
             dispatch(
