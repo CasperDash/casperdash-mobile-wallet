@@ -141,7 +141,6 @@ const StakingConfirmScreen: React.FC<
       const { deployHash, signedDeploy } = await executeDeploy(
         buildDeployFn,
         publicKey,
-        validator,
         showMessage,
       );
       if (deployHash) {
