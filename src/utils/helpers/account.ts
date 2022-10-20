@@ -95,11 +95,14 @@ export const getWalletInfoWithPublicKey = async (
   WalletList: WalletInfoDetails[],
 ) => {
   return await Promise.all(
-    WalletList.map(async walletInfo => {
+    WalletList.map(async (walletInfo, i) => {
       let publicKey;
+      console.time('getdetails' + i);
       const walletDetails = await getWalletDetails(user, walletInfo);
+      console.timeEnd('getdetails' + i);
+      console.time('getpk' + i);
       publicKey = await walletDetails?.getPublicKey();
-
+      console.timeEnd('getpk' + i);
       return { ...walletInfo, publicKey };
     }),
   );
@@ -172,15 +175,21 @@ export const getWalletDetails = async (
   user: User,
   selectedWallet: WalletInfoDetails,
 ) => {
+  console.time('getWalletInfo1');
   const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
+  console.timeEnd('getWalletInfo1');
   if (fullWalletInfo.isHDWallet) {
-    const wallet = await user.getWalletAccountByRefKey(fullWalletInfo.id);
+    console.time('getWalletAccountByRefKey' + selectedWallet.walletInfo.uid);
+    const wallet = await user.getWalletAccount(fullWalletInfo.index);
+    console.timeEnd('getWalletAccountByRefKey' + selectedWallet.walletInfo.uid);
     return wallet;
   } else if (fullWalletInfo.isLegacy) {
+    console.time('createLegacy');
     const wallet = new CasperLegacyWallet(
       fullWalletInfo.id,
       fullWalletInfo.encryptionType,
     );
+    console.timeEnd('createLegacy');
     return wallet;
   }
 };
@@ -191,7 +200,7 @@ export const getWalletDetails = async (
  */
 export const createAndStoreMasterPassword = (pin: string) => {
   const masterPassword = new PasswordOptions(pin);
-  Config.saveMasterPassword(masterPassword);
+  Config.saveItem(StorageKeys.masterPassword, masterPassword.password);
 };
 
 /**
@@ -209,11 +218,7 @@ export const validatePin = async (pin: string, isBiometry?: boolean) => {
   if (isBiometry) {
     password = pin;
   } else {
-    const checkingPassword = new PasswordOptions(pin, {
-      salt: masterPassword.salt,
-      iterations: masterPassword.iterations,
-      keySize: masterPassword.keySize,
-    });
+    const checkingPassword = new PasswordOptions(pin);
     password = checkingPassword.password;
   }
 

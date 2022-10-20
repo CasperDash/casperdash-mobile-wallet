@@ -130,10 +130,9 @@ const getViewExplorerURL = (type: string, value: string) => {
   return `${EXPLORER_URL}/${type}/${value}`;
 };
 
-const saveMasterPassword = (passwordOptions: PasswordOptions) => {
+const saveMasterPassword = (password: string) => {
   saveItem(Keys.masterPassword, {
-    password: passwordOptions.password,
-    ...passwordOptions.getOptions,
+    password,
   });
 };
 
