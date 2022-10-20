@@ -23,7 +23,7 @@ const EnterPinScreen = () => {
 
   useEffect(() => {
     Config.getItem(Keys.masterPassword).then(masterPassword => {
-      setStoredPin(masterPassword.password);
+      setStoredPin(masterPassword);
     });
   }, []);
 

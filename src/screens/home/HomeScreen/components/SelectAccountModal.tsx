@@ -60,8 +60,10 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
 
   useEffect(() => {
     if (isVisible) {
+      console.time('getwalletinfo');
       getWalletInfoWithPublicKey(user, listWallets).then(
         walletInfoWithPublicKey => {
+          console.timeEnd('getwalletinfo');
           setListWalletsDetails(walletInfoWithPublicKey);
 
           setIsLoadingBalance(true);

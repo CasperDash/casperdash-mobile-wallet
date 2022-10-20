@@ -38,7 +38,7 @@ const InitAccountScreen: React.FC<
     try {
       const masterPassword = await Config.getItem(Keys.masterPassword);
       const user = createNewUserWithHdWallet(
-        masterPassword.password,
+        masterPassword,
         phrases,
         algorithm,
       );
@@ -83,7 +83,7 @@ const InitAccountScreen: React.FC<
   const loadUser = useCallback(async () => {
     if (!currentUser) {
       const masterPassword = await Config.getItem(Keys.masterPassword);
-      const loadedUser = await getUserFromStorage(masterPassword.password);
+      const loadedUser = await getUserFromStorage(masterPassword);
       if (loadedUser) {
         dispatch(allActions.user.getUserSuccess(loadedUser));
         dispatch(allActions.main.initState());
