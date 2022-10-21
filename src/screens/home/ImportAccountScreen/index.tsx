@@ -52,10 +52,9 @@ function ImportAccountScreen() {
       const publicKey = await wallet.getPublicKey();
       const info = {
         ...casperdash,
-        userInfo: userInfo.value,
+        userInfo: userInfo,
         publicKey: publicKey,
       };
-      info.loginOptions.hashingOptions = userInfo.passwordOptions;
 
       await Config.saveItem(Keys.casperdash, info);
       const walletInfo = currentAccount.getWalletInfo(wallet.getReferenceKey());

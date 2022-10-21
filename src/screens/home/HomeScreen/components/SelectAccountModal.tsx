@@ -115,9 +115,9 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     const userInfo = await currentAccount.serialize();
 
     const casperDashInfo = await Config.getItem(Keys.casperdash);
-    casperDashInfo.userInfo = userInfo.value;
-    casperDashInfo.loginOptions.hashingOptions = userInfo.passwordOptions;
+    casperDashInfo.userInfo = userInfo;
     await Config.saveItem(Keys.casperdash, casperDashInfo);
+
     dispatch(allActions.user.getUserSuccess(currentAccount));
     dispatch(allActions.main.loadLocalStorage());
     setIsCreateNewAccount(false);
