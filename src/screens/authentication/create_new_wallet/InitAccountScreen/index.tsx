@@ -53,10 +53,9 @@ const InitAccountScreen: React.FC<
       const info = {
         publicKey: publicKey,
         loginOptions: {
-          connectionType: CONNECTION_TYPES.passPhase,
-          hashingOptions: userInfo.passwordOptions,
+          connectionType: CONNECTION_TYPES.passPhase
         },
-        userInfo: userInfo.value,
+        userInfo: userInfo,
       };
       await Config.saveItem(Keys.casperdash, info);
 

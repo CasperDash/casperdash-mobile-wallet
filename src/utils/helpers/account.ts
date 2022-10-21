@@ -5,7 +5,6 @@ import {
   EncryptionType,
   WalletInfo,
   CasperLegacyWallet,
-  IPasswordOptions,
   PasswordOptions,
 } from 'react-native-casper-storage';
 import { Keys } from 'casperdash-js-sdk';
@@ -34,19 +33,15 @@ export const getRecoveryPhase = (numberOfWords: number) => {
  * The first parameter is the password. The second parameter is optional. If it's not provided, the
  * default password options will be used
  * @param {string} password - string - The password to set for the user.
- * @param {IPasswordOptions} [passwordOptions] - IPasswordOptions - This is an optional parameter that
- * allows you to specify the password options.
  * @returns A new User object
  */
 export const createNewUser = (
-  password: string,
-  passwordOptions?: IPasswordOptions,
+  password: string
 ): User => {
   const user = new User(password, {
     passwordValidator: {
       validatorFunc: () => new ValidationResult(true),
-    },
-    passwordOptions,
+    }
   });
 
   return user;
@@ -150,13 +145,9 @@ export const getUserFromStorage = async (
     // @ts-ignore
     const casperdash = await Config.getItem(StorageKeys.casperdash);
     let currentAccount = null;
-    if (casperdash && casperdash.loginOptions?.hashingOptions) {
-      const hashingOptions = casperdash.loginOptions.hashingOptions;
-      const saltData = hashingOptions.salt?.data || [];
-      const salt =
-        saltData && saltData.length > 0 ? new Uint8Array(saltData) : null;
-      currentAccount = createNewUser(pin, { ...hashingOptions, salt: salt });
-      await currentAccount.deserialize(casperdash?.userInfo);
+    if (casperdash && casperdash.userInfo) {
+      currentAccount = createNewUser(pin);
+      await currentAccount.deserialize(casperdash.userInfo);
       return currentAccount;
     }
   } catch (error) {
@@ -198,9 +189,9 @@ export const getWalletDetails = async (
  * It creates a new instance of the PasswordOptions , and then saves it to storage
  * @param {string} pin - The pin that the user entered.
  */
-export const createAndStoreMasterPassword = (pin: string) => {
+export const createAndStoreMasterPassword = async (pin: string) => {
   const masterPassword = new PasswordOptions(pin);
-  Config.saveItem(StorageKeys.masterPassword, masterPassword.password);
+  await Config.saveItem(StorageKeys.masterPassword, masterPassword.password);
 };
 
 /**
@@ -212,7 +203,7 @@ export const createAndStoreMasterPassword = (pin: string) => {
  */
 export const validatePin = async (pin: string, isBiometry?: boolean) => {
   let password;
-  const masterPassword: PasswordOptions = await Config.getItem(
+  const masterPassword: string = await Config.getItem(
     StorageKeys.masterPassword,
   );
   if (isBiometry) {
@@ -222,5 +213,5 @@ export const validatePin = async (pin: string, isBiometry?: boolean) => {
     password = checkingPassword.password;
   }
 
-  return masterPassword.password === password;
+  return masterPassword === password;
 };

@@ -3,7 +3,6 @@ import { check, request, RESULTS } from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
 import * as RNLocalize from 'react-native-localize';
 import { EXPLORER_URL } from 'utils/constants/key';
-import { PasswordOptions } from 'react-native-casper-storage';
 import Keys from './keys';
 
 const locales = RNLocalize.getLocales();
