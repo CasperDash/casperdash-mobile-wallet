@@ -166,21 +166,17 @@ export const getWalletDetails = async (
   user: User,
   selectedWallet: WalletInfoDetails,
 ) => {
-  console.time('getWalletInfo1');
-  const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
-  console.timeEnd('getWalletInfo1');
+  const uid = selectedWallet.walletInfo.uid;
+  const fullWalletInfo = user.getWalletInfo(uid);
   if (fullWalletInfo.isHDWallet) {
-    console.time('getWalletAccountByRefKey' + selectedWallet.walletInfo.uid);
-    const wallet = await user.getWalletAccount(fullWalletInfo.index);
-    console.timeEnd('getWalletAccountByRefKey' + selectedWallet.walletInfo.uid);
+    const index = fullWalletInfo.index;
+    const wallet = await user.getWalletAccount(index);
     return wallet;
   } else if (fullWalletInfo.isLegacy) {
-    console.time('createLegacy');
     const wallet = new CasperLegacyWallet(
       fullWalletInfo.id,
       fullWalletInfo.encryptionType,
     );
-    console.timeEnd('createLegacy');
     return wallet;
   }
 };
