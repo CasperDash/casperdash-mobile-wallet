@@ -72,6 +72,27 @@ export const createNewUserWithHdWallet = (
   return user;
 };
 
+export const getPublicKeyCache = async (uid: string) => {
+  const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
+  return publicKeysCache[uid];
+};
+
+export const cachePublicKey = async (uid: string, publicKey: string) => {
+  const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
+  Config.saveItem(StorageKeys.publicKeysCache, {
+    ...publicKeysCache,
+    [uid]: publicKey,
+  });
+};
+
+export const serializeAndStoreUser = async (user: User) => {
+  const userInfo = await user.serialize();
+
+  const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
+  casperDashInfo.userInfo = userInfo;
+  await Config.saveItem(StorageKeys.casperdash, casperDashInfo);
+};
+
 /**
  * It takes a user and a list of wallet info, and returns a list of wallet info with the public key
  * added to each wallet info
@@ -85,13 +106,19 @@ export const createNewUserWithHdWallet = (
  */
 export const getWalletInfoWithPublicKey = async (
   user: User,
-  WalletList: WalletInfoDetails[],
+  walletList: WalletInfoDetails[],
 ) => {
   return await Promise.all(
-    WalletList.map(async walletInfo => {
+    walletList.map(async walletInfo => {
       let publicKey;
-      const walletDetails = await getWalletDetails(user, walletInfo);
-      publicKey = await walletDetails?.getPublicKey();
+      publicKey = await getPublicKeyCache(walletInfo.walletInfo.uid);
+      if (!publicKey) {
+        const walletDetails = await getWalletDetails(user, walletInfo);
+        publicKey = await walletDetails?.getPublicKey();
+        if (publicKey) {
+          await cachePublicKey(walletInfo.walletInfo.uid, publicKey);
+        }
+      }
       return { ...walletInfo, publicKey };
     }),
   );
