@@ -9,6 +9,7 @@ import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
+import { createAndStoreMasterPassword } from 'utils/helpers/account';
 
 const SplashScreen = () => {
   const reStack = useRestack();
@@ -26,6 +27,10 @@ const SplashScreen = () => {
     const overview = await Config.getItem(Keys.overview);
 
     const casperDashInfo = await Config.getItem(Keys.casperdash);
+    const legacyPin = await Config.getItem(Keys.pinCode);
+    if (legacyPin) {
+      await createAndStoreMasterPassword(legacyPin);
+    }
 
     let screen = AuthenticationRouter.WELCOME_SCREEN;
     if (overview === 1 && !casperDashInfo) {

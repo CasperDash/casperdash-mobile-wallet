@@ -35,13 +35,11 @@ export const getRecoveryPhase = (numberOfWords: number) => {
  * @param {string} password - string - The password to set for the user.
  * @returns A new User object
  */
-export const createNewUser = (
-  password: string
-): User => {
+export const createNewUser = (password: string): User => {
   const user = new User(password, {
     passwordValidator: {
       validatorFunc: () => new ValidationResult(true),
-    }
+    },
   });
 
   return user;
@@ -90,14 +88,10 @@ export const getWalletInfoWithPublicKey = async (
   WalletList: WalletInfoDetails[],
 ) => {
   return await Promise.all(
-    WalletList.map(async (walletInfo, i) => {
+    WalletList.map(async walletInfo => {
       let publicKey;
-      console.time('getdetails' + i);
       const walletDetails = await getWalletDetails(user, walletInfo);
-      console.timeEnd('getdetails' + i);
-      console.time('getpk' + i);
       publicKey = await walletDetails?.getPublicKey();
-      console.timeEnd('getpk' + i);
       return { ...walletInfo, publicKey };
     }),
   );
