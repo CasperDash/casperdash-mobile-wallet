@@ -2,7 +2,6 @@ import { CLPublicKey, DeployUtil, Signer } from 'casperdash-js-sdk';
 import {
   buildTransferDeploy,
   buildContractInstallDeploy,
-  signDeployByCasperSigner,
   buildTransferTokenDeploy,
   connectCasperSigner,
 } from './casperServices';
@@ -53,31 +52,6 @@ test('buildContractInstallDeploy', () => {
     expect(spyOnPayment).toHaveBeenCalled();
     expect(spyOnDeployParams).toHaveBeenCalled();
   }
-});
-
-test('signDeployByCasperSigner', async () => {
-  const deploy = buildTransferTokenDeploy(
-    CLPublicKey.fromHex(
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    ),
-    CLPublicKey.fromHex(
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    ),
-    1000000000,
-    '123123123',
-    10,
-  );
-  const spyOnDeployToJson = jest.spyOn(DeployUtil, 'deployToJson');
-  const spyOnSign = jest.spyOn(Signer, 'sign');
-  spyOnSign.mockImplementation(() => 'signed');
-  const signed = await signDeployByCasperSigner(
-    deploy,
-    '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-  );
-  expect(spyOnDeployToJson).toHaveBeenCalled();
-  expect(spyOnSign).toHaveBeenCalled();
-  expect(signed).toBe('signed');
 });
 
 test('getTransferTokenDeploy', async () => {

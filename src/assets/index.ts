@@ -32,7 +32,6 @@ import IconSend from './images/ic_send.svg';
 import IconReceive from './images/ic_receive.svg';
 import IconSwap from './images/ic_swap.svg';
 import IconLogo from './images/ic_logo.svg';
-import IconLock from './images/ic_lock.svg';
 import IconAboutUs from './images/ic_about_us.svg';
 import IconCircleRight from './images/ic_circle_right.svg';
 import IconCircleClose from './images/ic_close_circle.svg';
@@ -52,6 +51,9 @@ import IconCloseFilledN4 from './images/ic_close_filled_n4.svg';
 import IconScanCameraTimeout from './images/ic_scan_camera_timeout.svg';
 import IconUp from './images/ic_up.svg';
 import IconDown from './images/ic_down.svg';
+import IconImportAccount from './images/ic_import_account.svg';
+import IconLock from './images/ic-lock.svg';
+import IconKey from './images/ic_key.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -69,6 +71,12 @@ const images = {
   symbol_cspr: require('./images/ic_symbol_CSPR.png'),
   nodata: require('./images/ic_no_data.png'),
   verifiedValidator: require('./images/red-casper.png'),
+  touchId: require('./images/touchId.png'),
+  faceId: require('./images/faceId.png'),
+  build: require('./images/ic-build.png'),
+  version: require('./images/ic-version.png'),
+  backup: require('./images/ic-backup.png'),
+  showPassword: require('./images/icon-show-password.png'),
 };
 
 const colors = {
@@ -249,4 +257,6 @@ export {
   IconScanCameraTimeout,
   IconUp,
   IconDown,
+  IconImportAccount,
+  IconKey,
 };

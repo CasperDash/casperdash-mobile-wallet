@@ -1,24 +1,36 @@
-import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { CLayout, CHeader } from 'components';
-import { colors } from 'assets';
+import { colors, textStyles } from 'assets';
 import { scale } from 'device';
-import { PhraseItem } from '../components';
+import {
+  PhraseItem,
+  SelectDropdownComponent,
+  DropdownItem,
+} from '../components';
 import { Row } from 'components';
-import CButton2 from 'components/CTextButton';
+import CTextButton from 'components/CTextButton';
 import { useNavigation } from '@react-navigation/native';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Phrase } from '../../data/data';
 import { Config } from 'utils';
-
-const phraseString =
-  'House Ego Assits Repair Respond Attitude Different Difficult Opposition Resident Populate Inhabit Situated Problem Failed Name Octupus Doctor Strange Ironman Capital Dimondhand Flash Vision';
+import SelectDropdown from 'react-native-select-dropdown';
+import { EncryptionType } from 'react-native-casper-storage';
+import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import { getRecoveryPhase } from '../../../../utils/helpers/account';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const [algorithm, setAlgorithm] = useState<EncryptionType>(
+    EncryptionType.Ed25519,
+  );
+  const copyToClipboard = useCopyToClipboard();
 
-  const [data, listLeft, listRight] = useMemo(() => {
+  const phraseString = getRecoveryPhase(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
+
+  const [wordArray, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
       ? phraseString
           .split(/\s+/)
@@ -33,13 +45,19 @@ const RecoveryPhraseScreen = () => {
         ? listWords.slice(left.length, listWords.length)
         : [];
     return [listWords, left, right];
-  }, []);
+  }, [phraseString]);
+
+  const handleOnSelectAlgo = (algorithmSelected: EncryptionType) => {
+    setAlgorithm(algorithmSelected);
+  };
 
   const openDoubleCheckIt = () => {
     try {
-      if (data && data.length > 0) {
+      if (wordArray && wordArray.length > 0) {
         navigate(CreateNewWalletRouter.DOUBLE_CHECK_IT_SCREEN, {
-          data: JSON.parse(JSON.stringify(data)),
+          wordArray: JSON.parse(JSON.stringify(wordArray)),
+          recoveryPhase: phraseString,
+          algorithm,
         });
       }
     } catch (e) {
@@ -51,33 +69,74 @@ const RecoveryPhraseScreen = () => {
     <CLayout>
       <CHeader title={'Recovery Phrase'} />
       <View style={styles.container}>
+        <Row.LR pt={16} px={16}>
+          <View style={styles.selectType}>
+            <Text style={styles.algorithmLabel}>Encryption Type</Text>
+            <Text style={styles.algorithmDescription}>
+              We recommend to choose ed25519 over secp256k1 for stronger
+              security and better performance, unless you explicitly want to use
+              secp256k1 in order to compatible with Bitcoin, Ethereum chains
+            </Text>
+            <SelectDropdown
+              dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+              buttonStyle={styles.rowPicker}
+              dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+              data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
+              onSelect={(selectedItem, _index) => {
+                handleOnSelectAlgo(selectedItem);
+              }}
+              renderCustomizedButtonChild={(item: any, index) => {
+                if (!item) {
+                  return null;
+                }
+                return <SelectDropdownComponent item={item} key={index} />;
+              }}
+              renderCustomizedRowChild={(item: any, index) => (
+                <DropdownItem item={item} key={index} />
+              )}
+              defaultValueByIndex={1}
+              buttonTextAfterSelection={(selectedItem, _index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, _index) => {
+                return item;
+              }}
+              defaultValue={algorithm}
+            />
+          </View>
+        </Row.LR>
+
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}>
           <Row.LR pt={16} px={16} style={styles.body}>
             <View style={styles.flex}>
               {listLeft.map((item, index) => {
-                return <PhraseItem data={item} key={index} index={index} />;
+                return <PhraseItem data={item} key={index} />;
               })}
             </View>
             <View style={styles.flex}>
               {listRight.map((item, index) => {
-                return (
-                  <PhraseItem
-                    data={item}
-                    key={index}
-                    index={listRight.length + index}
-                  />
-                );
+                return <PhraseItem data={item} key={index} />;
               })}
             </View>
           </Row.LR>
         </ScrollView>
-        <CButton2
-          style={styles.btnNext}
-          onPress={openDoubleCheckIt}
-          text={'Next'}
-        />
+        <Row.C>
+          <CTextButton
+            type={'line'}
+            style={[styles.btnNext, { marginRight: scale(15) }]}
+            text={'Copy'}
+            onPress={async () => {
+              copyToClipboard(phraseString);
+            }}
+          />
+          <CTextButton
+            style={styles.btnNext}
+            onPress={openDoubleCheckIt}
+            text={'Next'}
+          />
+        </Row.C>
       </View>
     </CLayout>
   );
@@ -104,7 +163,33 @@ const styles = StyleSheet.create({
     paddingVertical: scale(25),
   },
   btnNext: {
+    width: scale(164),
     alignSelf: 'center',
     marginVertical: scale(20),
+  },
+  selectType: {
+    flexDirection: 'column',
+  },
+  rowPicker: {
+    minWidth: '100%',
+    minHeight: scale(48),
+    maxHeight: scale(100),
+    backgroundColor: colors.N5,
+    color: colors.W1,
+    borderRadius: scale(16),
+    borderWidth: 0,
+  },
+  dropdownStyle: {
+    borderRadius: scale(10),
+    color: colors.W1,
+  },
+  algorithmLabel: {
+    ...textStyles.Sub2,
+    color: colors.N3,
+    marginBottom: scale(12),
+  },
+  algorithmDescription: {
+    ...textStyles.Cap2,
+    marginBottom: scale(12),
   },
 });

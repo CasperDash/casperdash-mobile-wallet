@@ -1,17 +1,15 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  FlatList,
   RefreshControl,
 } from 'react-native';
 import {
   colors,
   textStyles,
-  IconScanCode,
   IconSetting,
   IconPlusCircle,
   IconLogo,
@@ -25,7 +23,7 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
-import { getAllTokenInfo } from 'utils/selectors/user';
+import { getAllTokenInfo, getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
 import {
   checkIfLoadingSelector,
@@ -33,12 +31,13 @@ import {
 } from 'utils/selectors';
 import { types as homeTypes } from 'redux_manager/home/home_action';
 import { types as userTypes } from 'redux_manager/user/user_action';
+import { Config } from 'utils';
 
 function HomeScreen() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
-
+  const publicKey = useSelector(getPublicKey);
   const allTokenInfo = useSelector(getAllTokenInfo);
 
   const isLoading = useSelector((state: any) =>
@@ -62,18 +61,35 @@ function HomeScreen() {
   );
 
   useEffect(() => {
-    getData(false);
-  }, []);
-
-  const getData = (refreshing: boolean) => {
-    fetchCSPRMarketInfo(refreshing);
-    getTokenInfoWithBalance(refreshing);
-  };
+    if (publicKey) {
+      dispatch(
+        allActions.user.getAccountInformation(
+          { publicKey },
+          async (err: any) => {
+            if (err) {
+              Config.alertMess(err);
+            }
+          },
+        ),
+      );
+    }
+  }, [publicKey, dispatch]);
 
   const onRefresh = () => {
     getAccountInformation(true);
     getData(true);
   };
+
+  const showErrorMessage = useCallback(
+    (error: any) => {
+      const message = {
+        message: error && error.message ? error.message : 'Error',
+        type: MessageType.error,
+      };
+      dispatch(allActions.main.showMessage(message));
+    },
+    [dispatch],
+  );
 
   const getAccountInformation = (refreshing: boolean) => {
     dispatch(
@@ -85,33 +101,46 @@ function HomeScreen() {
     );
   };
 
-  const getTokenInfoWithBalance = (refreshing: boolean) => {
-    dispatch(
-      allActions.home.getTokenInfoWithBalance({ refreshing }, (error: any) => {
-        if (error) {
-          showErrorMessage(error);
-        }
-      }),
-    );
-  };
+  const getTokenInfoWithBalance = useCallback(
+    (refreshing: boolean) => {
+      dispatch(
+        allActions.home.getTokenInfoWithBalance(
+          { refreshing },
+          (error: any) => {
+            if (error) {
+              showErrorMessage(error);
+            }
+          },
+        ),
+      );
+    },
+    [dispatch, showErrorMessage],
+  );
 
-  const fetchCSPRMarketInfo = (refreshing: boolean) => {
-    dispatch(
-      allActions.home.fetchCSPRMarketInfo({ refreshing }, (error: any) => {
-        if (error) {
-          showErrorMessage(error);
-        }
-      }),
-    );
-  };
+  const fetchCSPRMarketInfo = useCallback(
+    (refreshing: boolean) => {
+      dispatch(
+        allActions.home.fetchCSPRMarketInfo({ refreshing }, (error: any) => {
+          if (error) {
+            showErrorMessage(error);
+          }
+        }),
+      );
+    },
+    [showErrorMessage, dispatch],
+  );
 
-  const showErrorMessage = (error: any) => {
-    const message = {
-      message: error && error.message ? error.message : 'Error',
-      type: MessageType.error,
-    };
-    dispatch(allActions.main.showMessage(message));
-  };
+  const getData = useCallback(
+    (refreshing: boolean) => {
+      fetchCSPRMarketInfo(refreshing);
+      getTokenInfoWithBalance(refreshing);
+    },
+    [getTokenInfoWithBalance, fetchCSPRMarketInfo],
+  );
+
+  useEffect(() => {
+    getData(false);
+  }, [getData]);
 
   const openHistories = (token: any) => {
     navigate(MainRouter.HISTORIES_SCREEN, { token });

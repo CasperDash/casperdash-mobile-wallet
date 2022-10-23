@@ -3,58 +3,45 @@ import { View } from 'react-native';
 
 import Splash from 'react-native-splash-screen';
 import { Config, Keys } from 'utils';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { isEmpty } from 'lodash';
+import { useRestack } from 'utils/hooks/useRestack';
+import { StackName } from 'navigation/ScreenProps';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
+import { createAndStoreMasterPassword } from 'utils/helpers/account';
 
 const SplashScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const reStack = useRestack();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadLocalStorage();
+    //always get new config
+    dispatch(allActions.main.getConfigurations());
     setupNavigation();
-  }, []);
 
-  const loadLocalStorage = () => {
-    dispatch(allActions.main.loadLocalStorage());
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setupNavigation = async () => {
     const overview = await Config.getItem(Keys.overview);
-    const pinCode = await Config.getItem(Keys.pinCode);
-    const user = await Config.getItem(Keys.casperdash);
+
+    const casperDashInfo = await Config.getItem(Keys.casperdash);
+    const legacyPin = await Config.getItem(Keys.pinCode);
+    if (legacyPin) {
+      await createAndStoreMasterPassword(legacyPin);
+    }
 
     let screen = AuthenticationRouter.WELCOME_SCREEN;
-    if (overview === 1) {
+    if (overview === 1 && !casperDashInfo) {
       screen = AuthenticationRouter.CREATE_NEW_WALLET;
     }
-    if (!isEmpty(pinCode)) {
+
+    if (!isEmpty(casperDashInfo)) {
       screen = AuthenticationRouter.ENTER_PIN;
     }
 
-    if (user && user.casperdash && user.casperdash.publicKey) {
-      dispatch(allActions.nft.fetchNFTInfo(user.casperdash.publicKey));
-    }
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [
-          {
-            name: 'AuthenticationStack',
-            state: {
-              routes: [
-                {
-                  name: screen,
-                },
-              ],
-            },
-          },
-        ],
-      }),
-    );
+    reStack(StackName.AuthenticationStack, screen);
     Splash.hide();
   };
 

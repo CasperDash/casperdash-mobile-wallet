@@ -18,6 +18,8 @@ import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { convertBalanceFromHex } from 'utils/helpers/balance';
 import CLoading from 'components/CLoading';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
+
 const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
 
 interface Props {
@@ -129,7 +131,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
             const info = {
               publicKey: ledgerPublicKey,
               loginOptions: {
-                connectionType: 'ledger',
+                connectionType: CONNECTION_TYPES.ledger,
                 keyIndex,
               },
             };

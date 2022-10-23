@@ -6,7 +6,6 @@ import { colors, textStyles } from 'assets';
 
 interface PhraseItemProps {
   data: any;
-  index: number;
 }
 
 const PhraseItem = ({ data }: PhraseItemProps) => {
@@ -34,6 +33,7 @@ const styles = StyleSheet.create({
     ...textStyles.Body1,
     color: colors.c828489,
     marginRight: scale(11),
+    minWidth: 25,
   },
   title2: {
     ...textStyles.Body1,

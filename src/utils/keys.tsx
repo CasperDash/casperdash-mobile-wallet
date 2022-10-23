@@ -8,6 +8,9 @@ const Keys = {
   deploysTransfer: 'deploys.transfers',
   nfts: 'nfts',
   deploysStakes: 'deploys.stakes',
+  selectedWallet: 'selectedWallet',
+  touchIdEnabled: 'touchIdEnabled',
+  masterPassword: 'masterPassword',
 };
 
 export default Keys;

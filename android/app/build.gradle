@@ -79,7 +79,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-        enableHermes: false,  // clean and rebuild if changing
+    enableHermes: false,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -135,7 +135,7 @@ android {
         applicationId "io.casperdash.casperwallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
+        versionCode 29
         versionName "1.1.0"
         setProperty("archivesBaseName", "CasperDash")
         vectorDrawables.useSupportLibrary = true
@@ -200,6 +200,12 @@ android {
 
         }
     }
+
+    // react-native-v8: Exclude unused libraries to reduce APK size
+    packagingOptions {
+        // Make sure libjsc.so does not packed in APK
+        exclude "**/libjsc.so"
+    }
 }
 
 dependencies {
@@ -210,6 +216,12 @@ dependencies {
 //     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation ("androidx.appcompat:appcompat:1.3.1") {
+        version {
+            strictly '1.3.1'
+        }
+    }
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
