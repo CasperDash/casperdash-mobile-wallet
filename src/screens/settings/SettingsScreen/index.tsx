@@ -20,9 +20,14 @@ import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
+import { getLoginOptions } from 'utils/selectors/user';
+import { useSelector } from 'react-redux';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
 function SettingsScreen() {
   const reStack = useRestack();
+  const loginOptions = useSelector(getLoginOptions);
+
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } =
     useBiometry();
@@ -52,6 +57,7 @@ function SettingsScreen() {
       ),
       onPress: () => setShowConfirmPin(true),
       actionComp: ShowRecoveryPhrase,
+      show: loginOptions?.connectionType === CONNECTION_TYPES.passPhase,
     },
     {
       id: 4,
@@ -114,6 +120,7 @@ function SettingsScreen() {
       <CHeader title={'Settings'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
         {listMenu
+          .filter(menu => menu.show !== false)
           .sort((a, b) => a.id - b.id)
           .map((item, index) => {
             return <SettingMenuComponent data={item} key={index} />;
