@@ -11,11 +11,11 @@ singer : Casper signer
 ledger : Ledger device
 default: custom adding, view mode
 */
-export const CONNECTION_TYPES = {
-  casperSigner: 'caspersigner',
-  ledger: 'ledger',
-  passPhase: 'passphase',
-  viewMode: 'view_mode',
-};
+export enum CONNECTION_TYPES {
+  casperSigner = 'caspersigner',
+  ledger = 'ledger',
+  passPhase = 'passphase',
+  viewMode = 'view_mode',
+}
 
 export const CONNECTED_ACCOUNT_STORAGE_PATH = 'connectedAccount';

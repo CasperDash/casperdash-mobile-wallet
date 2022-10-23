@@ -17,6 +17,7 @@ import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
 import {
   createNewUserWithHdWallet,
   getUserFromStorage,
+  serializeAndStoreUser,
 } from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
 
@@ -48,16 +49,13 @@ const InitAccountScreen: React.FC<
         new WalletDescriptor('Account 1'),
       );
       const publicKey = await acc0.getPublicKey();
-      const userInfo = await user.serialize();
-
       const info = {
         publicKey: publicKey,
         loginOptions: {
           connectionType: CONNECTION_TYPES.passPhase,
         },
-        userInfo: userInfo,
       };
-      await Config.saveItem(Keys.casperdash, info);
+      await serializeAndStoreUser(user, info);
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];

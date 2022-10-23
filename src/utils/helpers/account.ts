@@ -10,11 +10,20 @@ import {
 import { Keys } from 'casperdash-js-sdk';
 
 import { Config, Keys as StorageKeys } from 'utils';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
 export interface WalletInfoDetails {
   walletInfo: WalletInfo;
   publicKey?: string;
   balance?: number;
+}
+
+export interface CasperDashStoredInfo {
+  publicKey: string;
+  loginOptions: {
+    connectionType: CONNECTION_TYPES;
+  };
+  userInfo: string;
 }
 
 /**
@@ -99,12 +108,18 @@ export const cachePublicKey = async (uid: string, publicKey: string) => {
  * It takes a user object, serializes it, and then stores it in the local storage
  * @param {User} user - User - The user object that you want to serialize and store.
  */
-export const serializeAndStoreUser = async (user: User) => {
+export const serializeAndStoreUser = async (
+  user: User,
+  options?: Partial<CasperDashStoredInfo>,
+) => {
   const userInfo = await user.serialize();
-
   const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
-  casperDashInfo.userInfo = userInfo;
-  await Config.saveItem(StorageKeys.casperdash, casperDashInfo);
+
+  await Config.saveItem(StorageKeys.casperdash, {
+    ...casperDashInfo,
+    ...options,
+    userInfo,
+  });
 };
 
 /**
