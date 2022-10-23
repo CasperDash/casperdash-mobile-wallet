@@ -72,11 +72,21 @@ export const createNewUserWithHdWallet = (
   return user;
 };
 
+/**
+ * It gets the public key cache from the local storage and returns the public key for the given uid
+ * @param {string} uid - The user ID of the user you want to get the public key for.
+ * @returns The public key for the user with the given uid.
+ */
 export const getPublicKeyCache = async (uid: string) => {
   const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
   return publicKeysCache[uid];
 };
 
+/**
+ * It takes a user ID and a public key, and saves the public key in the cache
+ * @param {string} uid - The user ID of the user you want to encrypt the message for.
+ * @param {string} publicKey - The public key of the user you want to encrypt the message for.
+ */
 export const cachePublicKey = async (uid: string, publicKey: string) => {
   const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
   Config.saveItem(StorageKeys.publicKeysCache, {
@@ -85,6 +95,10 @@ export const cachePublicKey = async (uid: string, publicKey: string) => {
   });
 };
 
+/**
+ * It takes a user object, serializes it, and then stores it in the local storage
+ * @param {User} user - User - The user object that you want to serialize and store.
+ */
 export const serializeAndStoreUser = async (user: User) => {
   const userInfo = await user.serialize();
 
