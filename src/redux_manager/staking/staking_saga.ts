@@ -17,7 +17,9 @@ export function* getValidatorsInformation(data: any) {
         : startAction(types.GET_VALIDATORS_INFORMATION),
     );
     // @ts-ignore
-    const response = yield apis.getValidatorsInformationAPI();
+    const response = yield apis.getValidatorsInformationAPI(
+      data.params.publicKey,
+    );
     if (response) {
       yield put({
         type: types.GET_VALIDATORS_INFORMATION_SUCCESS,

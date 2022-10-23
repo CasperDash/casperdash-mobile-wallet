@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { colors, fonts, textStyles } from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton, CHeader } from 'components';
 import { scale } from 'device';
@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
+import { getPublicKey, getMassagedUserDetails } from 'utils/selectors';
 import { getConfigKey } from 'utils/selectors/configurations';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { ScreenProps } from 'navigation/ScreenProps';
@@ -18,6 +18,7 @@ import InfoComponent from 'screens/staking/InfoComponent';
 import {
   ENTRY_POINT_DELEGATE,
   ENTRY_POINT_UNDELEGATE,
+  StakingMode,
 } from 'utils/constants/key';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
@@ -36,12 +37,24 @@ const StakingConfirmScreen: React.FC<
     amount: '0',
     validator: validator,
   };
-  const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
+  const fee = useSelector(
+    getConfigKey(
+      name === StakingMode.Delegate
+        ? 'CSPR_AUCTION_DELEGATE_FEE'
+        : 'CSPR_AUCTION_UNDELEGATE_FEE',
+    ),
+  );
   const publicKey = useSelector(getPublicKey);
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
+  const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
+  const userDetails = useSelector(getMassagedUserDetails);
+  const balance =
+    userDetails && userDetails.balance && userDetails.balance.displayBalance;
 
-  const [isForm, setIsForm] = useState<boolean>(name === 'Undelegate');
+  const [isForm, setIsForm] = useState<boolean>(
+    name === StakingMode.Undelegate,
+  );
 
   const validationSchema = yup.object().shape({
     amount: yup
@@ -53,8 +66,8 @@ const StakingConfirmScreen: React.FC<
         return +value.replace(/,/, '.');
       })
       .required('Amount must be more than 0 CSPR')
-      .test('max', 'Not enough balance.', function (value: any) {
-        return value + fee <= stakedAmount;
+      .test('max', 'Not enough balance.', function () {
+        return balance >= fee;
       })
       .test('min', 'Amount must be more than 0 CSPR', function (value: any) {
         return value > 0;
@@ -80,7 +93,10 @@ const StakingConfirmScreen: React.FC<
   const { executeDeploy, isDeploying } = useConfirmDeploy();
 
   const setBalance = () => {
-    setFieldValue('amount', `${stakedAmount - fee}`);
+    setFieldValue(
+      'amount',
+      isDelegate ? `${stakedAmount - fee}` : `${stakedAmount}`,
+    );
     setErrors({ ...errors, amount: '' });
   };
 
@@ -107,9 +123,11 @@ const StakingConfirmScreen: React.FC<
     }
     try {
       const entryPoint =
-        name === 'Undelegate' ? ENTRY_POINT_UNDELEGATE : ENTRY_POINT_DELEGATE;
+        name === StakingMode.Undelegate
+          ? ENTRY_POINT_UNDELEGATE
+          : ENTRY_POINT_DELEGATE;
       const amountDeploy =
-        name === 'Undelegate'
+        name === StakingMode.Undelegate
           ? Number(values.amount.replace(/,/, '.'))
           : amount;
       const buildDeployFn = () =>
@@ -123,7 +141,6 @@ const StakingConfirmScreen: React.FC<
       const { deployHash, signedDeploy } = await executeDeploy(
         buildDeployFn,
         publicKey,
-        validator,
         showMessage,
       );
       if (deployHash) {
@@ -210,14 +227,16 @@ const StakingConfirmScreen: React.FC<
           ) : (
             <InfoComponent
               validator={validator}
-              amount={name === 'Delegate' ? amount : Number(values.amount)}
+              amount={
+                name === StakingMode.Delegate ? amount : Number(values.amount)
+              }
               fee={fee}
             />
           )}
           <CTextButton
             onPress={isForm ? handleSubmit : onConfirm}
             text={
-              name === 'Undelegate'
+              name === StakingMode.Undelegate
                 ? isForm
                   ? 'Confirm'
                   : 'Undelegate'

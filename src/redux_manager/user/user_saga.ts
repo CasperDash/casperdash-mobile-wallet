@@ -1,5 +1,6 @@
 import { put, takeLatest, take, cancel } from 'redux-saga/effects';
 import { types } from './user_action';
+import { types as mainTypes } from '../main/main_action';
 import { apis } from 'services';
 import { Config, Keys } from 'utils';
 import {
@@ -57,11 +58,9 @@ export function* getAccounts(data: any) {
     );
 
     const publicKeys =
-      data.params && data.params.publicKeys
-        ? data.params.publicKeys.map(
-            (key: { keyIndex: number; publicKey: string }) => key.publicKey,
-          )
-        : [];
+      data?.params?.publicKeys?.map(
+        (key: { keyIndex: number; publicKey: string }) => key.publicKey,
+      ) || [];
     // @ts-ignore
     const response = yield apis.getAccounts({
       publicKeys,
@@ -94,7 +93,7 @@ export function* watchGetAccountInformation() {
   while (true) {
     // @ts-ignore
     const watcher = yield takeLatest(
-      types.GET_ACCOUNT_INFORMATION,
+      [types.GET_ACCOUNT_INFORMATION],
       getAccountInformation,
     );
     yield take(['LOGOUT', 'NETWORK']);
@@ -109,4 +108,21 @@ export function* watchGetAccounts() {
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }
+}
+
+export function* getSelectedWalletFromStorage() {
+  // @ts-ignore
+  const selectedWallet = yield Config.getItem(Keys.selectedWallet);
+
+  yield put({
+    type: types.GET_SELECTED_WALLET_SUCCESS,
+    payload: selectedWallet,
+  });
+}
+
+export function* watchLoadSelectedWallet() {
+  yield takeLatest(
+    [types.LOAD_SELECTED_WALLET, mainTypes.INIT_APP_STATE],
+    getSelectedWalletFromStorage,
+  );
 }

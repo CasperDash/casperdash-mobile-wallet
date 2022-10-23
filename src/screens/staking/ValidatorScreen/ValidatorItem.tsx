@@ -41,8 +41,9 @@ function ValidatorItem({ data, onSelectValidator }: any) {
               Fee
             </Text>
             <Text style={textStyles.Body1}>
-              {getValueByFormat(data.bidInfo?.bid?.staked_amount || 0, {
+              {getValueByFormat(data.weight || 0, {
                 format: 'mote',
+                maximumFractionDigits: 2,
               })}{' '}
               CSPR
             </Text>

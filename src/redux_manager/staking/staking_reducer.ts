@@ -1,4 +1,5 @@
 import { types } from './staking_action';
+import { types as mainTypes } from '../main/main_action';
 
 const initialState = {
   listValidators: [],
@@ -14,6 +15,11 @@ export default function (
         ...state,
         listValidators: action.payload,
       };
+    case mainTypes.CLEAR_ALL_DATA: {
+      return {
+        ...initialState,
+      };
+    }
     default:
       return state;
   }

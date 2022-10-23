@@ -180,10 +180,17 @@ function getTransferDeploysStatusAPI<T>(
   });
 }
 
-function getValidatorsInformationAPI<T>(): NetworkPromiseResponse<T> {
+function getValidatorsInformationAPI<T>(
+  publicKey: string,
+): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .authorizedRequest('/validators', 'GET')
+      .authorizedRequest(
+        publicKey
+          ? `v2/validators?delegator=${publicKey}&cachedBy=block`
+          : 'v2/validators',
+        'GET',
+      )
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);
