@@ -53,7 +53,7 @@ const InitAccountScreen: React.FC<
       const info = {
         publicKey: publicKey,
         loginOptions: {
-          connectionType: CONNECTION_TYPES.passPhase
+          connectionType: CONNECTION_TYPES.passPhase,
         },
         userInfo: userInfo,
       };
