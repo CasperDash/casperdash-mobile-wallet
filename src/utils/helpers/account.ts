@@ -10,11 +10,20 @@ import {
 import { Keys } from 'casperdash-js-sdk';
 
 import { Config, Keys as StorageKeys } from 'utils';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
 export interface WalletInfoDetails {
   walletInfo: WalletInfo;
   publicKey?: string;
   balance?: number;
+}
+
+export interface CasperDashStoredInfo {
+  publicKey: string;
+  loginOptions: {
+    connectionType: CONNECTION_TYPES;
+  };
+  userInfo: string;
 }
 
 /**
@@ -73,6 +82,47 @@ export const createNewUserWithHdWallet = (
 };
 
 /**
+ * It gets the public key cache from the local storage and returns the public key for the given uid
+ * @param {string} uid - The user ID of the user you want to get the public key for.
+ * @returns The public key for the user with the given uid.
+ */
+export const getPublicKeyCache = async (uid: string) => {
+  const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
+  return publicKeysCache[uid];
+};
+
+/**
+ * It takes a user ID and a public key, and saves the public key in the cache
+ * @param {string} uid - The user ID of the user you want to encrypt the message for.
+ * @param {string} publicKey - The public key of the user you want to encrypt the message for.
+ */
+export const cachePublicKey = async (uid: string, publicKey: string) => {
+  const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
+  Config.saveItem(StorageKeys.publicKeysCache, {
+    ...publicKeysCache,
+    [uid]: publicKey,
+  });
+};
+
+/**
+ * It takes a user object, serializes it, and then stores it in the local storage
+ * @param {User} user - User - The user object that you want to serialize and store.
+ */
+export const serializeAndStoreUser = async (
+  user: User,
+  options?: Partial<CasperDashStoredInfo>,
+) => {
+  const userInfo = await user.serialize();
+  const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
+
+  await Config.saveItem(StorageKeys.casperdash, {
+    ...casperDashInfo,
+    ...options,
+    userInfo,
+  });
+};
+
+/**
  * It takes a user and a list of wallet info, and returns a list of wallet info with the public key
  * added to each wallet info
  * @param {User} user - User - this is the user object that you get from the login function
@@ -85,13 +135,19 @@ export const createNewUserWithHdWallet = (
  */
 export const getWalletInfoWithPublicKey = async (
   user: User,
-  WalletList: WalletInfoDetails[],
+  walletList: WalletInfoDetails[],
 ) => {
   return await Promise.all(
-    WalletList.map(async walletInfo => {
+    walletList.map(async walletInfo => {
       let publicKey;
-      const walletDetails = await getWalletDetails(user, walletInfo);
-      publicKey = await walletDetails?.getPublicKey();
+      publicKey = await getPublicKeyCache(walletInfo.walletInfo.uid);
+      if (!publicKey) {
+        const walletDetails = await getWalletDetails(user, walletInfo);
+        publicKey = await walletDetails?.getPublicKey();
+        if (publicKey) {
+          await cachePublicKey(walletInfo.walletInfo.uid, publicKey);
+        }
+      }
       return { ...walletInfo, publicKey };
     }),
   );

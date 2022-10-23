@@ -73,8 +73,10 @@ function Account() {
             style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                {canEditAccount
+                {loginOptions?.connectionType === CONNECTION_TYPES.ledger
                   ? 'Ledger'
+                  : loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+                  ? 'View mode'
                   : selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
               {!canEditAccount && (

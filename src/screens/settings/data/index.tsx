@@ -5,4 +5,5 @@ export interface SettingMenu {
   onPress?: () => void;
   subIcon?: any;
   actionComp?: any;
+  show?: boolean;
 }
