@@ -11,6 +11,7 @@ const Keys = {
   selectedWallet: 'selectedWallet',
   touchIdEnabled: 'touchIdEnabled',
   masterPassword: 'masterPassword',
+  publicKeysCache: 'publicKeysCache',
 };
 
 export default Keys;

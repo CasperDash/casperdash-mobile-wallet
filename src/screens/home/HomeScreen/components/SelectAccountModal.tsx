@@ -31,10 +31,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { WalletDescriptor, User } from 'react-native-casper-storage';
 import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
 import {
   getWalletInfoWithPublicKey,
   WalletInfoDetails,
+  cachePublicKey,
+  serializeAndStoreUser,
 } from 'utils/helpers/account';
 import { convertBalanceFromHex } from 'utils/helpers/balance';
 import ViewPrivateKeyButton from './ViewPrivateKeyButton';
@@ -42,7 +43,8 @@ import ViewPrivateKeyButton from './ViewPrivateKeyButton';
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
-  const [isCreateNewAccount, setIsCreateNewAccount] = useState<boolean>(false);
+  const [isCreatingNewAccount, setIsCreatingNewAccount] =
+    useState<boolean>(false);
 
   const { navigate } = useNavigation();
   const listWallets = useSelector(getListWallets);
@@ -101,26 +103,6 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(listWallets), dispatch, user, isVisible]);
 
-  const createNewAccount = useCallback(async () => {
-    setIsCreateNewAccount(true);
-    const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
-
-    await currentAccount.addWalletAccount(
-      wallets.length,
-      new WalletDescriptor(`Account ${wallets.length + 1}`),
-    );
-
-    const userInfo = await currentAccount.serialize();
-
-    const casperDashInfo = await Config.getItem(Keys.casperdash);
-    casperDashInfo.userInfo = userInfo;
-    await Config.saveItem(Keys.casperdash, casperDashInfo);
-
-    dispatch(allActions.user.getUserSuccess(currentAccount));
-    dispatch(allActions.main.loadLocalStorage());
-    setIsCreateNewAccount(false);
-  }, [currentAccount, dispatch]);
-
   useImperativeHandle(ref, () => ({
     show: show,
   }));
@@ -138,16 +120,34 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     navigate(MainRouter.IMPORT_ACCOUNT_SCREEN);
   };
 
-  const handleOnCreateAccount = () => {
-    createNewAccount()
-      .then(() => {
-        const message = {
-          message: 'Your account has been created successfully',
-          type: MessageType.success,
-        };
-        dispatch(allActions.main.showMessage(message));
-      })
-      .catch(err => console.log(err));
+  const createAccount = useCallback(async () => {
+    const wallets = currentAccount.getHDWallet()?.derivedWallets || [];
+    const newWallet = await currentAccount.addWalletAccount(
+      wallets.length,
+      new WalletDescriptor(`Account ${wallets.length + 1}`),
+    );
+
+    const walletInfo = currentAccount.getWalletInfo(
+      newWallet.getReferenceKey(),
+    );
+
+    await cachePublicKey(walletInfo.uid, await newWallet.getPublicKey());
+    // no need to await here, should serialize and stored user data in background
+    serializeAndStoreUser(currentAccount);
+
+    dispatch(allActions.user.getUserSuccess(currentAccount));
+    dispatch(allActions.main.loadLocalStorage());
+    setIsCreatingNewAccount(false);
+  }, [currentAccount, dispatch]);
+
+  useEffect(() => {
+    if (isCreatingNewAccount) {
+      createAccount();
+    }
+  }, [createAccount, isCreatingNewAccount]);
+
+  const handleOnCreateAccount = async () => {
+    setIsCreatingNewAccount(true);
   };
 
   const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
@@ -209,9 +209,11 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
               )}
           </ScrollView>
         </Col>
-        <CButton onPress={handleOnCreateAccount} disabled={isCreateNewAccount}>
+        <CButton
+          onPress={handleOnCreateAccount}
+          disabled={isCreatingNewAccount}>
           <Row style={styles.rowItem}>
-            {!isCreateNewAccount ? (
+            {!isCreatingNewAccount ? (
               <IconPlusCircle width={scale(17)} height={scale(17)} />
             ) : (
               <View>
