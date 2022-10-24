@@ -41,33 +41,24 @@ const ImportPhraseScreen = () => {
     setAlgorithm(algorithmSelected);
   };
 
-  const [listLeft, setListLeft] = useState<Array<Phrase>>(
-    Array.from({ length: numberOfWord / 2 }, (_, idx) => ({
-      id: idx,
+  const createList = (isRight: boolean, numOfWords: number) => {
+    return Array.from({ length: numOfWords / 2 }, (_, idx) => ({
+      id: isRight ? idx + numOfWords / 2 : idx,
       word: '',
-    })),
+    }));
+  };
+
+  const [listLeft, setListLeft] = useState<Array<Phrase>>(
+    createList(false, numberOfWord),
   );
   const [listRight, setListRight] = useState<Array<Phrase>>(
-    Array.from({ length: numberOfWord / 2 }, (_, idx) => ({
-      id: idx + numberOfWord / 2,
-      word: '',
-    })),
+    createList(true, numberOfWord),
   );
 
   const onChangeNumberOfWords = (number: number) => {
     setNumberOfWords(number);
-    setListLeft(
-      Array.from({ length: number / 2 }, (_, idx) => ({
-        id: idx,
-        word: '',
-      })),
-    );
-    setListRight(
-      Array.from({ length: number / 2 }, (_, idx) => ({
-        id: idx + number / 2,
-        word: '',
-      })),
-    );
+    setListLeft(createList(false, number));
+    setListRight(createList(true, number));
   };
 
   const onChangeText = (text: string, index: number, listIndex: number) => {
