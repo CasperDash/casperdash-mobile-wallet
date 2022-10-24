@@ -8,7 +8,6 @@ import CTextButton from 'components/CTextButton';
 import { useSelector } from 'react-redux';
 import { getUser } from 'utils/selectors/user';
 import { User } from 'react-native-casper-storage';
-import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from 'utils/constants/key';
 import { PhraseItem } from '../../authentication/create_new_wallet/components';
 
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
@@ -32,8 +31,8 @@ const RecoveryPhraseScreen = () => {
           <Row.LR pt={16} px={16} style={styles.body}>
             {new Array(2).fill(undefined).map((_, index) => {
               const words = recoveryPhaseArr.slice(
-                index * (DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2),
-                (index + 1) * (DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2),
+                index * (recoveryPhaseArr.length / 2),
+                (index + 1) * (recoveryPhaseArr.length / 2),
               );
 
               return (
@@ -43,9 +42,7 @@ const RecoveryPhraseScreen = () => {
                       <PhraseItem
                         data={{
                           word: item,
-                          id:
-                            index * (DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2) +
-                            (i + 1),
+                          id: index * (recoveryPhaseArr.length / 2) + (i + 1),
                         }}
                         key={`${index}-${i}`}
                       />

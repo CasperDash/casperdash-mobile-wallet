@@ -66,7 +66,7 @@ export const createNewUser = (password: string): User => {
  *
  * The second line of the function is the function body. It's a function that returns a user
  * @param {string} password - The password you want to use to encrypt your wallet.
- * @param {string} recoveryPhase - This is the 12 word recovery phrase that you can use to recover your
+ * @param {string} recoveryPhase - This is the 12 or 24 words recovery phrase that you can use to recover your
  * wallet.
  * @param {EncryptionType} encryptionType - EncryptionType
  * @returns A new user with a HD wallet.

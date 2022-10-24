@@ -17,7 +17,7 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
-import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import { NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType, KeyFactory } from 'react-native-casper-storage';
 import { MessageType } from 'components/CMessge/types';
@@ -33,23 +33,33 @@ const ImportPhraseScreen = () => {
   );
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
+  const [numberOfWord, setNumberOfWords] = useState<number>(
+    NUMBER_OF_RECOVERY_WORDS[0],
+  );
 
   const handleOnSelectAlgo = (algorithmSelected: EncryptionType) => {
     setAlgorithm(algorithmSelected);
   };
 
-  const [listLeft, setListLeft] = useState<Array<Phrase>>(
-    Array.from({ length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 }, (_, idx) => ({
-      id: idx,
+  const createList = (isRight: boolean, numOfWords: number) => {
+    return Array.from({ length: numOfWords / 2 }, (_, idx) => ({
+      id: isRight ? idx + numOfWords / 2 : idx,
       word: '',
-    })),
+    }));
+  };
+
+  const [listLeft, setListLeft] = useState<Array<Phrase>>(
+    createList(false, numberOfWord),
   );
   const [listRight, setListRight] = useState<Array<Phrase>>(
-    Array.from({ length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 }, (_, idx) => ({
-      id: idx + DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2,
-      word: '',
-    })),
+    createList(true, numberOfWord),
   );
+
+  const onChangeNumberOfWords = (number: number) => {
+    setNumberOfWords(number);
+    setListLeft(createList(false, number));
+    setListRight(createList(true, number));
+  };
 
   const onChangeText = (text: string, index: number, listIndex: number) => {
     if (isWrongPhrase) {
@@ -86,9 +96,9 @@ const ImportPhraseScreen = () => {
             id: index,
             word: word,
           }));
-        if (listWords.length < DEFAULT_NUMBER_OF_RECOVERY_WORDS) {
+        if (listWords.length < numberOfWord) {
           const lastEmptyList = Array.from(
-            { length: DEFAULT_NUMBER_OF_RECOVERY_WORDS - listWords.length },
+            { length: numberOfWord - listWords.length },
             (_, idx) => ({
               id: listWords.length + idx,
               word: '',
@@ -96,14 +106,11 @@ const ImportPhraseScreen = () => {
           );
           listWords = listWords.concat(lastEmptyList);
         } else {
-          listWords = listWords.slice(0, DEFAULT_NUMBER_OF_RECOVERY_WORDS);
+          listWords = listWords.slice(0, numberOfWord);
         }
         const left: Array<Phrase> =
           listWords.length > 0
-            ? listWords.slice(
-                0,
-                Math.round(DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2),
-              )
+            ? listWords.slice(0, Math.round(numberOfWord / 2))
             : [];
         const right: Array<Phrase> =
           listWords.length > 0 && left.length > 0
@@ -120,11 +127,13 @@ const ImportPhraseScreen = () => {
 
   const importPhrase = () => {
     const phrasesLeft = listLeft.reduce(
-      (previous: string, current: Phrase) => previous + current.word + ' ',
+      (previous: string, current: Phrase) =>
+        previous + current.word.trim() + ' ',
       '',
     );
     const phrasesRight = listRight.reduce(
-      (previous: string, current: Phrase) => previous + current.word + ' ',
+      (previous: string, current: Phrase) =>
+        previous + current.word.trim() + ' ',
       '',
     );
     const phrases = (phrasesLeft + phrasesRight).trim();
@@ -151,22 +160,16 @@ const ImportPhraseScreen = () => {
       setWrongPhrase(false);
     }
     setListLeft(
-      Array.from(
-        { length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 },
-        (_, idx) => ({
-          id: idx,
-          word: '',
-        }),
-      ),
+      Array.from({ length: numberOfWord / 2 }, (_, idx) => ({
+        id: idx,
+        word: '',
+      })),
     );
     setListRight(
-      Array.from(
-        { length: DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2 },
-        (_, idx) => ({
-          id: idx + DEFAULT_NUMBER_OF_RECOVERY_WORDS / 2,
-          word: '',
-        }),
-      ),
+      Array.from({ length: numberOfWord / 2 }, (_, idx) => ({
+        id: idx + numberOfWord / 2,
+        word: '',
+      })),
     );
   };
 
@@ -209,6 +212,19 @@ const ImportPhraseScreen = () => {
               defaultValue={algorithm}
             />
           </View>
+        </Row.LR>
+        <Row.LR pt={16} px={16} style={styles.numberRow}>
+          {NUMBER_OF_RECOVERY_WORDS.map(number => {
+            return (
+              <CTextButton
+                type={numberOfWord === number ? 'default' : 'line'}
+                style={[styles.numberOfWordsButton, { marginRight: scale(12) }]}
+                text={number.toString()}
+                onPress={() => onChangeNumberOfWords(number)}
+                variant={numberOfWord === number ? 'primary' : 'secondary'}
+              />
+            );
+          })}
         </Row.LR>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
@@ -323,5 +339,13 @@ const styles = StyleSheet.create({
   algorithmDescription: {
     ...textStyles.Cap2,
     marginBottom: scale(12),
+  },
+  numberOfWordsButton: {
+    width: scale(60),
+    height: scale(30),
+  },
+  numberRow: {
+    justifyContent: 'flex-start',
+    gap: scale(12),
   },
 });
