@@ -8,7 +8,6 @@ import CTextButton from 'components/CTextButton';
 import { useSelector } from 'react-redux';
 import { getUser } from 'utils/selectors/user';
 import { User } from 'react-native-casper-storage';
-import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from 'utils/constants/key';
 import { PhraseItem } from '../../authentication/create_new_wallet/components';
 
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
