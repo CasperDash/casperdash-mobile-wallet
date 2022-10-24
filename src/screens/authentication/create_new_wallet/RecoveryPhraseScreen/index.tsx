@@ -17,7 +17,7 @@ import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType } from 'react-native-casper-storage';
-import { DEFAULT_NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import { NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import { getRecoveryPhase } from '../../../../utils/helpers/account';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
@@ -28,7 +28,10 @@ const RecoveryPhraseScreen = () => {
   );
   const copyToClipboard = useCopyToClipboard();
 
-  const phraseString = getRecoveryPhase(DEFAULT_NUMBER_OF_RECOVERY_WORDS);
+  const [numberOfWord, setNumberOfWords] = useState<number>(
+    NUMBER_OF_RECOVERY_WORDS[0],
+  );
+  const phraseString = getRecoveryPhase(numberOfWord);
 
   const [wordArray, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
@@ -105,7 +108,19 @@ const RecoveryPhraseScreen = () => {
             />
           </View>
         </Row.LR>
-
+        <Row.LR pt={16} px={16} style={styles.numberRow}>
+          {NUMBER_OF_RECOVERY_WORDS.map(number => {
+            return (
+              <CTextButton
+                type={numberOfWord === number ? 'default' : 'line'}
+                style={[styles.numberOfWordsButton, { marginRight: scale(12) }]}
+                text={number.toString()}
+                onPress={() => setNumberOfWords(number)}
+                variant={numberOfWord === number ? 'primary' : 'secondary'}
+              />
+            );
+          })}
+        </Row.LR>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}>
@@ -191,5 +206,12 @@ const styles = StyleSheet.create({
   algorithmDescription: {
     ...textStyles.Cap2,
     marginBottom: scale(12),
+  },
+  numberOfWordsButton: {
+    width: scale(60),
+    height: scale(30),
+  },
+  numberRow: {
+    justifyContent: 'flex-start',
   },
 });
