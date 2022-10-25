@@ -1,8 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import Clipboard from '@react-native-clipboard/clipboard';
 import { colors, IconAttributes, IconCopy, images, textStyles } from 'assets';
 import { CButton, CFastImage, CHeader, CLayout, Row } from 'components';
-import { MessageType } from 'components/CMessge/types';
 import { device, scale } from 'device';
 
 import React, { useState } from 'react';
@@ -14,9 +12,8 @@ import {
   View,
   ScrollView,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 interface Props {
   route: any;
@@ -24,7 +21,7 @@ interface Props {
 }
 
 function NFTDetail({ route }: Props) {
-  const dispatch = useDispatch();
+  const copyToClipboard = useCopyToClipboard();
   const [open, setOpen] = useState(false);
   const [showAttributes, setShowAttributes] = useState(true);
   const { bottom } = useSafeAreaInsets();
@@ -38,15 +35,6 @@ function NFTDetail({ route }: Props) {
     nftContractName,
     totalSupply,
   } = data;
-
-  const copyToClipboard = async () => {
-    await Clipboard.setString(contractAddress);
-    const message = {
-      message: 'Copied to Clipboard',
-      type: MessageType.normal,
-    };
-    dispatch(allActions.main.showMessage(message, 1000));
-  };
 
   const onOpenModal = () => {
     setOpen(!open);
@@ -125,7 +113,7 @@ function NFTDetail({ route }: Props) {
             </View>
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Address:</Text>
-              <CButton onPress={copyToClipboard}>
+              <CButton onPress={() => copyToClipboard(contractAddress)}>
                 <Row.C mt={6}>
                   <Text
                     numberOfLines={1}

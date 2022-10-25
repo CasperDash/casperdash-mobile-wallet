@@ -16,6 +16,7 @@ import { getListValidators } from 'utils/selectors/validator';
 import {
   checkIfLoadingSelector,
   checkIfRefreshingSelector,
+  getPublicKey,
 } from 'utils/selectors';
 import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
@@ -30,6 +31,7 @@ function ValidatorScreen() {
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
 
+  const publicKey = useSelector(getPublicKey);
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
     checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
@@ -46,9 +48,10 @@ function ValidatorScreen() {
   const onReload = () => {
     dispatch(
       allActions.staking.getValidatorsInformation(
-        { refreshing: true },
+        { refreshing: true, publicKey },
         (error: any, _: any) => {
           if (error) {
+            console.error(error);
             dispatch(
               allActions.main.showMessage({
                 message: error.message,

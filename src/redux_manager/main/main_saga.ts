@@ -30,6 +30,7 @@ export function* loadLocalStorage() {
   if (!configurations) {
     yield put({ type: types.GET_CONFIGURATIONS });
   }
+
   const data = {
     casperdash: casperdash,
     tokensAddressList: tokensAddressList,
@@ -48,6 +49,7 @@ export function* watchLoadLocalStorage() {
         types.LOAD_LOCAL_STORAGE,
         typesHome.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS,
         typesStaking.PUSH_STAKE_TO_LOCAL_STORAGE_SUCCESS,
+        types.INIT_APP_STATE,
       ],
       loadLocalStorage,
     );

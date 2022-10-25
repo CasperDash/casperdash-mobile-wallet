@@ -12,6 +12,7 @@ interface Props {
 const SettingMenuComponent = ({ data }: Props) => {
   const Icon = data.icon;
   const SubIcon = data.subIcon;
+  const ActionComp = data.actionComp;
 
   return (
     <CButton onPress={data.onPress}>
@@ -20,6 +21,7 @@ const SettingMenuComponent = ({ data }: Props) => {
           <Icon />
           <Text style={styles.title}>{data.title}</Text>
         </Row.C>
+        {ActionComp && <ActionComp />}
         {SubIcon && <SubIcon />}
       </Row.LR>
     </CButton>

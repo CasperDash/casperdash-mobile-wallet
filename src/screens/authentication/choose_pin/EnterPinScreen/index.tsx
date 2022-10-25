@@ -1,104 +1,101 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { CHeader, CLayout, Col } from 'components';
-import { colors, fonts, textStyles } from 'assets';
-import { scale } from 'device';
+import React, { useCallback, useEffect, useState } from 'react';
+import { CLayout, CButton } from 'components';
+import { Image, StyleSheet, Text, NativeModules } from 'react-native';
 // @ts-ignore
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Config, Keys } from 'utils';
-import { allActions } from 'redux_manager';
-import { useDispatch } from 'react-redux';
-import { MessageType } from 'components/CMessge/types';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import PinCodeWrapper from '../PinCodeWrapper';
+import { images, colors, textStyles } from 'assets';
+import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
+import { scale } from 'device';
+import { validatePin } from 'utils/helpers/account';
+import { Keys, Config } from 'utils';
 
-// @ts-ignore
+const MAX_ATTEMPT = 5;
+
 const EnterPinScreen = () => {
-  const [pin, setPink] = useState<string>();
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const pinLength = 6;
-  const [error, setError] = useState<boolean>(false);
-  const inputRef = useRef<any>();
-  const dispatch = useDispatch();
+  const { isBiometryEnabled, biometryType } = useBiometry();
+  const [pin, setPin] = useState<string>();
+  const [storedPin, setStoredPin] = useState<string>();
+  const [isBiometry, setIsBiometry] = useState<boolean>(false);
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 1000);
-    }
-    getAccountInformation();
+    Config.getItem(Keys.masterPassword).then(masterPassword => {
+      setStoredPin(masterPassword);
+    });
   }, []);
 
-  const getAccountInformation = () => {
-    dispatch(
-      allActions.user.getAccountInformation(null, (err: any) => {
-        if (err) {
-          const message = {
-            message: err && err.message ? err.message : 'Error',
-            type: MessageType.error,
-          };
-          dispatch(allActions.main.showMessage(message));
-        }
-      }),
-    );
+  const onFinishedEnterPin = () => {
+    navigation.navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
+      isLoadUser: true,
+      pin,
+    });
   };
 
-  useEffect(() => {
-    if (pin && pin.length === pinLength) {
-      Config.getItem(Keys.pinCode).then((savePin: string) => {
-        if (savePin !== pin) {
-          setError(savePin !== pin);
-          return;
-        }
-        navigation.dispatch(
-          CommonActions.reset({
-            routes: [
-              {
-                name: 'MainStack',
-              },
-            ],
-          }),
-        );
-      });
-    } else if (error) {
-      setError(false);
+  const onValidatePin = async (pinCode: string) => {
+    if (pinCode || isBiometry) {
+      setPin(pinCode);
+      return await validatePin(pinCode, isBiometry);
     }
-  }, [pin]);
+    return false;
+  };
+
+  const onDeleteAllData = () => {
+    Object.entries(Keys).map(key => {
+      return Config.deleteItem(key[1]);
+    });
+    NativeModules.DevSettings.reload();
+  };
+
+  const touchIdButton = useCallback(
+    (launchTouchID: () => void) => {
+      return (
+        <>
+          {biometryType && isBiometryEnabled && (
+            <CButton
+              onPress={() => {
+                setIsBiometry(true);
+                launchTouchID();
+              }}>
+              <Image
+                style={{
+                  marginLeft: scale(16),
+                  width: scale(40),
+                  height: scale(40),
+                }}
+                source={
+                  biometryType === BiometryType.FaceID
+                    ? images.faceId
+                    : images.touchId
+                }
+              />
+            </CButton>
+          )}
+        </>
+      );
+    },
+    [biometryType, isBiometryEnabled],
+  );
 
   return (
     <CLayout>
-      <CHeader title={'Enter PIN'} showBack={false} />
-      <Col.C mt={78}>
-        <Text style={styles.title}>Enter security PIN</Text>
-        <SmoothPinCodeInput
-          placeholder={<View style={styles.pinPlaceholder} />}
-          mask={
-            <View
-              style={[styles.pinPlaceholder, { backgroundColor: colors.R1 }]}
-            />
-          }
-          maskDelay={500}
-          password
-          ref={inputRef}
-          cellStyle={null}
-          keyboardType={'number-pad'}
-          autoFocus
-          value={pin}
-          codeLength={pinLength}
-          cellSpacing={0}
-          restrictToNumbers
-          cellStyleFocused={null}
-          onTextChange={setPink}
-          textStyle={styles.textStyle}
-        />
-        {error && (
-          <Text
-            style={[styles.title, { color: colors.R1, marginTop: scale(20) }]}>
-            Incorrect PIN code
-          </Text>
-        )}
-      </Col.C>
+      <PinCodeWrapper
+        status="enter"
+        finishProcess={onFinishedEnterPin}
+        timeLocked={__DEV__ ? 20000 : undefined}
+        maxAttempts={MAX_ATTEMPT}
+        delayBetweenAttempts={1000}
+        bottomLeftComponent={touchIdButton}
+        handleResultEnterPin={onValidatePin}
+        storedPin={storedPin}
+      />
+      {__DEV__ && (
+        <CButton onPress={onDeleteAllData} style={styles.btnDelete}>
+          <Text style={styles.txtDelete}>Delete All Data</Text>
+        </CButton>
+      )}
     </CLayout>
   );
 };
@@ -106,23 +103,18 @@ const EnterPinScreen = () => {
 export default EnterPinScreen;
 
 const styles = StyleSheet.create({
-  title: {
-    ...textStyles.Body1,
-    color: colors.c232635,
-    marginBottom: scale(20),
-    fontFamily: fonts.Lato.regular,
-  },
-  pinPlaceholder: {
-    width: scale(16),
-    height: scale(16),
-    borderRadius: scale(8),
-    backgroundColor: colors.cFFFFFF,
-    borderColor: colors.R1,
+  btnDelete: {
+    paddingVertical: scale(6),
+    paddingHorizontal: scale(16),
+    minWidth: scale(134),
+    height: scale(36),
+    borderRadius: scale(18),
     borderWidth: scale(1),
+    borderColor: colors.N4,
+    alignSelf: 'center',
+    marginTop: scale(70),
   },
-  textStyle: {
-    color: colors.N1,
-    fontSize: scale(20),
-    fontFamily: fonts.Lato.regular,
+  txtDelete: {
+    ...textStyles.Body2,
   },
 });

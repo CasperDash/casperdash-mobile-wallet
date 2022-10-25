@@ -15,6 +15,8 @@ export const types = {
 
   REFRESH_ACTION_START: 'REFRESH_ACTION_START',
   REFRESH_ACTION_STOP: 'REFRESH_ACTION_STOP',
+  INIT_APP_STATE: 'INIT_APP_STATE',
+  CLEAR_ALL_DATA: 'CLEAR_ALL_DATA',
 };
 
 const showMessage = (message: Message, duration?: number) => {
@@ -67,10 +69,20 @@ export const refreshActionStop = (name: any) => ({
   payload: { name },
 });
 
+export const initState = () => {
+  return { type: types.INIT_APP_STATE };
+};
+
+export const clearAllData = () => {
+  return { type: types.CLEAR_ALL_DATA };
+};
+
 export default {
   showMessage,
   loadLocalStorage,
   getConfigurations,
   startAction,
   stopAction,
+  initState,
+  clearAllData,
 };
