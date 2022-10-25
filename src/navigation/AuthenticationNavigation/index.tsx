@@ -18,6 +18,8 @@ const AuthenticationNavigation = () => {
           component={AuthenticationScreens[elem].screen}
           options={{
             title: AuthenticationScreens[elem].title,
+            gestureEnabled:
+              AuthenticationScreens[elem].disabledGesture !== true,
           }}
           key={index}
         />

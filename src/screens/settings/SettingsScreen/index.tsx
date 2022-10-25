@@ -1,40 +1,104 @@
-import React, { useRef } from 'react';
-import { StyleSheet, Linking, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, Linking, Switch, Image, Text } from 'react-native';
 import {
   colors,
-  IconAboutUs,
+  IconLogo,
   IconCircleRight,
   IconLock,
   textStyles,
+  images,
 } from 'assets';
-import { CAlert, CButton, CHeader, CLayout, Col } from 'components';
+import { CHeader, CLayout, Col } from 'components';
+import DeviceInfo from 'react-native-device-info';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { Config, Keys } from 'utils';
 import { CASPERDASH_URL } from 'utils/constants/key';
+import { useRestack } from 'utils/hooks/useRestack';
+import { StackName } from 'navigation/ScreenProps';
+import DeleteAllDataButton from '../components/DeleteAllDataButton';
+import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
+import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
+import { getLoginOptions } from 'utils/selectors/user';
+import { useSelector } from 'react-redux';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
 function SettingsScreen() {
-  const navigation = useNavigation();
-  const alertRef = useRef<any>();
+  const reStack = useRestack();
+  const loginOptions = useSelector(getLoginOptions);
 
-  const listMenu: Array<SettingMenu> = [
+  const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
+  const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } =
+    useBiometry();
+
+  let listMenu: Array<SettingMenu> = [
     {
       id: 0,
       title: 'About Us',
-      icon: () => <IconAboutUs width={scale(32)} height={scale(32)} />,
+      icon: () => <IconLogo width={scale(32)} height={scale(32)} />,
       subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)} />,
       onPress: () => openUrl(),
     },
     {
-      id: 1,
+      id: 2,
       title: 'Lock',
       icon: () => <IconLock width={scale(32)} height={scale(32)} />,
       onPress: () => lockScreen(),
     },
+    {
+      id: 3,
+      title: 'Recovery Phrase',
+      icon: () => (
+        <Image
+          source={images.backup}
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+      onPress: () => setShowConfirmPin(true),
+      actionComp: ShowRecoveryPhrase,
+      show: loginOptions?.connectionType === CONNECTION_TYPES.passPhase,
+    },
+    {
+      id: 4,
+      title: 'Version',
+      icon: () => (
+        <Image
+          source={images.version}
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+      actionComp: () => (
+        <Text>
+          {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
+        </Text>
+      ),
+    },
   ];
+
+  if (biometryType) {
+    listMenu.push({
+      id: 1,
+      title: biometryType,
+      icon: () => (
+        <Image
+          source={
+            biometryType === BiometryType.FaceID
+              ? images.faceId
+              : images.touchId
+          }
+          style={{ width: scale(32), height: scale(32) }}
+        />
+      ),
+
+      actionComp: () => (
+        <Switch
+          value={isBiometryEnabled}
+          onValueChange={onUpdateBiometryStatus}
+        />
+      ),
+    });
+  }
 
   const openUrl = async () => {
     const supported = await Linking.canOpenURL(CASPERDASH_URL);
@@ -47,57 +111,22 @@ function SettingsScreen() {
     resetStack(AuthenticationRouter.ENTER_PIN);
   };
 
-  const onDeleteAllData = () => {
-    const alert = {
-      alertMessage: 'Are you sure you want to \n Delete All Data?',
-    };
-    alertRef.current.show(alert);
-  };
-
-  const deleteAllData = () => {
-    Promise.all([
-      Config.deleteItem(Keys.casperdash),
-      Config.deleteItem(Keys.pinCode),
-      Config.deleteItem(Keys.tokensAddressList),
-      Config.deleteItem(Keys.ledger),
-      Config.deleteItem(Keys.deploysTransfer),
-      Config.deleteItem(Keys.nfts),
-    ]).then(async () => {
-      resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
-    });
-  };
-
   const resetStack = (name: string) => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [
-          {
-            name: 'AuthenticationStack',
-            state: {
-              routes: [
-                {
-                  name: name,
-                },
-              ],
-            },
-          },
-        ],
-      }),
-    );
+    reStack(StackName.AuthenticationStack, name);
   };
 
   return (
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
       <CHeader title={'Settings'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
-        {listMenu.map((item, index) => {
-          return <SettingMenuComponent data={item} key={index} />;
-        })}
-        <CButton onPress={onDeleteAllData} style={styles.btnDelete}>
-          <Text style={styles.txtDelete}>Delete All Data</Text>
-        </CButton>
+        {listMenu
+          .filter(menu => menu.show !== false)
+          .sort((a, b) => a.id - b.id)
+          .map((item, index) => {
+            return <SettingMenuComponent data={item} key={index} />;
+          })}
+        <DeleteAllDataButton />
       </Col>
-      <CAlert ref={alertRef} onConfirm={deleteAllData} />
     </CLayout>
   );
 }
@@ -115,19 +144,5 @@ const styles = StyleSheet.create({
   title: {
     ...textStyles.Body1,
     color: colors.N2,
-  },
-  btnDelete: {
-    paddingVertical: scale(6),
-    paddingHorizontal: scale(16),
-    minWidth: scale(134),
-    height: scale(36),
-    borderRadius: scale(18),
-    borderWidth: scale(1),
-    borderColor: colors.N4,
-    alignSelf: 'center',
-    marginTop: scale(70),
-  },
-  txtDelete: {
-    ...textStyles.Body2,
   },
 });

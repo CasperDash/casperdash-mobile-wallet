@@ -17,10 +17,10 @@ import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { isValidPublicKey } from 'utils/validator';
 import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
+import { isValidPublicKey } from 'utils/validator';
 
 const initialValues = {
   transferAmount: '0',
@@ -122,7 +122,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
     const maxAmount =
       balance / percent -
       (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
-    setFieldValue('transferAmount', maxAmount.toString());
+    setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 
   const onSelectedToken = (item: any) => {

@@ -3,12 +3,9 @@ import { Text, StyleSheet } from 'react-native';
 import { CButton, Row } from 'components';
 import { colors, IconCopy, textStyles } from 'assets';
 import { scale } from 'device';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
-import { useDispatch } from 'react-redux';
 import { getValueByFormat } from 'utils/helpers/format';
 import { toFormattedDate } from 'utils/date';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 interface Props {
   data: any;
@@ -17,7 +14,7 @@ interface Props {
 }
 
 const TransferDetailComponent = ({ data, deploy, index }: Props) => {
-  const dispatch = useDispatch();
+  const copyToClipboard = useCopyToClipboard();
   const deployValue = deploy[data.value];
   const formattedValue = data.format
     ? data.format === 'date'
@@ -26,12 +23,7 @@ const TransferDetailComponent = ({ data, deploy, index }: Props) => {
     : deployValue;
 
   const copy = async () => {
-    await Clipboard.setString(formattedValue);
-    const message = {
-      message: 'Copied to Clipboard',
-      type: MessageType.normal,
-    };
-    dispatch(allActions.main.showMessage(message, 1000));
+    copyToClipboard(formattedValue);
   };
 
   return (

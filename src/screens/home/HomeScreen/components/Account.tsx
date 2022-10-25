@@ -1,65 +1,54 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-} from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
-import {
-  colors,
-  textStyles,
-  IconEyeOff,
-  IconEye,
-  IconPencilFilled,
-  IconCopy,
-  images,
-} from 'assets';
+import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   getAccountTotalBalanceInFiat,
   getAllTokenInfo,
   getPublicKey,
+  getLoginOptions,
 } from 'utils/selectors/user';
-import { toFormattedCurrency} from 'utils/helpers/format';
+import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
+import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
+import { WalletInfoDetails } from 'utils/helpers/account';
+import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
 function Account() {
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-
-  const dispatch = useDispatch();
-  const [isShowAmount, setIsShowAmount] = useState<boolean>(true);
+  const copyToClipboard = useCopyToClipboard();
   const publicKey = useSelector(getPublicKey);
+  const loginOptions = useSelector(getLoginOptions);
   const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
   const allTokenInfo = useSelector(getAllTokenInfo);
   const { navigate } = useNavigation();
+  const selectAccountModalRef = useRef<any>();
+  const selectedWallet = useSelector<any, WalletInfoDetails>(
+    (state: any) => state.user.selectedWallet || {},
+  );
 
-  {
-    /*TODO: follow the figma's design*/
-  }
-  const onToggleAmount = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsShowAmount(i => !i);
-  };
+  /*TODO: follow the figma's design*/
+  // const onToggleAmount = () => {
+  //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  //   setIsShowAmount(i => !i);
+  // };
+  const canEditAccount = useMemo(() => {
+    return (
+      loginOptions?.connectionType === CONNECTION_TYPES.ledger ||
+      loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+    );
+  }, [loginOptions]);
 
   const saveKey = () => {
-    Clipboard.setString(publicKey);
-    const message = {
-      message: 'Copied to Clipboard',
-      type: MessageType.normal,
-    };
-    dispatch(allActions.main.showMessage(message, 1000));
+    copyToClipboard(publicKey);
   };
 
   const navigateSendReceive = (screen: string) => {
@@ -69,17 +58,30 @@ function Account() {
     navigate(screen, params);
   };
 
+  const onShowSelectAccountModal = () => {
+    if (!canEditAccount) {
+      selectAccountModalRef.current.show();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Col px={16} py={16} style={styles.accountContainer}>
         <Row.LR>
-          <CButton style={{ maxWidth: scale(343 - 16) / 2 }}>
+          <CButton
+            onPress={onShowSelectAccountModal}
+            style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                Account 1
+                {loginOptions?.connectionType === CONNECTION_TYPES.ledger
+                  ? 'Ledger'
+                  : loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+                  ? 'View mode'
+                  : selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
-              {/*TODO: follow the figma's design*/}
-              {/*<IconPencilFilled width={scale(16)} height={scale(16)}/>*/}
+              {!canEditAccount && (
+                <IconPencilFilled width={scale(16)} height={scale(16)} />
+              )}
             </Row.C>
           </CButton>
 
@@ -99,7 +101,7 @@ function Account() {
           <Text
             numberOfLines={1}
             style={[textStyles.H3, { marginRight: scale(8) }]}>
-            {isShowAmount ? toFormattedCurrency(totalFiatBalance) : '$*****00'}
+            {toFormattedCurrency(totalFiatBalance)}
           </Text>
           {/*TODO: follow the figma's design*/}
           {/*<CButton onPress={onToggleAmount}>
@@ -119,6 +121,7 @@ function Account() {
           })}
         </Row.C>
       </Col>
+      <SelectAccountModal ref={selectAccountModalRef} />
     </View>
   );
 }

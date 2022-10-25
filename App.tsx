@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from 'redux_manager';
 import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import 'react-native-console-time-polyfill';
 
 const App = () => {
   return (

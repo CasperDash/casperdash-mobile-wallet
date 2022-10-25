@@ -10,10 +10,11 @@ interface Props {
   icon?: any;
   textStyle?: any;
   type?: 'default' | 'line';
+  variant?: 'primary' | 'secondary';
 }
 
 const defaultProps = {
-  onPress: () => console.log('KIEM TRA'),
+  onPress: () => console.log('pressed'),
 };
 
 const CTextButton = ({
@@ -23,6 +24,7 @@ const CTextButton = ({
   text,
   textStyle,
   type = 'default',
+  variant = 'primary',
   ...rest
 }: Props) => {
   return (
@@ -32,7 +34,8 @@ const CTextButton = ({
       activeOpacity={0.85}
       style={[
         styles.button,
-        type === 'line' && styles.border,
+        type === 'line' &&
+          (variant === 'secondary' ? styles.border : styles.borderPrimary),
         style,
         disabled && styles.disabled,
       ]}>
@@ -41,7 +44,10 @@ const CTextButton = ({
         style={[
           styles.title,
           textStyle,
-          type === 'line' && styles.textBorder,
+          type === 'line' &&
+            (variant === 'secondary'
+              ? styles.textBorder
+              : styles.textBorderPrimary),
           disabled && styles.textDisabled,
         ]}>
         {text}
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: scale(343),
-    height: scale(48),
+    height: scale(44),
     paddingHorizontal: scale(16),
     borderRadius: scale(90),
     backgroundColor: colors.R1,
@@ -74,10 +80,18 @@ const styles = StyleSheet.create({
   },
   border: {
     borderWidth: scale(1),
+    borderColor: colors.N3,
+    backgroundColor: colors.W1,
+  },
+  borderPrimary: {
+    borderWidth: scale(1),
     borderColor: colors.R1,
     backgroundColor: colors.W1,
   },
   textBorder: {
+    color: colors.N3,
+  },
+  textBorderPrimary: {
     color: colors.R1,
   },
 });
