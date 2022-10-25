@@ -9909,10 +9909,10 @@ react-native-camera@^4.2.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-casper-storage@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/react-native-casper-storage/-/react-native-casper-storage-0.0.9.tgz#25f135f0fad595f5d1559975471e6ca974d49e80"
-  integrity sha512-N4X+lyKp8HZHb9VW99C7SrsOCeIyhGXAdLk+BPd2pS+RCkhjANrhUCcjVu1N+NFOJRcG/sdIFqmlENzrSPcIgQ==
+react-native-casper-storage@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-casper-storage/-/react-native-casper-storage-1.0.0.tgz#a844aac53d3ae225d5b4f42bed1c9564498e3b1b"
+  integrity sha512-EG7yZTpI1vvqbNegK1AYi9rPQNcd52clM29Z2Tmp4WkgLlIlLoR0lp184rsBwgNFshHWPgG25mC9GG7qT6VKpA==
   dependencies:
     "@noble/ed25519" "^1.7.0"
     "@noble/hashes" "^1.1.2"
