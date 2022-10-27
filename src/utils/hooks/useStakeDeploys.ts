@@ -123,3 +123,23 @@ export const useStakeFromValidators = (publicKey: string) => {
   );
   return stakedValidators;
 };
+
+export const useStakedHistory = (publicKey: string) => {
+  const stakeDeployList = useSelector(state =>
+    //@ts-ignore
+    getDeployStakes(state, { publicKey }),
+  );
+  return stakeDeployList.map((item: any) => {
+    return {
+      validator: item.validator,
+      stakedAmount:
+        item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
+      icon:
+        item.entryPoint === ENTRY_POINT_UNDELEGATE
+          ? IconStatusSend
+          : IconStatusReceive,
+      status: item.status,
+      type: item.entryPoint,
+    };
+  });
+};
