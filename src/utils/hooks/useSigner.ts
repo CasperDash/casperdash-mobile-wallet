@@ -28,14 +28,12 @@ const useSigner = () => {
             keyIndex: loginOptions.keyIndex,
           });
         }
-        case CONNECTION_TYPES.passPhase: {
+        default: {
           const keyPair = await getWalletKeyPair(user, selectedWallet);
           return DeployUtil.deployToJson(
             DeployUtil.signDeploy(deploy, keyPair),
           );
         }
-        default:
-          throw Error('Can not find signer');
       }
     } catch (error) {
       console.error(error);
