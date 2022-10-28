@@ -1,5 +1,6 @@
 import memoizeOne from 'memoize-one';
-import { IconStatusSend, IconStatusReceive } from 'assets';
+import { IconStatusSend, IconStatusReceive, colors } from 'assets';
+import { DeployStatus } from '../constants/key';
 
 /**
  * Get transaction icon
@@ -23,3 +24,10 @@ export const enrichTransactionWithIcon = memoizeOne(transferList => {
     return { ...transfer, icon: getTransactionIcon(transfer.type) };
   });
 });
+
+export const StatusColorMapping: Record<DeployStatus, string> = {
+  pending: colors.Y1,
+  undelegating: colors.Y1,
+  failed: colors.R1,
+  completed: colors.G1,
+};

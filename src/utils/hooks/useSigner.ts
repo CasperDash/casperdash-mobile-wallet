@@ -28,18 +28,16 @@ const useSigner = () => {
             keyIndex: loginOptions.keyIndex,
           });
         }
-        case CONNECTION_TYPES.passPhase: {
+        default: {
           const keyPair = await getWalletKeyPair(user, selectedWallet);
           return DeployUtil.deployToJson(
             DeployUtil.signDeploy(deploy, keyPair),
           );
         }
-        default:
-          throw Error('Can not find signer');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      throw Error('Error on signing deploy');
+      throw Error(`Error on signing deploy. \n ${error?.message}`);
     }
   };
 
