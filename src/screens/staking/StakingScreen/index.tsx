@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import {
   colors,
   fonts,
@@ -6,6 +6,7 @@ import {
   IconLogo,
   images,
   textStyles,
+  IconHistory,
 } from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton } from 'components';
 import { scale } from 'device';
@@ -20,6 +21,7 @@ import {
   Platform,
   ScrollView,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import * as yup from 'yup';
 import CTextButton from 'components/CTextButton';
@@ -39,8 +41,12 @@ import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useStakeFromValidators } from 'utils/hooks/useStakeDeploys';
+import {
+  useStakeFromValidators,
+  useStakedHistory,
+} from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
+import StakedHistoryItem from './StakedHistoryItem';
 import { StakingMode } from 'utils/constants/key';
 
 const initialValues = {
@@ -59,10 +65,15 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
 
+  //State
+  const [showHistory, setShowHistory] = useState(false);
+
   // Selector
   const publicKey = useSelector(getPublicKey);
   const stackingList = useStakeFromValidators(publicKey);
+  const stakedHistory = useStakedHistory(publicKey);
   const userDetails = useSelector(getMassagedUserDetails);
+
   const balance =
     userDetails && userDetails.balance && userDetails.balance.displayBalance;
   const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
@@ -234,6 +245,16 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     );
   };
 
+  const renderItems = () => {
+    const listItems = showHistory ? stakedHistory : stackingList;
+    const Comp = showHistory ? StakedHistoryItem : StakedInformationItem;
+    return listItems && listItems.length > 0
+      ? listItems.map((item: any, index: any) => {
+          return <Comp value={item} key={index} />;
+        })
+      : _renderNoData();
+  };
+
   const _renderHeader = () => {
     return (
       <>
@@ -280,9 +301,28 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
           />
         </Col>
         <View style={styles.line} />
-        <Text style={[styles.title, { margin: scale(16) }]}>
-          Staked Information
-        </Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity onPress={() => setShowHistory(false)}>
+            <Text
+              style={[
+                styles.title,
+                {
+                  margin: scale(16),
+                  color: showHistory ? colors.N3 : colors.N1,
+                },
+              ]}>
+              Staked Info
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowHistory(true)}>
+            <IconHistory fill={!showHistory ? colors.N3 : colors.R3} />
+          </TouchableOpacity>
+        </View>
       </>
     );
   };
@@ -306,11 +346,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             />
           }>
           {_renderHeader()}
-          {stackingList && stackingList.length > 0
-            ? stackingList.map((item, index) => {
-                return <StakedInformationItem value={item} key={index} />;
-              })
-            : _renderNoData()}
+          {renderItems()}
         </ScrollView>
       </Col>
     </CLayout>
@@ -340,7 +376,6 @@ const styles = StyleSheet.create({
   },
   title: {
     ...textStyles.Sub1,
-    color: colors.N3,
   },
   inputStyle: {
     ...textStyles.Body1,
