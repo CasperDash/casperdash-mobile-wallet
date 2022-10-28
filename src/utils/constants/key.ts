@@ -31,3 +31,9 @@ export enum StakingMode {
   Undelegate = 'Undelegate',
   Delegate = 'Delegate',
 }
+export enum DeployStatus {
+  pending = 'pending',
+  failed = 'failed',
+  completed = 'completed',
+  undelegating = 'undelegating',
+}
