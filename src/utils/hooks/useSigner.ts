@@ -35,9 +35,9 @@ const useSigner = () => {
           );
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      throw Error('Error on signing deploy');
+      throw Error(`Error on signing deploy. \n ${error?.message}`);
     }
   };
 
