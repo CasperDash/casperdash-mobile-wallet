@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { moteToCspr } from '../helpers/balance';
 import { getDeployStakes, updateStakesDeployStatus } from '../selectors/stake';
 import { getListValidators } from '../selectors/validator';
-import { ENTRY_POINT_UNDELEGATE } from '../constants/key';
+import { ENTRY_POINT_UNDELEGATE, DeployStatus } from '../constants/key';
 import { IconStatusReceive, IconStatusSend } from 'assets';
 import { apis } from 'services';
 import { allActions } from 'redux_manager';
@@ -94,18 +94,21 @@ export const useStakeFromValidators = (publicKey: string) => {
     getDeployStakes(state, { publicKey }),
   );
   const pendingStakes = stakeDeployList.filter(
-    (stake: any) => stake.status === 'pending',
+    (stake: any) => stake.status === DeployStatus.pending,
+  );
+  const pendingUndelegate = stakeDeployList.filter(
+    (stake: any) => stake.status === DeployStatus.undelegating,
   );
 
   useEffect(() => {
-    if (pendingStakes && pendingStakes.length > 0) {
+    if (pendingStakes.length || pendingUndelegate.length) {
       (async () => {
         if (!publicKey) {
           return;
         }
-        const pendingStakesDeployHash = pendingStakes.map(
-          (deploy: any) => deploy.deployHash,
-        );
+        const pendingStakesDeployHash = pendingStakes
+          .concat(pendingUndelegate)
+          .map((deploy: any) => deploy.deployHash);
         const data: any = await apis.getTransferDeploysStatusAPI({
           deployHash: pendingStakesDeployHash,
         });
@@ -122,4 +125,24 @@ export const useStakeFromValidators = (publicKey: string) => {
     publicKey,
   );
   return stakedValidators;
+};
+
+export const useStakedHistory = (publicKey: string) => {
+  const stakeDeployList = useSelector(state =>
+    //@ts-ignore
+    getDeployStakes(state, { publicKey }),
+  );
+  return stakeDeployList.map((item: any) => {
+    return {
+      validator: item.validator,
+      stakedAmount:
+        item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
+      icon:
+        item.entryPoint === ENTRY_POINT_UNDELEGATE
+          ? IconStatusSend
+          : IconStatusReceive,
+      status: item.status,
+      type: item.entryPoint,
+    };
+  });
 };
