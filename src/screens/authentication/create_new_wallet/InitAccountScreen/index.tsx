@@ -119,8 +119,9 @@ const InitAccountScreen: React.FC<
       ) {
         onInitSuccess(true);
       } else if (isLoadUser) {
-        loadUser();
-        onInitSuccess();
+        loadUser().then(() => {
+          onInitSuccess();
+        });
       } else {
         setupUser().then(() => {
           onInitSuccess();
