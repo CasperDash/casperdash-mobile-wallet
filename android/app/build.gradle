@@ -135,8 +135,8 @@ android {
         applicationId "io.casperdash.casperwallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 31
-        versionName "1.1.0"
+        versionCode 33
+        versionName "1.1.2"
         setProperty("archivesBaseName", "CasperDash")
         vectorDrawables.useSupportLibrary = true
         missingDimensionStrategy 'react-native-camera', 'general'
