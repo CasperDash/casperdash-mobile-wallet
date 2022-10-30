@@ -88,7 +88,8 @@ export const createNewUserWithHdWallet = (
  */
 export const getPublicKeyCache = async (uid: string) => {
   const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
-  return publicKeysCache[uid];
+
+  return publicKeysCache && publicKeysCache[uid];
 };
 
 /**
