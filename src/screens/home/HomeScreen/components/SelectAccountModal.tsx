@@ -65,7 +65,6 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
       getWalletInfoWithPublicKey(user, listWallets).then(
         walletInfoWithPublicKey => {
           setListWalletsDetails(walletInfoWithPublicKey);
-
           setIsLoadingBalance(true);
           const publicKeys = walletInfoWithPublicKey
             .filter(info => info.publicKey)
