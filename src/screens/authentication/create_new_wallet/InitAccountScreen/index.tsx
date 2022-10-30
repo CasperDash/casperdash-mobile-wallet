@@ -60,7 +60,11 @@ const InitAccountScreen: React.FC<
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
       const selectedWalletDetails = {
-        walletInfo: selectedWallet,
+        walletInfo: {
+          descriptor: selectedWallet.descriptor,
+          encryptionType: selectedWallet.encryptionType,
+          uid: selectedWallet.uid,
+        },
         publicKey,
         walletType: WalletType.HDWallet,
       };
