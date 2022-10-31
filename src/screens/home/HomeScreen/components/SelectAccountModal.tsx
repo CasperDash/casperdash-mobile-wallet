@@ -131,7 +131,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     );
 
     await cachePublicKey(walletInfo.uid, await newWallet.getPublicKey());
-    // no need to await here, should serialize and stored user data in background
+
     await serializeAndStoreUser(currentAccount);
 
     dispatch(allActions.user.getUserSuccess(currentAccount));
