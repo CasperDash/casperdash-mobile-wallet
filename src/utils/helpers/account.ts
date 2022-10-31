@@ -262,3 +262,29 @@ export const validatePin = async (pin: string, isBiometry?: boolean) => {
 
   return masterPassword === password;
 };
+
+/**
+ * It saves the public key and wallet info to the device's storage
+ * @param {WalletInfo} walletInfo - WalletInfo,
+ * @param {string} publicKey - The public key of the wallet you want to set as the selected wallet.
+ * @returns The selected wallet
+ */
+export const setSelectedWallet = async (
+  walletInfo: WalletInfo,
+  publicKey: string,
+) => {
+  const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
+  casperDashInfo.publicKey = publicKey;
+  await Config.saveItem(StorageKeys.casperdash, casperDashInfo);
+
+  const selectedWallet = {
+    publicKey,
+    walletInfo: {
+      descriptor: walletInfo.descriptor,
+      encryptionType: walletInfo.encryptionType,
+      uid: walletInfo.uid,
+    },
+  };
+  await Config.saveItem(StorageKeys.selectedWallet, selectedWallet);
+  return selectedWallet;
+};
