@@ -117,6 +117,7 @@ const RecoveryPhraseScreen = () => {
                 text={number.toString()}
                 onPress={() => setNumberOfWords(number)}
                 variant={numberOfWord === number ? 'primary' : 'secondary'}
+                key={number}
               />
             );
           })}

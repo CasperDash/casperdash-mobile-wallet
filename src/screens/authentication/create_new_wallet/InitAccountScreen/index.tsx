@@ -86,6 +86,18 @@ const InitAccountScreen: React.FC<
       const masterPassword = await Config.getItem(Keys.masterPassword);
       const loadedUser = await getUserFromStorage(masterPassword);
       if (loadedUser) {
+        const selectedWallet = await Config.getItem(Keys.selectedWallet);
+        if (!selectedWallet?.walletInfo?.uid) {
+          const defaultWallet = loadedUser.getHDWallet().derivedWallets?.[0];
+          await Config.saveItem(Keys.selectedWallet, {
+            ...selectedWallet,
+            walletInfo: {
+              descriptor: defaultWallet.descriptor,
+              encryptionType: defaultWallet.encryptionType,
+              uid: defaultWallet.uid,
+            },
+          });
+        }
         dispatch(allActions.user.getUserSuccess(loadedUser));
         dispatch(allActions.main.initState());
       }
