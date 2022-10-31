@@ -36,6 +36,7 @@ import {
   WalletInfoDetails,
   cachePublicKey,
   serializeAndStoreUser,
+  setSelectedWallet,
 } from 'utils/helpers/account';
 import { convertBalanceFromHex } from 'utils/helpers/balance';
 import ViewPrivateKeyButton from './ViewPrivateKeyButton';
@@ -150,17 +151,11 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   };
 
   const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
-    const casperDashInfo = await Config.getItem(Keys.casperdash);
-    casperDashInfo.publicKey = walletInfoDetails.publicKey;
-    await Config.saveItem(Keys.casperdash, casperDashInfo);
-    await Config.saveItem(Keys.selectedWallet, {
-      ...walletInfoDetails,
-      walletInfo: {
-        descriptor: walletInfoDetails.walletInfo.descriptor,
-        encryptionType: walletInfoDetails.walletInfo.encryptionType,
-        uid: walletInfoDetails.walletInfo.uid,
-      },
-    });
+    await setSelectedWallet(
+      walletInfoDetails.walletInfo,
+      walletInfoDetails.publicKey!!,
+    );
+
     dispatch(allActions.user.loadSelectedWalletFromStorage());
     dispatch(allActions.main.loadLocalStorage());
     hide();

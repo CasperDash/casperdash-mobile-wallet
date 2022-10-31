@@ -13,11 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
 import { IHDKey, IWallet, WalletDescriptor } from 'react-native-casper-storage';
-import { CONNECTION_TYPES, WalletType } from 'utils/constants/settings';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 import {
   createNewUserWithHdWallet,
   getUserFromStorage,
   serializeAndStoreUser,
+  setSelectedWallet,
 } from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
 
@@ -59,16 +60,10 @@ const InitAccountScreen: React.FC<
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
-      const selectedWalletDetails = {
-        walletInfo: {
-          descriptor: selectedWallet.descriptor,
-          encryptionType: selectedWallet.encryptionType,
-          uid: selectedWallet.uid,
-        },
+      const selectedWalletDetails = await setSelectedWallet(
+        selectedWallet,
         publicKey,
-        walletType: WalletType.HDWallet,
-      };
-      await Config.saveItem(Keys.selectedWallet, selectedWalletDetails);
+      );
 
       dispatch(allActions.user.getUserSuccess(user));
       dispatch(allActions.user.getSelectedWalletSuccess(selectedWalletDetails));
@@ -87,16 +82,12 @@ const InitAccountScreen: React.FC<
       const loadedUser = await getUserFromStorage(masterPassword);
       if (loadedUser) {
         const selectedWallet = await Config.getItem(Keys.selectedWallet);
+        // if no uid should set default wallet to first hd wallet
         if (!selectedWallet?.walletInfo?.uid) {
           const defaultWallet = loadedUser.getHDWallet().derivedWallets?.[0];
-          await Config.saveItem(Keys.selectedWallet, {
-            ...selectedWallet,
-            walletInfo: {
-              descriptor: defaultWallet.descriptor,
-              encryptionType: defaultWallet.encryptionType,
-              uid: defaultWallet.uid,
-            },
-          });
+          const wallet = await loadedUser.getWalletAccount(defaultWallet.index);
+          const publicKey = await wallet.getPublicKey();
+          await setSelectedWallet(defaultWallet, publicKey);
         }
         dispatch(allActions.user.getUserSuccess(loadedUser));
         dispatch(allActions.main.initState());
