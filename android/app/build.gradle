@@ -135,7 +135,7 @@ android {
         applicationId "io.casperdash.casperwallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 34
+        versionCode 35
         versionName "1.1.4"
         setProperty("archivesBaseName", "CasperDash")
         vectorDrawables.useSupportLibrary = true
