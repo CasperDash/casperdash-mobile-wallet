@@ -303,8 +303,17 @@ Type source $HOME/.bash_profile for bash or source $HOME/.zprofile to load the c
 Assuming you have all the requirements installed, you can run the project by running:
 
 - `yarn install` install packages
+
+![Screenshot 2023-02-02 at 18 35 25](https://user-images.githubusercontent.com/4486806/216314536-e9181907-8fcd-4b0f-9af7-50874e5102e2.png)
+
 - `yarn setup-env` to setup the environment files for mainnet and testnet
+
+![Screenshot 2023-02-02 at 18 37 25](https://user-images.githubusercontent.com/4486806/216314735-4278b579-490e-41d1-b426-76a1ce0a987e.png)
+
 - `yarn start` to start the metro bundler, in a dedicated terminal
+
+![Screenshot 2023-02-02 at 18 38 01](https://user-images.githubusercontent.com/4486806/216314852-a47bbffc-956e-4061-8614-8283145a343b.png)
+
 - `cd ios && pod install` to run the pod installation. If you have the problem on macOS M1, please have a look the [solution here](#-On-macOS-M1-cannot-build-the-project-due-to-arm64-issue.).
 - Go to the project root and run `yarn <platform>` to run the _platform_ application (remember to start a simulator or connect a device). Platform should be `ios` or `android`.
 
