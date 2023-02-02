@@ -240,9 +240,11 @@ _USERNAME_ is your current user name.
 ### Linux & Android
 
 **Node, JDK**
+
 Follow the [installation instructions for your Linux distribution](https://nodejs.org/en/download/package-manager/) to install Node 14 or newer.
 
 **Java Development Kit**
+
 React Native currently recommends version 11 of the Java SE Development Kit (JDK). You may encounter problems using higher JDK versions. You may download and install OpenJDK from AdoptOpenJDK or your system packager.
 
 **Android development environment**
