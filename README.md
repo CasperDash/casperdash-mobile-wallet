@@ -236,7 +236,6 @@ Linux: `sdk.dir = /home/USERNAME/Android/Sdk`
 
 _USERNAME_ is your current user name.
 
-
 ### Linux & Android
 
 **Node, JDK**
@@ -328,6 +327,43 @@ mainnet: `yarn env:mainnet`
 local: `yarn env:local`
 
 Modify the environment variables files in `scripts/configs/env.[environment].js` and run the above commands.
+
+## Unit Testing
+
+`yarn setup-env`
+`yarn test`
+
+```
+--------------------|---------|----------|---------|---------|-------------------
+File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+--------------------|---------|----------|---------|---------|-------------------
+All files           |   91.41 |    84.29 |    92.3 |   91.38 |
+ config             |     100 |      100 |     100 |     100 |
+  env.mainnet.js    |     100 |      100 |     100 |     100 |
+  index.js          |     100 |      100 |     100 |     100 |
+ constants          |     100 |      100 |     100 |     100 |
+  key.ts            |     100 |      100 |     100 |     100 |
+  ledger.ts         |     100 |      100 |     100 |     100 |
+  nft.ts            |     100 |      100 |     100 |     100 |
+  stack.ts          |     100 |      100 |     100 |     100 |
+ helpers            |   89.51 |    88.65 |   95.65 |   89.51 |
+  balance.ts        |     100 |      100 |     100 |     100 |
+  currency.ts       |     100 |      100 |     100 |     100 |
+  format.ts         |   70.58 |    76.47 |    87.5 |   70.58 | 59,118,138-151
+  identicon.ts      |     100 |      100 |     100 |     100 |
+  key.ts            |     100 |        0 |     100 |     100 | 12
+  validator.ts      |     100 |    96.72 |     100 |     100 | 13,197
+ services           |   91.11 |    66.66 |    87.5 |   91.01 |
+  casperServices.ts |   82.14 |      100 |   71.42 |   82.14 | 123-131,140
+  ledgerServices.ts |   94.28 |    68.42 |     100 |   94.11 | 51-52
+  stakeServices.ts  |     100 |      100 |     100 |     100 |
+  tokenServices.ts  |    87.5 |        0 |     100 |    87.5 | 29
+  userServices.ts   |     100 |      100 |     100 |     100 |
+--------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 11 passed, 11 total
+Tests:       74 passed, 74 total
+```
 
 ## API Server
 
