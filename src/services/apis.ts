@@ -162,9 +162,7 @@ function getListNFTsAPI<T>(params: any): NetworkPromiseResponse<T> {
   });
 }
 
-function getTransferDeploysStatusAPI<T>(
-  params: any,
-): NetworkPromiseResponse<T> {
+function getTransferDeploysStatusAPI<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
       .authorizedRequest('/deploysStatus?' + qs.stringify(params), 'GET')
@@ -180,17 +178,10 @@ function getTransferDeploysStatusAPI<T>(
   });
 }
 
-function getValidatorsInformationAPI<T>(
-  publicKey: string,
-): NetworkPromiseResponse<T> {
+function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .authorizedRequest(
-        publicKey
-          ? `v2/validators?delegator=${publicKey}&cachedBy=block`
-          : 'v2/validators',
-        'GET',
-      )
+      .authorizedRequest(publicKey ? `v2/validators?delegator=${publicKey}&cachedBy=block` : 'v2/validators', 'GET')
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);

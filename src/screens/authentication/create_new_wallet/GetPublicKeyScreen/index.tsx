@@ -20,7 +20,7 @@ import { convertBalanceFromHex } from 'utils/helpers/balance';
 import CLoading from 'components/CLoading';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 
-const delay = (ms: number) => new Promise(success => setTimeout(success, ms));
+const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
 
 interface Props {
   transport: any;
@@ -68,37 +68,28 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
         setError(null);
         const keys = await getListKeys(casperApp, listKeys.length, 5);
         dispatch(
-          allActions.user.getAccounts(
-            { publicKeys: keys },
-            async (err: any, data: any) => {
-              if (err) {
-                setError(err.message);
-                return;
-              }
+          allActions.user.getAccounts({ publicKeys: keys }, async (err: any, data: any) => {
+            if (err) {
+              setError(err.message);
+              return;
+            }
 
-              if (!data || !data.length) {
-                setListKeys(keys);
-                return;
-              }
+            if (!data || !data.length) {
+              setListKeys(keys);
+              return;
+            }
 
-              const keysWithBalance = keys.map(key => {
-                const found = data.find(
-                  (item: { publicKey: string }) =>
-                    item.publicKey === key.publicKey,
-                );
-                const balance =
-                  found && found.balance
-                    ? convertBalanceFromHex(found.balance.hex)
-                    : 0;
-                return {
-                  ...key,
-                  balance,
-                };
-              });
-              setIsLoading(false);
-              setListKeys(keysWithBalance);
-            },
-          ),
+            const keysWithBalance = keys.map((key) => {
+              const found = data.find((item: { publicKey: string }) => item.publicKey === key.publicKey);
+              const balance = found && found.balance ? convertBalanceFromHex(found.balance.hex) : 0;
+              return {
+                ...key,
+                balance,
+              };
+            });
+            setIsLoading(false);
+            setListKeys(keysWithBalance);
+          }),
         );
         unmountRef.current = true;
       } else {
@@ -121,35 +112,31 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
     setIsLoading(true);
     setPublicKey(ledgerPublicKey);
     dispatch(
-      allActions.user.getAccountInformation(
-        { publicKey: ledgerPublicKey },
-        async (err: any, data: any) => {
-          const notFundAccount =
-            err && err.message && err.message.includes('ValueNotFound');
-          if (data || notFundAccount) {
-            await Config.saveItem(Keys.ledger, transport.device);
-            const info = {
-              publicKey: ledgerPublicKey,
-              loginOptions: {
-                connectionType: CONNECTION_TYPES.ledger,
-                keyIndex,
-              },
-            };
-            await Config.saveItem(Keys.casperdash, info);
-            setIsLoading(false);
-            replace(AuthenticationRouter.CHOOSE_PIN, {
-              screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-              params: {
-                showBack: false,
-              },
-            });
-          } else {
-            setIsLoading(false);
-            setTransport(null);
-            Config.alertMess(err);
-          }
-        },
-      ),
+      allActions.user.getAccountInformation({ publicKey: ledgerPublicKey }, async (err: any, data: any) => {
+        const notFundAccount = err && err.message && err.message.includes('ValueNotFound');
+        if (data || notFundAccount) {
+          await Config.saveItem(Keys.ledger, transport.device);
+          const info = {
+            publicKey: ledgerPublicKey,
+            loginOptions: {
+              connectionType: CONNECTION_TYPES.ledger,
+              keyIndex,
+            },
+          };
+          await Config.saveItem(Keys.casperdash, info);
+          setIsLoading(false);
+          replace(AuthenticationRouter.CHOOSE_PIN, {
+            screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+            params: {
+              showBack: false,
+            },
+          });
+        } else {
+          setIsLoading(false);
+          setTransport(null);
+          Config.alertMess(err);
+        }
+      }),
     );
   };
 
@@ -168,19 +155,14 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
               paddingBottom: scale(72) + insets.bottom,
               minHeight: scale(315) + height,
             },
-          ]}>
+          ]}
+        >
           {
             <>
               <Text style={styles.title}>Choose your key</Text>
               <ScrollView>
                 {listKeys.map((ledgerKey: Array<object>, i: any) => {
-                  return (
-                    <KeyComponent
-                      key={i}
-                      onPress={getAccountInformation}
-                      value={ledgerKey}
-                    />
-                  );
+                  return <KeyComponent key={i} onPress={getAccountInformation} value={ledgerKey} />;
                 })}
               </ScrollView>
             </>
@@ -198,8 +180,8 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
         !publicKey &&
         error && (
           <Text style={styles.error}>
-            A problem occurred, make sure to open the Casper application on your
-            Ledger Nano X. ({String((error && error.message) || error)})
+            A problem occurred, make sure to open the Casper application on your Ledger Nano X. (
+            {String((error && error.message) || error)})
           </Text>
         )
       )}

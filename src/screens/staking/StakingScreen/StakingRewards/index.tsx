@@ -16,7 +16,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
     refetch,
     isFetching,
   } = useQuery('stakingRewards', () => getStakingRewards(publicKey, 1), {
-    select: data => data?.docs || [],
+    select: (data) => data?.docs || [],
   });
 
   return (
@@ -24,7 +24,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.contentContainerStyle}
       data={rewards}
-      renderItem={reward => <StakingRewardItem value={reward.item} />}
+      renderItem={(reward) => <StakingRewardItem value={reward.item} />}
       refreshControl={<RefreshControl refreshing={isFetching} onRefresh={() => refetch()} />}
     />
   );

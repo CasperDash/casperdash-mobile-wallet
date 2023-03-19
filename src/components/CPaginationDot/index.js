@@ -18,14 +18,8 @@ class CPaginationDot extends Component {
     }
   }
 
-  renderActiveDot = index => {
-    const {
-      activeDotSize,
-      activeDotColor,
-      dotSpace,
-      borderWidth,
-      borderColor,
-    } = this.props;
+  renderActiveDot = (index) => {
+    const { activeDotSize, activeDotColor, dotSpace, borderWidth, borderColor } = this.props;
 
     return (
       <View
@@ -33,9 +27,7 @@ class CPaginationDot extends Component {
         style={{
           width: activeDotSize ?? scale(15),
           height: activeDotSize ?? scale(15),
-          borderRadius: activeDotSize
-            ? scale(activeDotSize / 2)
-            : scale(15 / 2),
+          borderRadius: activeDotSize ? scale(activeDotSize / 2) : scale(15 / 2),
           borderWidth: borderWidth ?? 0,
           borderColor: borderColor ?? 'white',
           backgroundColor: activeDotColor ?? 'gray',
@@ -46,23 +38,15 @@ class CPaginationDot extends Component {
     );
   };
 
-  renderPassiveDot = index => {
-    const {
-      passiveDotSize,
-      passiveDotColor,
-      dotSpace,
-      borderWidth,
-      borderColor,
-    } = this.props;
+  renderPassiveDot = (index) => {
+    const { passiveDotSize, passiveDotColor, dotSpace, borderWidth, borderColor } = this.props;
     return (
       <View
         key={`${index}`}
         style={{
           width: passiveDotSize ?? scale(10),
           height: passiveDotSize ?? scale(10),
-          borderRadius: passiveDotSize
-            ? scale(passiveDotSize / 2)
-            : scale(10 / 2),
+          borderRadius: passiveDotSize ? scale(passiveDotSize / 2) : scale(10 / 2),
           backgroundColor: passiveDotColor ?? '#dedede',
           borderWidth: borderWidth ?? 0,
           borderColor: borderColor ?? 'white',
@@ -72,16 +56,9 @@ class CPaginationDot extends Component {
     );
   };
 
-  renderActiveLine = index => {
-    const {
-      activeLineWidth,
-      activeLineHeight,
-      activeLineColor,
-      borderRadius,
-      lineSpace,
-      borderWidth,
-      borderColor,
-    } = this.props;
+  renderActiveLine = (index) => {
+    const { activeLineWidth, activeLineHeight, activeLineColor, borderRadius, lineSpace, borderWidth, borderColor } =
+      this.props;
 
     return (
       <View
@@ -100,16 +77,9 @@ class CPaginationDot extends Component {
     );
   };
 
-  renderPassiveLine = index => {
-    const {
-      passiveLineWidth,
-      passiveLineHeight,
-      passiveLineColor,
-      borderRadius,
-      lineSpace,
-      borderWidth,
-      borderColor,
-    } = this.props;
+  renderPassiveLine = (index) => {
+    const { passiveLineWidth, passiveLineHeight, passiveLineColor, borderRadius, lineSpace, borderWidth, borderColor } =
+      this.props;
 
     return (
       <View
@@ -132,24 +102,15 @@ class CPaginationDot extends Component {
     const { length, style, lineStyle } = this.props;
     const { activeIndex } = this.state;
     return (
-      <View
-        style={[
-          styles.container,
-          { height: length > 1 ? scale(30) : scale(0) },
-          style,
-        ]}>
+      <View style={[styles.container, { height: length > 1 ? scale(30) : scale(0) }, style]}>
         {length > 1 &&
           Array.apply(null, { length: length ? length : 0 })
             .map((_, i) => i)
             .map((item, index) => {
               if (activeIndex === index) {
-                return lineStyle
-                  ? this.renderActiveLine(index)
-                  : this.renderActiveDot(index);
+                return lineStyle ? this.renderActiveLine(index) : this.renderActiveDot(index);
               }
-              return lineStyle
-                ? this.renderPassiveLine(index)
-                : this.renderPassiveDot(index);
+              return lineStyle ? this.renderPassiveLine(index) : this.renderPassiveDot(index);
             })}
       </View>
     );

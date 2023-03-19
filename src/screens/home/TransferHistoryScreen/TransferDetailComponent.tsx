@@ -28,20 +28,12 @@ const TransferDetailComponent = ({ data, deploy, index }: Props) => {
 
   return (
     <>
-      <Text style={[styles.title, index === 0 && { marginTop: 0 }]}>
-        {data.label}
-      </Text>
+      <Text style={[styles.title, index === 0 && { marginTop: 0 }]}>{data.label}</Text>
       <CButton disabled={!data.copy} enabledOpacity={true} onPress={copy}>
         <Row style={styles.row}>
           <Text style={styles.value}>
             {formattedValue}{' '}
-            {data.copy && (
-              <IconCopy
-                style={{ color: colors.N2 }}
-                width={scale(15)}
-                height={scale(15)}
-              />
-            )}
+            {data.copy && <IconCopy style={{ color: colors.N2 }} width={scale(15)} height={scale(15)} />}
           </Text>
         </Row>
       </CButton>

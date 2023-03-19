@@ -81,10 +81,7 @@ export function* getConfigurations(data: any) {
 export function* watchGetConfigurations() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      types.GET_CONFIGURATIONS,
-      getConfigurations,
-    );
+    const watcher = yield takeLatest(types.GET_CONFIGURATIONS, getConfigurations);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }

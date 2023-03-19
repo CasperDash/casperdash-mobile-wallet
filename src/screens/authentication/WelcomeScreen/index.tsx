@@ -1,22 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  LayoutAnimation,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, LayoutAnimation, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Row, Col, CButton, CPaginationDot } from 'components';
 import { ListIntro } from 'screens/authentication/data/data';
-import {
-  colors,
-  fonts,
-  IconArrowLeft2,
-  IconArrowRight,
-  textStyles,
-} from 'assets';
+import { colors, fonts, IconArrowLeft2, IconArrowRight, textStyles } from 'assets';
 import { scale } from 'device';
 import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
 import { useNavigation } from '@react-navigation/native';
@@ -39,10 +26,7 @@ const translatePreset = {
 function WelcomeScreen() {
   const insets = useSafeAreaInsets();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const arrayImgSlider = Array.from(
-    { length: ListIntro.length },
-    (_, i) => i * scale(375),
-  );
+  const arrayImgSlider = Array.from({ length: ListIntro.length }, (_, i) => i * scale(375));
   const flatListRef = useRef<any>(null);
   const navigation = useNavigation<StackNavigationProp<any>>();
 
@@ -51,7 +35,7 @@ function WelcomeScreen() {
       return;
     }
     LayoutAnimation.configureNext(translatePreset);
-    setCurrentIndex(i => i + n);
+    setCurrentIndex((i) => i + n);
   };
 
   useEffect(() => {
@@ -124,7 +108,8 @@ function WelcomeScreen() {
           alignItems: 'center',
           position: 'absolute',
           top: insets.top + scale(16),
-        }}>
+        }}
+      >
         <CButton onPress={openCreateNewWallet} style={styles.btnSkip}>
           <Text style={styles.txtSkip}>Skip</Text>
         </CButton>

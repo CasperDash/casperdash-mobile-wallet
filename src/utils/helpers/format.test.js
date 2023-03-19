@@ -15,9 +15,7 @@ test('toFormattedNumber', () => {
   expect(toFormattedNumber(10.9999)).toEqual('10.9999');
   expect(toFormattedNumber(10.9999999999)).toEqual('11');
   expect(toFormattedNumber(10000, 'ja-JP')).toEqual('10,000');
-  expect(toFormattedNumber(10.6666, { maximumSignificantDigits: 3 })).toEqual(
-    '10.7',
-  );
+  expect(toFormattedNumber(10.6666, { maximumSignificantDigits: 3 })).toEqual('10.7');
 });
 
 test('toFormattedCurrency', () => {
@@ -28,9 +26,7 @@ test('toFormattedCurrency', () => {
 
 describe('toFormattedDate', () => {
   test('valid date', () => {
-    expect(toFormattedDate('10-10-2021 01:00:00', undefined, 'en-US')).toEqual(
-      '10/10/21, 01:00:00',
-    );
+    expect(toFormattedDate('10-10-2021 01:00:00', undefined, 'en-US')).toEqual('10/10/21, 01:00:00');
   });
 });
 
@@ -87,24 +83,16 @@ describe('toDisplayValueFromMote', () => {
 
 describe('getValueByFormat', () => {
   test('should return currency format', () => {
-    expect(getValueByFormat(100, { format: 'currency' }).toString()).toEqual(
-      '$100.00',
-    );
+    expect(getValueByFormat(100, { format: 'currency' }).toString()).toEqual('$100.00');
   });
   test('should return number format', () => {
-    expect(getValueByFormat(100, { format: 'number' }).toString()).toEqual(
-      '100',
-    );
+    expect(getValueByFormat(100, { format: 'number' }).toString()).toEqual('100');
   });
   test('should return mote format', () => {
-    expect(
-      getValueByFormat(10000000000, { format: 'mote' }).toString(),
-    ).toEqual('10');
+    expect(getValueByFormat(10000000000, { format: 'mote' }).toString()).toEqual('10');
   });
   test('should return percentage format', () => {
-    expect(getValueByFormat(10, { format: 'percentage' }).toString()).toEqual(
-      '10.00%',
-    );
+    expect(getValueByFormat(10, { format: 'percentage' }).toString()).toEqual('10.00%');
   });
   test('should return input value if no match format', () => {
     expect(getValueByFormat(10, { format: 'test' }).toString()).toEqual('10');

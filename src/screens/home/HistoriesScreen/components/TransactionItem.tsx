@@ -13,7 +13,7 @@ interface Props {
 }
 
 const TransactionItem = ({ onPress, value }: Props) => {
-  const mappingStatus = STATUS_MAPPING.find(i => i.value === value.status);
+  const mappingStatus = STATUS_MAPPING.find((i) => i.value === value.status);
   const StatusIcon = value.icon;
   return (
     <CButton onPress={() => onPress(value)}>
@@ -21,10 +21,7 @@ const TransactionItem = ({ onPress, value }: Props) => {
         <StatusIcon width={scale(24)} height={scale(24)} />
         <Row.LR pl={16} style={{ flex: 1 }}>
           <Col.TL>
-            <Text
-              style={styles.title}
-              numberOfLines={1}
-              ellipsizeMode={'middle'}>
+            <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
               {value.deployHash ?? ''}
             </Text>
             <Text
@@ -34,13 +31,13 @@ const TransactionItem = ({ onPress, value }: Props) => {
                   color: colors.c828489,
                   marginTop: scale(4),
                 },
-              ]}>
+              ]}
+            >
               {value.timestamp ? toFormattedDate(value.timestamp) : ''}
             </Text>
           </Col.TL>
           <Col.TR>
-            <Text
-              style={textStyles.Sub1}>{`${value.amount} ${value.symbol}`}</Text>
+            <Text style={textStyles.Sub1}>{`${value.amount} ${value.symbol}`}</Text>
             <Text
               style={[
                 textStyles.Body2,
@@ -48,10 +45,9 @@ const TransactionItem = ({ onPress, value }: Props) => {
                   color: mappingStatus ? mappingStatus.color : colors.N2,
                   marginTop: scale(4),
                 },
-              ]}>
-              {mappingStatus
-                ? mappingStatus.label
-                : _.capitalize(value.status ?? '')}
+              ]}
+            >
+              {mappingStatus ? mappingStatus.label : _.capitalize(value.status ?? '')}
             </Text>
           </Col.TR>
         </Row.LR>

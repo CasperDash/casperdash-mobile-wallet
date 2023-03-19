@@ -8,19 +8,12 @@ import {
 
 test('getTransferDeploy', () => {
   const spyOnDeployParams = jest.spyOn(DeployUtil, 'DeployParams');
-  const spyOnNewTransfer = jest.spyOn(
-    DeployUtil.ExecutableDeployItem,
-    'newTransfer',
-  );
+  const spyOnNewTransfer = jest.spyOn(DeployUtil.ExecutableDeployItem, 'newTransfer');
   const spyOnPayment = jest.spyOn(DeployUtil, 'standardPayment');
   const spyOnMakeDeploy = jest.spyOn(DeployUtil, 'makeDeploy');
   const deploy = buildTransferDeploy(
-    CLPublicKey.fromHex(
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    ),
-    CLPublicKey.fromHex(
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    ),
+    CLPublicKey.fromHex('0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'),
+    CLPublicKey.fromHex('0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'),
     1000000000,
     0,
     10,
@@ -29,13 +22,7 @@ test('getTransferDeploy', () => {
   expect(spyOnNewTransfer).toHaveBeenCalled();
   expect(spyOnPayment).toHaveBeenCalled();
   expect(spyOnMakeDeploy).toHaveBeenCalled();
-  expect(Object.keys(deploy)).toEqual([
-    'approvals',
-    'session',
-    'payment',
-    'header',
-    'hash',
-  ]);
+  expect(Object.keys(deploy)).toEqual(['approvals', 'session', 'payment', 'header', 'hash']);
 });
 
 test('buildContractInstallDeploy', () => {
@@ -43,9 +30,7 @@ test('buildContractInstallDeploy', () => {
   const spyOnPayment = jest.spyOn(DeployUtil, 'standardPayment');
   try {
     buildContractInstallDeploy(
-      CLPublicKey.fromHex(
-        '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-      ),
+      CLPublicKey.fromHex('0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'),
       {},
     );
   } catch {
@@ -56,19 +41,12 @@ test('buildContractInstallDeploy', () => {
 
 test('getTransferTokenDeploy', async () => {
   const spyOnDeployParams = jest.spyOn(DeployUtil, 'DeployParams');
-  const spyOnNewStoredContractByHash = jest.spyOn(
-    DeployUtil.ExecutableDeployItem,
-    'newStoredContractByHash',
-  );
+  const spyOnNewStoredContractByHash = jest.spyOn(DeployUtil.ExecutableDeployItem, 'newStoredContractByHash');
   const spyOnPayment = jest.spyOn(DeployUtil, 'standardPayment');
   const spyOnMakeDeploy = jest.spyOn(DeployUtil, 'makeDeploy');
   const deploy = await buildTransferTokenDeploy(
-    CLPublicKey.fromHex(
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    ),
-    CLPublicKey.fromHex(
-      '0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad',
-    ),
+    CLPublicKey.fromHex('0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'),
+    CLPublicKey.fromHex('0160d88b3f847221f4dc6c5549dcfc26772c02f253a24de226a88b4536bc61d4ad'),
     1000,
     'test',
     '100',
@@ -77,30 +55,18 @@ test('getTransferTokenDeploy', async () => {
   expect(spyOnNewStoredContractByHash).toHaveBeenCalled();
   expect(spyOnPayment).toHaveBeenCalled();
   expect(spyOnMakeDeploy).toHaveBeenCalled();
-  expect(Object.keys(deploy)).toEqual([
-    'approvals',
-    'session',
-    'payment',
-    'header',
-    'hash',
-  ]);
+  expect(Object.keys(deploy)).toEqual(['approvals', 'session', 'payment', 'header', 'hash']);
 });
 
 test('Should request to connect with signer', async () => {
-  const spyOnSendConnectionRequest = jest.spyOn(
-    Signer,
-    'sendConnectionRequest',
-  );
+  const spyOnSendConnectionRequest = jest.spyOn(Signer, 'sendConnectionRequest');
   spyOnSendConnectionRequest.mockImplementation(() => {});
   connectCasperSigner();
   expect(spyOnSendConnectionRequest).toHaveBeenCalled();
 });
 
 test('Should return error if have issue when connecting', async () => {
-  const spyOnSendConnectionRequest = jest.spyOn(
-    Signer,
-    'sendConnectionRequest',
-  );
+  const spyOnSendConnectionRequest = jest.spyOn(Signer, 'sendConnectionRequest');
   spyOnSendConnectionRequest.mockImplementation(() => {
     throw 'error';
   });

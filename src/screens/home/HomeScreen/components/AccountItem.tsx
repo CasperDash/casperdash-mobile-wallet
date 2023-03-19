@@ -13,19 +13,12 @@ interface IAccountItemProps {
   isLoadingBalance?: boolean;
 }
 
-const AccountItem = ({
-  data,
-  isCurrentAccount,
-  onSelectWallet,
-  isLoadingBalance,
-}: IAccountItemProps) => {
+const AccountItem = ({ data, isCurrentAccount, onSelectWallet, isLoadingBalance }: IAccountItemProps) => {
   return (
     <CButton onPress={() => onSelectWallet(data)}>
       <Row.LR my={10} style={styles.container}>
         <Text style={[styles.sub, isCurrentAccount && { color: colors.B1 }]}>
-          {data && data.walletInfo.descriptor && data.walletInfo.descriptor.name
-            ? data.walletInfo.descriptor.name
-            : ''}
+          {data && data.walletInfo.descriptor && data.walletInfo.descriptor.name ? data.walletInfo.descriptor.name : ''}
         </Text>
         <Col style={styles.rightContent}>
           <Text style={[styles.body, isCurrentAccount && { color: colors.B1 }]}>

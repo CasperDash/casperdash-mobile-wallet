@@ -18,7 +18,7 @@ const wrapView =
   };
 const CustomRow = wrapView(BaseRow);
 
-Object.entries(BaseRow).forEach(property => {
+Object.entries(BaseRow).forEach((property) => {
   const [name, value] = property;
   if (isString(name) && isFunction(value)) {
     // @ts-ignore

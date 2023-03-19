@@ -26,9 +26,7 @@ const ViewPrivateKeyButton = ({ onConfirm }: IProps) => {
       <CButton onPress={() => setShowConfirmPin(true)}>
         <Row style={styles.rowItem}>
           <IconKey width={scale(17)} height={scale(17)} />
-          <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>
-            View Private Key
-          </Text>
+          <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>View Private Key</Text>
         </Row>
       </CButton>
       {showConfirmPin && (
