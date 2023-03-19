@@ -17,24 +17,16 @@ const KeyComponent = ({ value, onPress }: Props) => {
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
         <Row>
-          <Image
-            source={{ uri: getBase64IdentIcon(value.publicKey) }}
-            style={styles.symbol}
-          />
+          <Image source={{ uri: getBase64IdentIcon(value.publicKey) }} style={styles.symbol} />
           <Col mx={12}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode={'middle'}
-              style={[styles.titleAccount, { maxWidth: scale(100) }]}>
+            <Text numberOfLines={1} ellipsizeMode={'middle'} style={[styles.titleAccount, { maxWidth: scale(100) }]}>
               {value.publicKey}
             </Text>
             <Text style={styles.body2}>Key #{value.keyIndex}</Text>
           </Col>
         </Row>
         <Col.R mx={12}>
-          <Text style={styles.sub1}>
-            {`${toFormattedNumber(value.balance)} ${CASPER_SYMBOL}`}
-          </Text>
+          <Text style={styles.sub1}>{`${toFormattedNumber(value.balance)} ${CASPER_SYMBOL}`}</Text>
         </Col.R>
       </Row.LR>
     </CButton>

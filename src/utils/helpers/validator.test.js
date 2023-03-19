@@ -8,24 +8,12 @@ import {
 
 describe('isValidPublicKey', () => {
   test('valid public key', () => {
-    expect(
-      isValidPublicKey(
-        '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
-      ),
-    ).toEqual(true);
-    expect(
-      isValidPublicKey(
-        '020294d5df03d43206bc9e094c614195234ba0e90013004c9164d1d5d081e014bde8',
-      ),
-    ).toEqual(true);
+    expect(isValidPublicKey('0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0')).toEqual(true);
+    expect(isValidPublicKey('020294d5df03d43206bc9e094c614195234ba0e90013004c9164d1d5d081e014bde8')).toEqual(true);
   });
   test('invalid public key', () => {
-    expect(isValidPublicKey('0111a5aee38d7506ae9199e62c30b8303298a3')).toEqual(
-      false,
-    );
-    expect(isValidPublicKey('020294d5df03d43206bc9e094c614195234ba0')).toEqual(
-      false,
-    );
+    expect(isValidPublicKey('0111a5aee38d7506ae9199e62c30b8303298a3')).toEqual(false);
+    expect(isValidPublicKey('020294d5df03d43206bc9e094c614195234ba0')).toEqual(false);
   });
 });
 
@@ -41,8 +29,7 @@ describe('validateTransferForm', () => {
   test('Send amount must be at least min amount', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: 2,
         minAmount: 2.5,
         tokenSymbol: 'CSPR',
@@ -52,8 +39,7 @@ describe('validateTransferForm', () => {
   test('Send amount must be more than zero', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: -1,
         minAmount: -2,
         tokenSymbol: 'CSPR',
@@ -63,8 +49,7 @@ describe('validateTransferForm', () => {
   test('Not enough balance', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: 100,
         displayBalance: 10,
         tokenSymbol: 'CDAS',
@@ -74,8 +59,7 @@ describe('validateTransferForm', () => {
   test('Not enough CSPR balance', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: 10,
         transferFee: 1,
         displayBalance: 10,
@@ -86,8 +70,7 @@ describe('validateTransferForm', () => {
   test('Not enough CSPR balance', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: 10,
         transferFee: 1,
         displayBalance: 10,
@@ -98,8 +81,7 @@ describe('validateTransferForm', () => {
   test('Not enough transfer fee', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: 10,
         transferFee: 1,
         displayBalance: 10,
@@ -111,8 +93,7 @@ describe('validateTransferForm', () => {
   test('Valid transfer', () => {
     expect(
       validateTransferForm({
-        toAddress:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        toAddress: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         sendAmount: 10,
         transferFee: 1,
         displayBalance: 10,
@@ -230,9 +211,7 @@ describe('validateNFTMintForm', () => {
     ).toEqual({});
   });
   test('Should return required error', () => {
-    expect(
-      validateNFTMintForm({ nftContract: '', name: '', toAddress: '' }),
-    ).toEqual({
+    expect(validateNFTMintForm({ nftContract: '', name: '', toAddress: '' })).toEqual({
       image: 'Required',
       name: 'Required',
       nftContract: 'Required',

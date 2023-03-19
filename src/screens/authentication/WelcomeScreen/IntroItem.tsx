@@ -5,17 +5,13 @@ import { scale } from 'device';
 import { colors, textStyles } from 'assets';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const introDescription =
-  'CasperDash is a platform that aims to build a new creative economy.';
+const introDescription = 'CasperDash is a platform that aims to build a new creative economy.';
 
 const IntroItem = (data: Intro) => {
   const { top, bottom } = useSafeAreaInsets();
   return (
     <View style={styles.introContainer}>
-      <Image
-        style={[styles.introImage, { marginTop: -(top + bottom + scale(20)) }]}
-        source={data.image}
-      />
+      <Image style={[styles.introImage, { marginTop: -(top + bottom + scale(20)) }]} source={data.image} />
       <Text style={styles.title}>{data.title}</Text>
       <Text style={styles.body2}>{introDescription}</Text>
     </View>

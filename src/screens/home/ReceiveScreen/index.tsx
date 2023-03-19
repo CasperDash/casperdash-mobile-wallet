@@ -22,9 +22,7 @@ const ReceiveScreen = () => {
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
       <CHeader title={'Receive'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={16} style={styles.container}>
-        <ScrollView
-          alwaysBounceVertical={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+        <ScrollView alwaysBounceVertical={false} contentContainerStyle={styles.contentContainerStyle}>
           <QRCode value={publicKey} size={scale(160)} />
           <Text style={styles.caption}>Receiving Address</Text>
           <Text style={styles.title}>{publicKey}</Text>

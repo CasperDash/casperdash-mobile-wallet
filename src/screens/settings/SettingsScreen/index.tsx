@@ -1,13 +1,6 @@
 import React from 'react';
 import { StyleSheet, Linking, Switch, Image, Text } from 'react-native';
-import {
-  colors,
-  IconLogo,
-  IconCircleRight,
-  IconLock,
-  textStyles,
-  images,
-} from 'assets';
+import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import DeviceInfo from 'react-native-device-info';
 import { scale } from 'device';
@@ -29,8 +22,7 @@ function SettingsScreen() {
   const loginOptions = useSelector(getLoginOptions);
 
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
-  const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } =
-    useBiometry();
+  const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
 
   let listMenu: Array<SettingMenu> = [
     {
@@ -49,12 +41,7 @@ function SettingsScreen() {
     {
       id: 3,
       title: 'Recovery Phrase',
-      icon: () => (
-        <Image
-          source={images.backup}
-          style={{ width: scale(32), height: scale(32) }}
-        />
-      ),
+      icon: () => <Image source={images.backup} style={{ width: scale(32), height: scale(32) }} />,
       onPress: () => setShowConfirmPin(true),
       actionComp: ShowRecoveryPhrase,
       show: loginOptions?.connectionType === CONNECTION_TYPES.passPhase,
@@ -62,12 +49,7 @@ function SettingsScreen() {
     {
       id: 4,
       title: 'Version',
-      icon: () => (
-        <Image
-          source={images.version}
-          style={{ width: scale(32), height: scale(32) }}
-        />
-      ),
+      icon: () => <Image source={images.version} style={{ width: scale(32), height: scale(32) }} />,
       actionComp: () => (
         <Text>
           {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
@@ -82,21 +64,12 @@ function SettingsScreen() {
       title: biometryType,
       icon: () => (
         <Image
-          source={
-            biometryType === BiometryType.FaceID
-              ? images.faceId
-              : images.touchId
-          }
+          source={biometryType === BiometryType.FaceID ? images.faceId : images.touchId}
           style={{ width: scale(32), height: scale(32) }}
         />
       ),
 
-      actionComp: () => (
-        <Switch
-          value={isBiometryEnabled}
-          onValueChange={onUpdateBiometryStatus}
-        />
-      ),
+      actionComp: () => <Switch value={isBiometryEnabled} onValueChange={onUpdateBiometryStatus} />,
     });
   }
 
@@ -120,7 +93,7 @@ function SettingsScreen() {
       <CHeader title={'Settings'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
         {listMenu
-          .filter(menu => menu.show !== false)
+          .filter((menu) => menu.show !== false)
           .sort((a, b) => a.id - b.id)
           .map((item, index) => {
             return <SettingMenuComponent data={item} key={index} />;

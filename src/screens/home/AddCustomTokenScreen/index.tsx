@@ -25,51 +25,34 @@ function AddCustomTokenScreen() {
   const onAddPublicKey = async () => {
     setLoading(true);
     dispatch(
-      allActions.home.getTokenAddressInfo(
-        tokenAddress,
-        async (err: any, res: any) => {
-          if (res) {
-            if (res.address) {
-              let tokensAddressList = await Config.getItem(
-                Keys.tokensAddressList,
-              );
-              if (tokensAddressList) {
-                const isExist = tokensAddressList.find(
-                  (address: string) => address === res.address,
-                );
-                if (!isExist) {
-                  tokensAddressList.push(res.address);
-                }
-              } else {
-                tokensAddressList = [res.address];
+      allActions.home.getTokenAddressInfo(tokenAddress, async (err: any, res: any) => {
+        if (res) {
+          if (res.address) {
+            let tokensAddressList = await Config.getItem(Keys.tokensAddressList);
+            if (tokensAddressList) {
+              const isExist = tokensAddressList.find((address: string) => address === res.address);
+              if (!isExist) {
+                tokensAddressList.push(res.address);
               }
-              await Config.saveItem(Keys.tokensAddressList, tokensAddressList);
-              dispatch(
-                allActions.home.getTokenInfoWithBalance(
-                  { refreshing: false },
-                  undefined,
-                ),
-              );
+            } else {
+              tokensAddressList = [res.address];
             }
-            setLoading(false);
-            goBack();
-          } else {
-            setLoading(false);
-            setError(
-              err && err.message ? err.message : 'Can not find token info',
-            );
+            await Config.saveItem(Keys.tokensAddressList, tokensAddressList);
+            dispatch(allActions.home.getTokenInfoWithBalance({ refreshing: false }, undefined));
           }
-        },
-      ),
+          setLoading(false);
+          goBack();
+        } else {
+          setLoading(false);
+          setError(err && err.message ? err.message : 'Can not find token info');
+        }
+      }),
     );
   };
 
   return (
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
-      <CHeader
-        title={'Add Token'}
-        style={{ backgroundColor: colors.cF8F8F8 }}
-      />
+      <CHeader title={'Add Token'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
         <Text style={styles.title}>Token Address</Text>
         <CInput
@@ -79,12 +62,7 @@ function AddCustomTokenScreen() {
           style={styles.inputContainer}
         />
         <Text style={styles.errorText}>{error}</Text>
-        <CTextButton
-          onPress={onAddPublicKey}
-          disabled={!!error || !tokenAddress}
-          style={styles.btnAdd}
-          text={'Add'}
-        />
+        <CTextButton onPress={onAddPublicKey} disabled={!!error || !tokenAddress} style={styles.btnAdd} text={'Add'} />
       </Col>
       {isLoading && <CLoading />}
     </CLayout>

@@ -1,10 +1,7 @@
 import React from 'react';
 import { MainScreens } from './MainScreens';
 import MainRouter from './MainRouter';
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +12,8 @@ const MainNavigation = () => {
       screenOptions={{
         headerShown: false,
         ...TransitionPresets.SlideFromRightIOS,
-      }}>
+      }}
+    >
       {Object.keys(MainScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}

@@ -19,9 +19,7 @@ function ListItem({ data, onPress }: ListItemProps) {
   const Icon = data.icon;
 
   const goToBluetoothSettings = () =>
-    Platform.OS === 'ios'
-      ? Linking.openURL('App-Prefs:Bluetooth')
-      : AndroidOpenSettings.bluetoothSettings();
+    Platform.OS === 'ios' ? Linking.openURL('App-Prefs:Bluetooth') : AndroidOpenSettings.bluetoothSettings();
 
   const checkPermissions = async () => {
     if (data.screen === CreateNewWalletRouter.CONNECT_LEDGER_SCREEN) {
@@ -58,14 +56,9 @@ function ListItem({ data, onPress }: ListItemProps) {
   };
 
   const requestPermission = async () => {
-    const message =
-      'CasperDash is requesting permission to turn on Bluetooth. Allow?';
+    const message = 'CasperDash is requesting permission to turn on Bluetooth. Allow?';
     if (Platform.OS === 'ios' && parseInt(Platform.Version, 10) > 12) {
-      Config.requestPermission(
-        PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL,
-        { message },
-        navigate,
-      );
+      Config.requestPermission(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL, { message }, navigate);
     }
     if (Platform.OS === 'android') {
       const status = await requestMultiple([
@@ -76,15 +69,9 @@ function ListItem({ data, onPress }: ListItemProps) {
       ]);
       if (
         status[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'granted' &&
-        ['granted', 'unavailable'].includes(
-          status[PERMISSIONS.ANDROID.BLUETOOTH_CONNECT],
-        ) &&
-        ['granted', 'unavailable'].includes(
-          status[PERMISSIONS.ANDROID.BLUETOOTH_SCAN],
-        ) &&
-        ['granted', 'unavailable'].includes(
-          status[PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE],
-        )
+        ['granted', 'unavailable'].includes(status[PERMISSIONS.ANDROID.BLUETOOTH_CONNECT]) &&
+        ['granted', 'unavailable'].includes(status[PERMISSIONS.ANDROID.BLUETOOTH_SCAN]) &&
+        ['granted', 'unavailable'].includes(status[PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE])
       ) {
         navigate();
       } else {

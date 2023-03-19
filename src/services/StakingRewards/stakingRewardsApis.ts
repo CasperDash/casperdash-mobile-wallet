@@ -6,9 +6,7 @@ export const getStakingRewards = async (
   publicKey: string,
   page: number,
 ): Promise<ICommonListResponse<IStakingRewardItem>> => {
-  const response = await fetch(
-    `${NETWORK_URL}/user/${publicKey}/stakingRewards?page=${page}`,
-  );
+  const response = await fetch(`${NETWORK_URL}/user/${publicKey}/stakingRewards?page=${page}`);
   if (!response.ok) {
     throw new Error('Error on getting rewards');
   }

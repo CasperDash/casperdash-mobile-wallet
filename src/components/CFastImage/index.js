@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  ActivityIndicator,
-  Image,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Text,
-} from 'react-native';
+import { ActivityIndicator, Image, View, StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { fonts } from 'assets';
 import { scale } from 'device';
@@ -45,9 +37,7 @@ function CFastImage(props) {
     }
     return (width || Dimensions.get('window').width) / 2;
   });
-  const [widthState, setWidth] = useState(
-    () => width || Dimensions.get('window').width,
-  );
+  const [widthState, setWidth] = useState(() => width || Dimensions.get('window').width);
   const [load, setLoad] = useState(!!source);
   const [error, setError] = useState(false);
 
@@ -59,7 +49,7 @@ function CFastImage(props) {
     setLoad(false);
   };
 
-  const _onError = e => {
+  const _onError = (e) => {
     setError(!!e);
     setLoad(false);
   };
@@ -79,22 +69,16 @@ function CFastImage(props) {
         { width: widthState, height: heightState },
       ]}
       onPress={_onPress}
-      disabled={disabled}>
+      disabled={disabled}
+    >
       <FastImage
         onLoadStart={_onLoadStart}
         onLoadEnd={_onLoadEnd}
         onError={_onError}
-        source={
-          source && !error ? { uri: source } : sourceDef ? sourceDef : null
-        }
+        source={source && !error ? { uri: source } : sourceDef ? sourceDef : null}
         resizeMode={resizeMode}
         resizeMethod={resizeMethod}
-        style={[
-          styleImage,
-          styles.image,
-          { overlayColor: overlayColor },
-          { width: widthState, height: heightState },
-        ]}
+        style={[styleImage, styles.image, { overlayColor: overlayColor }, { width: widthState, height: heightState }]}
       />
       {text && !load && (
         <View
@@ -105,18 +89,15 @@ function CFastImage(props) {
               height: '100%',
               position: 'absolute',
             },
-          ]}>
+          ]}
+        >
           <Text style={textStyle ? textStyle : styles.title} numberOfLines={2}>
             {text}
           </Text>
         </View>
       )}
       {load && (
-        <View
-          style={[
-            styles.indicator,
-            { width: widthState, height: heightState },
-          ]}>
+        <View style={[styles.indicator, { width: widthState, height: heightState }]}>
           <ActivityIndicator />
         </View>
       )}

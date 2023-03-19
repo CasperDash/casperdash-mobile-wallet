@@ -22,7 +22,8 @@ export const NoData: React.FC<IAppProps> = ({ isLoading, bottom }) => {
                 ...textStyles.Body1,
                 color: colors.N4,
               },
-            ]}>
+            ]}
+          >
             No Data
           </Text>
         </>

@@ -22,9 +22,7 @@ export const getConfirmedStakesGroupByValidator =
       let groupByValidators: any = [];
       stakes.delegations.forEach((stake: any) => {
         const { validator, amount, status } = stake;
-        const foundValidator = groupByValidators.findIndex(
-          (item: any) => validator === item.validator,
-        );
+        const foundValidator = groupByValidators.findIndex((item: any) => validator === item.validator);
         const amountKey = `${status}Amount`;
         if (foundValidator < 0) {
           const amountObj: any = {};
@@ -56,9 +54,7 @@ export const getDeployStakes = createSelector(
     if (deploysStakes) {
       const stakesByPublicKey = deploysStakes[publicKey] || [];
       return stakesByPublicKey.filter(
-        (stake: any) =>
-          (symbol ? stake.symbol === symbol : true) &&
-          (status ? stake.status === status : true),
+        (stake: any) => (symbol ? stake.symbol === symbol : true) && (status ? stake.status === status : true),
       );
     }
     return [];
@@ -71,30 +67,23 @@ export const getDeployStakes = createSelector(
  * @param path - The path to the file that was deployed.
  * @param [listHash] - A list of hashes of the deployed stakes.
  */
-export const updateStakesDeployStatus = async (
-  publicKey: string,
-  listHash = [],
-) => {
+export const updateStakesDeployStatus = async (publicKey: string, listHash = []) => {
   const deployStorageValue = (await Config.getItem(Keys.deploysStakes)) || {};
   const deployStorageValueByPublicKey = deployStorageValue[publicKey] || [];
 
   if (deployStorageValueByPublicKey.length > 0) {
-    deployStorageValue[publicKey] = deployStorageValueByPublicKey.map(
-      (deploy: any) => {
-        if (!deploy.deployHash) {
-          return deploy;
-        }
-        const hashStatus: any = listHash.find(
-          (item: any) =>
-            item.hash &&
-            item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
-        );
-        return {
-          ...deploy,
-          status: hashStatus ? hashStatus.status : deploy.status,
-        };
-      },
-    );
+    deployStorageValue[publicKey] = deployStorageValueByPublicKey.map((deploy: any) => {
+      if (!deploy.deployHash) {
+        return deploy;
+      }
+      const hashStatus: any = listHash.find(
+        (item: any) => item.hash && item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
+      );
+      return {
+        ...deploy,
+        status: hashStatus ? hashStatus.status : deploy.status,
+      };
+    });
   }
   await Config.saveItem(Keys.deploysStakes, deployStorageValue);
 };

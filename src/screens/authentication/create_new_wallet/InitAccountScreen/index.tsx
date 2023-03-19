@@ -39,16 +39,9 @@ const InitAccountScreen: React.FC<
 
     try {
       const masterPassword = await Config.getItem(Keys.masterPassword);
-      const user = createNewUserWithHdWallet(
-        masterPassword,
-        phrases,
-        algorithm,
-      );
+      const user = createNewUserWithHdWallet(masterPassword, phrases, algorithm);
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
-      user.setWalletInfo(
-        acc0.getReferenceKey(),
-        new WalletDescriptor('Account 1'),
-      );
+      user.setWalletInfo(acc0.getReferenceKey(), new WalletDescriptor('Account 1'));
       const publicKey = await acc0.getPublicKey();
       const info = {
         publicKey: publicKey,
@@ -60,10 +53,7 @@ const InitAccountScreen: React.FC<
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
-      const selectedWalletDetails = await setSelectedWallet(
-        selectedWallet,
-        publicKey,
-      );
+      const selectedWalletDetails = await setSelectedWallet(selectedWallet, publicKey);
 
       dispatch(allActions.user.getUserSuccess(user));
       dispatch(allActions.user.getSelectedWalletSuccess(selectedWalletDetails));
@@ -144,9 +134,7 @@ const InitAccountScreen: React.FC<
           <Image source={images.logo} style={styles.logo} />
         </Col.C>
         <Col.T>
-          <Text style={styles.title}>{`${
-            isLoadUser ? 'Loading' : 'Creating'
-          } your wallet...`}</Text>
+          <Text style={styles.title}>{`${isLoadUser ? 'Loading' : 'Creating'} your wallet...`}</Text>
         </Col.T>
         <Col.T mt={78}>
           <View style={styles.indicator}>

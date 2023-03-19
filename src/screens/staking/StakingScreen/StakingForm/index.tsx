@@ -146,7 +146,8 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
             <Text
               numberOfLines={1}
               ellipsizeMode={'middle'}
-              style={[styles.nameValidator, !!values.validator && { color: colors.N2 }]}>
+              style={[styles.nameValidator, !!values.validator && { color: colors.N2 }]}
+            >
               {values.validator ? values.validator : 'Select Validator'}
             </Text>
             <IconArrowDown />
@@ -176,7 +177,8 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
               {
                 color: view === EViews.info ? colors.R3 : colors.N1,
               },
-            ]}>
+            ]}
+          >
             Staked Info
           </Text>
         </TouchableOpacity>
@@ -188,7 +190,8 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
                 margin: scale(16),
                 color: view === EViews.rewards ? colors.R3 : colors.N1,
               },
-            ]}>
+            ]}
+          >
             Rewards
           </Text>
         </TouchableOpacity>

@@ -86,32 +86,26 @@ export default function Notification() {
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
-      .then(remoteMessage => {
+      .then((remoteMessage) => {
         if (remoteMessage) {
           dispatch(allActions.user.getInformation(null, null));
         }
       });
 
-    messaging().onMessage(async remoteMessage => {
+    messaging().onMessage(async (remoteMessage) => {
       if (remoteMessage) {
         dispatch(allActions.user.getInformation(null, null));
         PushNotification.localNotification({
           channelId: 'CasperDash_channel',
           autoCancel: true,
           id: '1',
-          title:
-            remoteMessage.notification && remoteMessage.notification.title
-              ? remoteMessage.notification.title
-              : '',
-          message:
-            remoteMessage.notification && remoteMessage.notification.body
-              ? remoteMessage.notification.body
-              : '',
+          title: remoteMessage.notification && remoteMessage.notification.title ? remoteMessage.notification.title : '',
+          message: remoteMessage.notification && remoteMessage.notification.body ? remoteMessage.notification.body : '',
         });
       }
     });
 
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       dispatch(allActions.user.getInformation(null, null));
     });
   };

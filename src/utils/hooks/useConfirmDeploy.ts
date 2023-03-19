@@ -36,11 +36,7 @@ export const useConfirmDeploy = () => {
    * user.
    * @returns The deploy hash and the signed deploy.
    */
-  const executeDeploy = async (
-    buildDeployFn: any,
-    fromPublicKey: string,
-    showMessage: any,
-  ) => {
+  const executeDeploy = async (buildDeployFn: any, fromPublicKey: string, showMessage: any) => {
     setIsDeploying(true);
     showMessage('Preparing deploy');
     try {

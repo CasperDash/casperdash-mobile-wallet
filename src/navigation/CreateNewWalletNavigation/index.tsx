@@ -10,7 +10,8 @@ const CreateNewWalletNavigation = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(CreateNewWalletScreens).map((elem: any, index) => (
         <Stack.Screen
           name={elem}

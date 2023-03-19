@@ -17,11 +17,9 @@ const useBiometry = () => {
   const [biometryType, setBiometryType] = useState<BiometryType | undefined>();
 
   useEffect(() => {
-    Config.getItem(Keys.touchIdEnabled).then(isEnabled =>
-      setIsBiometryEnabled(isEnabled),
-    );
+    Config.getItem(Keys.touchIdEnabled).then((isEnabled) => setIsBiometryEnabled(isEnabled));
     TouchID.isSupported(optionalConfigObject)
-      .then(type => {
+      .then((type) => {
         // Success code
         if (type === BiometryType.FaceID) {
           setBiometryType(BiometryType.FaceID);
