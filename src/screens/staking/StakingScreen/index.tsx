@@ -4,7 +4,6 @@ import {
   fonts,
   IconArrowDown,
   IconLogo,
-  images,
   textStyles,
   IconHistory,
 } from 'assets';
@@ -16,8 +15,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator,
-  Image,
   Platform,
   ScrollView,
   RefreshControl,
@@ -48,11 +45,19 @@ import {
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
 import StakedHistoryItem from './StakedHistoryItem';
 import { StakingMode } from 'utils/constants/key';
+import { StakingRewards } from './StakingRewards';
+import { NoData } from './NoData';
 
 const initialValues = {
   amount: '0',
   validator: '',
 };
+
+enum EViews {
+  info,
+  rewards,
+  history,
+}
 
 // @ts-ignore
 const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
@@ -66,7 +71,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   useScrollToTop(scrollViewRef);
 
   //State
-  const [showHistory, setShowHistory] = useState(false);
+  const [view, setView] = useState<EViews>(EViews.info);
 
   // Selector
   const publicKey = useSelector(getPublicKey);
@@ -221,38 +226,17 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
     );
   };
 
-  const _renderNoData = () => {
-    return (
-      <View
-        style={[styles.loadingContainer, { minHeight: scale(150) + bottom }]}>
-        {isLoading ? (
-          <ActivityIndicator size="small" color={colors.N2} />
-        ) : (
-          <>
-            <Image source={images.nonft} style={styles.imgNoData} />
-            <Text
-              style={[
-                {
-                  ...textStyles.Body1,
-                  color: colors.N4,
-                },
-              ]}>
-              No Data
-            </Text>
-          </>
-        )}
-      </View>
-    );
-  };
-
   const renderItems = () => {
-    const listItems = showHistory ? stakedHistory : stackingList;
-    const Comp = showHistory ? StakedHistoryItem : StakedInformationItem;
-    return listItems && listItems.length > 0
-      ? listItems.map((item: any, index: any) => {
-          return <Comp value={item} key={index} />;
-        })
-      : _renderNoData();
+    const listItems = view === EViews.history ? stakedHistory : stackingList;
+    const Comp =
+      view === EViews.history ? StakedHistoryItem : StakedInformationItem;
+    return listItems && listItems.length > 0 ? (
+      listItems.map((item: any, index: any) => {
+        return <Comp value={item} key={index} />;
+      })
+    ) : (
+      <NoData isLoading={isLoading} bottom={bottom} />
+    );
   };
 
   const _renderHeader = () => {
@@ -307,20 +291,34 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <TouchableOpacity onPress={() => setShowHistory(false)}>
+          <TouchableOpacity onPress={() => setView(EViews.info)}>
             <Text
               style={[
                 styles.title,
                 {
                   margin: scale(16),
-                  color: showHistory ? colors.N3 : colors.N1,
+                  color: view === EViews.info ? colors.R3 : colors.N1,
                 },
               ]}>
               Staked Info
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowHistory(true)}>
-            <IconHistory fill={!showHistory ? colors.N3 : colors.R3} />
+          <TouchableOpacity onPress={() => setView(EViews.rewards)}>
+            <Text
+              style={[
+                styles.title,
+                {
+                  margin: scale(16),
+                  color: view === EViews.rewards ? colors.R3 : colors.N1,
+                },
+              ]}>
+              Rewards
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setView(EViews.history)}>
+            <IconHistory
+              fill={view === EViews.history ? colors.R3 : colors.N1}
+            />
           </TouchableOpacity>
         </View>
       </>
@@ -334,20 +332,30 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
         <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Staking</Text>
       </Row>
       <Col style={styles.container}>
-        <ScrollView
-          ref={scrollViewRef}
-          showsVerticalScrollIndicator={false}
-          style={{ marginTop: scale(22) }}
-          contentContainerStyle={styles.contentContainerStyle}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={() => getData(true)}
-            />
-          }>
-          {_renderHeader()}
-          {renderItems()}
-        </ScrollView>
+        {view === EViews.rewards ? (
+          <StakingRewards
+            publicKey={
+              '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38'
+            }
+            renderHeader={_renderHeader}
+          />
+        ) : (
+          <ScrollView
+            ref={scrollViewRef}
+            showsVerticalScrollIndicator={false}
+            style={{ marginTop: scale(22) }}
+            contentContainerStyle={styles.contentContainerStyle}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={() => getData(true)}
+              />
+            }>
+            {_renderHeader()}
+
+            {renderItems()}
+          </ScrollView>
+        )}
       </Col>
     </CLayout>
   );
