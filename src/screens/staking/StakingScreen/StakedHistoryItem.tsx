@@ -26,17 +26,11 @@ const StakedHistoryItem = ({ value }: Props) => {
         </Col.TL>
         <Col.TR>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
-            <Text style={textStyles.Sub1}>{`${toFormattedNumber(
-              value.stakedAmount ?? 0,
-            )} CSPR`}</Text>
+            <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount ?? 0)} CSPR`}</Text>
           )}
 
           <View style={styles.pendingContainer}>
-            <Text
-              style={[
-                textStyles.Body2,
-                { color: StatusColorMapping[value.status as DeployStatus] },
-              ]}>
+            <Text style={[textStyles.Body2, { color: StatusColorMapping[value.status as DeployStatus] }]}>
               {value.status}
             </Text>
           </View>

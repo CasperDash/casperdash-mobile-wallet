@@ -44,16 +44,12 @@ function StakedInformationItem({ value }: Props) {
         </Col.TL>
         <Col.TR>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
-            <Text style={textStyles.Sub1}>{`${toFormattedNumber(
-              value.stakedAmount ?? 0,
-            )} CSPR`}</Text>
+            <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount ?? 0)} CSPR`}</Text>
           )}
           {value.pendingAmount !== null && value.pendingAmount !== undefined && (
             <View style={styles.pendingContainer}>
               <View style={styles.circle} />
-              <Text style={[textStyles.Body2]}>
-                {`${toFormattedNumber(value.pendingAmount)} CSPR`}
-              </Text>
+              <Text style={[textStyles.Body2]}>{`${toFormattedNumber(value.pendingAmount)} CSPR`}</Text>
             </View>
           )}
         </Col.TR>
