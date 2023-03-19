@@ -16,10 +16,7 @@ import { MOTE_RATE } from '../constants/key';
  */
 export const toMotes = (amount: number | string) => {
   try {
-    const bigAmount = Big(amount)
-      .times(MOTE_RATE)
-      .round(0, Big.roundDown)
-      .toString();
+    const bigAmount = Big(amount).times(MOTE_RATE).round(0, Big.roundDown).toString();
     return BigNumber.from(bigAmount);
   } catch (error) {
     return '-';
