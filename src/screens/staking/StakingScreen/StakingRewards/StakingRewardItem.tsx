@@ -22,14 +22,10 @@ export const StakingRewardItem = ({ value }: Props) => {
           <Text style={[textStyles.Body2]}>{value.era}</Text>
         </Col.TL>
         <Col.TR>
-          <Text style={textStyles.Sub1}>{`${toCSPR(
-            value.amount ?? 0,
-          )} CSPR`}</Text>
+          <Text style={textStyles.Sub1}>{`${toCSPR(value.amount ?? 0)} CSPR`}</Text>
 
           <View style={styles.pendingContainer}>
-            <Text style={textStyles.Body2}>
-              {moment(value.createdAt).format('YYYY/MM/DD HH:ss')}
-            </Text>
+            <Text style={textStyles.Body2}>{moment(value.createdAt).format('YYYY/MM/DD HH:ss')}</Text>
           </View>
         </Col.TR>
       </Row.LR>

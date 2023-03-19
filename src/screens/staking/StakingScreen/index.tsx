@@ -1,25 +1,10 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
-import {
-  colors,
-  fonts,
-  IconArrowDown,
-  IconLogo,
-  textStyles,
-  IconHistory,
-} from 'assets';
+import { colors, fonts, IconArrowDown, IconLogo, textStyles, IconHistory } from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton } from 'components';
 import { scale } from 'device';
 import { useFormik } from 'formik';
 import MainRouter from 'navigation/stack/MainRouter';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Platform, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
 import * as yup from 'yup';
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,10 +23,7 @@ import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  useStakeFromValidators,
-  useStakedHistory,
-} from 'utils/hooks/useStakeDeploys';
+import { useStakeFromValidators, useStakedHistory } from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
 import StakedHistoryItem from './StakedHistoryItem';
 import { StakingMode } from 'utils/constants/key';
@@ -60,9 +42,7 @@ enum EViews {
 }
 
 // @ts-ignore
-const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
-  route,
-}) => {
+const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ route }) => {
   const { selectedValidator } = route?.params || {};
   const { bottom } = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -79,20 +59,13 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const stakedHistory = useStakedHistory(publicKey);
   const userDetails = useSelector(getMassagedUserDetails);
 
-  const balance =
-    userDetails && userDetails.balance && userDetails.balance.displayBalance;
+  const balance = userDetails && userDetails.balance && userDetails.balance.displayBalance;
   const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
-  const minCSPRDelegateToNewValidator = useSelector(
-    getConfigKey('MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR'),
-  );
-  const maxDelegatorPerValidator = useSelector(
-    getConfigKey('MAX_DELEGATOR_PER_VALIDATOR'),
-  );
+  const minCSPRDelegateToNewValidator = useSelector(getConfigKey('MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR'));
+  const maxDelegatorPerValidator = useSelector(getConfigKey('MAX_DELEGATOR_PER_VALIDATOR'));
 
   const hasDelegated = useMemo(() => {
-    return selectedValidator?.bidInfo?.bid?.delegators?.find(
-      (delegator: any) => delegator.public_key === publicKey,
-    );
+    return selectedValidator?.bidInfo?.bid?.delegators?.find((delegator: any) => delegator.public_key === publicKey);
   }, [publicKey, selectedValidator]);
 
   const isLoading = useSelector((state: any) =>
@@ -132,11 +105,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
       .string()
       .required('Validator is required')
       .test('maxDelegator', 'Max delegators', () => {
-        return (
-          hasDelegated ||
-          selectedValidator?.bidInfo.bid?.delegators?.length <=
-            maxDelegatorPerValidator
-        );
+        return hasDelegated || selectedValidator?.bidInfo.bid?.delegators?.length <= maxDelegatorPerValidator;
       }),
   });
 
@@ -159,10 +128,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   useEffect(() => {
     if (selectedValidator) {
-      setFieldValue(
-        'validator',
-        selectedValidator && selectedValidator.public_key,
-      );
+      setFieldValue('validator', selectedValidator && selectedValidator.public_key);
       setFieldValue('amount', '0');
       setErrors({ ...errors, validator: '' });
       setTouched({ ...touched, validator: false });
@@ -183,19 +149,16 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
       return;
     }
     dispatch(
-      allActions.staking.getValidatorsInformation(
-        { refreshing, publicKey },
-        (error: any, _: any) => {
-          if (error) {
-            dispatch(
-              allActions.main.showMessage({
-                message: error.message,
-                type: MessageType.error,
-              }),
-            );
-          }
-        },
-      ),
+      allActions.staking.getValidatorsInformation({ refreshing, publicKey }, (error: any, _: any) => {
+        if (error) {
+          dispatch(
+            allActions.main.showMessage({
+              message: error.message,
+              type: MessageType.error,
+            }),
+          );
+        }
+      }),
     );
   };
 
@@ -228,8 +191,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   const renderItems = () => {
     const listItems = view === EViews.history ? stakedHistory : stackingList;
-    const Comp =
-      view === EViews.history ? StakedHistoryItem : StakedInformationItem;
+    const Comp = view === EViews.history ? StakedHistoryItem : StakedInformationItem;
     return listItems && listItems.length > 0 ? (
       listItems.map((item: any, index: any) => {
         return <Comp value={item} key={index} />;
@@ -252,23 +214,16 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
               <Text
                 numberOfLines={1}
                 ellipsizeMode={'middle'}
-                style={[
-                  styles.nameValidator,
-                  !!values.validator && { color: colors.N2 },
-                ]}>
+                style={[styles.nameValidator, !!values.validator && { color: colors.N2 }]}>
                 {values.validator ? values.validator : 'Select Validator'}
               </Text>
               <IconArrowDown />
             </View>
           </CButton>
-          {!!errors.validator && touched.validator && (
-            <Text style={styles.error}>{errors.validator}</Text>
-          )}
+          {!!errors.validator && touched.validator && <Text style={styles.error}>{errors.validator}</Text>}
           <Row.LR mt={24} mb={16}>
             <Text style={styles.title}>Amount</Text>
-            <Text style={textStyles.Body1}>
-              Balance: {toFormattedNumber(balance)}
-            </Text>
+            <Text style={textStyles.Body1}>Balance: {toFormattedNumber(balance)}</Text>
           </Row.LR>
           <CInputFormik
             name={'amount'}
@@ -278,11 +233,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             {...{ values, errors, touched, handleBlur, handleChange }}
             containerStyle={styles.rowPicker}
           />
-          <CTextButton
-            onPress={handleSubmit}
-            text={'Stake Now'}
-            style={styles.btnStaking}
-          />
+          <CTextButton onPress={handleSubmit} text={'Stake Now'} style={styles.btnStaking} />
         </Col>
         <View style={styles.line} />
         <View
@@ -290,13 +241,13 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            marginLeft: scale(16),
           }}>
           <TouchableOpacity onPress={() => setView(EViews.info)}>
             <Text
               style={[
                 styles.title,
                 {
-                  margin: scale(16),
                   color: view === EViews.info ? colors.R3 : colors.N1,
                 },
               ]}>
@@ -316,9 +267,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setView(EViews.history)}>
-            <IconHistory
-              fill={view === EViews.history ? colors.R3 : colors.N1}
-            />
+            <IconHistory fill={view === EViews.history ? colors.R3 : colors.N1} />
           </TouchableOpacity>
         </View>
       </>
@@ -333,26 +282,18 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
       </Row>
       <Col style={styles.container}>
         {view === EViews.rewards ? (
-          <StakingRewards
-            publicKey={
-              '02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38'
-            }
-            renderHeader={_renderHeader}
-          />
+          <View style={{ marginTop: scale(22) }}>
+            {_renderHeader()}
+            <StakingRewards publicKey={'02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38'} />
+          </View>
         ) : (
           <ScrollView
             ref={scrollViewRef}
             showsVerticalScrollIndicator={false}
             style={{ marginTop: scale(22) }}
             contentContainerStyle={styles.contentContainerStyle}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={() => getData(true)}
-              />
-            }>
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={() => getData(true)} />}>
             {_renderHeader()}
-
             {renderItems()}
           </ScrollView>
         )}
@@ -431,15 +372,5 @@ const styles = StyleSheet.create({
     marginTop: scale(12),
     fontWeight: '400',
     fontFamily: fonts.Poppins.regular,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imgNoData: {
-    width: scale(180),
-    height: scale(180),
-    resizeMode: 'contain',
   },
 });
