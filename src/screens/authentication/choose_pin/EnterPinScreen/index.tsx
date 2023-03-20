@@ -22,7 +22,7 @@ const EnterPinScreen = () => {
   const [isBiometry, setIsBiometry] = useState<boolean>(false);
 
   useEffect(() => {
-    Config.getItem(Keys.masterPassword).then(masterPassword => {
+    Config.getItem(Keys.masterPassword).then((masterPassword) => {
       setStoredPin(masterPassword);
     });
   }, []);
@@ -43,7 +43,7 @@ const EnterPinScreen = () => {
   };
 
   const onDeleteAllData = () => {
-    Object.entries(Keys).map(key => {
+    Object.entries(Keys).map((key) => {
       return Config.deleteItem(key[1]);
     });
     NativeModules.DevSettings.reload();
@@ -58,18 +58,15 @@ const EnterPinScreen = () => {
               onPress={() => {
                 setIsBiometry(true);
                 launchTouchID();
-              }}>
+              }}
+            >
               <Image
                 style={{
                   marginLeft: scale(16),
                   width: scale(40),
                   height: scale(40),
                 }}
-                source={
-                  biometryType === BiometryType.FaceID
-                    ? images.faceId
-                    : images.touchId
-                }
+                source={biometryType === BiometryType.FaceID ? images.faceId : images.touchId}
               />
             </CButton>
           )}

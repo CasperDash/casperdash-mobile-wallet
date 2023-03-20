@@ -1,20 +1,10 @@
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { scale } from 'device';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CButton, Col, Row } from 'components';
-import {
-  colors,
-  textStyles,
-  IconCloseFilledN4,
-  IconScanCameraTimeout,
-} from 'assets';
+import { colors, textStyles, IconCloseFilledN4, IconScanCameraTimeout } from 'assets';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 
@@ -82,7 +72,8 @@ const ScanQrCodeModal = forwardRef(({ onScanSuccess }: Props, ref) => {
         contentContainerStyle: {
           paddingBottom: insets.bottom,
         },
-      }}>
+      }}
+    >
       {_renderHeader()}
       <Col mt={48}>
         <QRCodeScanner
@@ -96,17 +87,12 @@ const ScanQrCodeModal = forwardRef(({ onScanSuccess }: Props, ref) => {
           flashMode={RNCamera.Constants.FlashMode.auto}
           bottomContent={
             <Text style={styles.txtDescription}>
-              You can only scan your QR from this page. To view your QR please
-              select the icon on your account
+              You can only scan your QR from this page. To view your QR please select the icon on your account
             </Text>
           }
         />
         {!isCameraReady && (
-          <IconScanCameraTimeout
-            width={scale(160)}
-            height={scale(160)}
-            style={styles.cameraTimeout}
-          />
+          <IconScanCameraTimeout width={scale(160)} height={scale(160)} style={styles.cameraTimeout} />
         )}
       </Col>
     </Modalize>

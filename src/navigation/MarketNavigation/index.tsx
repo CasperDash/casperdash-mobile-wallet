@@ -12,7 +12,8 @@ const MarketNavigation = () => {
       initialRouteName={MarketRouter.MARKET_SCREEN}
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(MarketScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}

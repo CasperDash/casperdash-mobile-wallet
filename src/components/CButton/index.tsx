@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  TouchableOpacityProps,
-  Alert,
-  StyleSheet,
-} from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, Alert, StyleSheet } from 'react-native';
 
 const defaultProps = {
   /*eslint no-alert: "off"*/
@@ -16,24 +11,18 @@ interface Props extends React.FC<TouchableOpacityProps> {
   disabled?: boolean;
   style?: any;
   children?: any;
-  hitSlop?: any,
+  hitSlop?: any;
 }
 
-const Button = ({
-  disabled,
-  style,
-  enabledOpacity = false,
-  children,
-  hitSlop,
-  ...rest
-}: Props) => {
+const Button = ({ disabled, style, enabledOpacity = false, children, hitSlop, ...rest }: Props) => {
   return (
     <TouchableOpacity
       hitSlop={hitSlop}
       {...rest}
       {...{ disabled }}
       activeOpacity={0.85}
-      style={[style, disabled && !enabledOpacity && styles.disabled]}>
+      style={[style, disabled && !enabledOpacity && styles.disabled]}
+    >
       {children}
     </TouchableOpacity>
   );

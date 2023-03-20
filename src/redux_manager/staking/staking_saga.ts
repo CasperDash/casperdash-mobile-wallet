@@ -1,12 +1,7 @@
 import { cancel, put, take, takeLatest } from 'redux-saga/effects';
 import { types } from './staking_action';
 import { apis } from 'services';
-import {
-  stopAction,
-  startAction,
-  refreshActionStart,
-  refreshActionStop,
-} from 'redux_manager/main/main_action';
+import { stopAction, startAction, refreshActionStart, refreshActionStop } from 'redux_manager/main/main_action';
 import { Config, Keys } from 'utils';
 
 export function* getValidatorsInformation(data: any) {
@@ -17,9 +12,7 @@ export function* getValidatorsInformation(data: any) {
         : startAction(types.GET_VALIDATORS_INFORMATION),
     );
     // @ts-ignore
-    const response = yield apis.getValidatorsInformationAPI(
-      data.params.publicKey,
-    );
+    const response = yield apis.getValidatorsInformationAPI(data.params.publicKey);
     if (response) {
       yield put({
         type: types.GET_VALIDATORS_INFORMATION_SUCCESS,
@@ -70,10 +63,7 @@ export function* pushStakeToLocalStorage(data: any) {
 export function* watchPushStakeToLocalStorage() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      types.PUSH_STAKE_TO_LOCAL_STORAGE,
-      pushStakeToLocalStorage,
-    );
+    const watcher = yield takeLatest(types.PUSH_STAKE_TO_LOCAL_STORAGE, pushStakeToLocalStorage);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }

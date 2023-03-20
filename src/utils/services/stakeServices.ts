@@ -1,9 +1,4 @@
-import {
-  DeployUtil,
-  RuntimeArgs,
-  CLPublicKey,
-  CLValueBuilder,
-} from 'casperdash-js-sdk';
+import { DeployUtil, RuntimeArgs, CLPublicKey, CLValueBuilder } from 'casperdash-js-sdk';
 import { NETWORK_NAME, ENTRY_POINT_DELEGATE } from '../constants/key';
 import { contractHashes } from '../constants/stack';
 import { toMotes } from '../helpers/currency';
@@ -16,12 +11,7 @@ import { toMotes } from '../helpers/currency';
  * @param paymentAmount - The amount of tokens to send to the contract.
  * @returns The deploy object.
  */
-const buildStakeDeploy = (
-  baseAccount: any,
-  entryPoint: string,
-  args: any,
-  paymentAmount: any,
-) => {
+const buildStakeDeploy = (baseAccount: any, entryPoint: string, args: any, paymentAmount: any) => {
   const deployParams = new DeployUtil.DeployParams(baseAccount, NETWORK_NAME);
   const runTimeArgs = RuntimeArgs.fromMap(args);
   const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(

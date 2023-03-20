@@ -8,12 +8,7 @@ import Keys from './keys';
 const locales = RNLocalize.getLocales();
 const defaultLocale = locales && locales[0] && locales[0].languageTag;
 
-const alertMess = function (
-  data: any,
-  title?: any,
-  cb?: Function,
-  cbCancel?: Function,
-) {
+const alertMess = function (data: any, title?: any, cb?: Function, cbCancel?: Function) {
   let messAlert = data && data.message ? data.message : 'System error';
   let titleAlert = data && data.title ? data.title : 'Message';
   const arrayButton: any = [];
@@ -33,19 +28,13 @@ const alertMess = function (
   });
 };
 
-const requestPermission = (
-  permissions: any,
-  data?: any,
-  callback?: () => void,
-) => {
+const requestPermission = (permissions: any, data?: any, callback?: () => void) => {
   check(permissions)
     .then((result: any) => {
       if (result === RESULTS.BLOCKED || result === RESULTS.UNAVAILABLE) {
         Alert.alert(
           data && data.title ? data.title : '',
-          data && data.message
-            ? data.message
-            : 'Please grant permissions to continue',
+          data && data.message ? data.message : 'Please grant permissions to continue',
           [
             {
               text: 'Cancel',
@@ -65,11 +54,7 @@ const requestPermission = (
       }
       if (result === RESULTS.DENIED) {
         request(permissions).then((r: any) => {
-          if (
-            r === RESULTS.BLOCKED ||
-            r === RESULTS.UNAVAILABLE ||
-            r === RESULTS.DENIED
-          ) {
+          if (r === RESULTS.BLOCKED || r === RESULTS.UNAVAILABLE || r === RESULTS.DENIED) {
             return;
           }
           callback && callback();

@@ -10,12 +10,7 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MessageType } from 'components/CMessge/types';
-import {
-  KeyParser,
-  CasperLegacyWallet,
-  User,
-  WalletDescriptor,
-} from 'react-native-casper-storage';
+import { KeyParser, CasperLegacyWallet, User, WalletDescriptor } from 'react-native-casper-storage';
 import { Config, Keys } from 'utils';
 
 function ImportAccountScreen() {
@@ -25,9 +20,7 @@ function ImportAccountScreen() {
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const currentAccount = useSelector<any, User>(
-    (state: any) => state.user.currentAccount,
-  );
+  const currentAccount = useSelector<any, User>((state: any) => state.user.currentAccount);
   const casperdash = useSelector((state: any) => state.main.casperdash || {});
 
   const onChange = (value?: string) => {
@@ -41,10 +34,7 @@ function ImportAccountScreen() {
 
       const keyParser = KeyParser.getInstance();
       const keyValue = keyParser.convertPEMToPrivateKey(secretKey);
-      const wallet = new CasperLegacyWallet(
-        keyValue.key,
-        keyValue.encryptionType,
-      );
+      const wallet = new CasperLegacyWallet(keyValue.key, keyValue.encryptionType);
 
       currentAccount?.addLegacyWallet(wallet, new WalletDescriptor(name));
       const userInfo = await currentAccount.serialize();
@@ -91,19 +81,13 @@ function ImportAccountScreen() {
   };
 
   return (
-    <CLayout
-      bgColor={colors.cF8F8F8}
-      edges={['top', 'left', 'right']}
-      statusBgColor={colors.cF8F8F8}>
-      <CHeader
-        title={'Import Account'}
-        style={{ backgroundColor: colors.cF8F8F8 }}
-      />
+    <CLayout bgColor={colors.cF8F8F8} edges={['top', 'left', 'right']} statusBgColor={colors.cF8F8F8}>
+      <CHeader title={'Import Account'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'}>
           <Text style={[styles.noteText, { marginTop: scale(16) }]}>
-            Imported account are viewable in your wallet but are not recoverable
-            with your CasperDash Secret Recovery Phrase.
+            Imported account are viewable in your wallet but are not recoverable with your CasperDash Secret Recovery
+            Phrase.
           </Text>
           <Text style={[styles.title, { marginTop: scale(16) }]}>Name</Text>
           <CInput
@@ -125,13 +109,7 @@ function ImportAccountScreen() {
           />
 
           <Row.LR px={24} mt={60}>
-            <CTextButton
-              onPress={goBack}
-              style={styles.btnAdd}
-              text={'Cancel'}
-              type={'line'}
-              variant="secondary"
-            />
+            <CTextButton onPress={goBack} style={styles.btnAdd} text={'Cancel'} type={'line'} variant="secondary" />
             <CTextButton
               onPress={onAddPrivateKey}
               disabled={!secretKey || !name || isLoading}

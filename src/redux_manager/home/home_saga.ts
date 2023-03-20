@@ -1,15 +1,10 @@
-import { put, takeLatest, take, cancel} from 'redux-saga/effects';
+import { put, takeLatest, take, cancel } from 'redux-saga/effects';
 import { types } from './home_action';
 import { types as userTypes } from '../user/user_action';
 
 import { apis } from 'services';
 import { Config, Keys } from 'utils';
-import {
-  refreshActionStart,
-  refreshActionStop,
-  startAction,
-  stopAction,
-} from 'redux_manager/main/main_action';
+import { refreshActionStart, refreshActionStop, startAction, stopAction } from 'redux_manager/main/main_action';
 
 export function* getTokenInfoWithBalance(data: any) {
   try {
@@ -31,9 +26,7 @@ export function* getTokenInfoWithBalance(data: any) {
     const token = yield Config.getItem(Keys.tokensAddressList);
 
     const params = {
-      publicKey:
-        data.params.publicKey ??
-        ((casperDashInfo && casperDashInfo.publicKey) || ''),
+      publicKey: data.params.publicKey ?? ((casperDashInfo && casperDashInfo.publicKey) || ''),
       tokenAddress: data.params.tokensAddressList ?? (token || []),
     };
     // @ts-ignore
@@ -65,10 +58,7 @@ export function* getTokenInfoWithBalance(data: any) {
 export function* watchGetTokenInfoWithBalance() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      types.GET_TOKEN_INFO_WITH_BALANCE,
-      getTokenInfoWithBalance,
-    );
+    const watcher = yield takeLatest(types.GET_TOKEN_INFO_WITH_BALANCE, getTokenInfoWithBalance);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }
@@ -110,10 +100,7 @@ export function* fetchCSPRMarketInfo(data: any) {
 export function* watchFetchCSPRMarketInfo() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      types.FETCH_CSPR_MARKET_INFO,
-      fetchCSPRMarketInfo,
-    );
+    const watcher = yield takeLatest(types.FETCH_CSPR_MARKET_INFO, fetchCSPRMarketInfo);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }
@@ -144,10 +131,7 @@ export function* getTokenAddressInfo(data: any) {
 export function* watchGetTokenAddressInfo() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      types.GET_TOKEN_ADDRESS_INFO,
-      getTokenAddressInfo,
-    );
+    const watcher = yield takeLatest(types.GET_TOKEN_ADDRESS_INFO, getTokenAddressInfo);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }
@@ -206,10 +190,7 @@ export function* pushTransferToLocalStorage(data: any) {
 export function* watchPushTransferToLocalStorage() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      types.PUSH_TRANSFER_TO_LOCAL_STORAGE,
-      pushTransferToLocalStorage,
-    );
+    const watcher = yield takeLatest(types.PUSH_TRANSFER_TO_LOCAL_STORAGE, pushTransferToLocalStorage);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }

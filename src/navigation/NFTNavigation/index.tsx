@@ -12,7 +12,8 @@ const NFTNavigation = () => {
       initialRouteName={NFTRouter.NFT_SCREEN}
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(NFTScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}

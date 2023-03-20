@@ -21,16 +21,15 @@ const CheckItem = ({ data, keyWords, onPress, rowIndex }: CheckItemProps) => {
             return (
               <CButton
                 key={index}
-                style={[
-                  styles.wordsContainer,
-                  item.isSelected && styles.selectedContainer,
-                ]}
-                onPress={() => onPress(rowIndex, item.id)}>
+                style={[styles.wordsContainer, item.isSelected && styles.selectedContainer]}
+                onPress={() => onPress(rowIndex, item.id)}
+              >
                 <Text
                   style={{
                     ...textStyles.Body2,
                     marginTop: isIos() ? 0 : scale(3),
-                  }}>
+                  }}
+                >
                   {item.word}
                 </Text>
               </CButton>

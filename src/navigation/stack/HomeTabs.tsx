@@ -106,7 +106,8 @@ const HomeTabs = () => {
             },
           ],
           keyboardHidesTabBar: Platform.OS === 'android',
-        }}>
+        }}
+      >
         {listTabs.map((tab, index) => {
           return (
             <Tab.Screen

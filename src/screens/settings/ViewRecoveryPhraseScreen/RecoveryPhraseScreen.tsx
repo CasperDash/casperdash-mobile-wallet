@@ -25,9 +25,7 @@ const RecoveryPhraseScreen = () => {
     <CLayout>
       <CHeader title={'Recovery Phrase'} />
       <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainerStyle}>
           <Row.LR pt={16} px={16} style={styles.body}>
             {new Array(2).fill(undefined).map((_, index) => {
               const words = recoveryPhaseArr.slice(

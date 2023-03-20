@@ -8,12 +8,7 @@ import {
   CLTypeBuilder,
   CLPublicKey,
 } from 'casperdash-js-sdk';
-import {
-  NETWORK_NAME,
-  PAYMENT_AMOUNT,
-  MOTE_RATE,
-  DEPLOY_TTL_MS,
-} from '../constants/key';
+import { NETWORK_NAME, PAYMENT_AMOUNT, MOTE_RATE, DEPLOY_TTL_MS } from '../constants/key';
 
 /**
  * Get Transfer deploy
@@ -32,12 +27,7 @@ export const buildTransferDeploy = (
   fee: any,
 ) => {
   const deployParams = new DeployUtil.DeployParams(fromAccount, NETWORK_NAME);
-  const transferParams = DeployUtil.ExecutableDeployItem.newTransfer(
-    amount,
-    toAccount,
-    null,
-    transferId,
-  );
+  const transferParams = DeployUtil.ExecutableDeployItem.newTransfer(amount, toAccount, null, transferId);
   const payment = DeployUtil.standardPayment(fee * MOTE_RATE);
   return DeployUtil.makeDeploy(deployParams, transferParams, payment);
 };
@@ -48,10 +38,7 @@ export const buildTransferDeploy = (
  * @param {Object} session hash contract content
  * @returns {Deploy} deploy of the contract
  */
-export const buildContractInstallDeploy = (
-  baseAccount: CLPublicKey,
-  session: any,
-) => {
+export const buildContractInstallDeploy = (baseAccount: CLPublicKey, session: any) => {
   const deployParams = new DeployUtil.DeployParams(baseAccount, NETWORK_NAME);
   const payment = DeployUtil.standardPayment(PAYMENT_AMOUNT);
   return DeployUtil.makeDeploy(deployParams, session, payment);
@@ -82,22 +69,16 @@ export const buildTransferTokenDeploy = (
 ) => {
   // eslint-disable-next-line no-undef
   const contractHashAsByteArray: any = [...Buffer.from(contractHash, 'hex')];
-  const deployParams = new DeployUtil.DeployParams(
-    fromAccount,
-    NETWORK_NAME,
-    1,
-    DEPLOY_TTL_MS,
-  );
+  const deployParams = new DeployUtil.DeployParams(fromAccount, NETWORK_NAME, 1, DEPLOY_TTL_MS);
 
-  const transferParams =
-    DeployUtil.ExecutableDeployItem.newStoredContractByHash(
-      contractHashAsByteArray,
-      'transfer',
-      RuntimeArgs.fromMap({
-        amount: CLValueBuilder.u256(amount),
-        recipient: createRecipientAddress(toAccount),
-      }),
-    );
+  const transferParams = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
+    contractHashAsByteArray,
+    'transfer',
+    RuntimeArgs.fromMap({
+      amount: CLValueBuilder.u256(amount),
+      recipient: createRecipientAddress(toAccount),
+    }),
+  );
   const payment = DeployUtil.standardPayment(fee * MOTE_RATE);
   return DeployUtil.makeDeploy(deployParams, transferParams, payment);
 };
@@ -120,10 +101,7 @@ export const connectCasperSigner = () => {
  * @returns A CLValue of type `Map<String, String>`
  */
 export const toCLMap = (map: any) => {
-  const clMap = CLValueBuilder.map([
-    CLTypeBuilder.string(),
-    CLTypeBuilder.string(),
-  ]);
+  const clMap = CLValueBuilder.map([CLTypeBuilder.string(), CLTypeBuilder.string()]);
   //@ts-ignore
   for (const [key, value] of Array.from(map.entries())) {
     clMap.set(CLValueBuilder.string(key), CLValueBuilder.string(value));

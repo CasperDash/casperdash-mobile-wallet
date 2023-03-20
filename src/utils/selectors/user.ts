@@ -66,8 +66,7 @@ export const getPublicKey = ({ user }: { user: any }) => {
 };
 
 const massageUserDetails = (userDetails: any) => {
-  const hexBalance =
-    userDetails && userDetails.balance ? userDetails.balance.hex : 0;
+  const hexBalance = userDetails && userDetails.balance ? userDetails.balance.hex : 0;
   return {
     ...userDetails,
     balance: {
@@ -82,12 +81,9 @@ export const userDetailsSelector = (state: any) => state.user;
 
 /* This is a selector that returns a function. The function takes in the state and returns the user
 details. */
-export const getMassagedUserDetails = createSelector(
-  userDetailsSelector,
-  userDetails => {
-    return massageUserDetails(userDetails.info || {});
-  },
-);
+export const getMassagedUserDetails = createSelector(userDetailsSelector, (userDetails) => {
+  return massageUserDetails(userDetails.info || {});
+});
 
 /* `getAllTokenInfo` is a selector that returns an array of objects. */
 export const getAllTokenInfo = createSelector(
@@ -96,18 +92,11 @@ export const getAllTokenInfo = createSelector(
   getMassagedTokenData,
   getConfigurations,
   (accountDetails, CSPRPrice, tokensData, configurations) => {
-    const transferFee =
-      configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
-    const minAmount =
-      configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
-    const tokenTransferFee =
-      configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
+    const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
+    const minAmount = configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
+    const tokenTransferFee = configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
-    const CSPRBalance =
-      (accountDetails &&
-        accountDetails.balance &&
-        accountDetails.balance.displayBalance) ||
-      0;
+    const CSPRBalance = (accountDetails && accountDetails.balance && accountDetails.balance.displayBalance) || 0;
     const CSPRInfo = {
       ...CSPR_INFO,
       balance: { displayValue: CSPRBalance },
@@ -122,7 +111,7 @@ export const getAllTokenInfo = createSelector(
     const tokenPrice = 0;
     const tokensInfo =
       tokensData && tokensData.length
-        ? tokensData.map(datum => ({
+        ? tokensData.map((datum) => ({
             price: tokenPrice,
             totalPrice: tokenPrice * datum.balance.displayValue,
             transferFee: tokenTransferFee,
@@ -137,16 +126,13 @@ export const getAllTokenInfo = createSelector(
 
 /* This selector is a function that takes in the state and returns the total balance of the user in
 fiat. */
-export const getAccountTotalBalanceInFiat = createSelector<any, any>(
-  getAllTokenInfo,
-  (allTokenInfo: any) => {
-    return allTokenInfo && allTokenInfo.length
-      ? allTokenInfo.reduce((out: number, datum: any) => {
-          return out + datum.totalPrice;
-        }, 0)
-      : 0;
-  },
-);
+export const getAccountTotalBalanceInFiat = createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {
+  return allTokenInfo && allTokenInfo.length
+    ? allTokenInfo.reduce((out: number, datum: any) => {
+        return out + datum.totalPrice;
+      }, 0)
+    : 0;
+});
 
 export const getTokenInfoByAddress = (token: any) =>
   createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {

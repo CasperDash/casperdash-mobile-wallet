@@ -13,9 +13,7 @@ const DropdownItem = ({ item }: Props) => {
   return (
     <Row.LR px={16} style={styles.dropItem}>
       <Text style={textStyles.Body1}>{item.symbol}</Text>
-      <Text style={textStyles.Sub1}>
-        {item.balance ? toFormattedNumber(item.balance.displayValue ?? 0) : ''}
-      </Text>
+      <Text style={textStyles.Sub1}>{item.balance ? toFormattedNumber(item.balance.displayValue ?? 0) : ''}</Text>
     </Row.LR>
   );
 };
