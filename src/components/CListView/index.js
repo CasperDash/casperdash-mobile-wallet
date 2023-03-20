@@ -1,21 +1,8 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Platform,
-  RefreshControl,
-} from 'react-native';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator, Platform, RefreshControl } from 'react-native';
 
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { colors, fonts} from 'assets';
+import { colors, fonts } from 'assets';
 import { scale } from 'device';
 
 const CListView = forwardRef((props, ref) => {
@@ -93,15 +80,12 @@ const CListView = forwardRef((props, ref) => {
             paddingVertical: scale(10),
             justifyContent: 'center',
             flexDirection: 'row',
-          }}>
+          }}
+        >
           {Platform.OS === 'ios' ? (
             <ActivityIndicator animating color={colors.inkBasic} />
           ) : (
-            <ActivityIndicator
-              animating
-              color={colors.inkBasic}
-              size={scale(30)}
-            />
+            <ActivityIndicator animating color={colors.inkBasic} size={scale(30)} />
           )}
         </View>
       );
@@ -113,15 +97,12 @@ const CListView = forwardRef((props, ref) => {
             paddingVertical: scale(10),
             justifyContent: 'center',
             flexDirection: 'row',
-          }}>
+          }}
+        >
           {Platform.OS === 'ios' ? (
             <ActivityIndicator animating color={colors.inkBasic} />
           ) : (
-            <ActivityIndicator
-              animating
-              color={colors.inkBasic}
-              size={scale(30)}
-            />
+            <ActivityIndicator animating color={colors.inkBasic} size={scale(30)} />
           )}
         </View>
       );
@@ -155,7 +136,7 @@ const CListView = forwardRef((props, ref) => {
     return null;
   };
 
-  const _onScroll = e => {
+  const _onScroll = (e) => {
     if (onScroll) {
       onScroll(e);
     }
@@ -204,7 +185,7 @@ const CListView = forwardRef((props, ref) => {
     if (isSetLoading.current) {
       isSetLoading.current = false;
       if (onLoadMore) {
-        onLoadMore(stop => {
+        onLoadMore((stop) => {
           _loadMore.current = !!stop;
           countLoadFirst.current++;
           setLoading(false);
@@ -221,11 +202,11 @@ const CListView = forwardRef((props, ref) => {
     listView.current && listView.current.scrollToPosition(0, 0);
   };
 
-  const scrollToBottom = params => {
+  const scrollToBottom = (params) => {
     listView.current && listView.current.scrollToEnd(params);
   };
 
-  const scrollToIndex = index => {
+  const scrollToIndex = (index) => {
     listView.current && listView.current.scrollToIndex({ index: index });
   };
 

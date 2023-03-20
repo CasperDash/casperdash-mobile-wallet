@@ -11,7 +11,8 @@ const SettingsNavigation = () => {
       initialRouteName={SettingsRouter.SETTINGS_SCREEN}
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(SettingsScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}

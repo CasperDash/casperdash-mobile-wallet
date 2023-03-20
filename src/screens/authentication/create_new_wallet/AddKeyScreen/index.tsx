@@ -31,30 +31,27 @@ function AddKeyScreen() {
     setLoading(true);
 
     dispatch(
-      allActions.user.getAccountInformation(
-        { publicKey },
-        async (err: any, res: any) => {
-          if (res) {
-            setLoading(false);
-            const info = {
-              publicKey: publicKey,
-              loginOptions: {
-                connectionType: 'view_mode',
-              },
-            };
-            await Config.saveItem(Keys.casperdash, info);
-            navigate(AuthenticationRouter.CHOOSE_PIN, {
-              screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-              params: {
-                showBack: true,
-              },
-            });
-          } else {
-            setLoading(false);
-            Config.alertMess(err);
-          }
-        },
-      ),
+      allActions.user.getAccountInformation({ publicKey }, async (err: any, res: any) => {
+        if (res) {
+          setLoading(false);
+          const info = {
+            publicKey: publicKey,
+            loginOptions: {
+              connectionType: 'view_mode',
+            },
+          };
+          await Config.saveItem(Keys.casperdash, info);
+          navigate(AuthenticationRouter.CHOOSE_PIN, {
+            screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+            params: {
+              showBack: true,
+            },
+          });
+        } else {
+          setLoading(false);
+          Config.alertMess(err);
+        }
+      }),
     );
   };
 
@@ -70,12 +67,7 @@ function AddKeyScreen() {
           style={styles.inputContainer}
         />
         <Text style={styles.errorText}>{error}</Text>
-        <CTextButton
-          onPress={onAddPublicKey}
-          disabled={!!error || !publicKey}
-          style={styles.btnAdd}
-          text={'Add'}
-        />
+        <CTextButton onPress={onAddPublicKey} disabled={!!error || !publicKey} style={styles.btnAdd} text={'Add'} />
       </Col>
       {isLoading && <CLoading />}
     </CLayout>

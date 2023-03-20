@@ -40,19 +40,18 @@ export default function AppNavigation() {
             border: 'white',
             notification: 'white',
           },
-        }}>
+        }}
+      >
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
             gestureEnabled: false,
             cardStyleInterpolator: fadeAnim,
-          }}>
+          }}
+        >
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
           <Stack.Screen name="MainStack" component={MainNavigation} />
-          <Stack.Screen
-            name="AuthenticationStack"
-            component={AuthenticationNavigation}
-          />
+          <Stack.Screen name="AuthenticationStack" component={AuthenticationNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
       <CMessge />

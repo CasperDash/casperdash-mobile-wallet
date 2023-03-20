@@ -30,9 +30,7 @@ const useSigner = () => {
         }
         default: {
           const keyPair = await getWalletKeyPair(user, selectedWallet);
-          return DeployUtil.deployToJson(
-            DeployUtil.signDeploy(deploy, keyPair),
-          );
+          return DeployUtil.deployToJson(DeployUtil.signDeploy(deploy, keyPair));
         }
       }
     } catch (error: any) {

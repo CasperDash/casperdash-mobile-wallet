@@ -29,16 +29,14 @@ const DoubleCheckItScreen: React.FC<
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
 
-  const isCheckingSuccess = __DEV__
-    ? true
-    : listDataSelected.filter((i: any) => !!i).length === numberOfWords;
+  const isCheckingSuccess = __DEV__ ? true : listDataSelected.filter((i: any) => !!i).length === numberOfWords;
 
   useEffect(() => {
     const randomList = _.sampleSize(wordArray, numberOfWords);
     let restList = getArrayNotInArray(wordArray, randomList);
     restList = _.shuffle(restList);
 
-    const list = randomList.map(item => {
+    const list = randomList.map((item) => {
       let listWords = [{ ...item, isKey: true }];
       const randomWords = _.sampleSize(restList, 2);
       restList = getArrayNotInArray(restList, randomWords);
@@ -94,35 +92,18 @@ const DoubleCheckItScreen: React.FC<
     <CLayout>
       <CHeader
         title={`Double check (${
-          listData.filter((row: any) =>
-            row.find((phrase: any) => phrase.isSelected),
-          ).length
+          listData.filter((row: any) => row.find((phrase: any) => phrase.isSelected)).length
         }/${numberOfWords})`}
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: scale(20) }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingVertical: scale(20) }}>
         {listData &&
           listData.length > 0 &&
           listData.map((row: any, rowIdx: number) => {
             const keyWords = row.find((i: any) => i.isKey);
-            return (
-              <CheckItem
-                data={row}
-                keyWords={keyWords}
-                key={rowIdx}
-                onPress={onSelectWords}
-                rowIndex={rowIdx}
-              />
-            );
+            return <CheckItem data={row} keyWords={keyWords} key={rowIdx} onPress={onSelectWords} rowIndex={rowIdx} />;
           })}
       </ScrollView>
-      <CTextButton
-        onPress={onNext}
-        style={styles.btnNext}
-        disabled={!isCheckingSuccess}
-        text={'Next'}
-      />
+      <CTextButton onPress={onNext} style={styles.btnNext} disabled={!isCheckingSuccess} text={'Next'} />
     </CLayout>
   );
 };

@@ -16,12 +16,7 @@ function PhraseInputItem({ data, onChangeText }: PhraseInputItemProps) {
       <Text numberOfLines={1} style={styles.title}>
         {data.id + 1}
       </Text>
-      <TextInput
-        value={data.word}
-        onChangeText={onChangeText}
-        style={styles.input}
-        autoCapitalize="none"
-      />
+      <TextInput value={data.word} onChangeText={onChangeText} style={styles.input} autoCapitalize="none" />
     </Row>
   );
 }

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Platform,
-  UIManager,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import { View, Text, Platform, UIManager, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Col, Row } from 'components';
 import { scale } from 'device';
@@ -21,8 +14,7 @@ interface Props {
 
 const TokenInfoComponent = ({ tokenInfo }: Props) => {
   if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental &&
-      UIManager.setLayoutAnimationEnabledExperimental(true);
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   const { navigate } = useNavigation();
@@ -40,31 +32,18 @@ const TokenInfoComponent = ({ tokenInfo }: Props) => {
         <Col.C>
           {tokenInfo.symbol && (
             <Image
-              source={
-                tokenInfo.symbol === 'CSPR'
-                  ? tokenInfo.icon
-                  : { uri: tokenInfo.icon }
-              }
+              source={tokenInfo.symbol === 'CSPR' ? tokenInfo.icon : { uri: tokenInfo.icon }}
               style={styles.symbol}
             />
           )}
-          <Text style={styles.amount}>{`${
-            tokenInfo.balance &&
-            toFormattedNumber(tokenInfo.balance.displayValue)
-          } ${tokenInfo.symbol}`}</Text>
-          <Text style={styles.amount2}>
-            ~ {toFormattedCurrency(tokenInfo.totalPrice)}
-          </Text>
+          <Text style={styles.amount}>{`${tokenInfo.balance && toFormattedNumber(tokenInfo.balance.displayValue)} ${
+            tokenInfo.symbol
+          }`}</Text>
+          <Text style={styles.amount2}>~ {toFormattedCurrency(tokenInfo.totalPrice)}</Text>
         </Col.C>
         <Row.C>
           {AccountActions.map((action, index) => {
-            return (
-              <ButtonAction
-                data={action}
-                key={index}
-                onPress={navigateSendReceive}
-              />
-            );
+            return <ButtonAction data={action} key={index} onPress={navigateSendReceive} />;
           })}
         </Row.C>
       </Col>

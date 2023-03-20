@@ -2,23 +2,14 @@ import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import Modal from 'react-native-modal';
 import { scale } from 'device';
-import {
-  colors,
-  IconMessageSuccess,
-  IconMessageError,
-  IconMessageWarning,
-  textStyles,
-} from 'assets';
+import { colors, IconMessageSuccess, IconMessageError, IconMessageWarning, textStyles } from 'assets';
 import { useSelector } from 'react-redux';
 import { MessageType } from './types';
 import { Row, Col } from 'components';
 
 const CMessage = () => {
   const { CMessageData } = useSelector((state: any) => state && state.main);
-  const isNormal =
-    CMessageData &&
-    CMessageData.type &&
-    CMessageData.type === MessageType.normal;
+  const isNormal = CMessageData && CMessageData.type && CMessageData.type === MessageType.normal;
 
   const getIcon = (type: string) => {
     const arrImage = new Map([
@@ -59,19 +50,13 @@ const CMessage = () => {
       backdropColor={'transparent'}
       isVisible={!!CMessageData}
       animationIn={'fadeIn'}
-      animationOut={'fadeOut'}>
-      <Row.TL
-        style={[
-          styles.body,
-          !CMessageData && { opacity: 0 },
-          isNormal && styles.bodyNormal,
-        ]}>
+      animationOut={'fadeOut'}
+    >
+      <Row.TL style={[styles.body, !CMessageData && { opacity: 0 }, isNormal && styles.bodyNormal]}>
         {Type && Type.icon}
         <Col px={16}>
           {CMessageData && CMessageData.type && !isNormal && (
-            <Text style={[styles.title, Type && { color: Type.color }]}>
-              {CMessageData.type}
-            </Text>
+            <Text style={[styles.title, Type && { color: Type.color }]}>{CMessageData.type}</Text>
           )}
           <Text style={[styles.content, isNormal && { color: colors.N3 }]}>
             {CMessageData && CMessageData.message ? CMessageData.message : ''}
@@ -99,8 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(16),
     padding: scale(24),
 
-    shadowColor:
-      Platform.OS === 'ios' ? 'rgba(35, 38, 53, 0.2)' : 'rgba(35, 38, 53, 0.6)',
+    shadowColor: Platform.OS === 'ios' ? 'rgba(35, 38, 53, 0.2)' : 'rgba(35, 38, 53, 0.6)',
     shadowOffset: {
       width: 0,
       height: 0,

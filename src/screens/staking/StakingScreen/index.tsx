@@ -104,7 +104,8 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
             showsVerticalScrollIndicator={false}
             style={{ marginTop: scale(22) }}
             contentContainerStyle={styles.contentContainerStyle}
-            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={() => getData(true)} />}>
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={() => getData(true)} />}
+          >
             {renderStakingForm()}
             {renderItems()}
           </ScrollView>

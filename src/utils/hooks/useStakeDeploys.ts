@@ -25,11 +25,7 @@ export const getStakeIcon = (value: number) => {
  * @param {String} publicKey
  * @returns
  */
-const getStakedValidators = (
-  validators: any,
-  pendingStakes: any,
-  publicKey: string,
-) => {
+const getStakedValidators = (validators: any, pendingStakes: any, publicKey: string) => {
   let stakedValidators: any = [];
   if (!publicKey || !validators.length) {
     return stakedValidators;
@@ -39,18 +35,14 @@ const getStakedValidators = (
       return;
     }
     const foundDelegator = validator.bidInfo.bid.delegators.find(
-      (delegator: any) =>
-        delegator.public_key &&
-        delegator.public_key.toLowerCase() === publicKey.toLowerCase(),
+      (delegator: any) => delegator.public_key && delegator.public_key.toLowerCase() === publicKey.toLowerCase(),
     );
     if (!foundDelegator) {
       return;
     }
 
     const { public_key: validatorPublicKey } = validator;
-    const pendingStake = pendingStakes.find(
-      (stake: any) => stake.validator === validatorPublicKey,
-    );
+    const pendingStake = pendingStakes.find((stake: any) => stake.validator === validatorPublicKey);
     let stakedValidator: any = {
       validator: validatorPublicKey,
       stakedAmount: moteToCspr(foundDelegator.staked_amount),
@@ -58,9 +50,7 @@ const getStakedValidators = (
     };
     if (pendingStake) {
       const pendingAmount =
-        pendingStake.entryPoint === ENTRY_POINT_UNDELEGATE
-          ? -pendingStake.amount
-          : pendingStake.amount;
+        pendingStake.entryPoint === ENTRY_POINT_UNDELEGATE ? -pendingStake.amount : pendingStake.amount;
       stakedValidator.pendingAmount = pendingAmount;
       stakedValidator.icon = getStakeIcon(pendingAmount);
     }
@@ -68,12 +58,7 @@ const getStakedValidators = (
   });
 
   pendingStakes
-    .filter(
-      (stake: any) =>
-        stakedValidators.findIndex(
-          (item: any) => item.validator === stake.validator,
-        ) < 0,
-    )
+    .filter((stake: any) => stakedValidators.findIndex((item: any) => item.validator === stake.validator) < 0)
     .forEach((newStakedValidator: any) =>
       stakedValidators.push({
         validator: newStakedValidator.validator,
@@ -89,16 +74,12 @@ export const useStakeFromValidators = (publicKey: string) => {
   const dispatch = useDispatch();
 
   const validators = useSelector(getListValidators());
-  const stakeDeployList = useSelector(state =>
+  const stakeDeployList = useSelector((state) =>
     //@ts-ignore
     getDeployStakes(state, { publicKey }),
   );
-  const pendingStakes = stakeDeployList.filter(
-    (stake: any) => stake.status === DeployStatus.pending,
-  );
-  const pendingUndelegate = stakeDeployList.filter(
-    (stake: any) => stake.status === DeployStatus.undelegating,
-  );
+  const pendingStakes = stakeDeployList.filter((stake: any) => stake.status === DeployStatus.pending);
+  const pendingUndelegate = stakeDeployList.filter((stake: any) => stake.status === DeployStatus.undelegating);
 
   useEffect(() => {
     if (pendingStakes.length || pendingUndelegate.length) {
@@ -106,9 +87,7 @@ export const useStakeFromValidators = (publicKey: string) => {
         if (!publicKey) {
           return;
         }
-        const pendingStakesDeployHash = pendingStakes
-          .concat(pendingUndelegate)
-          .map((deploy: any) => deploy.deployHash);
+        const pendingStakesDeployHash = pendingStakes.concat(pendingUndelegate).map((deploy: any) => deploy.deployHash);
         const data: any = await apis.getTransferDeploysStatusAPI({
           deployHash: pendingStakesDeployHash,
         });
@@ -119,28 +98,20 @@ export const useStakeFromValidators = (publicKey: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(pendingStakes), dispatch, publicKey]);
 
-  const stakedValidators = getStakedValidators(
-    validators,
-    pendingStakes,
-    publicKey,
-  );
+  const stakedValidators = getStakedValidators(validators, pendingStakes, publicKey);
   return stakedValidators;
 };
 
 export const useStakedHistory = (publicKey: string) => {
-  const stakeDeployList = useSelector(state =>
+  const stakeDeployList = useSelector((state) =>
     //@ts-ignore
     getDeployStakes(state, { publicKey }),
   );
   return stakeDeployList.map((item: any) => {
     return {
       validator: item.validator,
-      stakedAmount:
-        item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
-      icon:
-        item.entryPoint === ENTRY_POINT_UNDELEGATE
-          ? IconStatusSend
-          : IconStatusReceive,
+      stakedAmount: item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
+      icon: item.entryPoint === ENTRY_POINT_UNDELEGATE ? IconStatusSend : IconStatusReceive,
       status: item.status,
       type: item.entryPoint,
     };

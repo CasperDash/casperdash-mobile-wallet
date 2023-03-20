@@ -11,7 +11,8 @@ const KeyManagerNavigation = () => {
       initialRouteName={KeyManagerRouter.KEY_MANAGER_SCREEN}
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(KeyManagerScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}

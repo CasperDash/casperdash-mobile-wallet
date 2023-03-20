@@ -7,7 +7,7 @@ export const stakingReducer = (state: any) => state.staking;
 
 /* This is memoization. It is a technique used to improve the performance of your application by
 caching the result of a function call. */
-const addValidatorIcon = memoizeOne(validators => {
+const addValidatorIcon = memoizeOne((validators) => {
   return validators.map((validator: any) => {
     return {
       ...validator,
@@ -23,7 +23,7 @@ const searchValidator = memoizeOne((validators, searchTerm) => {
     return validators;
   }
   const fuse = new Fuse(validators, { keys: ['public_key'], threshold: 0.1 });
-  return fuse.search(searchTerm).map(result => result.item);
+  return fuse.search(searchTerm).map((result) => result.item);
 });
 
 export const getListValidators = (searchTerm?: string) =>
