@@ -19,13 +19,13 @@ export const StakingRewardItem = ({ value }: Props) => {
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
             {value.validatorPublicKey ?? ''}
           </Text>
-          <Text style={[textStyles.Body2]}>{value.era}</Text>
+          <Text style={[textStyles.Body2]}>{value.eraId}</Text>
         </Col.TL>
         <Col.TR>
           <Text style={textStyles.Sub1}>{`${toCSPR(value.amount ?? 0)} CSPR`}</Text>
 
           <View style={styles.pendingContainer}>
-            <Text style={textStyles.Body2}>{moment(value.createdAt).format('YYYY/MM/DD HH:ss')}</Text>
+            <Text style={textStyles.Body2}>{moment(value.timestamp).format('YYYY/MM/DD HH:ss')}</Text>
           </View>
         </Col.TR>
       </Row.LR>

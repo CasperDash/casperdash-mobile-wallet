@@ -1,14 +1,9 @@
 export interface IPagination {
-  totalDocs: number;
-  limit: number;
-  totalPages: number;
+  itemCount: number;
+  pageCount: number;
+  pages: { number: number; url: string }[];
   page: number;
-  pagingCounter: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  prevPage: number | null;
-  nextPage: number | null;
 }
 export interface ICommonListResponse<T> extends IPagination {
-  docs: T[];
+  data: T[];
 }
