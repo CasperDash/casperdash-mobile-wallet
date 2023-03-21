@@ -1,8 +1,7 @@
 export interface IStakingRewardItem {
   amount: number;
-  delegatorPublicKey: string;
+  publicKey: string;
   validatorPublicKey: string;
-  era: number;
-  createdAt: string;
-  updatedAt: string;
+  eraId: number;
+  timestamp: string;
 }
