@@ -27,13 +27,7 @@ const ConfirmSendScreen: React.FC<
   const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<any>>();
 
-  const {
-    token,
-    transferAmount: amount,
-    receivingAddress: toAddress,
-    transferID,
-    networkFee: fee,
-  } = route.params;
+  const { token, transferAmount: amount, receivingAddress: toAddress, transferID, networkFee: fee } = route.params;
 
   const price = (token && token.price) || 0;
   const symbol = token && token.symbol ? token.symbol : '';
@@ -57,12 +51,7 @@ const ConfirmSendScreen: React.FC<
       message: message,
       type: type ?? MessageType.normal,
     };
-    dispatch(
-      allActions.main.showMessage(
-        messages,
-        type && type !== MessageType.normal ? 2000 : 30000,
-      ),
-    );
+    dispatch(allActions.main.showMessage(messages, type && type !== MessageType.normal ? 2000 : 30000));
   };
 
   const onSendTransaction = async () => {
@@ -78,11 +67,7 @@ const ConfirmSendScreen: React.FC<
       };
 
       const buildDeployFn = () => buildTransferDeploy(transferDetails);
-      const { deployHash, signedDeploy } = await executeDeploy(
-        buildDeployFn,
-        transferDetails.fromAddress,
-        showMessage,
-      );
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, transferDetails.fromAddress, showMessage);
 
       if (deployHash) {
         dispatch(
@@ -107,30 +92,20 @@ const ConfirmSendScreen: React.FC<
         navigation.replace(MainRouter.HISTORIES_SCREEN, { token: token });
       }
     } catch (error: any) {
-      showMessage(
-        (error && error.message) || 'Transaction Failed',
-        MessageType.error,
-      );
+      showMessage((error && error.message) || 'Transaction Failed', MessageType.error);
     }
   };
 
   return (
-    <CLayout
-      edges={['right', 'top', 'left']}
-      statusBgColor={colors.cF8F8F8}
-      bgColor={colors.cF8F8F8}>
+    <CLayout edges={['right', 'top', 'left']} statusBgColor={colors.cF8F8F8} bgColor={colors.cF8F8F8}>
       <CHeader title={'Confirm'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={16} style={styles.container}>
-        <ScrollView
-          alwaysBounceVertical={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+        <ScrollView alwaysBounceVertical={false} contentContainerStyle={styles.contentContainerStyle}>
           <Col pt={24}>
             <Text style={styles.caption}>Asset</Text>
             <Text style={styles.value}>{symbol}</Text>
             <Text style={styles.caption}>Transfer Amount</Text>
-            <Text style={styles.value}>{`${toFormattedNumber(
-              amount,
-            )} (${toFormattedCurrency(amount * price)})`}</Text>
+            <Text style={styles.value}>{`${toFormattedNumber(amount)} (${toFormattedCurrency(amount * price)})`}</Text>
             <Text style={styles.caption}>Network Fee</Text>
             <Text style={styles.value}>{`${fee} CSPR`}</Text>
             <Text style={styles.caption}>Receiving Address</Text>

@@ -43,10 +43,7 @@ export type ScreenParams = {
   };
 };
 
-type ScreenNavigationProp<T extends keyof ScreenParams> = StackNavigationProp<
-  ScreenParams,
-  T
->;
+type ScreenNavigationProp<T extends keyof ScreenParams> = StackNavigationProp<ScreenParams, T>;
 type ScreenRouteProp<T extends keyof ScreenParams> = RouteProp<ScreenParams, T>;
 
 export type ScreenProps<T extends keyof ScreenParams> = {

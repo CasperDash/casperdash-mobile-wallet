@@ -31,25 +31,18 @@ const initialValues = {
 const percent = 1;
 
 // @ts-ignore
-const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
-  route,
-}) => {
+const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) => {
   const { bottom } = useSafeAreaInsets();
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const { token } = route.params;
   const scanQRCodeModalRef = useRef<any>();
 
-  const [selectedTokenAddress, setSelectedTokenAddress] = useState(
-    token ? token.address : 'CSPR',
-  );
+  const [selectedTokenAddress, setSelectedTokenAddress] = useState(token ? token.address : 'CSPR');
 
   const allTokenInfo = useSelector(getAllTokenInfo);
-  const selectedToken = useSelector(
-    getTokenInfoByAddress({ address: selectedTokenAddress }),
-  );
+  const selectedToken = useSelector(getTokenInfoByAddress({ address: selectedTokenAddress }));
 
-  const minAmount =
-    (selectedToken && selectedToken.minAmount && selectedToken.minAmount) || 0;
+  const minAmount = (selectedToken && selectedToken.minAmount && selectedToken.minAmount) || 0;
 
   const validationSchema = yup.object().shape({
     transferAmount: yup
@@ -60,25 +53,12 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
         }
         return +value.replace(/,/, '.');
       })
-      .min(
-        minAmount,
-        `Amount must be at least ${minAmount} ${
-          selectedToken && selectedToken.symbol
-        }`,
-      )
-      .required(
-        `Amount must be more than 0 ${selectedToken && selectedToken.symbol}`,
-      )
+      .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
+      .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = (selectedToken && selectedToken.transferFee) || 0;
-        const displayValue =
-          (selectedToken &&
-            selectedToken.balance &&
-            selectedToken.balance.displayValue) ||
-          0;
-        return selectedTokenAddress === 'CSPR'
-          ? value + fee <= displayValue
-          : true;
+        const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+        return selectedTokenAddress === 'CSPR' ? value + fee <= displayValue : true;
       }),
     receivingAddress: yup
       .string()
@@ -89,16 +69,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
     transferID: yup.string(),
   });
 
-  const {
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    values,
-    errors,
-    touched,
-    setFieldValue,
-    setErrors,
-  } = useFormik({
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setErrors } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: () => onConfirm(),
@@ -114,14 +85,8 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
   };
 
   const setBalance = () => {
-    const balance =
-      (selectedToken &&
-        selectedToken.balance &&
-        selectedToken.balance.displayValue) ||
-      0;
-    const maxAmount =
-      balance / percent -
-      (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
+    const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+    const maxAmount = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
     setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 
@@ -132,9 +97,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
 
   const onShowQRCodeModal = async () => {
     Config.requestPermission(
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.CAMERA
-        : PERMISSIONS.ANDROID.CAMERA,
+      Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA,
       {
         title: 'Camera Permissions',
         message: 'CasperDash need access to camera to scan QR Code',
@@ -160,16 +123,14 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
   };
 
   return (
-    <CLayout
-      statusBgColor={colors.cF8F8F8}
-      edges={['right', 'top', 'left']}
-      bgColor={colors.cF8F8F8}>
+    <CLayout statusBgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} bgColor={colors.cF8F8F8}>
       <CHeader title={'Send'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={16} style={styles.container}>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+          contentContainerStyle={styles.contentContainerStyle}
+        >
           <Text style={styles.title}>Asset</Text>
           <SelectDropdown
             dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
@@ -182,13 +143,11 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
               }
               return <SelectDropdownComponent item={item} key={index} />;
             }}
-            renderCustomizedRowChild={(item: any, index) => (
-              <DropdownItem item={item} key={index} />
-            )}
+            renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
             data={allTokenInfo}
             onSelect={onSelectedToken}
-            buttonTextAfterSelection={item => item}
-            rowTextForSelection={item => item}
+            buttonTextAfterSelection={(item) => item}
+            rowTextForSelection={(item) => item}
           />
           <Text style={styles.title}>Transfer Amount</Text>
           <CInputFormik
@@ -223,9 +182,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({
             {...{ values, errors, touched, handleBlur, handleChange }}
             containerStyle={styles.rowPicker}
           />
-          <Text style={[styles.title, { marginBottom: scale(8) }]}>
-            Network Fee
-          </Text>
+          <Text style={[styles.title, { marginBottom: scale(8) }]}>Network Fee</Text>
           <Text style={[styles.title, styles.networkFee]}>{`${
             selectedToken ? selectedToken.transferFee : 1
           } CSPR`}</Text>

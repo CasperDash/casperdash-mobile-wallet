@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors, IconBack, textStyles } from 'assets';
 import { scale } from 'device';
@@ -21,15 +14,7 @@ type Props = {
   style?: ViewStyle;
 };
 
-const CHeader = ({
-  title,
-  showBack = true,
-  onBack,
-  renderRight,
-  onPressRight,
-  titleStyle,
-  style,
-}: Props) => {
+const CHeader = ({ title, showBack = true, onBack, renderRight, onPressRight, titleStyle, style }: Props) => {
   const navigation = useNavigation();
   const goBack = () => {
     if (onBack) {
@@ -45,7 +30,8 @@ const CHeader = ({
         <TouchableOpacity
           hitSlop={{ top: 20, bottom: 10, left: 20, right: 30 }}
           onPress={goBack}
-          style={styles.btnGoBack}>
+          style={styles.btnGoBack}
+        >
           <IconBack width={scale(20)} height={scale(17)} style={styles.icon} />
         </TouchableOpacity>
       )}
@@ -54,11 +40,10 @@ const CHeader = ({
         style={[
           styles.titleHeaderContainer,
           {
-            maxWidth: renderRight
-              ? scale(375 - 24 * 2 - 20 * 2 - 45)
-              : scale(375 - 24 * 2 - 20 * 2),
+            maxWidth: renderRight ? scale(375 - 24 * 2 - 20 * 2 - 45) : scale(375 - 24 * 2 - 20 * 2),
           },
-        ]}>
+        ]}
+      >
         <Text numberOfLines={1} style={[styles.titleHeader, titleStyle]}>
           {title}
         </Text>

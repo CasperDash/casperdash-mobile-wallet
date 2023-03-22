@@ -13,22 +13,10 @@ type LProps = {
 
 const defaultEdges = ['right', 'top', 'left', 'bottom'];
 
-const CLayout = ({
-  children,
-  bgColor,
-  statusBgColor,
-  barStyle = 'dark-content',
-  edges = defaultEdges,
-}: LProps) => {
+const CLayout = ({ children, bgColor, statusBgColor, barStyle = 'dark-content', edges = defaultEdges }: LProps) => {
   return (
-    <SafeAreaView
-      edges={edges}
-      style={[{ backgroundColor: bgColor || colors.cFFFFFF }, styles.layout]}>
-      <StatusBar
-        animated
-        backgroundColor={statusBgColor || colors.cFFFFFF}
-        barStyle={barStyle}
-      />
+    <SafeAreaView edges={edges} style={[{ backgroundColor: bgColor || colors.cFFFFFF }, styles.layout]}>
+      <StatusBar animated backgroundColor={statusBgColor || colors.cFFFFFF} barStyle={barStyle} />
       {children}
     </SafeAreaView>
   );

@@ -30,12 +30,7 @@ export const signDeployByLedger = async (deploy: any, options: any = {}) => {
 
   if (!responseDeploy.signatureRS) {
     transport.close();
-    throw Error(
-      getLedgerError(
-        { message: responseDeploy.errorMessage },
-        responseDeploy.returnCode,
-      ),
-    );
+    throw Error(getLedgerError({ message: responseDeploy.errorMessage }, responseDeploy.returnCode));
   }
 
   let signedDeploy: any = DeployUtil.setSignature(
@@ -59,9 +54,7 @@ export const signDeployByLedger = async (deploy: any, options: any = {}) => {
  * @param {number} keyIndex ledger key index
  */
 export const getLedgerPublicKey = async (app: any, keyIndex = 0) => {
-  const { publicKey = '' } = await app.getAddressAndPubKey(
-    `${CASPER_KEY_PATH}${keyIndex}`,
-  );
+  const { publicKey = '' } = await app.getAddressAndPubKey(`${CASPER_KEY_PATH}${keyIndex}`);
 
   if (!publicKey) {
     throw Error(CONNECT_ERROR_MESSAGE);

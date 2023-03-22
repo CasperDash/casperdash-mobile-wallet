@@ -3,11 +3,7 @@ import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { CLayout, CHeader } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
-import {
-  PhraseItem,
-  SelectDropdownComponent,
-  DropdownItem,
-} from '../components';
+import { PhraseItem, SelectDropdownComponent, DropdownItem } from '../components';
 import { Row } from 'components';
 import CTextButton from 'components/CTextButton';
 import { useNavigation } from '@react-navigation/native';
@@ -23,30 +19,19 @@ import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
-  const [algorithm, setAlgorithm] = useState<EncryptionType>(
-    EncryptionType.Ed25519,
-  );
+  const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
   const copyToClipboard = useCopyToClipboard();
 
-  const [numberOfWord, setNumberOfWords] = useState<number>(
-    NUMBER_OF_RECOVERY_WORDS[0],
-  );
+  const [numberOfWord, setNumberOfWords] = useState<number>(NUMBER_OF_RECOVERY_WORDS[0]);
   const phraseString = getRecoveryPhase(numberOfWord);
 
   const [wordArray, listLeft, listRight] = useMemo(() => {
     const listWords: Array<Phrase> = phraseString
-      ? phraseString
-          .split(/\s+/)
-          .map((word, index) => ({ id: index + 1, word: word }))
+      ? phraseString.split(/\s+/).map((word, index) => ({ id: index + 1, word: word }))
       : [];
-    const left: Array<Phrase> =
-      listWords.length > 0
-        ? listWords.slice(0, Math.round(listWords.length / 2))
-        : [];
+    const left: Array<Phrase> = listWords.length > 0 ? listWords.slice(0, Math.round(listWords.length / 2)) : [];
     const right: Array<Phrase> =
-      listWords.length > 0 && left.length > 0
-        ? listWords.slice(left.length, listWords.length)
-        : [];
+      listWords.length > 0 && left.length > 0 ? listWords.slice(left.length, listWords.length) : [];
     return [listWords, left, right];
   }, [phraseString]);
 
@@ -76,9 +61,8 @@ const RecoveryPhraseScreen = () => {
           <View style={styles.selectType}>
             <Text style={styles.algorithmLabel}>Encryption Type</Text>
             <Text style={styles.algorithmDescription}>
-              We recommend to choose ed25519 over secp256k1 for stronger
-              security and better performance, unless you explicitly want to use
-              secp256k1 in order to compatible with Bitcoin, Ethereum chains
+              We recommend to choose ed25519 over secp256k1 for stronger security and better performance, unless you
+              explicitly want to use secp256k1 in order to compatible with Bitcoin, Ethereum chains
             </Text>
             <SelectDropdown
               dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
@@ -94,9 +78,7 @@ const RecoveryPhraseScreen = () => {
                 }
                 return <SelectDropdownComponent item={item} key={index} />;
               }}
-              renderCustomizedRowChild={(item: any, index) => (
-                <DropdownItem item={item} key={index} />
-              )}
+              renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
               defaultValueByIndex={1}
               buttonTextAfterSelection={(selectedItem, _index) => {
                 return selectedItem;
@@ -109,7 +91,7 @@ const RecoveryPhraseScreen = () => {
           </View>
         </Row.LR>
         <Row.LR pt={16} px={16} style={styles.numberRow}>
-          {NUMBER_OF_RECOVERY_WORDS.map(number => {
+          {NUMBER_OF_RECOVERY_WORDS.map((number) => {
             return (
               <CTextButton
                 type={numberOfWord === number ? 'default' : 'line'}
@@ -122,9 +104,7 @@ const RecoveryPhraseScreen = () => {
             );
           })}
         </Row.LR>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainerStyle}>
           <Row.LR pt={16} px={16} style={styles.body}>
             <View style={styles.flex}>
               {listLeft.map((item, index) => {
@@ -147,11 +127,7 @@ const RecoveryPhraseScreen = () => {
               copyToClipboard(phraseString);
             }}
           />
-          <CTextButton
-            style={styles.btnNext}
-            onPress={openDoubleCheckIt}
-            text={'Next'}
-          />
+          <CTextButton style={styles.btnNext} onPress={openDoubleCheckIt} text={'Next'} />
         </Row.C>
       </View>
     </CLayout>

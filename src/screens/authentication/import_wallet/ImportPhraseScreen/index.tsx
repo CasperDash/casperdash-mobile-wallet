@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CHeader, CLayout, Row } from 'components';
-import {
-  SelectDropdownComponent,
-  DropdownItem,
-} from '../../create_new_wallet/components';
+import { SelectDropdownComponent, DropdownItem } from '../../create_new_wallet/components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
@@ -28,14 +25,10 @@ const ImportPhraseScreen = () => {
 
   const keyManager = KeyFactory.getInstance();
 
-  const [algorithm, setAlgorithm] = useState<EncryptionType>(
-    EncryptionType.Ed25519,
-  );
+  const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
-  const [numberOfWord, setNumberOfWords] = useState<number>(
-    NUMBER_OF_RECOVERY_WORDS[0],
-  );
+  const [numberOfWord, setNumberOfWords] = useState<number>(NUMBER_OF_RECOVERY_WORDS[0]);
 
   const handleOnSelectAlgo = (algorithmSelected: EncryptionType) => {
     setAlgorithm(algorithmSelected);
@@ -48,12 +41,8 @@ const ImportPhraseScreen = () => {
     }));
   };
 
-  const [listLeft, setListLeft] = useState<Array<Phrase>>(
-    createList(false, numberOfWord),
-  );
-  const [listRight, setListRight] = useState<Array<Phrase>>(
-    createList(true, numberOfWord),
-  );
+  const [listLeft, setListLeft] = useState<Array<Phrase>>(createList(false, numberOfWord));
+  const [listRight, setListRight] = useState<Array<Phrase>>(createList(true, numberOfWord));
 
   const onChangeNumberOfWords = (number: number) => {
     setNumberOfWords(number);
@@ -83,39 +72,26 @@ const ImportPhraseScreen = () => {
   };
 
   const onPress = async () => {
-    if (
-      listLeft.find(i => i.word === '') ||
-      listRight.find(i => i.word === '')
-    ) {
+    if (listLeft.find((i) => i.word === '') || listRight.find((i) => i.word === '')) {
       //paste phrase
       const phraseString = await Clipboard.getString();
       if (phraseString && phraseString.length > 0) {
-        let listWords: Array<Phrase> = phraseString
-          .split(/\s+/)
-          .map((word, index) => ({
-            id: index,
-            word: word,
-          }));
+        let listWords: Array<Phrase> = phraseString.split(/\s+/).map((word, index) => ({
+          id: index,
+          word: word,
+        }));
         if (listWords.length < numberOfWord) {
-          const lastEmptyList = Array.from(
-            { length: numberOfWord - listWords.length },
-            (_, idx) => ({
-              id: listWords.length + idx,
-              word: '',
-            }),
-          );
+          const lastEmptyList = Array.from({ length: numberOfWord - listWords.length }, (_, idx) => ({
+            id: listWords.length + idx,
+            word: '',
+          }));
           listWords = listWords.concat(lastEmptyList);
         } else {
           listWords = listWords.slice(0, numberOfWord);
         }
-        const left: Array<Phrase> =
-          listWords.length > 0
-            ? listWords.slice(0, Math.round(numberOfWord / 2))
-            : [];
+        const left: Array<Phrase> = listWords.length > 0 ? listWords.slice(0, Math.round(numberOfWord / 2)) : [];
         const right: Array<Phrase> =
-          listWords.length > 0 && left.length > 0
-            ? listWords.slice(left.length, listWords.length)
-            : [];
+          listWords.length > 0 && left.length > 0 ? listWords.slice(left.length, listWords.length) : [];
         setListLeft(left);
         setListRight(right);
       }
@@ -127,13 +103,11 @@ const ImportPhraseScreen = () => {
 
   const importPhrase = () => {
     const phrasesLeft = listLeft.reduce(
-      (previous: string, current: Phrase) =>
-        previous + current.word.trim() + ' ',
+      (previous: string, current: Phrase) => previous + current.word.trim() + ' ',
       '',
     );
     const phrasesRight = listRight.reduce(
-      (previous: string, current: Phrase) =>
-        previous + current.word.trim() + ' ',
+      (previous: string, current: Phrase) => previous + current.word.trim() + ' ',
       '',
     );
     const phrases = (phrasesLeft + phrasesRight).trim();
@@ -181,9 +155,8 @@ const ImportPhraseScreen = () => {
           <View style={styles.selectType}>
             <Text style={styles.algorithmLabel}>Encryption Type</Text>
             <Text style={styles.algorithmDescription}>
-              We recommend to choose ed25519 over secp256k1 for stronger
-              security and better performance, unless you explicitly want to use
-              secp256k1 in order to compatible with Bitcoin, Ethereum chains
+              We recommend to choose ed25519 over secp256k1 for stronger security and better performance, unless you
+              explicitly want to use secp256k1 in order to compatible with Bitcoin, Ethereum chains
             </Text>
             <SelectDropdown
               dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
@@ -199,9 +172,7 @@ const ImportPhraseScreen = () => {
                 }
                 return <SelectDropdownComponent item={item} key={index} />;
               }}
-              renderCustomizedRowChild={(item: any, index) => (
-                <DropdownItem item={item} key={index} />
-              )}
+              renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
               defaultValueByIndex={1}
               buttonTextAfterSelection={(selectedItem, _index) => {
                 return selectedItem;
@@ -214,7 +185,7 @@ const ImportPhraseScreen = () => {
           </View>
         </Row.LR>
         <Row.LR pt={16} px={16} style={styles.numberRow}>
-          {NUMBER_OF_RECOVERY_WORDS.map(number => {
+          {NUMBER_OF_RECOVERY_WORDS.map((number) => {
             return (
               <CTextButton
                 type={numberOfWord === number ? 'default' : 'line'}
@@ -228,16 +199,15 @@ const ImportPhraseScreen = () => {
         </Row.LR>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+          contentContainerStyle={styles.contentContainerStyle}
+        >
           <Row.LR py={16} px={16} style={styles.body}>
             <View style={styles.flex}>
               {listLeft.map((item, index) => {
                 return (
                   <PhraseInputItem
                     data={item}
-                    onChangeText={(text: string) =>
-                      onChangeText(text, index, 1)
-                    }
+                    onChangeText={(text: string) => onChangeText(text, index, 1)}
                     key={index}
                   />
                 );
@@ -248,9 +218,7 @@ const ImportPhraseScreen = () => {
                 return (
                   <PhraseInputItem
                     data={item}
-                    onChangeText={(text: string) =>
-                      onChangeText(text, index, 2)
-                    }
+                    onChangeText={(text: string) => onChangeText(text, index, 2)}
                     key={index}
                   />
                 );
@@ -271,10 +239,7 @@ const ImportPhraseScreen = () => {
             onPress={onPress}
             style={styles.btnNext}
             text={
-              listLeft.find(i => i.word === '') ||
-              listRight.find(i => i.word === '')
-                ? 'Paste Phrase'
-                : 'Import'
+              listLeft.find((i) => i.word === '') || listRight.find((i) => i.word === '') ? 'Paste Phrase' : 'Import'
             }
           />
         </Row.C>

@@ -8,10 +8,7 @@ const initialState = {
   currentAccount: null,
 };
 
-export default function (
-  state = initialState,
-  action = { type: '', payload: {} },
-) {
+export default function (state = initialState, action = { type: '', payload: {} }) {
   switch (action.type) {
     case types.GET_ACCOUNT_INFORMATION_SUCCESS:
       return {
