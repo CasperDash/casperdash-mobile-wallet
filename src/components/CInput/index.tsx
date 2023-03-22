@@ -11,12 +11,13 @@ import {
   ViewStyle,
   TextStyle,
   StyleProp,
+  TextInputProps,
 } from 'react-native';
 
 import { colors, fonts } from 'assets';
 import { scale } from 'device';
 
-type Props = {
+interface Props extends TextInputProps {
   placeholder?: string;
   onChangeText?: (text: string) => void;
   rightComponent?: any;
@@ -38,7 +39,7 @@ type Props = {
   onBlur?: () => void;
   onFocus?: () => void;
   style?: StyleProp<ViewStyle> | TextStyle | undefined;
-};
+}
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
