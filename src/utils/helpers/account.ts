@@ -259,6 +259,7 @@ export const setSelectedWallet = async (walletInfo: WalletInfo, publicKey: strin
       uid: walletInfo.uid,
     },
   };
+  console.log('🚀 ~ file: account.ts:255 ~ setSelectedWal ~ selectedWallet:', selectedWallet);
   await Config.saveItem(StorageKeys.selectedWallet, selectedWallet);
   return selectedWallet;
 };
