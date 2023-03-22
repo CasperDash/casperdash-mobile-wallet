@@ -109,11 +109,14 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     setIsCreatingNewAccount(true);
   };
 
-  const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
-    await setSelectedWallet(walletInfoDetails.walletInfo, walletInfoDetails.publicKey!!);
-
+  const reloadWallets = () => {
     dispatch(allActions.user.loadSelectedWalletFromStorage());
     dispatch(allActions.main.loadLocalStorage());
+  };
+
+  const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
+    await setSelectedWallet(walletInfoDetails.walletInfo, walletInfoDetails.publicKey!!);
+    reloadWallets();
     hide();
   };
 
@@ -128,8 +131,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
       await setSelectedWallet(newInfo, walletInfoDetails.publicKey!!);
     }
     await serializeAndStoreUser(currentAccount);
-    dispatch(allActions.main.loadLocalStorage());
-    dispatch(allActions.user.loadSelectedWalletFromStorage());
+    reloadWallets();
   };
 
   return (
