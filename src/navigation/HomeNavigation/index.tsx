@@ -16,16 +16,13 @@ const HomeNavigation = () => {
   useEffect(() => {
     // eslint-disable-next-line no-undef
     let timeOut: NodeJS.Timeout;
-    const subscription = AppState.addEventListener('change', nextAppState => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState.match(/inactive|background/)) {
         if (timeOut) {
           clearTimeout(timeOut);
         }
         timeOut = setTimeout(() => {
-          reStack(
-            StackName.AuthenticationStack,
-            AuthenticationRouter.ENTER_PIN,
-          );
+          reStack(StackName.AuthenticationStack, AuthenticationRouter.ENTER_PIN);
         }, 30000);
       }
       if (nextAppState === 'active') {
@@ -43,7 +40,8 @@ const HomeNavigation = () => {
       initialRouteName={HomeRouter.HOME_SCREEN}
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(HomeScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}

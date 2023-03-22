@@ -51,7 +51,8 @@ const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
       backdropColor={'transparent'}
       isVisible={isShow}
       animationIn={'fadeIn'}
-      animationOut={'fadeOut'}>
+      animationOut={'fadeOut'}
+    >
       <Col style={styles.body}>
         <Row.R>
           <CButton onPress={onCancel}>
@@ -62,11 +63,7 @@ const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
           <Text style={styles.title}>Enter security PIN</Text>
           <SmoothPinCodeInput
             placeholder={<View style={styles.pinPlaceholder} />}
-            mask={
-              <View
-                style={[styles.pinPlaceholder, { backgroundColor: colors.R1 }]}
-              />
-            }
+            mask={<View style={[styles.pinPlaceholder, { backgroundColor: colors.R1 }]} />}
             maskDelay={500}
             password
             ref={inputRef}
@@ -81,30 +78,11 @@ const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
             onTextChange={setPin}
             textStyle={styles.textStyle}
           />
-          {error && (
-            <Text
-              style={[
-                styles.title,
-                { color: colors.R1, marginTop: scale(20) },
-              ]}>
-              Incorrect PIN code
-            </Text>
-          )}
+          {error && <Text style={[styles.title, { color: colors.R1, marginTop: scale(20) }]}>Incorrect PIN code</Text>}
         </Col.C>
         <Row.LR>
-          <CTextButton
-            onPress={onCancel}
-            text="Cancel"
-            type={'line'}
-            style={styles.button}
-            variant="secondary"
-          />
-          <CTextButton
-            onPress={confirm}
-            text="Confirm"
-            style={styles.button}
-            disabled={pin?.length !== PIN_LENGTH}
-          />
+          <CTextButton onPress={onCancel} text="Cancel" type={'line'} style={styles.button} variant="secondary" />
+          <CTextButton onPress={confirm} text="Confirm" style={styles.button} disabled={pin?.length !== PIN_LENGTH} />
         </Row.LR>
       </Col>
     </Modal>
@@ -128,8 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(16),
     padding: scale(16),
 
-    shadowColor:
-      Platform.OS === 'ios' ? 'rgba(35, 38, 53, 0.2)' : 'rgba(35, 38, 53, 0.6)',
+    shadowColor: Platform.OS === 'ios' ? 'rgba(35, 38, 53, 0.2)' : 'rgba(35, 38, 53, 0.6)',
     shadowOffset: {
       width: 0,
       height: 0,

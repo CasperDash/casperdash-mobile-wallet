@@ -10,7 +10,8 @@ const ChoosePinNavigation = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(ChoosePinScreens).map((elem: any, index) => (
         <Stack.Screen
           name={elem}

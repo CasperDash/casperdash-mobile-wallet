@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  VictoryChart,
-  VictoryLine,
-  VictoryTheme,
-  VictoryTooltip,
-  VictoryVoronoiContainer,
-} from 'victory-native';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from 'victory-native';
 import { Col } from 'components';
 import moment from 'moment';
 import { colors, textStyles } from 'assets';
@@ -26,9 +20,7 @@ const ChartComponent = ({ data, onActivated, onDeactivated }: any) => {
           <VictoryVoronoiContainer
             onTouchStart={onActivated}
             onTouchEnd={onDeactivated}
-            labels={({ datum }) =>
-              `${moment(datum.x).format('ddd DD MMM YY, HH:mm')} \n ${datum.y}`
-            }
+            labels={({ datum }) => `${moment(datum.x).format('ddd DD MMM YY, HH:mm')} \n ${datum.y}`}
             labelComponent={
               <VictoryTooltip
                 style={{
@@ -40,7 +32,8 @@ const ChartComponent = ({ data, onActivated, onDeactivated }: any) => {
             }
           />
         }
-        theme={VictoryTheme.material}>
+        theme={VictoryTheme.material}
+      >
         <VictoryLine
           style={{
             data: { stroke: colors.R1 },
@@ -49,9 +42,7 @@ const ChartComponent = ({ data, onActivated, onDeactivated }: any) => {
           scale={{ x: 'time' }}
         />
       </VictoryChart>
-      <Text style={[textStyles.Sub1, { marginLeft: -scale(16) }]}>
-        Source - Coingecko
-      </Text>
+      <Text style={[textStyles.Sub1, { marginLeft: -scale(16) }]}>Source - Coingecko</Text>
     </Col.C>
   );
 };

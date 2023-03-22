@@ -9,11 +9,7 @@ import {
   getTokenInfoByAddress,
 } from './user';
 import { getConfigurations } from './configurations';
-import {
-  getMassagedTokenData,
-  tokensSelector,
-  getTokensAddressList,
-} from './tokens';
+import { getMassagedTokenData, tokensSelector, getTokensAddressList } from './tokens';
 
 export {
   getCurrentPrice,

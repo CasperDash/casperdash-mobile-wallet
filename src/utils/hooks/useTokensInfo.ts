@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getTokensAddressList } from 'utils/selectors';
-import {
-  getPublicKey,
-  getAllTokenInfo,
-  getTokenInfoByAddress,
-} from 'utils/selectors';
+import { getPublicKey, getAllTokenInfo, getTokenInfoByAddress } from 'utils/selectors';
 import { allActions } from 'redux_manager';
 import { useEffect } from 'react';
 

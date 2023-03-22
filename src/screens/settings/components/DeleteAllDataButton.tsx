@@ -27,16 +27,14 @@ const DeleteAllDataButton = () => {
       buttonRight: 'Next',
       alertMessage: (
         <>
-          <Text style={styles.deleteQuestion}>
-            Are you sure you want to delete your wallet ?
+          <Text style={styles.deleteQuestion}>Are you sure you want to delete your wallet ?</Text>
+          <Text style={styles.deleteMessage}>
+            Your current wallet, accounts and assets will be removed from this app permanently. This action cannot be
+            undone.
           </Text>
           <Text style={styles.deleteMessage}>
-            Your current wallet, accounts and assets will be removed from this
-            app permanently. This action cannot be undone.
-          </Text>
-          <Text style={styles.deleteMessage}>
-            Your can ONLY recover this wallet with your Secret Recovery Phase
-            CasperDash does not have your Secret Recovery Phase.
+            Your can ONLY recover this wallet with your Secret Recovery Phase CasperDash does not have your Secret
+            Recovery Phase.
           </Text>
         </>
       ),
@@ -46,7 +44,7 @@ const DeleteAllDataButton = () => {
 
   const deleteAllData = () => {
     Promise.all(
-      Object.entries(Keys).map(key => {
+      Object.entries(Keys).map((key) => {
         return Config.deleteItem(key[1]);
       }),
     ).then(async () => {
@@ -69,11 +67,7 @@ const DeleteAllDataButton = () => {
       {!showConfirmPin ? (
         <CAlert ref={alertRef} onConfirm={onPressNext} />
       ) : (
-        <CConfirmPinModal
-          isShow={showConfirmPin}
-          onConfirm={deleteAllData}
-          onCancel={() => setShowConfirmPin(false)}
-        />
+        <CConfirmPinModal isShow={showConfirmPin} onConfirm={deleteAllData} onCancel={() => setShowConfirmPin(false)} />
       )}
     </>
   );

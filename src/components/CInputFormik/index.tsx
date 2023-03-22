@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -51,8 +46,7 @@ type Props = {
 };
 
 if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental &&
-    UIManager.setLayoutAnimationEnabledExperimental(true);
+  UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 const CInput = forwardRef((props: Props, ref): any => {
@@ -138,11 +132,7 @@ const CInput = forwardRef((props: Props, ref): any => {
           ref={inputRef}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
-          style={[
-            styles.input,
-            multiline == true ? styles.inputMultiple : { height: scale(48) },
-            inputStyle,
-          ]}
+          style={[styles.input, multiline == true ? styles.inputMultiple : { height: scale(48) }, inputStyle]}
           value={values && values[name] ? values[name].toString() : ''}
           onFocus={focus}
           onBlur={handleBlur(name)}
@@ -158,9 +148,7 @@ const CInput = forwardRef((props: Props, ref): any => {
         />
         {rightComponent}
       </View>
-      {errors && touched && errors[name] && touched[name] ? (
-        <Text style={styles.error}>{errors[name]}</Text>
-      ) : null}
+      {errors && touched && errors[name] && touched[name] ? <Text style={styles.error}>{errors[name]}</Text> : null}
     </View>
   );
 });

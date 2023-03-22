@@ -10,26 +10,15 @@ function ValidatorItem({ data, onSelectValidator }: any) {
     <CButton onPress={() => onSelectValidator(data)}>
       <Row px={16} py={16} style={styles.container}>
         <Col.L pr={1} style={styles.verifiedIconCol}>
-          {data.priority && (
-            <Image
-              style={styles.verifiedIcon}
-              source={images.verifiedValidator}
-            />
-          )}
+          {data.priority && <Image style={styles.verifiedIcon} source={images.verifiedValidator} />}
         </Col.L>
         <Image source={{ uri: data.logo || data.icon }} style={styles.icon} />
         <Row.LR pl={4} style={styles.rightContainer}>
           <Col.L>
-            <Text
-              ellipsizeMode={'middle'}
-              numberOfLines={1}
-              style={[styles.title, { width: scale(100) }]}>
+            <Text ellipsizeMode={'middle'} numberOfLines={1} style={[styles.title, { width: scale(100) }]}>
               {data.name ? data.name : data.public_key}
             </Text>
-            <Text
-              ellipsizeMode={'middle'}
-              numberOfLines={1}
-              style={[textStyles.Body1, { width: scale(100) }]}>
+            <Text ellipsizeMode={'middle'} numberOfLines={1} style={[textStyles.Body1, { width: scale(100) }]}>
               {data.public_key}
             </Text>
           </Col.L>

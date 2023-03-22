@@ -8,21 +8,12 @@ export default class CInputAutoHeight extends React.PureComponent {
     this.scrollHeight = 0;
   }
 
-  setText = text => {
+  setText = (text) => {
     this.input.setNativeProps({ text: text });
   };
 
   render() {
-    let {
-      style,
-      defaultValue,
-      onChangeText,
-      placeholder,
-      ref,
-      lineHeight,
-      scrollView,
-      editable,
-    } = this.props;
+    let { style, defaultValue, onChangeText, placeholder, ref, lineHeight, scrollView, editable } = this.props;
     let numOfLinesInput = 1;
     lineHeight = Math.max(scale(24), lineHeight);
     return (
@@ -31,17 +22,14 @@ export default class CInputAutoHeight extends React.PureComponent {
         editable={editable}
         style={[style]}
         multiline={true}
-        ref={ref => (this.input = ref)}
+        ref={(ref) => (this.input = ref)}
         numberOfLines={numOfLinesInput}
         defaultValue={defaultValue}
         onChangeText={onChangeText}
-        onContentSizeChange={event => {
+        onContentSizeChange={(event) => {
           const scrollHeight = event.nativeEvent.contentSize.height;
           numOfLinesInput = Math.max(lineHeight, scrollHeight) / lineHeight;
-          if (
-            (this.scrollHeight && scrollHeight > this.scrollHeight) ||
-            scrollHeight < this.scrollHeight
-          ) {
+          if ((this.scrollHeight && scrollHeight > this.scrollHeight) || scrollHeight < this.scrollHeight) {
             scrollView &&
               scrollView.scrollToPosition(
                 scrollView.position.x,

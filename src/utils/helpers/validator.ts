@@ -31,11 +31,7 @@ export const validateNFTMintForm = (values: any) => {
   if (!values.image) {
     errors.image = 'Required';
   }
-  if (
-    values.image &&
-    values.image.type &&
-    !values.image.type.includes('image')
-  ) {
+  if (values.image && values.image.type && !values.image.type.includes('image')) {
     errors.image = 'Should be image.';
   }
   if (values.toAddress && !isValidPublicKey(values.toAddress)) {
@@ -57,8 +53,7 @@ export const validateNFTMintForm = (values: any) => {
 };
 
 const COMMON_ERROR_MESSAGE = {
-  MORE_THAN_ZERO: (tokenSymbol: string) =>
-    `Amount must be more than 0 ${tokenSymbol}.`,
+  MORE_THAN_ZERO: (tokenSymbol: string) => `Amount must be more than 0 ${tokenSymbol}.`,
   NOT_ENOUGH_BALANCE: 'Not enough balance.',
   NOT_ENOUGH_STAKED_AMOUNT: 'Not enough staked amount.',
 };

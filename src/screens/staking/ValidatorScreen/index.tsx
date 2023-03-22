@@ -2,22 +2,11 @@ import { colors, images, textStyles } from 'assets';
 import { CHeader, CInput, CLayout, Col } from 'components';
 import { scale } from 'device';
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListValidators } from 'utils/selectors/validator';
-import {
-  checkIfLoadingSelector,
-  checkIfRefreshingSelector,
-  getPublicKey,
-} from 'utils/selectors';
+import { checkIfLoadingSelector, checkIfRefreshingSelector, getPublicKey } from 'utils/selectors';
 import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
 import { useNavigation } from '@react-navigation/native';
@@ -47,20 +36,17 @@ function ValidatorScreen() {
 
   const onReload = () => {
     dispatch(
-      allActions.staking.getValidatorsInformation(
-        { refreshing: true, publicKey },
-        (error: any, _: any) => {
-          if (error) {
-            console.error(error);
-            dispatch(
-              allActions.main.showMessage({
-                message: error.message,
-                type: MessageType.error,
-              }),
-            );
-          }
-        },
-      ),
+      allActions.staking.getValidatorsInformation({ refreshing: true, publicKey }, (error: any, _: any) => {
+        if (error) {
+          console.error(error);
+          dispatch(
+            allActions.main.showMessage({
+              message: error.message,
+              type: MessageType.error,
+            }),
+          );
+        }
+      }),
     );
   };
 
@@ -74,13 +60,7 @@ function ValidatorScreen() {
   };
 
   const renderItem = ({ item, index }: { item: any; index: number }) => {
-    return (
-      <ValidatorItem
-        data={item}
-        key={`${index} - ${item.public_key}`}
-        onSelectValidator={onSelectValidator}
-      />
-    );
+    return <ValidatorItem data={item} key={`${index} - ${item.public_key}`} onSelectValidator={onSelectValidator} />;
   };
 
   const renderNoData = () => {
@@ -99,10 +79,7 @@ function ValidatorScreen() {
   };
 
   return (
-    <CLayout
-      statusBgColor={colors.cF8F8F8}
-      edges={['right', 'top', 'left']}
-      bgColor={colors.cF8F8F8}>
+    <CLayout statusBgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} bgColor={colors.cF8F8F8}>
       <CHeader title={'Select Validator'} style={styles.headerContainer} />
       <Col mt={16} style={styles.container}>
         <View style={{ paddingHorizontal: scale(16), paddingTop: scale(4) }}>
@@ -115,9 +92,7 @@ function ValidatorScreen() {
           />
         </View>
         <View style={styles.headerList}>
-          <Text style={styles.title}>
-            Validator List ({listValidators.length || 0})
-          </Text>
+          <Text style={styles.title}>Validator List ({listValidators.length || 0})</Text>
         </View>
         <FlatList
           showsVerticalScrollIndicator={false}

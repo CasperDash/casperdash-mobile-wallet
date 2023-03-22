@@ -11,7 +11,8 @@ export default function Index() {
       coverScreen={true}
       animationIn={'fadeIn'}
       animationOut={'fadeOut'}
-      isVisible={true}>
+      isVisible={true}
+    >
       <View style={styles.container}>
         <ActivityIndicator size="small" color="#FFFFFF" />
       </View>

@@ -1,19 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
-import {
-  colors,
-  textStyles,
-  IconSetting,
-  IconPlusCircle,
-  IconLogo,
-} from 'assets';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+import { colors, textStyles, IconSetting, IconPlusCircle, IconLogo } from 'assets';
 import { CButton, CLayout, Col, Row } from 'components';
 import { scale } from 'device';
 import { useNavigation } from '@react-navigation/native';
@@ -25,10 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import { getAllTokenInfo, getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
-import {
-  checkIfLoadingSelector,
-  checkIfRefreshingSelector,
-} from 'utils/selectors';
+import { checkIfLoadingSelector, checkIfRefreshingSelector } from 'utils/selectors';
 import { types as homeTypes } from 'redux_manager/home/home_action';
 import { types as userTypes } from 'redux_manager/user/user_action';
 import { Config } from 'utils';
@@ -63,14 +47,11 @@ function HomeScreen() {
   useEffect(() => {
     if (publicKey) {
       dispatch(
-        allActions.user.getAccountInformation(
-          { publicKey },
-          async (err: any) => {
-            if (err) {
-              Config.alertMess(err);
-            }
-          },
-        ),
+        allActions.user.getAccountInformation({ publicKey }, async (err: any) => {
+          if (err) {
+            Config.alertMess(err);
+          }
+        }),
       );
     }
   }, [publicKey, dispatch]);
@@ -104,14 +85,11 @@ function HomeScreen() {
   const getTokenInfoWithBalance = useCallback(
     (refreshing: boolean) => {
       dispatch(
-        allActions.home.getTokenInfoWithBalance(
-          { refreshing },
-          (error: any) => {
-            if (error) {
-              showErrorMessage(error);
-            }
-          },
-        ),
+        allActions.home.getTokenInfoWithBalance({ refreshing }, (error: any) => {
+          if (error) {
+            showErrorMessage(error);
+          }
+        }),
       );
     },
     [dispatch, showErrorMessage],
@@ -156,7 +134,8 @@ function HomeScreen() {
             paddingBottom: scale(72) + insets.bottom,
             minHeight: scale(315) + height,
           },
-        ]}>
+        ]}
+      >
         {isLoading ? (
           <View style={styles.flexCenter}>
             <ActivityIndicator size="small" color={colors.N2} />
@@ -166,22 +145,12 @@ function HomeScreen() {
             {allTokenInfo &&
               allTokenInfo.length > 0 &&
               allTokenInfo.map((value, i) => {
-                return (
-                  <TokenComponent
-                    value={value}
-                    key={i}
-                    onPress={openHistories}
-                  />
-                );
+                return <TokenComponent value={value} key={i} onPress={openHistories} />;
               })}
-            <CButton
-              onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)}
-              style={{ marginTop: scale(16) }}>
+            <CButton onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)} style={{ marginTop: scale(16) }}>
               <Row mx={16} style={styles.alignCenter}>
                 <IconPlusCircle width={scale(14)} height={scale(14)} />
-                <Text style={[textStyles.Body1, { marginLeft: scale(8) }]}>
-                  Add Custom Token
-                </Text>
+                <Text style={[textStyles.Body1, { marginLeft: scale(8) }]}>Add Custom Token</Text>
               </Row>
             </CButton>
           </ScrollView>
@@ -199,9 +168,7 @@ function HomeScreen() {
             <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Home</Text>
           </Row>
           <Row.C>
-            <CButton
-              onPress={() => navigate(MainRouter.SETTINGS_SCREEN)}
-              style={styles.circleBtn}>
+            <CButton onPress={() => navigate(MainRouter.SETTINGS_SCREEN)} style={styles.circleBtn}>
               <IconSetting width={scale(21)} height={scale(21)} />
             </CButton>
             {/*TODO: follow the figma's design*/}
@@ -213,10 +180,9 @@ function HomeScreen() {
         <ScrollView
           nestedScrollEnabled
           stickyHeaderIndices={[0]}
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          }
-          showsVerticalScrollIndicator={false}>
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          showsVerticalScrollIndicator={false}
+        >
           <Account />
           {_renderListTokens()}
         </ScrollView>
