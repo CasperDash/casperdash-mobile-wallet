@@ -1,1 +1,1 @@
-module.exports = require('./env.mainnet');
+module.exports = require('./env.testnet');
