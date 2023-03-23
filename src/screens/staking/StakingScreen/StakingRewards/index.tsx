@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import { scale } from 'device';
 import { getStakingRewards } from 'services/StakingRewards/stakingRewardsApis';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
 import { StakingRewardItem } from './StakingRewardItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NoData } from '../NoData';
+import { getValidatorsDetail } from 'services/Validators/validatorsApis';
 
 interface IStakingRewardsProps {
   publicKey: string;
@@ -33,6 +34,11 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
     },
   });
 
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
+    queryKey: ['validatorsDetail'],
+    queryFn: () => getValidatorsDetail(),
+  });
+
   const displayData = useMemo(() => {
     return rewards?.pages.reduce<IStakingRewardItem[]>((out, datum) => out.concat(datum.data), []);
   }, [rewards]);
@@ -43,7 +49,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainerStyle}
         data={displayData}
-        renderItem={(reward) => <StakingRewardItem value={reward.item} />}
+        renderItem={(reward) => <StakingRewardItem value={reward.item} validatorsDetail={validatorsDetail} />}
         refreshControl={
           <RefreshControl
             refreshing={isFetching}
@@ -56,7 +62,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
           fetchNextPage();
         }}
         onEndReachedThreshold={0.1}
-        ListEmptyComponent={<NoData isLoading={isLoading} bottom={bottom} />}
+        ListEmptyComponent={<NoData isLoading={isLoading || isLoadingValidatorsDetail} bottom={bottom} />}
         ListFooterComponent={isFetching ? <ActivityIndicator /> : <></>}
       />
     </>

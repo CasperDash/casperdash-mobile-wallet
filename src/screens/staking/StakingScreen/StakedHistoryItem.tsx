@@ -6,21 +6,23 @@ import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { StatusColorMapping } from 'utils/helpers/transaction';
 import { DeployStatus } from 'utils/constants/key';
+import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 
 interface Props {
   value: any;
+  validatorsDetail?: IValidatorDetailsResponse;
 }
 
-const StakedHistoryItem = ({ value }: Props) => {
+const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
   const TypeIcon = value.icon;
-
+  const validatorDetail = validatorsDetail?.[value.validator];
   return (
     <Row mx={16} py={16} style={styles.container}>
       {TypeIcon && <TypeIcon width={scale(24)} height={scale(24)} />}
       <Row.LR pl={16} style={{ flex: 1 }}>
         <Col.TL>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
-            {value.validator ?? ''}
+            {validatorDetail?.name || value.validator || ''}
           </Text>
           <Text style={[textStyles.Body2]}>{value.type}</Text>
         </Col.TL>
