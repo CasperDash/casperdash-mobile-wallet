@@ -19,6 +19,8 @@ import { StakingRewards } from './StakingRewards';
 import { NoData } from './NoData';
 import StakingForm from './StakingForm';
 import { EViews } from '../utils';
+import { getValidatorsDetail } from 'services/Validators/validatorsApis';
+import { useQuery } from 'react-query';
 
 // @ts-ignore
 const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ route }) => {
@@ -27,6 +29,11 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
   const dispatch = useDispatch();
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
+
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
+    queryKey: ['validatorsDetail'],
+    queryFn: () => getValidatorsDetail(),
+  });
 
   //State
   const [view, setView] = useState<EViews>(EViews.info);
@@ -69,10 +76,10 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
     const Comp = view === EViews.history ? StakedHistoryItem : StakedInformationItem;
     return listItems && listItems.length > 0 ? (
       listItems.map((item: any, index: any) => {
-        return <Comp value={item} key={index} />;
+        return <Comp value={item} key={index} validatorsDetail={validatorsDetail} />;
       })
     ) : (
-      <NoData isLoading={isLoading} bottom={bottom} />
+      <NoData isLoading={isLoading || isLoadingValidatorsDetail} bottom={bottom} />
     );
   };
 
@@ -96,7 +103,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
         {view === EViews.rewards ? (
           <View style={{ marginTop: scale(22) }}>
             {renderStakingForm()}
-            <StakingRewards publicKey={'02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38'} />
+            <StakingRewards publicKey={publicKey} />
           </View>
         ) : (
           <ScrollView

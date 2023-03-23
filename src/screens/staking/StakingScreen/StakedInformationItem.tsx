@@ -8,14 +8,16 @@ import { toFormattedNumber } from 'utils/helpers/format';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useNavigation } from '@react-navigation/native';
 import { StakingMode } from 'utils/constants/key';
+import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 
 interface Props {
   value: any;
+  validatorsDetail?: IValidatorDetailsResponse;
 }
 
-function StakedInformationItem({ value }: Props) {
+function StakedInformationItem({ value, validatorsDetail }: Props) {
   const { navigate } = useNavigation();
-
+  const validatorDetail = validatorsDetail?.[value.validator];
   const StatusIcon = value.icon;
   const undelegate = () => {
     navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
@@ -31,7 +33,7 @@ function StakedInformationItem({ value }: Props) {
       <Row.LR pl={16} style={{ flex: 1 }}>
         <Col.TL>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
-            {value.validator ?? ''}
+            {validatorDetail?.name || value.validator || ''}
           </Text>
           <CTextButton
             onPress={undelegate}

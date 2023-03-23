@@ -1,26 +1,33 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Image } from 'react-native';
 import { Row, Col } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import { toCSPR } from 'utils/helpers/currency';
 import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import moment from 'moment';
+import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 
 interface Props {
   value: IStakingRewardItem;
+  validatorsDetail?: IValidatorDetailsResponse;
 }
 
-export const StakingRewardItem = ({ value }: Props) => {
+export const StakingRewardItem = ({ value, validatorsDetail }: Props) => {
+  const detail = validatorsDetail?.[value.validatorPublicKey];
+
   return (
     <Row mx={16} py={16} style={styles.container}>
-      <Row.LR pl={16} style={{ flex: 1 }}>
-        <Col.TL>
-          <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
-            {value.validatorPublicKey ?? ''}
-          </Text>
-          <Text style={[textStyles.Body2]}>{value.eraId}</Text>
-        </Col.TL>
+      <Row.LR style={{ flex: 1 }}>
+        <Row>
+          <Image source={{ uri: detail?.logo }} style={styles.validatorLogo} />
+          <Col.TL>
+            <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
+              {(detail?.name || value.validatorPublicKey) ?? ''}
+            </Text>
+            <Text style={[textStyles.Body2]}>{value.eraId}</Text>
+          </Col.TL>
+        </Row>
         <Col.TR>
           <Text style={textStyles.Sub1}>{`${toCSPR(value.amount ?? 0)} CSPR`}</Text>
 
@@ -67,4 +74,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  validatorLogo: { width: scale(40), height: scale(40), resizeMode: 'contain', marginRight: scale(8) },
 });
