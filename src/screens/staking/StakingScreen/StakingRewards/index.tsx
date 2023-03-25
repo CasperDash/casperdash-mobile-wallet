@@ -9,6 +9,7 @@ import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NoData } from '../NoData';
 import { getValidatorsDetail } from 'services/Validators/validatorsApis';
+import { ERequestKeys } from 'utils/constants/requestKeys';
 
 interface IStakingRewardsProps {
   publicKey: string;
@@ -24,7 +25,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
     fetchNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['stakingRewards'],
+    queryKey: [ERequestKeys.stakingRewards],
     queryFn: ({ pageParam }) => getStakingRewards({ publicKey, pageParam }),
     getNextPageParam: (lastPage) => {
       if (lastPage.pages.find((p) => p.number >= lastPage.page + 1)) {
@@ -35,7 +36,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
   });
 
   const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
-    queryKey: ['validatorsDetail'],
+    queryKey: [ERequestKeys.validatorsDetail],
     queryFn: () => getValidatorsDetail(),
   });
 

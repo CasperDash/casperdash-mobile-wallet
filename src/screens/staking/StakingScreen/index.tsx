@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { colors, IconLogo, textStyles } from 'assets';
 import { Row, CLayout, Col } from 'components';
 import { scale } from 'device';
@@ -21,6 +21,7 @@ import StakingForm from './StakingForm';
 import { EViews } from '../utils';
 import { getValidatorsDetail } from 'services/Validators/validatorsApis';
 import { useQuery } from 'react-query';
+import { ERequestKeys } from 'utils/constants/requestKeys';
 
 // @ts-ignore
 const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ route }) => {
@@ -31,7 +32,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
   useScrollToTop(scrollViewRef);
 
   const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
-    queryKey: ['validatorsDetail'],
+    queryKey: [ERequestKeys.validatorsDetail],
     queryFn: () => getValidatorsDetail(),
   });
 
@@ -53,23 +54,30 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
     checkIfRefreshingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
   );
 
-  const getData = (refreshing: boolean) => {
-    if (isLoading && !refreshing) {
-      return;
-    }
-    dispatch(
-      allActions.staking.getValidatorsInformation({ refreshing, publicKey }, (error: any, _: any) => {
-        if (error) {
-          dispatch(
-            allActions.main.showMessage({
-              message: error.message,
-              type: MessageType.error,
-            }),
-          );
-        }
-      }),
-    );
-  };
+  const getData = useCallback(
+    (refreshing: boolean) => {
+      if (isLoading && !refreshing) {
+        return;
+      }
+      dispatch(
+        allActions.staking.getValidatorsInformation({ refreshing, publicKey }, (error: any, _: any) => {
+          if (error) {
+            dispatch(
+              allActions.main.showMessage({
+                message: error.message,
+                type: MessageType.error,
+              }),
+            );
+          }
+        }),
+      );
+    },
+    [dispatch, isLoading, publicKey],
+  );
+
+  useEffect(() => {
+    getData(false);
+  }, [getData]);
 
   const renderItems = () => {
     const listItems = view === EViews.history ? stakedHistory : stackingList;

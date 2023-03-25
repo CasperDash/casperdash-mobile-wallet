@@ -32,7 +32,7 @@ function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
 function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .authorizedRequest('users/', 'POST', params)
+      .authorizedRequest('/users', 'POST', params)
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);

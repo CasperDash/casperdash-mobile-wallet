@@ -13,8 +13,9 @@ export interface IValidatorDetailsResponse {
 export const getValidatorsDetail = async (): Promise<IValidatorDetailsResponse> => {
   const response = await fetch(`${NETWORK_URL}/validatorsDetail`);
   if (!response.ok) {
-    throw new Error('Error on getting validators detail');
+    console.error('Cant get validator details');
+    return {};
   }
 
-  return await response.json();
+  return (await response.json()) || {};
 };
