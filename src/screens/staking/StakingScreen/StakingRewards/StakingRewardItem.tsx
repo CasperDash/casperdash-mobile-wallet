@@ -7,6 +7,7 @@ import { toCSPR } from 'utils/helpers/currency';
 import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import moment from 'moment';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
 
 interface Props {
   value: IStakingRewardItem;
@@ -20,7 +21,10 @@ export const StakingRewardItem = ({ value, validatorsDetail }: Props) => {
     <Row mx={16} py={16} style={styles.container}>
       <Row.LR style={{ flex: 1 }}>
         <Row>
-          <Image source={{ uri: detail?.logo }} style={styles.validatorLogo} />
+          <Image
+            source={{ uri: detail?.logo || getBase64IdentIcon(value.validatorPublicKey) }}
+            style={styles.validatorLogo}
+          />
           <Col.TL>
             <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
               {(detail?.name || value.validatorPublicKey) ?? ''}
@@ -74,5 +78,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  validatorLogo: { width: scale(40), height: scale(40), resizeMode: 'contain', marginRight: scale(8) },
+  validatorLogo: { width: scale(32), height: scale(32), resizeMode: 'contain', marginRight: scale(8) },
 });
