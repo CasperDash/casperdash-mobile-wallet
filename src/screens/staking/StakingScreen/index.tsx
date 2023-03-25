@@ -72,7 +72,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
         }),
       );
     },
-    [dispatch, isLoading, publicKey],
+    [dispatch, publicKey],
   );
 
   useEffect(() => {

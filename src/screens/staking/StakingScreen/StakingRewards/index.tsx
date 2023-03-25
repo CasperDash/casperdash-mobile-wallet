@@ -24,6 +24,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
     isFetching,
     fetchNextPage,
     isLoading,
+    isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: [ERequestKeys.stakingRewards],
     queryFn: ({ pageParam }) => getStakingRewards({ publicKey, pageParam }),
@@ -64,7 +65,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
         }}
         onEndReachedThreshold={0.1}
         ListEmptyComponent={<NoData isLoading={isLoading || isLoadingValidatorsDetail} bottom={bottom} />}
-        ListFooterComponent={isFetching ? <ActivityIndicator /> : <></>}
+        ListFooterComponent={!isLoading && isFetchingNextPage ? <ActivityIndicator /> : <></>}
       />
     </>
   );
