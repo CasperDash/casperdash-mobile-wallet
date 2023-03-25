@@ -72,6 +72,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
         }),
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dispatch, publicKey],
   );
 
