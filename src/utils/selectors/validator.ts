@@ -24,7 +24,7 @@ const searchValidator = memoizeOne((validators, searchTerm) => {
   if (!searchTerm) {
     return validators;
   }
-  const fuse = new Fuse(validators, { keys: ['public_key'], threshold: 0.1 });
+  const fuse = new Fuse(validators, { keys: ['public_key', 'name'], threshold: 0.1 });
   return fuse.search(searchTerm).map((result) => result.item);
 });
 
