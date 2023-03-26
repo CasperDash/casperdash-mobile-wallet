@@ -71,9 +71,13 @@ export const createNewUser = (password: string): User => {
  * @param {EncryptionType} encryptionType - EncryptionType
  * @returns A new user with a HD wallet.
  */
-export const createNewUserWithHdWallet = (password: string, recoveryPhase: string, encryptionType: EncryptionType) => {
+export const createNewUserWithHdWallet = async (
+  password: string,
+  recoveryPhase: string,
+  encryptionType: EncryptionType,
+) => {
   const user = createNewUser(password);
-  user.setHDWallet(recoveryPhase, encryptionType);
+  await user.setHDWallet(recoveryPhase, encryptionType);
   return user;
 };
 
