@@ -13,6 +13,9 @@ import { useNavigation } from '@react-navigation/native';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
+import { getValidatorsDetail } from 'services/Validators/validatorsApis';
+import { ERequestKeys } from 'utils/constants/requestKeys';
+import { useQuery } from 'react-query';
 
 // @ts-ignore
 function ValidatorScreen() {
@@ -30,6 +33,10 @@ function ValidatorScreen() {
     // @ts-ignore
     checkIfRefreshingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
   );
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
+    queryKey: [ERequestKeys.validatorsDetail],
+    queryFn: () => getValidatorsDetail(),
+  });
 
   const [search, setSearch] = useState('');
   const listValidators = useSelector(getListValidators(search));
@@ -60,13 +67,20 @@ function ValidatorScreen() {
   };
 
   const renderItem = ({ item, index }: { item: any; index: number }) => {
-    return <ValidatorItem data={item} key={`${index} - ${item.public_key}`} onSelectValidator={onSelectValidator} />;
+    return (
+      <ValidatorItem
+        data={item}
+        key={`${index} - ${item.public_key}`}
+        onSelectValidator={onSelectValidator}
+        validatorsDetail={validatorsDetail}
+      />
+    );
   };
 
   const renderNoData = () => {
     return (
       <View style={styles.noNFT}>
-        {isLoading ? (
+        {isLoading || isLoadingValidatorsDetail ? (
           <ActivityIndicator size="small" color={colors.N2} />
         ) : (
           <>

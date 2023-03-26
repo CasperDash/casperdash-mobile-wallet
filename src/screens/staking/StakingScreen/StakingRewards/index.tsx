@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
 import { scale } from 'device';
 import { getStakingRewards } from 'services/StakingRewards/stakingRewardsApis';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
 import { StakingRewardItem } from './StakingRewardItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NoData } from '../NoData';
+import { getValidatorsDetail } from 'services/Validators/validatorsApis';
+import { ERequestKeys } from 'utils/constants/requestKeys';
 
 interface IStakingRewardsProps {
   publicKey: string;
@@ -22,8 +24,9 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
     isFetching,
     fetchNextPage,
     isLoading,
+    isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['stakingRewards'],
+    queryKey: [ERequestKeys.stakingRewards],
     queryFn: ({ pageParam }) => getStakingRewards({ publicKey, pageParam }),
     getNextPageParam: (lastPage) => {
       if (lastPage.pages.find((p) => p.number >= lastPage.page + 1)) {
@@ -31,6 +34,11 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
       }
       return undefined;
     },
+  });
+
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
+    queryKey: [ERequestKeys.validatorsDetail],
+    queryFn: () => getValidatorsDetail(),
   });
 
   const displayData = useMemo(() => {
@@ -43,7 +51,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainerStyle}
         data={displayData}
-        renderItem={(reward) => <StakingRewardItem value={reward.item} />}
+        renderItem={(reward) => <StakingRewardItem value={reward.item} validatorsDetail={validatorsDetail} />}
         refreshControl={
           <RefreshControl
             refreshing={isFetching}
@@ -56,8 +64,8 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
           fetchNextPage();
         }}
         onEndReachedThreshold={0.1}
-        ListEmptyComponent={<NoData isLoading={isLoading} bottom={bottom} />}
-        ListFooterComponent={isFetching ? <ActivityIndicator /> : <></>}
+        ListEmptyComponent={<NoData isLoading={isLoading || isLoadingValidatorsDetail} bottom={bottom} />}
+        ListFooterComponent={!isLoading && isFetchingNextPage ? <ActivityIndicator /> : <></>}
       />
     </>
   );

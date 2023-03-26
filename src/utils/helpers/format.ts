@@ -10,7 +10,7 @@ import { Config } from 'utils';
  */
 export const toFormattedNumber = (num = 0, options = {}, locales = Config.defaultLocale) => {
   const number = new Intl.NumberFormat(locales, {
-    maximumFractionDigits: 4,
+    maximumFractionDigits: 2,
     ...options,
   });
   return number.format(num) || '0';
