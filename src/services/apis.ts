@@ -32,7 +32,7 @@ function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
 function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .authorizedRequest('users/', 'POST', params)
+      .authorizedRequest('/users', 'POST', params)
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);
@@ -181,7 +181,7 @@ function getTransferDeploysStatusAPI<T>(params: any): NetworkPromiseResponse<T> 
 function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .authorizedRequest(publicKey ? `v2/validators?delegator=${publicKey}&cachedBy=block` : 'v2/validators', 'GET')
+      .authorizedRequest(publicKey ? `/v2/validators?delegator=${publicKey}&cachedBy=block` : '/v2/validators', 'GET')
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);

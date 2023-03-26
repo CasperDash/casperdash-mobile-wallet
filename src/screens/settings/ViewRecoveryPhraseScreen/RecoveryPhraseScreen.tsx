@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { CLayout, CHeader } from 'components';
 import { colors } from 'assets';
@@ -14,12 +14,18 @@ import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const RecoveryPhraseScreen = () => {
   const copyToClipboard = useCopyToClipboard();
+  const [phrase, setPhrase] = useState('');
 
   const user = useSelector<any, User>(getUser);
 
-  const hdWallet = user.getHDWallet();
+  useEffect(() => {
+    async function getPhrase() {
+      setPhrase(await user.getHDWalletKeyPhrase());
+    }
+    getPhrase();
+  }, [user]);
 
-  const recoveryPhaseArr = hdWallet.keyPhrase.split(' ');
+  const recoveryPhaseArr = phrase.split(' ');
 
   return (
     <CLayout>
@@ -56,7 +62,7 @@ const RecoveryPhraseScreen = () => {
             type={'line'}
             text={'Copy'}
             onPress={async () => {
-              copyToClipboard(hdWallet.keyPhrase);
+              copyToClipboard(phrase);
             }}
           />
         </Row.C>

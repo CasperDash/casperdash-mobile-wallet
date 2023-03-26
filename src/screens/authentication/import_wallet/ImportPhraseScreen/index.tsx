@@ -185,9 +185,10 @@ const ImportPhraseScreen = () => {
           </View>
         </Row.LR>
         <Row.LR pt={16} px={16} style={styles.numberRow}>
-          {NUMBER_OF_RECOVERY_WORDS.map((number) => {
+          {NUMBER_OF_RECOVERY_WORDS.map((number, index) => {
             return (
               <CTextButton
+                key={index}
                 type={numberOfWord === number ? 'default' : 'line'}
                 style={[styles.numberOfWordsButton, { marginRight: scale(12) }]}
                 text={number.toString()}

@@ -13,6 +13,7 @@ export const getMetadataByKey = (metadata: any[], key: any) => {
 };
 
 function NFTItem({ data, index }: any) {
+  console.log('🚀 ~ file: ListItem.tsx:16 ~ NFTItem ~ data:', data);
   const nftBackground = getMetadataByKey(data.metadata, 'background');
   const metadata = data.metadata.filter(
     (item: any) => item.key !== 'name' && item.key !== 'image' && item.key !== 'background',
@@ -45,7 +46,7 @@ function NFTItem({ data, index }: any) {
         </View>
         <View style={styles.nftItemContent}>
           <Text style={styles.nftName} numberOfLines={1}>
-            {nftName}
+            {nftName || data.contractName}
           </Text>
           <Text style={styles.contractNameNFT}>{nftContractName}</Text>
         </View>

@@ -54,6 +54,7 @@ export function* getAccounts(data: any) {
     const response = yield apis.getAccounts({
       publicKeys,
     });
+
     if (response) {
       yield put({
         type: types.GET_ACCOUNTS + '_SUCCESS',

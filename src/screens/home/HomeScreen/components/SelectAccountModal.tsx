@@ -10,7 +10,6 @@ import MainRouter from 'navigation/stack/MainRouter';
 import { getListWallets, getUser } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { WalletDescriptor, User } from 'react-native-casper-storage';
-import { Config, Keys } from 'utils';
 import { allActions } from 'redux_manager';
 import {
   getWalletInfoWithPublicKey,
@@ -110,12 +109,29 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     setIsCreatingNewAccount(true);
   };
 
-  const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
-    await setSelectedWallet(walletInfoDetails.walletInfo, walletInfoDetails.publicKey!!);
-
+  const reloadWallets = () => {
     dispatch(allActions.user.loadSelectedWalletFromStorage());
     dispatch(allActions.main.loadLocalStorage());
+  };
+
+  const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
+    await setSelectedWallet(walletInfoDetails.walletInfo, walletInfoDetails.publicKey!!);
+    reloadWallets();
     hide();
+  };
+
+  const onUpdateWalletName = async (
+    walletInfoDetails: WalletInfoDetails,
+    newName: string,
+    isCurrentWallet: boolean,
+  ) => {
+    currentAccount.setWalletInfo(walletInfoDetails.walletInfo.uid, newName);
+    if (isCurrentWallet) {
+      const newInfo = currentAccount.getWalletInfo(walletInfoDetails.walletInfo.uid);
+      await setSelectedWallet(newInfo, walletInfoDetails.publicKey!!);
+    }
+    await serializeAndStoreUser(currentAccount);
+    reloadWallets();
   };
 
   return (
@@ -152,6 +168,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
                     key={index}
                     onSelectWallet={onSelectWallet}
                     isLoadingBalance={isLoadingBalance}
+                    onUpdateWalletName={onUpdateWalletName}
                   />
                 );
               })}

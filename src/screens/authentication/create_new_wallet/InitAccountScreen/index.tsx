@@ -39,7 +39,7 @@ const InitAccountScreen: React.FC<
 
     try {
       const masterPassword = await Config.getItem(Keys.masterPassword);
-      const user = createNewUserWithHdWallet(masterPassword, phrases, algorithm);
+      const user = await createNewUserWithHdWallet(masterPassword, phrases, algorithm);
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
       user.setWalletInfo(acc0.getReferenceKey(), new WalletDescriptor('Account 1'));
       const publicKey = await acc0.getPublicKey();

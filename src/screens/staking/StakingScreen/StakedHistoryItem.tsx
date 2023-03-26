@@ -1,26 +1,31 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Image } from 'react-native';
 import { Row, Col } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { StatusColorMapping } from 'utils/helpers/transaction';
 import { DeployStatus } from 'utils/constants/key';
+import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
 
 interface Props {
   value: any;
+  validatorsDetail?: IValidatorDetailsResponse;
 }
 
-const StakedHistoryItem = ({ value }: Props) => {
-  const TypeIcon = value.icon;
-
+const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
+  const validatorDetail = validatorsDetail?.[value.validator];
   return (
     <Row mx={16} py={16} style={styles.container}>
-      {TypeIcon && <TypeIcon width={scale(24)} height={scale(24)} />}
-      <Row.LR pl={16} style={{ flex: 1 }}>
+      <Image
+        source={{ uri: validatorDetail?.logo || getBase64IdentIcon(value.validatorPublicKey) }}
+        style={styles.validatorLogo}
+      />
+      <Row.LR style={{ flex: 1 }}>
         <Col.TL>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
-            {value.validator ?? ''}
+            {validatorDetail?.name || value.validator || ''}
           </Text>
           <Text style={[textStyles.Body2]}>{value.type}</Text>
         </Col.TL>
@@ -76,4 +81,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  validatorLogo: { width: scale(32), height: scale(32), resizeMode: 'contain', marginRight: scale(8) },
 });
