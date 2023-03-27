@@ -26,7 +26,7 @@
     "fastlane:beta": "yarn env:beta && cd ios/fastlane && fastlane beta",
     "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
     "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
-    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && fastlane internal --verbose",
+    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && bundle exec fastlane internal --verbose",
     "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn"
   },
   "dependencies": {
