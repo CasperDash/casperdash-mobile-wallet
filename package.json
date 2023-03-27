@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 14 Pro Max'",
+    "ios": "react-native run-ios",
     "start": "react-native start",
-    "ios:mainnet": "yarn env:mainnet && react-native run-ios --simulator='iPhone 14 Pro Max'",
+    "ios:mainnet": "yarn env:mainnet && react-native run-ios",
     "android:mainnet": "yarn env:mainnet && react-native run-android",
     "ss": "watchman watch-del-all && react-native start --reset-cache",
     "c": "adb reverse tcp:8081 tcp:8081",
