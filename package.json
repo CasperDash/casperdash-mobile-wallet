@@ -1,12 +1,12 @@
 {
   "name": "CasperDash",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 14 Pro Max'",
+    "ios": "react-native run-ios",
     "start": "react-native start",
-    "ios:mainnet": "yarn env:mainnet && react-native run-ios --simulator='iPhone 14 Pro Max'",
+    "ios:mainnet": "yarn env:mainnet && react-native run-ios",
     "android:mainnet": "yarn env:mainnet && react-native run-android",
     "ss": "watchman watch-del-all && react-native start --reset-cache",
     "c": "adb reverse tcp:8081 tcp:8081",
@@ -26,7 +26,7 @@
     "fastlane:beta": "yarn env:beta && cd ios/fastlane && fastlane beta",
     "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
     "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
-    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && fastlane internal --verbose",
+    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && bundle exec fastlane internal --verbose",
     "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn"
   },
   "dependencies": {
@@ -158,7 +158,7 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^8.36.0",
     "jest": "^27.3.1",
-    "metro-react-native-babel-preset": "0.70.2",
+    "metro-react-native-babel-preset": "0.73.7",
     "react-native-svg-transformer": "^0.14.3",
     "react-test-renderer": "17.0.2",
     "rn-nodeify": "10.3.0",
