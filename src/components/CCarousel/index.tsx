@@ -1,9 +1,4 @@
-import React, {
-  useImperativeHandle,
-  useRef,
-  useState,
-  forwardRef,
-} from 'react';
+import React, { useImperativeHandle, useRef, useState, forwardRef } from 'react';
 import { Animated, StyleSheet, Dimensions, FlatList } from 'react-native';
 
 //source: react-native-anchor-carousel
@@ -86,15 +81,12 @@ function CCarousel(props: any, ref: any) {
   }
 
   function setScrollHandler() {
-    handleOnScrollRef.current = Animated.event(
-      [{ nativeEvent: { contentOffset: { x: xOffsetRef.current } } }],
-      {
-        useNativeDriver: true,
-        listener: (event: any) => {
-          scrollXRef.current = event.nativeEvent.contentOffset.x;
-        },
+    handleOnScrollRef.current = Animated.event([{ nativeEvent: { contentOffset: { x: xOffsetRef.current } } }], {
+      useNativeDriver: true,
+      listener: (event: any) => {
+        scrollXRef.current = event.nativeEvent.contentOffset.x;
       },
-    );
+    });
   }
 
   function scrollToIndex(index: number) {
@@ -141,10 +133,7 @@ function CCarousel(props: any, ref: any) {
   }
 
   function getItemOffset(index: number) {
-    return (
-      index * (itemWidth + itemTotalMarginBothSide) -
-      (halfContainerWidth - halfItemWidth)
-    );
+    return index * (itemWidth + itemTotalMarginBothSide) - (halfContainerWidth - halfItemWidth);
   }
 
   function getAnimatedOffset(index: number) {
@@ -158,11 +147,7 @@ function CCarousel(props: any, ref: any) {
   }
 
   function getMidPontInterpolate(index: number, animatedOffset: number) {
-    return (
-      index * (itemWidth + itemTotalMarginBothSide) +
-      halfItemWidth -
-      animatedOffset
-    );
+    return index * (itemWidth + itemTotalMarginBothSide) + halfItemWidth - animatedOffset;
   }
 
   function getStartPontInterpolate(index: number, midPoint: number) {
@@ -170,27 +155,17 @@ function CCarousel(props: any, ref: any) {
       return 0;
     }
     if (isLastItem(index)) {
-      return (
-        (dataLength - 2) * (itemWidth + itemTotalMarginBothSide) +
-        halfItemWidth -
-        halfContainerWidth
-      );
+      return (dataLength - 2) * (itemWidth + itemTotalMarginBothSide) + halfItemWidth - halfContainerWidth;
     }
     return midPoint - itemWidth - itemTotalMarginBothSide;
   }
 
   function getEndPointInterpolate(index: number, midPoint: number) {
     if (isFirstItem(index)) {
-      return (
-        itemWidth + itemTotalMarginBothSide + halfItemWidth - halfContainerWidth
-      );
+      return itemWidth + itemTotalMarginBothSide + halfItemWidth - halfContainerWidth;
     }
     if (index === dataLength - 2) {
-      return (
-        (dataLength - 1) * (itemWidth + itemTotalMarginBothSide) +
-        itemWidth -
-        containerWidth
-      );
+      return (dataLength - 1) * (itemWidth + itemTotalMarginBothSide) + itemWidth - containerWidth;
     }
     return midPoint + itemWidth + itemTotalMarginBothSide;
   }
@@ -222,14 +197,10 @@ function CCarousel(props: any, ref: any) {
   function getItemMarginStyle(index: number) {
     const marginSingleItemSide = itemTotalMarginBothSide / 2;
     if (isFirstItem(index)) {
-      return inverted
-        ? { marginLeft: marginSingleItemSide }
-        : { marginRight: marginSingleItemSide };
+      return inverted ? { marginLeft: marginSingleItemSide } : { marginRight: marginSingleItemSide };
     }
     if (isLastItem(index)) {
-      return inverted
-        ? { marginRight: marginSingleItemSide }
-        : { marginLeft: marginSingleItemSide };
+      return inverted ? { marginRight: marginSingleItemSide } : { marginLeft: marginSingleItemSide };
     }
     return { marginHorizontal: marginSingleItemSide };
   }
@@ -244,7 +215,8 @@ function CCarousel(props: any, ref: any) {
           { width: itemWidth },
           getItemMarginStyle(index),
           getItemAnimatedStyle(index),
-        ]}>
+        ]}
+      >
         {renderItem({ item, index })}
       </Animated.View>
     );

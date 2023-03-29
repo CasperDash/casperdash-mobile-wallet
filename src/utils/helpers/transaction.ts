@@ -19,7 +19,7 @@ export const getTransactionIcon = (type: string) => {
 /**
  * enrich transaction with Icon
  */
-export const enrichTransactionWithIcon = memoizeOne(transferList => {
+export const enrichTransactionWithIcon = memoizeOne((transferList) => {
   return transferList.map((transfer: any) => {
     return { ...transfer, icon: getTransactionIcon(transfer.type) };
   });

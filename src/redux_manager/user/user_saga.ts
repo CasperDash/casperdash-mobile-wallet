@@ -3,12 +3,7 @@ import { types } from './user_action';
 import { types as mainTypes } from '../main/main_action';
 import { apis } from 'services';
 import { Config, Keys } from 'utils';
-import {
-  refreshActionStart,
-  refreshActionStop,
-  startAction,
-  stopAction,
-} from 'redux_manager/main/main_action';
+import { refreshActionStart, refreshActionStop, startAction, stopAction } from 'redux_manager/main/main_action';
 
 export function* getAccountInformation(data: any) {
   try {
@@ -21,9 +16,7 @@ export function* getAccountInformation(data: any) {
     const casperDashInfo = yield Config.getItem(Keys.casperdash);
     // @ts-ignore
     const response = yield apis.getAccountInformation(
-      data.params && data.params.publicKey
-        ? data.params.publicKey
-        : (casperDashInfo && casperDashInfo.publicKey) || '',
+      data.params && data.params.publicKey ? data.params.publicKey : (casperDashInfo && casperDashInfo.publicKey) || '',
     );
     if (response) {
       yield put({
@@ -52,19 +45,16 @@ export function* getAccountInformation(data: any) {
 export function* getAccounts(data: any) {
   try {
     yield put(
-      data.params && data.params.refreshing
-        ? refreshActionStart(types.GET_ACCOUNTS)
-        : startAction(types.GET_ACCOUNTS),
+      data.params && data.params.refreshing ? refreshActionStart(types.GET_ACCOUNTS) : startAction(types.GET_ACCOUNTS),
     );
 
     const publicKeys =
-      data?.params?.publicKeys?.map(
-        (key: { keyIndex: number; publicKey: string }) => key.publicKey,
-      ) || [];
+      data?.params?.publicKeys?.map((key: { keyIndex: number; publicKey: string }) => key.publicKey) || [];
     // @ts-ignore
     const response = yield apis.getAccounts({
       publicKeys,
     });
+
     if (response) {
       yield put({
         type: types.GET_ACCOUNTS + '_SUCCESS',
@@ -82,9 +72,7 @@ export function* getAccounts(data: any) {
     }
   } finally {
     yield put(
-      data.params && data.params.refreshing
-        ? refreshActionStop(types.GET_ACCOUNTS)
-        : stopAction(types.GET_ACCOUNTS),
+      data.params && data.params.refreshing ? refreshActionStop(types.GET_ACCOUNTS) : stopAction(types.GET_ACCOUNTS),
     );
   }
 }
@@ -92,10 +80,7 @@ export function* getAccounts(data: any) {
 export function* watchGetAccountInformation() {
   while (true) {
     // @ts-ignore
-    const watcher = yield takeLatest(
-      [types.GET_ACCOUNT_INFORMATION],
-      getAccountInformation,
-    );
+    const watcher = yield takeLatest([types.GET_ACCOUNT_INFORMATION], getAccountInformation);
     yield take(['LOGOUT', 'NETWORK']);
     yield cancel(watcher);
   }
@@ -121,8 +106,5 @@ export function* getSelectedWalletFromStorage() {
 }
 
 export function* watchLoadSelectedWallet() {
-  yield takeLatest(
-    [types.LOAD_SELECTED_WALLET, mainTypes.INIT_APP_STATE],
-    getSelectedWalletFromStorage,
-  );
+  yield takeLatest([types.LOAD_SELECTED_WALLET, mainTypes.INIT_APP_STATE], getSelectedWalletFromStorage);
 }

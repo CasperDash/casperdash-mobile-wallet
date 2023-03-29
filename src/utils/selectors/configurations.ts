@@ -4,12 +4,9 @@ import * as DEFAULT_CONFIG from 'utils/constants/key';
 export const getMainState = (state: any) => state.main;
 
 /* A selector that returns the configurations object from the main state. */
-export const getConfigurations = createSelector(
-  getMainState,
-  ({ configurations }) => {
-    return configurations || {};
-  },
-);
+export const getConfigurations = createSelector(getMainState, ({ configurations }) => {
+  return configurations || {};
+});
 
 /**
  * Get the value of a configuration key
@@ -18,7 +15,7 @@ export const getConfigurations = createSelector(
  */
 
 export const getConfigKey = (key: string) =>
-  createSelector(getConfigurations, configurations => {
+  createSelector(getConfigurations, (configurations) => {
     // @ts-ignore
     return (configurations && configurations[key]) || DEFAULT_CONFIG[key];
   });

@@ -1,24 +1,8 @@
 import { CButton, CInput, Row } from 'components';
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  StatusBar,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, StatusBar, FlatList, ActivityIndicator } from 'react-native';
 
-import {
-  colors,
-  IconArrowUp,
-  IconCloseFilledN2,
-  IconLogo,
-  IconSearch,
-  textStyles,
-} from 'assets';
+import { colors, IconArrowUp, IconCloseFilledN2, IconLogo, IconSearch, textStyles } from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
 import NFTItem from './ListItem';
@@ -85,9 +69,7 @@ function NFTScreen() {
       return;
     }
     if (text && listNFTs.current) {
-      const newFilterArr = listNFTs.current.filter((x: any) =>
-        nonAccentText(x.nftName).includes(nonAccentText(text)),
-      );
+      const newFilterArr = listNFTs.current.filter((x: any) => nonAccentText(x.nftName).includes(nonAccentText(text)));
       setNFTs(newFilterArr);
     }
   }, 500);
@@ -105,9 +87,7 @@ function NFTScreen() {
   };
 
   const renderItem = ({ item, index }: { item: any; index: number }) => {
-    return (
-      <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index} />
-    );
+    return <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index} />;
   };
 
   const renderNoData = () => {
@@ -121,23 +101,16 @@ function NFTScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
-      <StatusBar
-        backgroundColor={'rgba(52, 52, 52, 0)'}
-        translucent={true}
-        barStyle="dark-content"
-        animated={true}
-      />
+      <StatusBar backgroundColor={'rgba(52, 52, 52, 0)'} translucent={true} barStyle="dark-content" animated={true} />
       <Row ml={24} mt={10} mb={16} style={{ alignItems: 'center' }}>
         <IconLogo width={scale(28)} height={scale(28)} />
-        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>
-          My Collection
-        </Text>
+        <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>My Collection</Text>
       </Row>
       <View style={styles.searchWrapper}>
         <IconSearch style={styles.iconSearch} />
         <CInput
           ref={inputRef}
-          onChangeText={text => {
+          onChangeText={(text) => {
             setSearch(text);
             onChangeText(text);
           }}
@@ -148,30 +121,18 @@ function NFTScreen() {
           rightComponent={
             !!search && (
               <CButton onPress={onClearSearch} hitSlop={hitSlop}>
-                <IconCloseFilledN2
-                  width={scale(20)}
-                  height={scale(20)}
-                  style={styles.icClearText}
-                />
+                <IconCloseFilledN2 width={scale(20)} height={scale(20)} style={styles.icClearText} />
               </CButton>
             )
           }
         />
       </View>
       <View style={styles.sortWrapper}>
-        <TouchableOpacity
-          style={styles.btnFilter}
-          onPress={() => onFilterWith('nftName')}>
+        <TouchableOpacity style={styles.btnFilter} onPress={() => onFilterWith('nftName')}>
           <Text style={styles.titleSelect}>Name</Text>
-          <IconArrowUp
-            style={[
-              { transform: [{ rotate: filterName ? '180deg' : '0deg' }] },
-            ]}
-          />
+          <IconArrowUp style={[{ transform: [{ rotate: filterName ? '180deg' : '0deg' }] }]} />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.btnFilter}
-          onPress={() => onFilterWith('nftContractName')}>
+        <TouchableOpacity style={styles.btnFilter} onPress={() => onFilterWith('nftContractName')}>
           <Text style={styles.titleSelect}>Contract Name</Text>
           <IconArrowUp
             style={[
@@ -189,9 +150,7 @@ function NFTScreen() {
           </View>
         ) : (
           <View>
-            <Text style={styles.numNft}>
-              {nfts.length + ` ${nfts.length < 2 ? 'Item' : 'Items'}`}
-            </Text>
+            <Text style={styles.numNft}>{nfts.length + ` ${nfts.length < 2 ? 'Item' : 'Items'}`}</Text>
             <FlatList
               numColumns={2}
               showsVerticalScrollIndicator={false}

@@ -17,9 +17,7 @@ const InfoComponent = ({ validator, amount, fee }: Props) => {
       <Text style={styles.caption}>Validator</Text>
       <Text style={styles.value}>{validator}</Text>
       <Text style={styles.caption}>Amount</Text>
-      <Text style={styles.value}>{`${toFormattedNumber(
-        Number(amount),
-      )} CSPR`}</Text>
+      <Text style={styles.value}>{`${toFormattedNumber(Number(amount))} CSPR`}</Text>
       <Text style={styles.caption}>Network Fee</Text>
       <Text style={styles.value}>{`${fee} CSPR`}</Text>
     </Col>

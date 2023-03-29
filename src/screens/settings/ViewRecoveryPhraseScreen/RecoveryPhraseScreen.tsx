@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { CLayout, CHeader } from 'components';
 import { colors } from 'assets';
@@ -14,20 +14,24 @@ import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const RecoveryPhraseScreen = () => {
   const copyToClipboard = useCopyToClipboard();
+  const [phrase, setPhrase] = useState('');
 
   const user = useSelector<any, User>(getUser);
 
-  const hdWallet = user.getHDWallet();
+  useEffect(() => {
+    async function getPhrase() {
+      setPhrase(await user.getHDWalletKeyPhrase());
+    }
+    getPhrase();
+  }, [user]);
 
-  const recoveryPhaseArr = hdWallet.keyPhrase.split(' ');
+  const recoveryPhaseArr = phrase.split(' ');
 
   return (
     <CLayout>
       <CHeader title={'Recovery Phrase'} />
       <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainerStyle}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainerStyle}>
           <Row.LR pt={16} px={16} style={styles.body}>
             {new Array(2).fill(undefined).map((_, index) => {
               const words = recoveryPhaseArr.slice(
@@ -58,7 +62,7 @@ const RecoveryPhraseScreen = () => {
             type={'line'}
             text={'Copy'}
             onPress={async () => {
-              copyToClipboard(hdWallet.keyPhrase);
+              copyToClipboard(phrase);
             }}
           />
         </Row.C>

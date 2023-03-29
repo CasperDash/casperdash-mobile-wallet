@@ -15,11 +15,7 @@ import { toFormattedNumber } from 'utils/helpers/format';
 import { ScreenProps } from 'navigation/ScreenProps';
 import InfoComponent from 'screens/staking/InfoComponent';
 
-import {
-  ENTRY_POINT_DELEGATE,
-  ENTRY_POINT_UNDELEGATE,
-  StakingMode,
-} from 'utils/constants/key';
+import { ENTRY_POINT_DELEGATE, ENTRY_POINT_UNDELEGATE, StakingMode } from 'utils/constants/key';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
@@ -38,23 +34,16 @@ const StakingConfirmScreen: React.FC<
     validator: validator,
   };
   const fee = useSelector(
-    getConfigKey(
-      name === StakingMode.Delegate
-        ? 'CSPR_AUCTION_DELEGATE_FEE'
-        : 'CSPR_AUCTION_UNDELEGATE_FEE',
-    ),
+    getConfigKey(name === StakingMode.Delegate ? 'CSPR_AUCTION_DELEGATE_FEE' : 'CSPR_AUCTION_UNDELEGATE_FEE'),
   );
   const publicKey = useSelector(getPublicKey);
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
   const userDetails = useSelector(getMassagedUserDetails);
-  const balance =
-    userDetails && userDetails.balance && userDetails.balance.displayBalance;
+  const balance = userDetails && userDetails.balance && userDetails.balance.displayBalance;
 
-  const [isForm, setIsForm] = useState<boolean>(
-    name === StakingMode.Undelegate,
-  );
+  const [isForm, setIsForm] = useState<boolean>(name === StakingMode.Undelegate);
 
   const validationSchema = yup.object().shape({
     amount: yup
@@ -75,16 +64,7 @@ const StakingConfirmScreen: React.FC<
     validator: yup.string(),
   });
 
-  const {
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    values,
-    errors,
-    touched,
-    setFieldValue,
-    setErrors,
-  } = useFormik({
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setErrors } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: () => onConfirm(),
@@ -93,10 +73,7 @@ const StakingConfirmScreen: React.FC<
   const { executeDeploy, isDeploying } = useConfirmDeploy();
 
   const setBalance = () => {
-    setFieldValue(
-      'amount',
-      isDelegate ? `${stakedAmount - fee}` : `${stakedAmount}`,
-    );
+    setFieldValue('amount', isDelegate ? `${stakedAmount - fee}` : `${stakedAmount}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -105,12 +82,7 @@ const StakingConfirmScreen: React.FC<
       message: message,
       type: type ?? MessageType.normal,
     };
-    dispatch(
-      allActions.main.showMessage(
-        messages,
-        type && type !== MessageType.normal ? 2000 : 30000,
-      ),
-    );
+    dispatch(allActions.main.showMessage(messages, type && type !== MessageType.normal ? 2000 : 30000));
   };
 
   const onConfirm = async () => {
@@ -122,14 +94,8 @@ const StakingConfirmScreen: React.FC<
       return;
     }
     try {
-      const entryPoint =
-        name === StakingMode.Undelegate
-          ? ENTRY_POINT_UNDELEGATE
-          : ENTRY_POINT_DELEGATE;
-      const amountDeploy =
-        name === StakingMode.Undelegate
-          ? Number(values.amount.replace(/,/, '.'))
-          : amount;
+      const entryPoint = name === StakingMode.Undelegate ? ENTRY_POINT_UNDELEGATE : ENTRY_POINT_DELEGATE;
+      const amountDeploy = name === StakingMode.Undelegate ? Number(values.amount.replace(/,/, '.')) : amount;
       const buildDeployFn = () =>
         getStakeDeploy({
           fromAddress: publicKey,
@@ -138,11 +104,7 @@ const StakingConfirmScreen: React.FC<
           amount: amountDeploy,
           entryPoint,
         });
-      const { deployHash, signedDeploy } = await executeDeploy(
-        buildDeployFn,
-        publicKey,
-        showMessage,
-      );
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, publicKey, showMessage);
       if (deployHash) {
         dispatch(
           allActions.staking.pushStakeToLocalStorage(publicKey, {
@@ -189,18 +151,14 @@ const StakingConfirmScreen: React.FC<
           <Text
             numberOfLines={1}
             ellipsizeMode={'middle'}
-            style={[
-              styles.nameValidator,
-              !!values.validator && { color: colors.N2 },
-            ]}>
+            style={[styles.nameValidator, !!values.validator && { color: colors.N2 }]}
+          >
             {values.validator ? values.validator : 'Select Validator'}
           </Text>
         </View>
         <Row.LR mt={24} mb={16}>
           <Text style={styles.title}>Amount</Text>
-          <Text style={textStyles.Body1}>
-            My staked: {toFormattedNumber(stakedAmount)}
-          </Text>
+          <Text style={textStyles.Body1}>My staked: {toFormattedNumber(stakedAmount)}</Text>
         </Row.LR>
         <CInputFormik
           name={'amount'}
@@ -221,27 +179,20 @@ const StakingConfirmScreen: React.FC<
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           style={{ marginTop: isForm ? scale(22) : 0 }}
-          contentContainerStyle={styles.contentContainerStyle}>
+          contentContainerStyle={styles.contentContainerStyle}
+        >
           {isForm ? (
             _renderForm()
           ) : (
             <InfoComponent
               validator={validator}
-              amount={
-                name === StakingMode.Delegate ? amount : Number(values.amount)
-              }
+              amount={name === StakingMode.Delegate ? amount : Number(values.amount)}
               fee={fee}
             />
           )}
           <CTextButton
             onPress={isForm ? handleSubmit : onConfirm}
-            text={
-              name === StakingMode.Undelegate
-                ? isForm
-                  ? 'Confirm'
-                  : 'Undelegate'
-                : 'Delegate'
-            }
+            text={name === StakingMode.Undelegate ? (isForm ? 'Confirm' : 'Undelegate') : 'Delegate'}
             style={[styles.btnStaking, { marginTop: isForm ? scale(40) : 0 }]}
           />
         </KeyboardAwareScrollView>

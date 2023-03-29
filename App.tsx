@@ -5,15 +5,21 @@ import { Provider } from 'react-redux';
 import { store } from 'redux_manager';
 import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import 'react-native-console-time-polyfill';
+
+// Create a client
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <AppNavigation />
-        <Toast ref={ref => Toast.setRef(ref)} />
-      </SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <AppNavigation />
+          <Toast ref={ref => Toast.setRef(ref)} />
+        </SafeAreaProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };

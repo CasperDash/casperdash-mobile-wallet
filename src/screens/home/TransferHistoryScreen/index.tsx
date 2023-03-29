@@ -29,9 +29,7 @@ const TransferHistoryScreen: React.FC<
 > = ({ route }) => {
   const { deploy } = route.params;
   const { bottom } = useSafeAreaInsets();
-  const mappingStatus = STATUS_MAPPING.find(
-    i => i.value === (deploy.status || true),
-  );
+  const mappingStatus = STATUS_MAPPING.find((i) => i.value === (deploy.status || true));
   const dispatch = useDispatch();
   const onViewExplorer = async () => {
     const url = Config.getViewExplorerURL('deploy', deploy.deployHash);
@@ -48,49 +46,22 @@ const TransferHistoryScreen: React.FC<
   };
 
   return (
-    <CLayout
-      bgColor={colors.cF8F8F8}
-      edges={['right', 'top', 'left']}
-      statusBgColor={colors.cF8F8F8}>
-      <CHeader
-        title={'Transaction details'}
-        style={{ backgroundColor: colors.cF8F8F8 }}
-      />
+    <CLayout bgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} statusBgColor={colors.cF8F8F8}>
+      <CHeader title={'Transaction details'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={16} style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ marginTop: scale(24) }}
-          contentContainerStyle={[
-            styles.contentContainerStyle,
-            { paddingBottom: bottom + scale(20) },
-          ]}>
+          contentContainerStyle={[styles.contentContainerStyle, { paddingBottom: bottom + scale(20) }]}
+        >
           {DETAILS_MAPPING.map((detail, index) => {
-            return (
-              <TransferDetailComponent
-                data={detail}
-                key={index}
-                deploy={deploy}
-                index={index}
-              />
-            );
+            return <TransferDetailComponent data={detail} key={index} deploy={deploy} index={index} />;
           })}
           <Row.LR mt={16}>
-            <Text
-              style={[
-                textStyles.Body2,
-                { color: mappingStatus?.color || colors.N2 },
-              ]}>
-              {mappingStatus?.label}
-            </Text>
+            <Text style={[textStyles.Body2, { color: mappingStatus?.color || colors.N2 }]}>{mappingStatus?.label}</Text>
             <CButton onPress={onViewExplorer}>
               <Row>
-                <Text
-                  style={[
-                    textStyles.Body2,
-                    { color: colors.R1, marginRight: scale(8) },
-                  ]}>
-                  View in explorer
-                </Text>
+                <Text style={[textStyles.Body2, { color: colors.R1, marginRight: scale(8) }]}>View in explorer</Text>
                 <IconViewExplorer width={scale(20)} height={scale(20)} />
               </Row>
             </CButton>

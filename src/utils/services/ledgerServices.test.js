@@ -50,8 +50,7 @@ describe('signDeployByLedger', () => {
     await ledgerService.signDeployByLedger(
       { deploy: {} },
       {
-        publicKey:
-          '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+        publicKey: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
       },
     );
     expect(TransportWebUSB.open).toHaveBeenCalled();
@@ -70,8 +69,7 @@ describe('signDeployByLedger', () => {
       await ledgerService.signDeployByLedger(
         { deploy: {} },
         {
-          publicKey:
-            '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
+          publicKey: '0111a5aee38d7506ae9199e62c30b8303298a38ca7e9835545772f21414ea019b0',
         },
       );
     } catch (error) {
@@ -85,23 +83,15 @@ describe('getLedgerPublicKey', () => {
     try {
       const mockGetAddressAndPubKey = jest.fn();
       mockGetAddressAndPubKey.mockReturnValue('testpk');
-      await ledgerService.getLedgerPublicKey(
-        { getAddressAndPubKey: mockGetAddressAndPubKey },
-        1,
-      );
+      await ledgerService.getLedgerPublicKey({ getAddressAndPubKey: mockGetAddressAndPubKey }, 1);
     } catch (error) {
-      expect(error.message).toEqual(
-        'You must open the Casper app on your Ledger device to connect.',
-      );
+      expect(error.message).toEqual('You must open the Casper app on your Ledger device to connect.');
     }
   });
   test('Should return public key', async () => {
     const mockGetAddressAndPubKey = () => ({ publicKey: 'testpk' });
 
-    const pk = await ledgerService.getLedgerPublicKey(
-      { getAddressAndPubKey: mockGetAddressAndPubKey },
-      1,
-    );
+    const pk = await ledgerService.getLedgerPublicKey({ getAddressAndPubKey: mockGetAddressAndPubKey }, 1);
     expect(pk).toEqual('02testpk');
   });
 });
@@ -109,11 +99,7 @@ describe('getLedgerPublicKey', () => {
 describe('getListKeys', () => {
   test('Should return list of public key', async () => {
     const mockGetAddressAndPubKey = () => ({ publicKey: 'testpk' });
-    const pks = await ledgerService.getListKeys(
-      { getAddressAndPubKey: mockGetAddressAndPubKey },
-      1,
-      2,
-    );
+    const pks = await ledgerService.getListKeys({ getAddressAndPubKey: mockGetAddressAndPubKey }, 1, 2);
     expect(pks).toEqual([
       {
         keyIndex: 1,
@@ -129,17 +115,11 @@ describe('getListKeys', () => {
 
 describe('getLedgerError', () => {
   test('Should return connect error message', () => {
-    expect(
-      ledgerService.getLedgerError({ name: 'TransportInterfaceNotAvailable' }),
-    ).toEqual(CONNECT_ERROR_MESSAGE);
-    expect(ledgerService.getLedgerError({}, 27014)).toEqual(
-      CONNECT_ERROR_MESSAGE,
-    );
+    expect(ledgerService.getLedgerError({ name: 'TransportInterfaceNotAvailable' })).toEqual(CONNECT_ERROR_MESSAGE);
+    expect(ledgerService.getLedgerError({}, 27014)).toEqual(CONNECT_ERROR_MESSAGE);
   });
   test('Should return Unsupported Deploy error message', () => {
-    expect(ledgerService.getLedgerError({}, 27012)).toEqual(
-      'Unsupported Deploy',
-    );
+    expect(ledgerService.getLedgerError({}, 27012)).toEqual('Unsupported Deploy');
   });
   test('Should return error message', () => {
     expect(ledgerService.getLedgerError({ message: 'error' })).toEqual('error');

@@ -11,9 +11,7 @@ import { textStyles } from 'assets';
 import { GetPublicKeyScreen } from 'screens';
 
 const deviceAddition = (device: any, devices: any) =>
-  devices.some((i: any) => i.id === device.id)
-    ? devices
-    : devices.concat(device);
+  devices.some((i: any) => i.id === device.id) ? devices : devices.concat(device);
 
 const ConnectLedgerScreen = () => {
   const subscribe = useRef<any>();
@@ -52,7 +50,7 @@ const ConnectLedgerScreen = () => {
           setDevices(deviceAddition(e.descriptor, devices));
         }
       },
-      error: err => {
+      error: (err) => {
         setError(err);
         setRefreshing(false);
       },
@@ -97,9 +95,7 @@ const ConnectLedgerScreen = () => {
     ) : (
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Scanning for Bluetooth...</Text>
-        <Text style={styles.headerSubtitle}>
-          Power up your Ledger Nano X and enter your pin.
-        </Text>
+        <Text style={styles.headerSubtitle}>Power up your Ledger Nano X and enter your pin.</Text>
       </View>
     );
   };

@@ -24,9 +24,7 @@ export const STATUS_MAPPING = [
 ];
 
 // @ts-ignore
-const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({
-  route,
-}) => {
+const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ route }) => {
   const { token } = route.params;
   const { navigate } = useNavigation();
   const insets = useSafeAreaInsets();
@@ -53,28 +51,20 @@ const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({
   };
 
   return (
-    <CLayout
-      bgColor={colors.cF8F8F8}
-      edges={['right', 'top', 'left']}
-      statusBgColor={colors.cF8F8F8}>
+    <CLayout bgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} statusBgColor={colors.cF8F8F8}>
       <CHeader title={symbol} style={{ backgroundColor: colors.cF8F8F8 }} />
       <TokenInfoComponent tokenInfo={tokenInfo} />
       <Col style={styles.container}>
         <Row px={6} pt={24} pb={12}>
-          <ScrollView
-            alwaysBounceHorizontal={false}
-            showsHorizontalScrollIndicator={false}
-            horizontal>
+          <ScrollView alwaysBounceHorizontal={false} showsHorizontalScrollIndicator={false} horizontal>
             <Row px={10}>
               {STATUS_MAPPING.map((status, i) => {
                 return (
                   <CButton
                     onPress={() => setSelectedStatus(status.value)}
                     key={i}
-                    style={[
-                      styles.btnStatus,
-                      selectedStatus === status.value && styles.selectedStatus,
-                    ]}>
+                    style={[styles.btnStatus, selectedStatus === status.value && styles.selectedStatus]}
+                  >
                     <Text style={textStyles.Body1}>{status.label}</Text>
                   </CButton>
                 );

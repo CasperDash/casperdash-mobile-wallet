@@ -35,27 +35,17 @@ const TransactionComponent = () => {
   return (
     <Col style={{ backgroundColor: colors.cF8F8F8 }}>
       <Text style={styles.title}>Transaction</Text>
-      <Col
-        mt={16}
-        style={[
-          styles.container,
-          { paddingBottom: insets.bottom > 0 ? insets.bottom : scale(20) },
-        ]}>
+      <Col mt={16} style={[styles.container, { paddingBottom: insets.bottom > 0 ? insets.bottom : scale(20) }]}>
         <Row px={6} pt={24} pb={12}>
-          <ScrollView
-            alwaysBounceHorizontal={false}
-            showsHorizontalScrollIndicator={false}
-            horizontal>
+          <ScrollView alwaysBounceHorizontal={false} showsHorizontalScrollIndicator={false} horizontal>
             <Row px={10}>
               {STATUS_MAPPING.map((status, i) => {
                 return (
                   <CButton
                     onPress={() => setSelectedStatus(status.value)}
                     key={i}
-                    style={[
-                      styles.btnStatus,
-                      selectedStatus === status.value && styles.selectedStatus,
-                    ]}>
+                    style={[styles.btnStatus, selectedStatus === status.value && styles.selectedStatus]}
+                  >
                     <Text style={textStyles.Body1}>{status.label}</Text>
                   </CButton>
                 );
@@ -64,17 +54,9 @@ const TransactionComponent = () => {
           </ScrollView>
         </Row>
         {transferList && transferList.length > 0 ? (
-          enrichTransactionWithIcon(transferList).map(
-            (item: any, index: number) => {
-              return (
-                <TransactionItem
-                  key={index}
-                  onPress={onTransactionClick}
-                  value={item}
-                />
-              );
-            },
-          )
+          enrichTransactionWithIcon(transferList).map((item: any, index: number) => {
+            return <TransactionItem key={index} onPress={onTransactionClick} value={item} />;
+          })
         ) : (
           <NoDataComponent />
         )}

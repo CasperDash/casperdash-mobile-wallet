@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
 import { CLayout, Row, Col } from 'components';
 import { scale } from 'device';
@@ -111,22 +105,12 @@ function MarketScreen() {
   };
 
   return (
-    <CLayout
-      edges={['top', 'left', 'right']}
-      bgColor={colors.cF8F8F8}
-      statusBgColor={colors.cF8F8F8}>
+    <CLayout edges={['top', 'left', 'right']} bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
       <View style={styles.container}>
-        <Row.L
-          pl={24}
-          pr={16}
-          pt={10}
-          pb={16}
-          style={{ backgroundColor: colors.cF8F8F8 }}>
+        <Row.L pl={24} pr={16} pt={10} pb={16} style={{ backgroundColor: colors.cF8F8F8 }}>
           <Row style={styles.alignCenter}>
             <IconLogo width={scale(28)} height={scale(28)} />
-            <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>
-              Market
-            </Text>
+            <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Market</Text>
           </Row>
         </Row.L>
         <ScrollView
@@ -139,7 +123,8 @@ function MarketScreen() {
               style={{ backgroundColor: colors.cF8F8F8 }}
             />
           }
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+        >
           <Col px={16} style={{ backgroundColor: colors.cF8F8F8 }}>
             <Text style={styles.head1}>CASPER (CSPR)</Text>
             <Row mt={8} ml={8} style={styles.alignCenter}>
@@ -148,30 +133,22 @@ function MarketScreen() {
                   maximumSignificantDigits: 4,
                 })}
               </Text>
-              {csprMarketInfo.price_change_percentage_24h < 0
-                ? getIcon('down')
-                : getIcon('up')}
+              {csprMarketInfo.price_change_percentage_24h < 0 ? getIcon('down') : getIcon('up')}
               <Text
                 style={[
                   styles.label,
                   {
-                    color:
-                      csprMarketInfo.price_change_percentage_24h >= 0
-                        ? colors.c5FC88F
-                        : colors.cFA2852,
+                    color: csprMarketInfo.price_change_percentage_24h >= 0 ? colors.c5FC88F : colors.cFA2852,
                   },
-                ]}>
+                ]}
+              >
                 {toFormattedNumber(csprMarketInfo.price_change_percentage_24h, {
                   maximumSignificantDigits: 3,
                 })}
                 %
               </Text>
             </Row>
-            <ChartComponent
-              data={priceHistory}
-              onDeactivated={onDeactivated}
-              onActivated={onActivated}
-            />
+            <ChartComponent data={priceHistory} onDeactivated={onDeactivated} onActivated={onActivated} />
             {_renderRowInfo()}
           </Col>
           <TransactionComponent />

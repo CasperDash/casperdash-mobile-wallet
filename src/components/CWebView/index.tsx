@@ -1,13 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  ScrollView,
-  StatusBar,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts, IconBack } from 'assets';
 import { device, scale } from 'device';
@@ -18,10 +10,7 @@ const stylesWebView = `<style>
     img { display: block; max-width: ${device.w - 20}px; height: auto;}
 </style>`;
 
-export const Index: React.FC<ScreenProps<'CWebView'>> = ({
-  route,
-  navigation,
-}) => {
+export const Index: React.FC<ScreenProps<'CWebView'>> = ({ route, navigation }) => {
   const insets = useSafeAreaInsets();
   const { url, title, script, content, onMessage } = route.params;
   const [loading, setLoading] = useState(true);
@@ -51,7 +40,8 @@ export const Index: React.FC<ScreenProps<'CWebView'>> = ({
           <TouchableOpacity
             hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
             onPress={goBack}
-            style={styles.btnBack}>
+            style={styles.btnBack}
+          >
             <IconBack width={scale(25)} height={scale(25)} />
           </TouchableOpacity>
           <View style={styles.headerRight}>
@@ -63,19 +53,14 @@ export const Index: React.FC<ScreenProps<'CWebView'>> = ({
         <ScrollView
           contentContainerStyle={{
             paddingBottom: scale(100),
-          }}>
+          }}
+        >
           <AutoHeightWebView
             onLoadEnd={onLoadEnd}
             injectedJavaScript={script}
             onMessage={onMessage}
             startInLoadingState={true}
-            source={
-              url
-                ? { uri: url }
-                : content
-                ? { baseUrl: '', html: htmlContent }
-                : undefined
-            }
+            source={url ? { uri: url } : content ? { baseUrl: '', html: htmlContent } : undefined}
             scrollEnabled={false}
             renderLoading={_renderLoading}
             style={{ width: device.w - scale(30), alignSelf: 'center' }}

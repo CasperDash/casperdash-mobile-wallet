@@ -11,9 +11,7 @@ export const getDeploysTransfer = createSelector(
     if (deploysTransfer) {
       const transferByPublicKey = deploysTransfer[publicKey] || [];
       return transferByPublicKey.filter(
-        (transfer: any) =>
-          (symbol ? transfer.symbol === symbol : true) &&
-          (status ? transfer.status === status : true),
+        (transfer: any) => (symbol ? transfer.symbol === symbol : true) && (status ? transfer.status === status : true),
       );
     }
     return [];
@@ -26,30 +24,23 @@ export const getDeploysTransfer = createSelector(
  * @param path - The path to the file that contains the deploy.
  * @param [listHash] - A list of deploys that have been deployed.
  */
-export const updateTransferDeployStatus = async (
-  publicKey: string,
-  listHash = [],
-) => {
+export const updateTransferDeployStatus = async (publicKey: string, listHash = []) => {
   const deployStorageValue = (await Config.getItem(Keys.deploysTransfer)) || {};
   const deployStorageValueByPublicKey = deployStorageValue[publicKey] || [];
 
   if (deployStorageValueByPublicKey.length > 0) {
-    deployStorageValue[publicKey] = deployStorageValueByPublicKey.map(
-      (deploy: any) => {
-        if (!deploy.deployHash) {
-          return deploy;
-        }
-        const hashStatus: any = listHash.find(
-          (item: any) =>
-            item.hash &&
-            item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
-        );
-        return {
-          ...deploy,
-          status: hashStatus ? hashStatus.status : deploy.status,
-        };
-      },
-    );
+    deployStorageValue[publicKey] = deployStorageValueByPublicKey.map((deploy: any) => {
+      if (!deploy.deployHash) {
+        return deploy;
+      }
+      const hashStatus: any = listHash.find(
+        (item: any) => item.hash && item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
+      );
+      return {
+        ...deploy,
+        status: hashStatus ? hashStatus.status : deploy.status,
+      };
+    });
   }
   await Config.saveItem(Keys.deploysTransfer, deployStorageValue);
 };

@@ -55,6 +55,8 @@ import IconImportAccount from './images/ic_import_account.svg';
 import IconLock from './images/ic-lock.svg';
 import IconKey from './images/ic_key.svg';
 import IconHistory from './images/ic_history.svg';
+import IconCheck from './images/ic_check.svg';
+import IconCloseAlt from './images/ic_close_alt.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -261,4 +263,6 @@ export {
   IconImportAccount,
   IconKey,
   IconHistory,
+  IconCheck,
+  IconCloseAlt,
 };

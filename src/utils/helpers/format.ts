@@ -8,13 +8,9 @@ import { Config } from 'utils';
  * @param {String} locales - Locales.
  * @return {String} Formatted number.
  */
-export const toFormattedNumber = (
-  num = 0,
-  options = {},
-  locales = Config.defaultLocale,
-) => {
+export const toFormattedNumber = (num = 0, options = {}, locales = Config.defaultLocale) => {
   const number = new Intl.NumberFormat(locales, {
-    maximumFractionDigits: 4,
+    maximumFractionDigits: 2,
     ...options,
   });
   return number.format(num) || '0';
@@ -27,18 +23,12 @@ export const toFormattedNumber = (
  * @param {String} locales - Locales.
  * @return {String} Formatted number by currency.
  */
-export const toFormattedCurrency = (
-  num = 0,
-  options = {},
-  locales = Config.defaultLocale,
-) => {
+export const toFormattedCurrency = (num = 0, options = {}, locales = Config.defaultLocale) => {
   const defaultOpt = {
     style: 'currency',
     currency: 'USD',
   };
-  return new Intl.NumberFormat(locales, { ...defaultOpt, ...options }).format(
-    num,
-  );
+  return new Intl.NumberFormat(locales, { ...defaultOpt, ...options }).format(num);
 };
 
 /**

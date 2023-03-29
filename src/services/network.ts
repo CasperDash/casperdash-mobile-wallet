@@ -9,9 +9,7 @@ class Network {
 
   constructor() {
     if (Network.instance) {
-      throw new Error(
-        'Error: Instantiation failed: Use Network.getInstance() instead of new.',
-      );
+      throw new Error('Error: Instantiation failed: Use Network.getInstance() instead of new.');
     }
     Network.instance = this;
   }
@@ -109,22 +107,14 @@ axios.interceptors.request.use(
         PARAMS: params,
         URL: baseURL + url,
       };
-      console.log(
-        '%c [HTTP Interceptor Request]',
-        'color: blue; font-weight: bold',
-        message,
-      );
+      console.log('%c [HTTP Interceptor Request]', 'color: blue; font-weight: bold', message);
     }
 
     return config;
   },
   function (error) {
     if (__DEV__) {
-      console.log(
-        '%c [HTTP Interceptor Request Error]',
-        'color: red; font-weight: bold',
-        error,
-      );
+      console.log('%c [HTTP Interceptor Request Error]', 'color: red; font-weight: bold', error);
     }
     return Promise.reject(error);
   },
@@ -141,22 +131,14 @@ axios.interceptors.response.use(
         DATA: responseData,
         URL: url,
       };
-      console.log(
-        '%c [HTTP Interceptor Response]',
-        'color: #248c1d; font-weight: bold',
-        message,
-      );
+      console.log('%c [HTTP Interceptor Response]', 'color: #248c1d; font-weight: bold', message);
     }
 
     return response.data;
   },
   function (error) {
     if (__DEV__) {
-      console.log(
-        '%c [HTTP Interceptor Response Error]',
-        'color: red; font-weight: bold',
-        error.response,
-      );
+      console.log('%c [HTTP Interceptor Response Error]', 'color: red; font-weight: bold', error.response);
     }
     return error.response;
   },

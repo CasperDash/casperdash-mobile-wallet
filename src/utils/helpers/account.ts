@@ -71,13 +71,13 @@ export const createNewUser = (password: string): User => {
  * @param {EncryptionType} encryptionType - EncryptionType
  * @returns A new user with a HD wallet.
  */
-export const createNewUserWithHdWallet = (
+export const createNewUserWithHdWallet = async (
   password: string,
   recoveryPhase: string,
   encryptionType: EncryptionType,
 ) => {
   const user = createNewUser(password);
-  user.setHDWallet(recoveryPhase, encryptionType);
+  await user.setHDWallet(recoveryPhase, encryptionType);
   return user;
 };
 
@@ -109,10 +109,7 @@ export const cachePublicKey = async (uid: string, publicKey: string) => {
  * It takes a user object, serializes it, and then stores it in the local storage
  * @param {User} user - User - The user object that you want to serialize and store.
  */
-export const serializeAndStoreUser = async (
-  user: User,
-  options?: Partial<CasperDashStoredInfo>,
-) => {
+export const serializeAndStoreUser = async (user: User, options?: Partial<CasperDashStoredInfo>) => {
   const userInfo = await user.serialize();
   const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
 
@@ -134,12 +131,9 @@ export const serializeAndStoreUser = async (
  *   - walletInfoDetails
  *   - publicKey
  */
-export const getWalletInfoWithPublicKey = async (
-  user: User,
-  walletList: WalletInfoDetails[],
-) => {
+export const getWalletInfoWithPublicKey = async (user: User, walletList: WalletInfoDetails[]) => {
   return await Promise.all(
-    walletList.map(async walletInfo => {
+    walletList.map(async (walletInfo) => {
       let publicKey;
       publicKey = await getPublicKeyCache(walletInfo.walletInfo.uid);
       if (!publicKey) {
@@ -160,10 +154,7 @@ export const getWalletInfoWithPublicKey = async (
  * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
  * @returns A key pair
  */
-export const getWalletKeyPair = async (
-  user: User,
-  selectedWallet: WalletInfoDetails,
-) => {
+export const getWalletKeyPair = async (user: User, selectedWallet: WalletInfoDetails) => {
   let publicKey: Uint8Array;
   let privateKey: Uint8Array;
   //const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
@@ -189,9 +180,7 @@ export const getWalletKeyPair = async (
  * @param {string} pin - The pin that the user entered
  * @returns The user object
  */
-export const getUserFromStorage = async (
-  pin: string,
-): Promise<User | undefined> => {
+export const getUserFromStorage = async (pin: string): Promise<User | undefined> => {
   try {
     // @ts-ignore
     const casperdash = await Config.getItem(StorageKeys.casperdash);
@@ -213,10 +202,7 @@ export const getUserFromStorage = async (
  * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
  * @returns A wallet object
  */
-export const getWalletDetails = async (
-  user: User,
-  selectedWallet: WalletInfoDetails,
-) => {
+export const getWalletDetails = async (user: User, selectedWallet: WalletInfoDetails) => {
   const uid = selectedWallet.walletInfo.uid;
   const fullWalletInfo = user.getWalletInfo(uid);
   if (fullWalletInfo.isHDWallet) {
@@ -224,10 +210,7 @@ export const getWalletDetails = async (
     const wallet = await user.getWalletAccount(index);
     return wallet;
   } else if (fullWalletInfo.isLegacy) {
-    const wallet = new CasperLegacyWallet(
-      fullWalletInfo.id,
-      fullWalletInfo.encryptionType,
-    );
+    const wallet = new CasperLegacyWallet(fullWalletInfo.id, fullWalletInfo.encryptionType);
     return wallet;
   }
 };
@@ -250,9 +233,7 @@ export const createAndStoreMasterPassword = async (pin: string) => {
  */
 export const validatePin = async (pin: string, isBiometry?: boolean) => {
   let password;
-  const masterPassword: string = await Config.getItem(
-    StorageKeys.masterPassword,
-  );
+  const masterPassword: string = await Config.getItem(StorageKeys.masterPassword);
   if (isBiometry) {
     password = pin;
   } else {
@@ -269,10 +250,7 @@ export const validatePin = async (pin: string, isBiometry?: boolean) => {
  * @param {string} publicKey - The public key of the wallet you want to set as the selected wallet.
  * @returns The selected wallet
  */
-export const setSelectedWallet = async (
-  walletInfo: WalletInfo,
-  publicKey: string,
-) => {
+export const setSelectedWallet = async (walletInfo: WalletInfo, publicKey: string) => {
   const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
   casperDashInfo.publicKey = publicKey;
   await Config.saveItem(StorageKeys.casperdash, casperDashInfo);

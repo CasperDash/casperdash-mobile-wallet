@@ -21,24 +21,16 @@ const PrivateKeyScreen = () => {
   const [privateKey, setPrivateKey] = useState<string>();
 
   useEffect(() => {
-    getWalletDetails(user, selectedWallet).then(details => {
+    getWalletDetails(user, selectedWallet).then((details) => {
       setPrivateKey(details?.getPrivateKeyInPEM());
     });
   }, [user, selectedWallet]);
 
   return (
-    <CLayout
-      bgColor={colors.cF8F8F8}
-      edges={['top', 'left', 'right']}
-      statusBgColor={colors.cF8F8F8}>
-      <CHeader
-        title={'Private Key'}
-        style={{ backgroundColor: colors.cF8F8F8 }}
-      />
+    <CLayout bgColor={colors.cF8F8F8} edges={['top', 'left', 'right']} statusBgColor={colors.cF8F8F8}>
+      <CHeader title={'Private Key'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
-        <Text style={[styles.noteText]}>
-          {selectedWallet.walletInfo.descriptor.name}
-        </Text>
+        <Text style={[styles.noteText]}>{selectedWallet.walletInfo.descriptor.name}</Text>
         <Row.C style={styles.secretKeyContainer} mx={20} py={10} px={5}>
           <Text>{privateKey}</Text>
         </Row.C>
