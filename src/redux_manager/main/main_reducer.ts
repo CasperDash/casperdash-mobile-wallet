@@ -14,10 +14,7 @@ const initialState = {
   deploysStakes: null,
 };
 
-export default function (
-  state = initialState,
-  action = { type: '', payload: {} },
-) {
+export default function (state = initialState, action = { type: '', payload: {} }) {
   const { loader } = state;
   const { actions, refreshing } = loader;
 
@@ -50,9 +47,7 @@ export default function (
         ...state,
         loader: {
           ...loader,
-          actions: actions.filter(
-            (act: any) => act.name !== action.payload.name,
-          ),
+          actions: actions.filter((act: any) => act.name !== action.payload.name),
         },
       };
     case types.REFRESH_ACTION_START:
@@ -68,9 +63,7 @@ export default function (
         ...state,
         loader: {
           ...loader,
-          refreshing: refreshing.filter(
-            (act: any) => act.name !== action.payload.name,
-          ),
+          refreshing: refreshing.filter((act: any) => act.name !== action.payload.name),
         },
       };
 

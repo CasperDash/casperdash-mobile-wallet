@@ -18,7 +18,7 @@ const wrapView =
   };
 const CustomCol = wrapView(BaseCol);
 
-Object.entries(BaseCol).forEach(property => {
+Object.entries(BaseCol).forEach((property) => {
   const [name, value] = property;
   if (isString(name) && isFunction(value)) {
     // @ts-ignore

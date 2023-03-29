@@ -4,14 +4,8 @@ import CreateNewWalletNavigation from 'navigation/CreateNewWalletNavigation';
 import ChoosePinNavigation from 'navigation/ChoosePinNavigation';
 import EnterPinScreen from 'screens/authentication/choose_pin/EnterPinScreen';
 
-const {
-  WELCOME_SCREEN,
-  CREATE_NEW_WALLET,
-  CHOOSE_PIN,
-  ENTER_PIN,
-  SEND_SCREEN,
-  INIT_ACCOUNT_SCREEN,
-} = AuthenticationRouter;
+const { WELCOME_SCREEN, CREATE_NEW_WALLET, CHOOSE_PIN, ENTER_PIN, SEND_SCREEN, INIT_ACCOUNT_SCREEN } =
+  AuthenticationRouter;
 
 export const AuthenticationScreens: any = {
   [WELCOME_SCREEN]: {

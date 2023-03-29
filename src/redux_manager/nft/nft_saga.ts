@@ -1,18 +1,11 @@
-import {
-  put,
-  takeLatest,
-  call,
-  select,
-  take,
-  cancel,
-} from 'redux-saga/effects';
+import { put, takeLatest, call, select, take, cancel } from 'redux-saga/effects';
 import { types } from './nft_action';
 import { apis } from 'services';
 import config from 'utils/config';
 import { Config, Keys } from 'utils';
 
 const getMetadataByKey = (metadata: any[], key: any) => {
-  const data = metadata.find(item => item.key === key) || {};
+  const data = metadata.find((item) => item.key === key) || {};
   return data.value;
 };
 
@@ -22,9 +15,7 @@ export function* fetchNFTInfo(data: any) {
     // @ts-ignore
     const casperDashInfo = yield Config.getItem(Keys.casperdash);
     // @ts-ignore
-    const response = yield apis.getListNFTsAPI(
-      (casperDashInfo && casperDashInfo.publicKey) || '',
-    );
+    const response = yield apis.getListNFTsAPI((casperDashInfo && casperDashInfo.publicKey) || '');
     if (response) {
       let newData: { nftName: any; nftImage: any; metadata: any[] }[] = [];
       response.forEach((element: { metadata: any[] }): any => {

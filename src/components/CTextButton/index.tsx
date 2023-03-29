@@ -34,22 +34,20 @@ const CTextButton = ({
       activeOpacity={0.85}
       style={[
         styles.button,
-        type === 'line' &&
-          (variant === 'secondary' ? styles.border : styles.borderPrimary),
+        type === 'line' && (variant === 'secondary' ? styles.border : styles.borderPrimary),
         style,
         disabled && styles.disabled,
-      ]}>
+      ]}
+    >
       {icon}
       <Text
         style={[
           styles.title,
           textStyle,
-          type === 'line' &&
-            (variant === 'secondary'
-              ? styles.textBorder
-              : styles.textBorderPrimary),
+          type === 'line' && (variant === 'secondary' ? styles.textBorder : styles.textBorderPrimary),
           disabled && styles.textDisabled,
-        ]}>
+        ]}
+      >
         {text}
       </Text>
     </TouchableOpacity>

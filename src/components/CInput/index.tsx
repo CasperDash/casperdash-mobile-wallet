@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -16,12 +11,13 @@ import {
   ViewStyle,
   TextStyle,
   StyleProp,
+  TextInputProps,
 } from 'react-native';
 
 import { colors, fonts } from 'assets';
 import { scale } from 'device';
 
-type Props = {
+interface Props extends TextInputProps {
   placeholder?: string;
   onChangeText?: (text: string) => void;
   rightComponent?: any;
@@ -43,11 +39,10 @@ type Props = {
   onBlur?: () => void;
   onFocus?: () => void;
   style?: StyleProp<ViewStyle> | TextStyle | undefined;
-};
+}
 
 if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental &&
-    UIManager.setLayoutAnimationEnabledExperimental(true);
+  UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 const CInput = forwardRef((props: Props, ref): any => {
@@ -133,11 +128,7 @@ const CInput = forwardRef((props: Props, ref): any => {
           ref={inputRef}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
-          style={[
-            styles.input,
-            multiline == true ? styles.inputMultiple : { height: scale(48) },
-            inputStyle,
-          ]}
+          style={[styles.input, multiline == true ? styles.inputMultiple : { height: scale(48) }, inputStyle]}
           onFocus={focus}
           onBlur={blur}
           onChangeText={onChangeInputText}

@@ -1,15 +1,7 @@
 import { all } from 'redux-saga/effects';
-import {
-  watchGetAccountInformation,
-  watchGetAccounts,
-  watchLoadSelectedWallet,
-} from '../user/user_saga';
+import { watchGetAccountInformation, watchGetAccounts, watchLoadSelectedWallet } from '../user/user_saga';
 
-import {
-  watchGetConfigurations,
-  watchLoadLocalStorage,
-  watchShowMessage,
-} from '../main/main_saga';
+import { watchGetConfigurations, watchLoadLocalStorage, watchShowMessage } from '../main/main_saga';
 
 import {
   watchGetTokenInfoWithBalance,
@@ -19,10 +11,7 @@ import {
 } from '../home/home_saga';
 
 import { watchFetchNFTInfo } from '../nft/nft_saga';
-import {
-  watchGetValidatorsInformation,
-  watchPushStakeToLocalStorage,
-} from 'redux_manager/staking/staking_saga';
+import { watchGetValidatorsInformation, watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
 
 import { watchGetPriceHistory } from 'redux_manager/market/market_saga';
 

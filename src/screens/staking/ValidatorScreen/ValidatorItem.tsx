@@ -4,32 +4,29 @@ import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
 import { colors, textStyles, images } from 'assets';
 import { getValueByFormat } from 'utils/helpers/format';
+import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 
-function ValidatorItem({ data, onSelectValidator }: any) {
+interface ValidatorItemProps {
+  data: any;
+  onSelectValidator: Function;
+  validatorsDetail?: IValidatorDetailsResponse;
+}
+
+function ValidatorItem({ data, onSelectValidator, validatorsDetail }: ValidatorItemProps) {
+  const validatorDetail = validatorsDetail?.[data.public_key];
   return (
     <CButton onPress={() => onSelectValidator(data)}>
       <Row px={16} py={16} style={styles.container}>
         <Col.L pr={1} style={styles.verifiedIconCol}>
-          {data.priority && (
-            <Image
-              style={styles.verifiedIcon}
-              source={images.verifiedValidator}
-            />
-          )}
+          {data.priority && <Image style={styles.verifiedIcon} source={images.verifiedValidator} />}
         </Col.L>
-        <Image source={{ uri: data.logo || data.icon }} style={styles.icon} />
+        <Image source={{ uri: validatorDetail?.logo || data.logo || data.icon }} style={styles.icon} />
         <Row.LR pl={4} style={styles.rightContainer}>
           <Col.L>
-            <Text
-              ellipsizeMode={'middle'}
-              numberOfLines={1}
-              style={[styles.title, { width: scale(100) }]}>
-              {data.name ? data.name : data.public_key}
+            <Text ellipsizeMode={'middle'} numberOfLines={1} style={[styles.title, { width: scale(100) }]}>
+              {validatorDetail?.name || data?.name || data.public_key}
             </Text>
-            <Text
-              ellipsizeMode={'middle'}
-              numberOfLines={1}
-              style={[textStyles.Body1, { width: scale(100) }]}>
+            <Text ellipsizeMode={'middle'} numberOfLines={1} style={[textStyles.Body1, { width: scale(100) }]}>
               {data.public_key}
             </Text>
           </Col.L>
@@ -63,12 +60,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: scale(42),
-    height: scale(42),
+    width: scale(36),
+    height: scale(36),
   },
   verifiedIcon: {
-    width: scale(25),
-    height: scale(37),
+    width: scale(22),
+    height: scale(34),
   },
   title: {
     ...textStyles.Sub1,

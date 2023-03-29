@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 
 interface DeviceItemProps {
   device: any;
@@ -24,10 +19,7 @@ const DeviceItem = ({ device, onSelect }: DeviceItemProps) => {
   };
 
   return (
-    <TouchableOpacity
-      style={styles.deviceItem}
-      onPress={onPress}
-      disabled={pending}>
+    <TouchableOpacity style={styles.deviceItem} onPress={onPress} disabled={pending}>
       <Text style={styles.deviceName}>{device.name}</Text>
       {pending ? <ActivityIndicator size={'small'} /> : null}
     </TouchableOpacity>

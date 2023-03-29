@@ -61,7 +61,8 @@ const CAlert = forwardRef(({ onCancel, onConfirm }: CAlertProps, ref) => {
       backdropColor={'transparent'}
       isVisible={isVisible}
       animationIn={'fadeIn'}
-      animationOut={'fadeOut'}>
+      animationOut={'fadeOut'}
+    >
       <Col style={styles.body}>
         <Row.R>
           <CButton onPress={hide}>
@@ -81,11 +82,7 @@ const CAlert = forwardRef(({ onCancel, onConfirm }: CAlertProps, ref) => {
             style={styles.button}
             variant="secondary"
           />
-          <CTextButton
-            onPress={confirm}
-            text={alert.buttonRight}
-            style={styles.button}
-          />
+          <CTextButton onPress={confirm} text={alert.buttonRight} style={styles.button} />
         </Row.LR>
       </Col>
     </Modal>
@@ -109,8 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(16),
     padding: scale(16),
 
-    shadowColor:
-      Platform.OS === 'ios' ? 'rgba(35, 38, 53, 0.2)' : 'rgba(35, 38, 53, 0.6)',
+    shadowColor: Platform.OS === 'ios' ? 'rgba(35, 38, 53, 0.2)' : 'rgba(35, 38, 53, 0.6)',
     shadowOffset: {
       width: 0,
       height: 0,

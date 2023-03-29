@@ -4,14 +4,7 @@ import { CButton, CFastImage, CHeader, CLayout, Row } from 'components';
 import { device, scale } from 'device';
 
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Modal,
-  View,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Modal, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 
@@ -27,14 +20,7 @@ function NFTDetail({ route }: Props) {
   const { bottom } = useSafeAreaInsets();
   const data = route.params;
 
-  const {
-    nftImage,
-    contractAddress,
-    metadata,
-    nftName,
-    nftContractName,
-    totalSupply,
-  } = data;
+  const { nftImage, contractAddress, metadata, nftName, nftContractName, totalSupply } = data;
 
   const onOpenModal = () => {
     setOpen(!open);
@@ -52,15 +38,10 @@ function NFTDetail({ route }: Props) {
   // };
 
   return (
-    <CLayout
-      statusBgColor={colors.cF8F8F8}
-      edges={['right', 'top', 'left']}
-      bgColor={colors.cF8F8F8}>
+    <CLayout statusBgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} bgColor={colors.cF8F8F8}>
       <View style={styles.container}>
         <CHeader title={nftName} style={{ backgroundColor: colors.cF8F8F8 }} />
-        <TouchableOpacity
-          onPress={onOpenModal}
-          style={{ position: 'relative', marginTop: scale(24) }}>
+        <TouchableOpacity onPress={onOpenModal} style={{ position: 'relative', marginTop: scale(24) }}>
           <CFastImage
             disabled
             colorDef={'transparent'}
@@ -75,7 +56,8 @@ function NFTDetail({ route }: Props) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: bottom + scale(60) }}
-          style={styles.scrollView}>
+          style={styles.scrollView}
+        >
           <View style={{ width: '100%', paddingTop: scale(10) }}>
             {/* TODO:follow the figma's design
           <View style={styles.headerInformation}>
@@ -115,10 +97,7 @@ function NFTDetail({ route }: Props) {
               <Text style={styles.labelContract}>Contract Address:</Text>
               <CButton onPress={() => copyToClipboard(contractAddress)}>
                 <Row.C mt={6}>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode={'middle'}
-                    style={styles.contractAddressText}>
+                  <Text numberOfLines={1} ellipsizeMode={'middle'} style={styles.contractAddressText}>
                     {`${contractAddress}  `}
                     <IconCopy style={styles.iconCopy} />
                   </Text>
@@ -128,26 +107,21 @@ function NFTDetail({ route }: Props) {
 
             <TouchableOpacity
               style={{ marginBottom: scale(24), marginTop: scale(16) }}
-              onPress={() => setShowAttributes(!showAttributes)}>
+              onPress={() => setShowAttributes(!showAttributes)}
+            >
               <View style={styles.titleWrapper}>
                 <Text style={styles.title}>Attributes</Text>
-                <IconAttributes
-                  style={
-                    showAttributes ? styles.showAttribute : styles.hideAttribute
-                  }
-                />
+                <IconAttributes style={showAttributes ? styles.showAttribute : styles.hideAttribute} />
               </View>
             </TouchableOpacity>
             {showAttributes && (
               <View style={styles.metaData}>
-                {metadata.map(
-                  (item: { name: string; key: string; value: string }) => (
-                    <View key={item.name} style={styles.metaDataItem}>
-                      <Text style={styles.keyMetaData}>{item.key}</Text>
-                      <Text style={styles.valueMetaData}>{item.value}</Text>
-                    </View>
-                  ),
-                )}
+                {metadata.map((item: { name: string; key: string; value: string }) => (
+                  <View key={item.name} style={styles.metaDataItem}>
+                    <Text style={styles.keyMetaData}>{item.key}</Text>
+                    <Text style={styles.valueMetaData}>{item.value}</Text>
+                  </View>
+                ))}
               </View>
             )}
           </View>

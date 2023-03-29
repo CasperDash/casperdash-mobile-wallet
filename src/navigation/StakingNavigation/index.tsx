@@ -11,7 +11,8 @@ const StakingNavigation = () => {
       initialRouteName={StakingRouter.STAKING_SCREEN}
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       {Object.keys(StakingScreens).map((elem: string, index) => (
         <Stack.Screen
           name={elem}
