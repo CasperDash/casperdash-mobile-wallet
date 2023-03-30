@@ -29,7 +29,7 @@ function MarketScreen() {
   const priceHistory = useSelector(getPriceHistory);
   const currentPrice = useSelector(getCurrentPrice);
   const data = useSelector((state: any) => state.home.CSPRMarketInfo);
-  const csprMarketInfo = data && data.length ? data[0] : {};
+  const csprMarketInfo = data || {};
 
   const [isScrollable, setScrollable] = useState<boolean>(true);
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
@@ -41,7 +41,7 @@ function MarketScreen() {
     },
     {
       title: '24h Volume',
-      value: toFormattedCurrency(csprMarketInfo.total_volume),
+      value: toFormattedCurrency(csprMarketInfo.volume_24h),
     },
     {
       title: 'Total Supply',

@@ -79,13 +79,7 @@ function getTokenInfoWithBalanceAPI<T>(params: any): NetworkPromiseResponse<T> {
 function fetchCSPRMarketInfoAPI<T>(): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .unAuthorizedRequest(
-        'api/v3/coins/markets?vs_currency=usd&ids=casper-network',
-        'GET',
-        undefined,
-        undefined,
-        'https://api.coingecko.com/',
-      )
+      .unAuthorizedRequest('/price/latest', 'GET')
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);
