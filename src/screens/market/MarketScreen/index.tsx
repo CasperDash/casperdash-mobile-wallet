@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
 import { CLayout, Row, Col } from 'components';
@@ -51,11 +51,7 @@ function MarketScreen() {
     },
   ];
 
-  useEffect(() => {
-    getPriceHistoryInfo();
-  }, []);
-
-  const getPriceHistoryInfo = () => {
+  const getPriceHistoryInfo = useCallback(() => {
     dispatch(
       allActions.market.getPriceHistory((error: any) => {
         setRefreshing(false);
@@ -68,7 +64,11 @@ function MarketScreen() {
         }
       }),
     );
-  };
+  }, [dispatch]);
+
+  useEffect(() => {
+    getPriceHistoryInfo();
+  }, [getPriceHistoryInfo]);
 
   const onRefresh = () => {
     setRefreshing(true);

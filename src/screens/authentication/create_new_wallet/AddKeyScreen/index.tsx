@@ -24,7 +24,7 @@ function AddKeyScreen() {
 
   const onChange = (value?: string) => {
     setPublicKey(value ?? '');
-    setError(isValidPublicKey(value) ? '' : 'Invalid public key');
+    setError(isValidPublicKey(value || '') ? '' : 'Invalid public key');
   };
 
   const onAddPublicKey = async () => {

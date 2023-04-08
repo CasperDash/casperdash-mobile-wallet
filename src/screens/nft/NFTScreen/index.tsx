@@ -1,5 +1,5 @@
 import { CButton, CInput, Row } from 'components';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, StatusBar, FlatList, ActivityIndicator } from 'react-native';
 
 import { colors, IconArrowUp, IconCloseFilledN2, IconLogo, IconSearch, textStyles } from 'assets';
@@ -28,27 +28,30 @@ function NFTScreen() {
   const [search, setSearch] = useState<string>('');
   const inputRef = useRef<any>();
 
+  const getData = useCallback(
+    (isRefresh: boolean) => {
+      dispatch(
+        allActions.nft.fetchNFTInfo((error: any, data: any) => {
+          if (data) {
+            listNFTs.current = data;
+            if (isRefresh) {
+              // @ts-ignore
+              setNFTs(orderBy(data, 'nftName', 'asc'));
+            } else {
+              setNFTs(data);
+            }
+          }
+          setReload(false);
+          setLoading(false);
+        }),
+      );
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     getData(false);
-  }, []);
-
-  const getData = (isRefresh: boolean) => {
-    dispatch(
-      allActions.nft.fetchNFTInfo((error: any, data: any) => {
-        if (data) {
-          listNFTs.current = data;
-          if (isRefresh) {
-            // @ts-ignore
-            setNFTs(orderBy(data, 'nftName', 'asc'));
-          } else {
-            setNFTs(data);
-          }
-        }
-        setReload(false);
-        setLoading(false);
-      }),
-    );
-  };
+  }, [getData]);
 
   const onFilterWith = (type: string) => {
     if (type === 'nftName') {

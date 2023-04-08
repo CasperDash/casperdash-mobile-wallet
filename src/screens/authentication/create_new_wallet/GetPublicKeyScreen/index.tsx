@@ -43,6 +43,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
     return () => {
       unmountRef.current = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setupFetchAddress = async () => {

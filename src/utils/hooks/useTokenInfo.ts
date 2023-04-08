@@ -1,17 +1,26 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getMassagedTokenData, getMassagedUserDetails, getConfigurations, getPublicKey } from 'utils/selectors';
+import { getMassagedTokenData, getMassagedUserDetails, getConfigurations } from 'utils/selectors';
 import { usePrice } from './usePrice';
 import * as DEFAULT_CONFIG from '../constants/key';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { useQuery } from 'react-query';
 import { ERequestKeys } from 'utils/constants/requestKeys';
-import { ITokenInfo, getTokenInfoWithBalance } from 'services/User/userApis';
+import { ITokenInfoResponse, getTokenInfoWithBalance } from 'services/User/userApis';
+
+export interface ITokenInfo extends ITokenInfoResponse {
+  icon: string;
+  price: number;
+  totalValue: number;
+  transferFee: number;
+  minAmount?: number;
+}
 
 const CSPR_INFO = {
   symbol: 'CSPR',
   address: 'CSPR',
-  icon: require('../../assets/images/ic_cspr.png'),
+  icon: '/assets/images/token-icon.png',
+  name: 'Casper',
 };
 
 export const useTokenInfoWithBalance = (publicKey: string) => {
@@ -21,7 +30,7 @@ export const useTokenInfoWithBalance = (publicKey: string) => {
     enabled: !!publicKey,
   });
 
-  const massagedData = useMemo<ITokenInfo[]>(() => {
+  const massagedData = useMemo<ITokenInfoResponse[]>(() => {
     if (data) {
       const massagedTokenData = getMassagedTokenData(data);
       return massagedTokenData;
@@ -40,7 +49,7 @@ export const useTokenInfo = (publicKey: string) => {
 
   const { currentPrice: CSPRPrice } = usePrice();
 
-  const allTokenInfo = useMemo(() => {
+  const allTokenInfo = useMemo<ITokenInfo[]>(() => {
     const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
     const minAmount = configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
     const tokenTransferFee = configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
@@ -50,7 +59,7 @@ export const useTokenInfo = (publicKey: string) => {
       ...CSPR_INFO,
       balance: { displayValue: CSPRBalance },
       price: CSPRPrice,
-      totalPrice: CSPRPrice * CSPRBalance,
+      totalValue: CSPRPrice * CSPRBalance,
       transferFee: transferFee,
       minAmount: minAmount,
     };
@@ -59,7 +68,7 @@ export const useTokenInfo = (publicKey: string) => {
       tokensData && tokensData.length
         ? tokensData.map((datum) => ({
             price: tokenPrice,
-            totalPrice: (datum.balance.displayValue || 0) * tokenPrice,
+            totalValue: (datum.balance.displayValue || 0) * tokenPrice,
             transferFee: tokenTransferFee,
             icon: getBase64IdentIcon(datum.address),
             ...datum,
@@ -72,23 +81,23 @@ export const useTokenInfo = (publicKey: string) => {
   const accountTotalBalanceInFiat = useMemo(() => {
     return allTokenInfo && allTokenInfo.length
       ? allTokenInfo.reduce((out: number, datum: any) => {
-          return out + datum.totalPrice;
+          return out + datum.totalValue;
         }, 0)
       : 0;
   }, [allTokenInfo]);
 
   const getTokenInfoByAddress = useCallback(
-    (token: any) => {
-      return token && allTokenInfo && allTokenInfo.length
-        ? allTokenInfo.find((info: any) => info.address === token.address)
-        : {};
+    (tokenAddress: string): ITokenInfo | undefined => {
+      return tokenAddress && allTokenInfo && allTokenInfo.length
+        ? allTokenInfo.find((info: ITokenInfo) => info.address === tokenAddress)
+        : undefined;
     },
     [allTokenInfo],
   );
 
   const refreshTokenInfo = useCallback(() => {
     refetchTokenData();
-  }, []);
+  }, [refetchTokenData]);
 
   return { allTokenInfo, accountTotalBalanceInFiat, getTokenInfoByAddress, refreshTokenInfo };
 };

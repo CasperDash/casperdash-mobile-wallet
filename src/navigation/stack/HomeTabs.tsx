@@ -14,8 +14,6 @@ import {
   IconMenuNFTActive,
   IconMenuMarket,
   IconMenuMarketActive,
-  IconMenuKeyManagerActive,
-  IconMenuKeyManager,
 } from 'assets';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -24,7 +22,6 @@ import StakingNavigation from 'navigation/StakingNavigation';
 import NFTNavigation from 'navigation/NFTNavigation';
 import MarketNavigation from 'navigation/MarketNavigation';
 import HomeNavigation from 'navigation/HomeNavigation';
-import KeyManagerNavigation from 'navigation/KeyManagerNavigation';
 
 const Tab = createBottomTabNavigator();
 

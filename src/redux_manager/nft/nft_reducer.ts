@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { types } from './nft_action';
 
 interface IState {

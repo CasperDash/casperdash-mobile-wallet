@@ -1,4 +1,3 @@
-import { number } from 'prop-types';
 import { NETWORK_URL } from 'utils/constants/key';
 
 interface ILatestPrice {

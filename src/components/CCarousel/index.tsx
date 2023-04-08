@@ -43,7 +43,7 @@ function CCarousel(props: any, ref: any) {
     onScrollEndDrag = () => {},
     ...otherProps
   } = props;
-  const scrollViewRef = useRef(null);
+  const scrollViewRef = useRef<FlatList>(null);
   const currentIndexRef = useRef(initialIndex);
   const scrollXRef = useRef(0);
   const scrollXBeginRef = useRef(0);
@@ -72,7 +72,7 @@ function CCarousel(props: any, ref: any) {
     return index === 0;
   }
 
-  function getItemLayout(data: any, index: number) {
+  function getItemLayout(_data: any, index: number) {
     return {
       offset: getItemOffset(index),
       length: itemWidth,

@@ -40,7 +40,7 @@ const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ r
     status: selectedStatus,
   });
   const { getTokenInfoByAddress } = useTokenInfo(publicKey);
-  const tokenInfo = getTokenInfoByAddress(token);
+  const tokenInfo = getTokenInfoByAddress(token.address);
 
   // Function
   const onTransactionClick = (deploy: any) => {

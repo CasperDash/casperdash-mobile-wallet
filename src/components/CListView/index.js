@@ -169,6 +169,7 @@ const CListView = forwardRef((props, ref) => {
         setLoading(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshing]);
 
   const loadMore = () => {
@@ -196,6 +197,7 @@ const CListView = forwardRef((props, ref) => {
         setRefreshing(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   const scrollToTop = () => {
