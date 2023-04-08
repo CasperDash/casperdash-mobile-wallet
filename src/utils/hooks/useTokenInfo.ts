@@ -19,7 +19,7 @@ export interface ITokenInfo extends ITokenInfoResponse {
 const CSPR_INFO = {
   symbol: 'CSPR',
   address: 'CSPR',
-  icon: '/assets/images/token-icon.png',
+  icon: 'https://assets.casperdash.io/ic_cspr.png',
   name: 'Casper',
 };
 
