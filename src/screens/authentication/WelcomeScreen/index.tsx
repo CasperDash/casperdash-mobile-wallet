@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, LayoutAnimation, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, LayoutAnimation } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Row, Col, CButton, CPaginationDot } from 'components';
 import { ListIntro } from 'screens/authentication/data/data';
@@ -41,7 +41,7 @@ function WelcomeScreen() {
   useEffect(() => {
     const offset = arrayImgSlider[currentIndex] ?? 0;
     flatListRef.current?.scrollToOffset({ offset: offset, animated: true });
-  }, [currentIndex]);
+  }, [currentIndex, arrayImgSlider]);
 
   const onMomentumScrollEnd = (e: any) => {
     let x = e.nativeEvent.contentOffset.x;

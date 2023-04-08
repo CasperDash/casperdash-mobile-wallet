@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { ActivityIndicator, Image, View, StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { fonts } from 'assets';
 import { scale } from 'device';
@@ -29,7 +29,7 @@ function CFastImage(props) {
     textContainerStyle,
   } = props;
 
-  const [heightState, setHeight] = useState(() => {
+  const [heightState] = useState(() => {
     if (height && height > 0) {
       return height;
     } else if (heightOffset && heightOffset > 0) {
@@ -37,7 +37,7 @@ function CFastImage(props) {
     }
     return (width || Dimensions.get('window').width) / 2;
   });
-  const [widthState, setWidth] = useState(() => width || Dimensions.get('window').width);
+  const [widthState] = useState(() => width || Dimensions.get('window').width);
   const [load, setLoad] = useState(!!source);
   const [error, setError] = useState(false);
 
@@ -81,16 +81,7 @@ function CFastImage(props) {
         style={[styleImage, styles.image, { overlayColor: overlayColor }, { width: widthState, height: heightState }]}
       />
       {text && !load && (
-        <View
-          style={[
-            textContainerStyle ? textContainerStyle : styles.indicator,
-            {
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-            },
-          ]}
-        >
+        <View style={[textContainerStyle ? textContainerStyle : styles.indicator, styles.texContainer]}>
           <Text style={textStyle ? textStyle : styles.title} numberOfLines={2}>
             {text}
           </Text>
@@ -108,6 +99,11 @@ function CFastImage(props) {
 const styles = StyleSheet.create({
   container: {
     padding: 0,
+  },
+  texContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
 
   image: {

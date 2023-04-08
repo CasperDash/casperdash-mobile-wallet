@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, Image } from 'react-native';
 import { scale } from 'device';
 import { Row, Col, CButton } from 'components';
-import { colors, images, textStyles } from 'assets';
+import { colors, textStyles } from 'assets';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
+import { ITokenInfo } from 'utils/hooks/useTokenInfo';
 
 interface Props {
-  value: any;
-  onPress: (token: any) => void;
+  value: ITokenInfo;
+  onPress: (token: ITokenInfo) => void;
 }
 
 const TokenComponent = ({ value, onPress }: Props) => {
@@ -15,16 +16,14 @@ const TokenComponent = ({ value, onPress }: Props) => {
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
         <Row>
-          {value.symbol && (
-            <Image source={value.symbol === 'CSPR' ? value.icon : { uri: value.icon }} style={styles.symbol} />
-          )}
+          {value.symbol && <Image source={{ uri: value.icon }} style={styles.symbol} />}
           <Col mx={12}>
             <Text style={styles.sub1}>{value.symbol ?? ''}</Text>
             <Text style={styles.body2}>{value.balance ? toFormattedNumber(value.balance.displayValue ?? 0) : ''}</Text>
           </Col>
         </Row>
         <Col.R mx={12}>
-          <Text style={styles.sub1}>{toFormattedCurrency(value.totalPrice ?? 0)}</Text>
+          <Text style={styles.sub1}>{toFormattedCurrency(value.totalValue ?? 0)}</Text>
           <Text style={styles.body2}>
             {toFormattedCurrency(value.price ?? 0, {
               minimumFractionDigits: 4,

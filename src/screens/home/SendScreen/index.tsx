@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useSelector } from 'react-redux';
-import { getAllTokenInfo, getTokenInfoByAddress } from 'utils/selectors/user';
+import { useTokenInfo } from 'utils/hooks/useTokenInfo';
 import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
@@ -21,6 +21,7 @@ import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
+import { getPublicKey } from 'utils/selectors';
 
 const initialValues = {
   transferAmount: '0',
@@ -36,13 +37,13 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const { token } = route.params;
   const scanQRCodeModalRef = useRef<any>();
+  const publicKey = useSelector(getPublicKey);
 
-  const [selectedTokenAddress, setSelectedTokenAddress] = useState(token ? token.address : 'CSPR');
+  const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>(token ? token.address : 'CSPR');
+  const { allTokenInfo, getTokenInfoByAddress } = useTokenInfo(publicKey);
+  const selectedToken = getTokenInfoByAddress(selectedTokenAddress);
 
-  const allTokenInfo = useSelector(getAllTokenInfo);
-  const selectedToken = useSelector(getTokenInfoByAddress({ address: selectedTokenAddress }));
-
-  const minAmount = (selectedToken && selectedToken.minAmount && selectedToken.minAmount) || 0;
+  const minAmount = selectedToken?.minAmount ?? 0;
 
   const validationSchema = yup.object().shape({
     transferAmount: yup
@@ -86,7 +87,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
 
   const setBalance = () => {
     const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-    const maxAmount = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
+    const maxAmount = balance / percent - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0);
     setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 

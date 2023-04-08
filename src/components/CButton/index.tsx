@@ -1,9 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, TouchableOpacityProps, Alert, StyleSheet } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, StyleSheet } from 'react-native';
 
 const defaultProps = {
-  /*eslint no-alert: "off"*/
-  onPress: () => console.log('KIEM TRA'),
+  onPress: () => console.info('onPress'),
 };
 
 interface Props extends React.FC<TouchableOpacityProps> {

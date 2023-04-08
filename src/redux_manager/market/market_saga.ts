@@ -1,4 +1,4 @@
-import { put, takeLatest, take, cancel, delay } from 'redux-saga/effects';
+import { put, takeLatest, take, cancel } from 'redux-saga/effects';
 import { types } from './market_action';
 import { apis } from 'services';
 

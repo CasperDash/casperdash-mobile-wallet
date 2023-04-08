@@ -1,16 +1,15 @@
-/* eslint-disable complexity */
 import { BigNumber } from '@ethersproject/bignumber';
-import { ITokenInfo } from 'services/User/userApis';
+import { ITokenInfoResponse } from 'services/User/userApis';
 
 export const tokensSelector = (state: any) => state.home;
 
 /* A selector that returns an array of objects. */
-export const getMassagedTokenData = (data: ITokenInfo[]): ITokenInfo[] => {
+export const getMassagedTokenData = (data: ITokenInfoResponse[]): ITokenInfoResponse[] => {
   if (!Array.isArray(data)) {
     return [];
   }
 
-  return data.map<ITokenInfo>((datum) => {
+  return data.map<ITokenInfoResponse>((datum) => {
     const decimals = BigNumber.from(10).pow(datum?.decimals?.hex || 0);
 
     return {

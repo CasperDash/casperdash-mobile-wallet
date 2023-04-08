@@ -22,8 +22,7 @@ function Account() {
   const copyToClipboard = useCopyToClipboard();
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
-  //const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
-  //const allTokenInfo = useSelector(getAllTokenInfo);
+
   const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfo(publicKey);
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();

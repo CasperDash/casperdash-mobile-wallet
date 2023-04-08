@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export const types = {
   GET_LIST_NFT: 'GET_LIST_NFT',
   ADD_NFT_CONTACT_ADDRESS: 'ADD_NFT_CONTACT_ADDRESS',

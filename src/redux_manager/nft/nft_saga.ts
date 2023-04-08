@@ -1,4 +1,4 @@
-import { put, takeLatest, call, select, take, cancel } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { types } from './nft_action';
 import { apis } from 'services';
 import config from 'utils/config';
