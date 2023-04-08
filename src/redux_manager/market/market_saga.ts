@@ -6,6 +6,7 @@ export function* getPriceHistory(data: any) {
   try {
     // @ts-ignore
     const response = yield apis.getPriceHistoryAPI(data.params);
+
     if (response) {
       yield put({
         type: types.GET_PRICE_HISTORY + '_SUCCESS',

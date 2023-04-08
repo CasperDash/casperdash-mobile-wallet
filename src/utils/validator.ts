@@ -56,6 +56,8 @@ export const validateNFTMintForm = (values: any) => {
 const COMMON_ERROR_MESSAGE = {
   MORE_THAN_ZERO: (tokenSymbol: string) => `Amount must be more than 0 ${tokenSymbol}.`,
   NOT_ENOUGH_BALANCE: 'Not enough balance.',
+  NOT_ENOUGH_FEE: (fee: number) =>
+    `Sorry, you do not have sufficient funds in your active balance to perform the undelegation process. Please make sure you have at least ${fee} CSPR in your active balance before attempting to undelegate.`,
   NOT_ENOUGH_STAKED_AMOUNT: 'Not enough staked amount.',
 };
 
@@ -140,7 +142,7 @@ export const validateTransferForm = ({
   }
   //cspr balance
   if (csprBalance < transferFee) {
-    errors.transferFee = 'Not enough CSPR balance.';
+    errors.transferFee = COMMON_ERROR_MESSAGE.NOT_ENOUGH_FEE(transferFee);
   }
   return errors;
 };
@@ -166,41 +168,6 @@ export const validateStakeForm = ({
   if (amount <= 0) {
     errors.amount = COMMON_ERROR_MESSAGE.MORE_THAN_ZERO(tokenSymbol);
   } else if (amount + fee > balance) {
-    errors.amount = COMMON_ERROR_MESSAGE.NOT_ENOUGH_BALANCE;
-  }
-
-  if (balance <= minAmount) {
-    errors.amount = `Insufficient balance. System requires ${minAmount} ${tokenSymbol} minimum balance.`;
-  }
-
-  return errors;
-};
-
-/**
- * Validate undelegate form
- * @param {object} undelegate
- */
-export const validateUndelegateForm = ({
-  amount,
-  tokenSymbol,
-  balance,
-  fee,
-  stakedAmount,
-  minAmount,
-}: {
-  amount: number;
-  tokenSymbol: string;
-  balance: number;
-  fee: number;
-  stakedAmount: number;
-  minAmount: number;
-}) => {
-  let errors: any = {};
-  if (amount <= 0) {
-    errors.amount = COMMON_ERROR_MESSAGE.MORE_THAN_ZERO(tokenSymbol);
-  } else if (amount > stakedAmount) {
-    errors.amount = COMMON_ERROR_MESSAGE.NOT_ENOUGH_STAKED_AMOUNT;
-  } else if (fee > balance) {
     errors.amount = COMMON_ERROR_MESSAGE.NOT_ENOUGH_BALANCE;
   }
 

@@ -86,57 +86,57 @@ export const getMassagedUserDetails = createSelector(userDetailsSelector, (userD
 });
 
 /* `getAllTokenInfo` is a selector that returns an array of objects. */
-export const getAllTokenInfo = createSelector(
-  getMassagedUserDetails,
-  getCurrentPrice,
-  getMassagedTokenData,
-  getConfigurations,
-  (accountDetails, CSPRPrice, tokensData, configurations) => {
-    const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
-    const minAmount = configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
-    const tokenTransferFee = configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
+// export const getAllTokenInfo = createSelector(
+//   getMassagedUserDetails,
+//   getCurrentPrice,
+//   getMassagedTokenData,
+//   getConfigurations,
+//   (accountDetails, CSPRPrice, tokensData, configurations) => {
+//     const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
+//     const minAmount = configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
+//     const tokenTransferFee = configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
-    const CSPRBalance = (accountDetails && accountDetails.balance && accountDetails.balance.displayBalance) || 0;
-    const CSPRInfo = {
-      ...CSPR_INFO,
-      balance: { displayValue: CSPRBalance },
-      price: CSPRPrice,
-      totalPrice: CSPRPrice * CSPRBalance,
-      transferFee: transferFee,
-      minAmount: minAmount,
-    };
+//     const CSPRBalance = (accountDetails && accountDetails.balance && accountDetails.balance.displayBalance) || 0;
+//     const CSPRInfo = {
+//       ...CSPR_INFO,
+//       balance: { displayValue: CSPRBalance },
+//       price: CSPRPrice,
+//       totalPrice: CSPRPrice * CSPRBalance,
+//       transferFee: transferFee,
+//       minAmount: minAmount,
+//     };
 
-    //TODO: should get price for each token, currently no token issue on Casper blockchain and no source as well
-    // Temporary set the token price to 0
-    const tokenPrice = 0;
-    const tokensInfo =
-      tokensData && tokensData.length
-        ? tokensData.map((datum) => ({
-            price: tokenPrice,
-            totalPrice: tokenPrice * datum.balance.displayValue,
-            transferFee: tokenTransferFee,
-            icon: getBase64IdentIcon(datum.address),
-            ...datum,
-          }))
-        : [];
+//     //TODO: should get price for each token, currently no token issue on Casper blockchain and no source as well
+//     // Temporary set the token price to 0
+//     const tokenPrice = 0;
+//     const tokensInfo =
+//       tokensData && tokensData.length
+//         ? tokensData.map((datum) => ({
+//             price: tokenPrice,
+//             totalPrice: tokenPrice * datum.balance.displayValue,
+//             transferFee: tokenTransferFee,
+//             icon: getBase64IdentIcon(datum.address),
+//             ...datum,
+//           }))
+//         : [];
 
-    return [CSPRInfo, ...tokensInfo];
-  },
-);
+//     return [CSPRInfo, ...tokensInfo];
+//   },
+// );
 
 /* This selector is a function that takes in the state and returns the total balance of the user in
 fiat. */
-export const getAccountTotalBalanceInFiat = createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {
-  return allTokenInfo && allTokenInfo.length
-    ? allTokenInfo.reduce((out: number, datum: any) => {
-        return out + datum.totalPrice;
-      }, 0)
-    : 0;
-});
+// export const getAccountTotalBalanceInFiat = createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {
+//   return allTokenInfo && allTokenInfo.length
+//     ? allTokenInfo.reduce((out: number, datum: any) => {
+//         return out + datum.totalPrice;
+//       }, 0)
+//     : 0;
+// });
 
-export const getTokenInfoByAddress = (token: any) =>
-  createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {
-    return token && allTokenInfo && allTokenInfo.length
-      ? allTokenInfo.find((info: any) => info.address === token.address)
-      : {};
-  });
+// export const getTokenInfoByAddress = (token: any) =>
+//   createSelector<any, any>(getAllTokenInfo, (allTokenInfo: any) => {
+//     return token && allTokenInfo && allTokenInfo.length
+//       ? allTokenInfo.find((info: any) => info.address === token.address)
+//       : {};
+//   });

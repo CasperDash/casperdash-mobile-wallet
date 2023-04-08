@@ -45,37 +45,6 @@ function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
   });
 }
 
-/**
- * Get Token Info With Balance
- * @param {any} params - {
- * @returns The response is a JSON object with the following structure:
- * ```
- * {
- *   "tokens": [
- *     {
- *       "token": "0x0000000000000000000000000000000000000000",
- *       "name": "Ether",
- *       "symbol": "ETH",
- *       "decimals": 18,
- *       "totalSupply": "1000000000000000000000000000",
- *      }
- */
-function getTokenInfoWithBalanceAPI<T>(params: any): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .authorizedRequest('/tokens/getTokensInfo?' + qs.stringify(params), 'GET')
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
 function fetchCSPRMarketInfoAPI<T>(): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
@@ -191,13 +160,7 @@ function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseRespon
 function getPriceHistoryAPI<T>(): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
-      .unAuthorizedRequest(
-        'api/v3/coins/casper-network/market_chart?vs_currency=usd&days=30&interval=hourly',
-        'GET',
-        undefined,
-        undefined,
-        'https://api.coingecko.com/',
-      )
+      .unAuthorizedRequest('/price/history', 'GET')
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);
@@ -213,7 +176,6 @@ function getPriceHistoryAPI<T>(): NetworkPromiseResponse<T> {
 export default {
   getAccountInformation,
   getAccounts,
-  getTokenInfoWithBalanceAPI,
   fetchCSPRMarketInfoAPI,
   getTokenAddressInfoAPI,
   getConfigurationsAPI,
