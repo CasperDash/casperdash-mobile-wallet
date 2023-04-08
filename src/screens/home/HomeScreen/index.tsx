@@ -10,24 +10,24 @@ import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
-import { getAllTokenInfo, getPublicKey } from 'utils/selectors/user';
+import { getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
 import { checkIfLoadingSelector, checkIfRefreshingSelector } from 'utils/selectors';
 import { types as homeTypes } from 'redux_manager/home/home_action';
 import { types as userTypes } from 'redux_manager/user/user_action';
 import { Config } from 'utils';
+import { useTokenInfo } from 'utils/hooks/useTokenInfo';
 
 function HomeScreen() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const publicKey = useSelector(getPublicKey);
-  const allTokenInfo = useSelector(getAllTokenInfo);
+  const { allTokenInfo, refreshTokenInfo } = useTokenInfo(publicKey);
 
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
     checkIfLoadingSelector(state, [
-      homeTypes.GET_TOKEN_INFO_WITH_BALANCE,
       homeTypes.FETCH_CSPR_MARKET_INFO,
       userTypes.GET_ACCOUNT_INFORMATION,
       userTypes.GET_ACCOUNTS,
@@ -37,7 +37,6 @@ function HomeScreen() {
   const isRefreshing = useSelector((state: any) =>
     // @ts-ignore
     checkIfRefreshingSelector(state, [
-      homeTypes.GET_TOKEN_INFO_WITH_BALANCE,
       homeTypes.FETCH_CSPR_MARKET_INFO,
       userTypes.GET_ACCOUNT_INFORMATION,
       userTypes.GET_ACCOUNTS,
@@ -58,7 +57,8 @@ function HomeScreen() {
 
   const onRefresh = () => {
     getAccountInformation(true);
-    getData(true);
+    refreshTokenInfo();
+    // getData(true);
   };
 
   const showErrorMessage = useCallback(
@@ -81,44 +81,6 @@ function HomeScreen() {
       }),
     );
   };
-
-  const getTokenInfoWithBalance = useCallback(
-    (refreshing: boolean) => {
-      dispatch(
-        allActions.home.getTokenInfoWithBalance({ refreshing }, (error: any) => {
-          if (error) {
-            showErrorMessage(error);
-          }
-        }),
-      );
-    },
-    [dispatch, showErrorMessage],
-  );
-
-  const fetchCSPRMarketInfo = useCallback(
-    (refreshing: boolean) => {
-      dispatch(
-        allActions.home.fetchCSPRMarketInfo({ refreshing }, (error: any) => {
-          if (error) {
-            showErrorMessage(error);
-          }
-        }),
-      );
-    },
-    [showErrorMessage, dispatch],
-  );
-
-  const getData = useCallback(
-    (refreshing: boolean) => {
-      fetchCSPRMarketInfo(refreshing);
-      getTokenInfoWithBalance(refreshing);
-    },
-    [getTokenInfoWithBalance, fetchCSPRMarketInfo],
-  );
-
-  useEffect(() => {
-    getData(false);
-  }, [getData]);
 
   const openHistories = (token: any) => {
     navigate(MainRouter.HISTORIES_SCREEN, { token });
@@ -171,10 +133,6 @@ function HomeScreen() {
             <CButton onPress={() => navigate(MainRouter.SETTINGS_SCREEN)} style={styles.circleBtn}>
               <IconSetting width={scale(21)} height={scale(21)} />
             </CButton>
-            {/*TODO: follow the figma's design*/}
-            {/*<CButton style={[styles.circleBtn, {marginLeft: scale(16)}]}>
-                            <IconScanCode width={scale(21)} height={scale(21)}/>
-                        </CButton>*/}
           </Row.C>
         </Row.LR>
         <ScrollView

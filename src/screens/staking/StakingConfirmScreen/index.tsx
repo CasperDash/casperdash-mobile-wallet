@@ -55,9 +55,13 @@ const StakingConfirmScreen: React.FC<
         return +value.replace(/,/, '.');
       })
       .required('Amount must be more than 0 CSPR')
-      .test('max', 'Not enough balance.', function () {
-        return balance >= fee;
-      })
+      .test(
+        'max',
+        `Sorry, you do not have sufficient funds in your active balance to perform the undelegation process. Please make sure you have at least ${fee} CSPR in your active balance before attempting to undelegate.`,
+        function () {
+          return balance >= fee;
+        },
+      )
       .test('min', 'Amount must be more than 0 CSPR', function (value: any) {
         return value > 0;
       }),

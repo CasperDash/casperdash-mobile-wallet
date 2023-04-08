@@ -1,10 +1,4 @@
-import {
-  isValidPublicKey,
-  validateTransferForm,
-  validateStakeForm,
-  validateUndelegateForm,
-  validateNFTMintForm,
-} from './validator';
+import { isValidPublicKey, validateTransferForm, validateStakeForm, validateNFTMintForm } from './validator';
 
 describe('isValidPublicKey', () => {
   test('valid public key', () => {
@@ -140,61 +134,6 @@ describe('validateStakeForm', () => {
       }),
     ).toEqual({
       amount: 'Insufficient balance. System requires 7 CSPR minimum balance.',
-    });
-  });
-});
-
-describe('validateUndelegateForm', () => {
-  test('Amount must be more than zero', () => {
-    expect(
-      validateUndelegateForm({
-        amount: -1,
-        tokenSymbol: 'CSPR',
-        balance: 3,
-        fee: 5,
-        minAmount: 0.0001,
-      }),
-    ).toEqual({ amount: 'Amount must be more than 0 CSPR.' });
-  });
-
-  test('Amount must be less or equal than staked amount', () => {
-    expect(
-      validateUndelegateForm({
-        amount: 3,
-        tokenSymbol: 'CSPR',
-        balance: 5,
-        fee: 0.00001,
-        minAmount: 0.0001,
-        stakedAmount: 2,
-      }),
-    ).toEqual({ amount: 'Not enough staked amount.' });
-  });
-
-  test('Not enough balance', () => {
-    expect(
-      validateUndelegateForm({
-        amount: 1,
-        tokenSymbol: 'CSPR',
-        balance: 4,
-        fee: 4.5,
-        minAmount: 2.5,
-        stakedAmount: 2,
-      }),
-    ).toEqual({ amount: 'Not enough balance.' });
-  });
-
-  test('Not enough minimum balance', () => {
-    expect(
-      validateUndelegateForm({
-        amount: 1,
-        tokenSymbol: 'CSPR',
-        balance: 4,
-        fee: 4.5,
-        minAmount: 5,
-        stakedAmount: 2,
-      }),
-    ).toEqual({
-      amount: 'Insufficient balance. System requires 5 CSPR minimum balance.',
     });
   });
 });

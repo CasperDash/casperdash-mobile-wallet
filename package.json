@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator='iPhone 14 Pro Max'",
     "start": "react-native start",
     "ios:mainnet": "yarn env:mainnet && react-native run-ios",
     "android:mainnet": "yarn env:mainnet && react-native run-android",
@@ -30,7 +30,7 @@
     "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn"
   },
   "dependencies": {
-    "@ethersproject/bignumber": "^5.5.0",
+    "@ethersproject/bignumber": "^5.7.0",
     "@haskkor/react-native-pincode": "^1.22.6",
     "@ledgerhq/hw-app-eth": "^6.23.0",
     "@ledgerhq/react-native-hw-transport-ble": "^6.20.0",

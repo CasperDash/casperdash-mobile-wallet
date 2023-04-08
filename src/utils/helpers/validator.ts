@@ -164,38 +164,3 @@ export const validateStakeForm = ({
 
   return errors;
 };
-
-/**
- * Validate undelegate form
- * @param {object} undelegate
- */
-export const validateUndelegateForm = ({
-  amount,
-  tokenSymbol,
-  balance,
-  fee,
-  stakedAmount,
-  minAmount,
-}: {
-  amount: number;
-  tokenSymbol: string;
-  balance: number;
-  fee: number;
-  stakedAmount: number;
-  minAmount: number;
-}) => {
-  let errors: any = {};
-  if (amount <= 0) {
-    errors.amount = COMMON_ERROR_MESSAGE.MORE_THAN_ZERO(tokenSymbol);
-  } else if (amount > stakedAmount) {
-    errors.amount = COMMON_ERROR_MESSAGE.NOT_ENOUGH_STAKED_AMOUNT;
-  } else if (fee > balance) {
-    errors.amount = COMMON_ERROR_MESSAGE.NOT_ENOUGH_BALANCE;
-  }
-
-  if (balance <= minAmount) {
-    errors.amount = `Insufficient balance. System requires ${minAmount} ${tokenSymbol} minimum balance.`;
-  }
-
-  return errors;
-};

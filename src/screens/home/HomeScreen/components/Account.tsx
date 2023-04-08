@@ -6,13 +6,14 @@ import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { useSelector } from 'react-redux';
-import { getAccountTotalBalanceInFiat, getAllTokenInfo, getPublicKey, getLoginOptions } from 'utils/selectors/user';
+import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 import { WalletInfoDetails } from 'utils/helpers/account';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { useTokenInfo } from 'utils/hooks/useTokenInfo';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -21,8 +22,9 @@ function Account() {
   const copyToClipboard = useCopyToClipboard();
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
-  const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
-  const allTokenInfo = useSelector(getAllTokenInfo);
+  //const totalFiatBalance = useSelector(getAccountTotalBalanceInFiat);
+  //const allTokenInfo = useSelector(getAllTokenInfo);
+  const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfo(publicKey);
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();
   const selectedWallet = useSelector<any, WalletInfoDetails>((state: any) => state.user.selectedWallet || {});
