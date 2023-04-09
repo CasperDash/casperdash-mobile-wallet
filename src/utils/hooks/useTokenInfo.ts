@@ -47,7 +47,7 @@ export const useTokenInfo = (publicKey: string) => {
 
   const configurations = useSelector(getConfigurations);
 
-  const { currentPrice: CSPRPrice } = usePrice();
+  const { currentPrice: CSPRPrice, refetch } = usePrice();
 
   const allTokenInfo = useMemo<ITokenInfo[]>(() => {
     const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
@@ -97,7 +97,8 @@ export const useTokenInfo = (publicKey: string) => {
 
   const refreshTokenInfo = useCallback(() => {
     refetchTokenData();
-  }, [refetchTokenData]);
+    refetch();
+  }, [refetchTokenData, refetch]);
 
   return { allTokenInfo, accountTotalBalanceInFiat, getTokenInfoByAddress, refreshTokenInfo };
 };
