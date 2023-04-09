@@ -1,17 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
 import { CLayout, Row, Col } from 'components';
 import { scale } from 'device';
 import TransactionComponent from 'screens/market/components/TransactionComponent';
 import ChartComponent from 'screens/market/components/ChartComponent';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPriceHistory } from 'utils/selectors/price';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
 import { useScrollToTop } from '@react-navigation/native';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
-import { usePrice } from 'utils/hooks/usePrice';
+import { usePrice, usePriceHistory } from 'utils/hooks/usePrice';
 
 const getIcon = (type: string) => {
   return type === 'up' ? (
@@ -22,15 +18,17 @@ const getIcon = (type: string) => {
 };
 
 function MarketScreen() {
-  const dispatch = useDispatch();
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
 
-  const priceHistory = useSelector(getPriceHistory);
-  const { data: csprMarketInfo, currentPrice } = usePrice();
+  const { data: csprMarketInfo, currentPrice, refetch: refetchPrice, isRefetching: isRefetchingPrice } = usePrice();
+  const {
+    massagedData: priceHistory,
+    refetch: refetchPriceHistory,
+    isRefetching: isRefetchingPriceHistory,
+  } = usePriceHistory();
 
   const [isScrollable, setScrollable] = useState<boolean>(true);
-  const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
   const rowInfo = [
     {
@@ -51,28 +49,9 @@ function MarketScreen() {
     },
   ];
 
-  const getPriceHistoryInfo = useCallback(() => {
-    dispatch(
-      allActions.market.getPriceHistory((error: any) => {
-        setRefreshing(false);
-        if (error) {
-          const message = {
-            message: error && error.message ? error.message : 'Error',
-            type: MessageType.error,
-          };
-          dispatch(allActions.main.showMessage(message));
-        }
-      }),
-    );
-  }, [dispatch]);
-
-  useEffect(() => {
-    getPriceHistoryInfo();
-  }, [getPriceHistoryInfo]);
-
   const onRefresh = () => {
-    setRefreshing(true);
-    getPriceHistoryInfo();
+    refetchPrice();
+    refetchPriceHistory();
   };
 
   const onActivated = () => {
@@ -116,7 +95,7 @@ function MarketScreen() {
           scrollEnabled={isScrollable}
           refreshControl={
             <RefreshControl
-              refreshing={isRefreshing}
+              refreshing={isRefetchingPrice || isRefetchingPriceHistory}
               onRefresh={onRefresh}
               style={{ backgroundColor: colors.cF8F8F8 }}
             />

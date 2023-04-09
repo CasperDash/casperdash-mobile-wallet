@@ -112,33 +112,23 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
     const ledgerPublicKey = await getLedgerPublicKey(casperApp, keyIndex);
     setIsLoading(true);
     setPublicKey(ledgerPublicKey);
-    dispatch(
-      allActions.user.getAccountInformation({ publicKey: ledgerPublicKey }, async (err: any, data: any) => {
-        const notFundAccount = err && err.message && err.message.includes('ValueNotFound');
-        if (data || notFundAccount) {
-          await Config.saveItem(Keys.ledger, transport.device);
-          const info = {
-            publicKey: ledgerPublicKey,
-            loginOptions: {
-              connectionType: CONNECTION_TYPES.ledger,
-              keyIndex,
-            },
-          };
-          await Config.saveItem(Keys.casperdash, info);
-          setIsLoading(false);
-          replace(AuthenticationRouter.CHOOSE_PIN, {
-            screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-            params: {
-              showBack: false,
-            },
-          });
-        } else {
-          setIsLoading(false);
-          setTransport(null);
-          Config.alertMess(err);
-        }
-      }),
-    );
+
+    await Config.saveItem(Keys.ledger, transport.device);
+    const info = {
+      publicKey: ledgerPublicKey,
+      loginOptions: {
+        connectionType: CONNECTION_TYPES.ledger,
+        keyIndex,
+      },
+    };
+    await Config.saveItem(Keys.casperdash, info);
+    setIsLoading(false);
+    replace(AuthenticationRouter.CHOOSE_PIN, {
+      screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+      params: {
+        showBack: false,
+      },
+    });
   };
 
   /**

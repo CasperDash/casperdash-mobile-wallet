@@ -81,8 +81,6 @@ export function* pushTransferToLocalStorage(data: any) {
     type: types.PUSH_TRANSFER_TO_LOCAL_STORAGE_SUCCESS,
     payload: deploysTransfer,
   });
-  yield put({ type: userTypes.GET_ACCOUNT_INFORMATION });
-  yield put({ type: types.FETCH_CSPR_MARKET_INFO });
 }
 
 export function* watchPushTransferToLocalStorage() {

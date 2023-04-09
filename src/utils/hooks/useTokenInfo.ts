@@ -1,12 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getMassagedTokenData, getMassagedUserDetails, getConfigurations } from 'utils/selectors';
+import { getMassagedTokenData, getConfigurations } from 'utils/selectors';
 import { usePrice } from './usePrice';
 import * as DEFAULT_CONFIG from '../constants/key';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { useQuery } from 'react-query';
 import { ERequestKeys } from 'utils/constants/requestKeys';
-import { ITokenInfoResponse, getTokenInfoWithBalance } from 'services/User/userApis';
+import { ITokenInfoResponse } from 'services/User/userTypes';
+import { getTokenInfoWithBalance } from 'services/User/userApis';
+import { useAccountInfo } from './useAccountInfo';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;
@@ -24,55 +27,77 @@ const CSPR_INFO = {
 };
 
 export const useTokenInfoWithBalance = (publicKey: string) => {
-  const { data, isLoading, refetch } = useQuery({
+  const query = useQuery({
     queryKey: [ERequestKeys.tokenInfoWithBalance],
     queryFn: () => getTokenInfoWithBalance(publicKey),
     enabled: !!publicKey,
   });
 
   const massagedData = useMemo<ITokenInfoResponse[]>(() => {
-    if (data) {
-      const massagedTokenData = getMassagedTokenData(data);
+    if (query.data) {
+      const massagedTokenData = getMassagedTokenData(query.data);
       return massagedTokenData;
     }
     return [];
-  }, [data]);
+  }, [query.data]);
 
-  return { data, massagedData, isLoading, refetch };
+  return { ...query, massagedData };
 };
 
 export const useTokenInfo = (publicKey: string) => {
-  const accountDetails = useSelector(getMassagedUserDetails);
-  const { massagedData: tokensData, refetch: refetchTokenData } = useTokenInfoWithBalance(publicKey);
+  const {
+    massagedData: tokensData,
+    refetch: refetchTokenData,
+    isLoading: isLoadingToken,
+    isFetching: isFetchingToken,
+    isError: isTokenError,
+  } = useTokenInfoWithBalance(publicKey);
+  const {
+    massagedData: accountDetails,
+    refetch: refetchAccountInfo,
+    isLoading: isLoadingAccountInfo,
+    isFetching: isFetchingAccountInfo,
+    isError: isAccountError,
+  } = useAccountInfo(publicKey);
 
   const configurations = useSelector(getConfigurations);
 
-  const { currentPrice: CSPRPrice, refetch } = usePrice();
+  const { currentPrice: CSPRPrice, refetch: refetchPrice } = usePrice();
 
   const allTokenInfo = useMemo<ITokenInfo[]>(() => {
     const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
     const minAmount = configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
     const tokenTransferFee = configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
-    const CSPRBalance = (accountDetails && accountDetails.balance && accountDetails.balance.displayBalance) || 0;
+    const CSPRBalance = accountDetails?.balance?.displayBalance || BigNumber.from(0);
+
     const CSPRInfo = {
       ...CSPR_INFO,
       balance: { displayValue: CSPRBalance },
       price: CSPRPrice,
-      totalValue: CSPRPrice * CSPRBalance,
+      totalValue: CSPRBalance.toNumber() * CSPRPrice,
       transferFee: transferFee,
       minAmount: minAmount,
     };
     const tokenPrice = 0;
     const tokensInfo =
       tokensData && tokensData.length
-        ? tokensData.map((datum) => ({
-            price: tokenPrice,
-            totalValue: (datum.balance.displayValue || 0) * tokenPrice,
-            transferFee: tokenTransferFee,
-            icon: getBase64IdentIcon(datum.address),
-            ...datum,
-          }))
+        ? tokensData.map((datum) => {
+            const tokenDisplayValue = datum?.balance?.displayValue
+              ? BigNumber.from(datum.balance.hex)
+              : BigNumber.from(0);
+            return {
+              ...datum,
+              price: tokenPrice,
+              totalValue: tokenDisplayValue.toNumber() * tokenPrice,
+              transferFee: tokenTransferFee,
+              icon: getBase64IdentIcon(datum.address),
+              balance: {
+                ...datum.balance,
+                displayValue: tokenDisplayValue,
+              },
+            };
+          })
         : [];
 
     return [CSPRInfo, ...tokensInfo];
@@ -97,8 +122,17 @@ export const useTokenInfo = (publicKey: string) => {
 
   const refreshTokenInfo = useCallback(() => {
     refetchTokenData();
-    refetch();
-  }, [refetchTokenData, refetch]);
+    refetchAccountInfo();
+    refetchPrice();
+  }, [refetchTokenData, refetchPrice, refetchAccountInfo]);
 
-  return { allTokenInfo, accountTotalBalanceInFiat, getTokenInfoByAddress, refreshTokenInfo };
+  return {
+    allTokenInfo,
+    accountTotalBalanceInFiat,
+    getTokenInfoByAddress,
+    refreshTokenInfo,
+    isLoading: isLoadingAccountInfo || isLoadingToken,
+    isFetching: isFetchingAccountInfo || isFetchingToken,
+    isError: isAccountError || isTokenError,
+  };
 };

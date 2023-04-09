@@ -157,22 +157,6 @@ function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseRespon
   });
 }
 
-function getPriceHistoryAPI<T>(): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .unAuthorizedRequest('/price/history', 'GET')
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
 export default {
   getAccountInformation,
   getAccounts,
@@ -183,5 +167,4 @@ export default {
   getListNFTsAPI,
   getTransferDeploysStatusAPI,
   getValidatorsInformationAPI,
-  getPriceHistoryAPI,
 };
