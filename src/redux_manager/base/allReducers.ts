@@ -4,7 +4,6 @@ import Main from '../main/main_reducer';
 import Home from '../home/home_reducer';
 import NFT from '../nft/nft_reducer';
 import Staking from '../staking/staking_reducer';
-import Market from '../market/market_reducer';
 
 export default combineReducers({
   user: User,
@@ -12,5 +11,4 @@ export default combineReducers({
   home: Home,
   nft: NFT,
   staking: Staking,
-  market: Market,
 });
