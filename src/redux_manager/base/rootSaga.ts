@@ -8,8 +8,6 @@ import { watchGetTokenAddressInfo, watchPushTransferToLocalStorage } from '../ho
 import { watchFetchNFTInfo } from '../nft/nft_saga';
 import { watchGetValidatorsInformation, watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
 
-import { watchGetPriceHistory } from 'redux_manager/market/market_saga';
-
 export default function* rootSaga() {
   yield all([
     //user
@@ -33,8 +31,5 @@ export default function* rootSaga() {
     //Staking
     watchGetValidatorsInformation(),
     watchPushStakeToLocalStorage(),
-
-    //market
-    watchGetPriceHistory(),
   ]);
 }
