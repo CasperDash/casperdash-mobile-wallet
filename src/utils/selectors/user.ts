@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { convertBalanceFromHex } from 'utils/helpers/balance';
 import { WalletInfo, User } from 'react-native-casper-storage';
 import { WalletInfoDetails } from 'utils/helpers/account';
 
@@ -54,22 +53,4 @@ export const getPublicKey = ({ user }: { user: any }) => {
   return user.casperdash && user.casperdash.publicKey;
 };
 
-const massageUserDetails = (userDetails: any) => {
-  const hexBalance = userDetails && userDetails.balance ? userDetails.balance.hex : 0;
-  return {
-    ...userDetails,
-    balance: {
-      ...userDetails.balance,
-      mote: parseInt(hexBalance),
-      displayBalance: convertBalanceFromHex(hexBalance),
-    },
-  };
-};
-
 export const userDetailsSelector = (state: any) => state.user;
-
-/* This is a selector that returns a function. The function takes in the state and returns the user
-details. */
-export const getMassagedUserDetails = createSelector(userDetailsSelector, (userDetails) => {
-  return massageUserDetails(userDetails.info || {});
-});

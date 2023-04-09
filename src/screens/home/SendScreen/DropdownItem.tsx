@@ -4,16 +4,19 @@ import { Row } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
+import { ITokenInfo } from 'utils/hooks/useTokenInfo';
 
 interface Props {
-  item: any;
+  item: ITokenInfo;
 }
 
 const DropdownItem = ({ item }: Props) => {
   return (
     <Row.LR px={16} style={styles.dropItem}>
       <Text style={textStyles.Body1}>{item.symbol}</Text>
-      <Text style={textStyles.Sub1}>{item.balance ? toFormattedNumber(item.balance.displayValue ?? 0) : ''}</Text>
+      <Text style={textStyles.Sub1}>
+        {item.balance ? toFormattedNumber(item?.balance?.displayValue?.toNumber()) : '0'}
+      </Text>
     </Row.LR>
   );
 };

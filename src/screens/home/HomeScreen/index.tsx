@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { colors, textStyles, IconSetting, IconPlusCircle, IconLogo } from 'assets';
 import { CButton, CLayout, Col, Row } from 'components';
@@ -12,10 +12,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import { getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
-import { checkIfLoadingSelector, checkIfRefreshingSelector } from 'utils/selectors';
-import { types as homeTypes } from 'redux_manager/home/home_action';
-import { types as userTypes } from 'redux_manager/user/user_action';
-import { Config } from 'utils';
 import { useTokenInfo } from 'utils/hooks/useTokenInfo';
 
 function HomeScreen() {
@@ -23,64 +19,19 @@ function HomeScreen() {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const publicKey = useSelector(getPublicKey);
-  const { allTokenInfo, refreshTokenInfo } = useTokenInfo(publicKey);
-
-  const isLoading = useSelector((state: any) =>
-    // @ts-ignore
-    checkIfLoadingSelector(state, [
-      homeTypes.FETCH_CSPR_MARKET_INFO,
-      userTypes.GET_ACCOUNT_INFORMATION,
-      userTypes.GET_ACCOUNTS,
-    ]),
-  );
-  // @ts-ignore
-  const isRefreshing = useSelector((state: any) =>
-    // @ts-ignore
-    checkIfRefreshingSelector(state, [
-      homeTypes.FETCH_CSPR_MARKET_INFO,
-      userTypes.GET_ACCOUNT_INFORMATION,
-      userTypes.GET_ACCOUNTS,
-    ]),
-  );
-
-  useEffect(() => {
-    if (publicKey) {
-      dispatch(
-        allActions.user.getAccountInformation({ publicKey }, async (err: any) => {
-          if (err) {
-            Config.alertMess(err);
-          }
-        }),
-      );
-    }
-  }, [publicKey, dispatch]);
+  const { allTokenInfo, refreshTokenInfo, isFetching, isLoading, isError } = useTokenInfo(publicKey);
 
   const onRefresh = () => {
-    getAccountInformation(true);
     refreshTokenInfo();
-    // getData(true);
   };
 
-  const showErrorMessage = useCallback(
-    (error: any) => {
-      const message = {
-        message: error && error.message ? error.message : 'Error',
-        type: MessageType.error,
-      };
-      dispatch(allActions.main.showMessage(message));
-    },
-    [dispatch],
-  );
-
-  const getAccountInformation = (refreshing: boolean) => {
-    dispatch(
-      allActions.user.getAccountInformation({ refreshing }, (error: any) => {
-        if (error) {
-          showErrorMessage(error);
-        }
-      }),
-    );
-  };
+  if (isError) {
+    const message = {
+      message: 'Error on loading account info',
+      type: MessageType.error,
+    };
+    dispatch(allActions.main.showMessage(message));
+  }
 
   const openHistories = (token: any) => {
     navigate(MainRouter.HISTORIES_SCREEN, { token });
@@ -138,7 +89,7 @@ function HomeScreen() {
         <ScrollView
           nestedScrollEnabled
           stickyHeaderIndices={[0]}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          refreshControl={<RefreshControl refreshing={isFetching} onRefresh={onRefresh} />}
           showsVerticalScrollIndicator={false}
         >
           <Account />

@@ -1,5 +1,5 @@
 import { all } from 'redux-saga/effects';
-import { watchGetAccountInformation, watchGetAccounts, watchLoadSelectedWallet } from '../user/user_saga';
+import { watchGetAccounts, watchLoadSelectedWallet } from '../user/user_saga';
 
 import { watchGetConfigurations, watchLoadLocalStorage, watchShowMessage } from '../main/main_saga';
 
@@ -11,7 +11,6 @@ import { watchGetValidatorsInformation, watchPushStakeToLocalStorage } from 'red
 export default function* rootSaga() {
   yield all([
     //user
-    watchGetAccountInformation(),
     watchGetAccounts(),
     watchLoadSelectedWallet(),
 

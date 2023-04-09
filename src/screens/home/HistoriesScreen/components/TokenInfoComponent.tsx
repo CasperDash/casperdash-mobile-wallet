@@ -32,9 +32,9 @@ const TokenInfoComponent = ({ tokenInfo }: Props) => {
       <Col px={16} pt={24} pb={16} style={styles.accountContainer}>
         <Col.C>
           {tokenInfo?.symbol && <Image source={{ uri: tokenInfo?.icon }} style={styles.symbol} />}
-          <Text style={styles.amount}>{`${tokenInfo?.balance && toFormattedNumber(tokenInfo.balance.displayValue)} ${
-            tokenInfo?.symbol
-          }`}</Text>
+          <Text style={styles.amount}>{`${
+            tokenInfo?.balance && toFormattedNumber(tokenInfo.balance.displayValue?.toNumber())
+          } ${tokenInfo?.symbol}`}</Text>
           <Text style={styles.amount2}>~ {toFormattedCurrency(tokenInfo?.totalValue)}</Text>
         </Col.C>
         <Row.C>

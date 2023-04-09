@@ -10,10 +10,11 @@ import { useFormik } from 'formik';
 import { StakingMode } from 'utils/constants/key';
 import * as yup from 'yup';
 import { scale } from 'device';
-import { getMassagedUserDetails } from 'utils/selectors';
 import { toFormattedNumber } from 'utils/helpers/format';
 import CTextButton from 'components/CTextButton';
 import { EViews } from '../../utils';
+import { useAccountInfo } from 'utils/hooks/useAccountInfo';
+import { BigNumber } from '@ethersproject/bignumber';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
@@ -37,8 +38,8 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
 }) => {
   const navigation = useNavigation();
 
-  const userDetails = useSelector(getMassagedUserDetails);
-  const balance = userDetails && userDetails.balance && userDetails.balance.displayBalance;
+  const { massagedData: userDetails } = useAccountInfo(publicKey);
+  const balance = userDetails?.balance?.displayBalance || BigNumber.from(0);
   const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
   const minCSPRDelegateToNewValidator = useSelector(getConfigKey('MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR'));
   const maxDelegatorPerValidator = useSelector(getConfigKey('MAX_DELEGATOR_PER_VALIDATOR'));
@@ -70,7 +71,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
       })
       .required('Amount must be more than 0 CSPR')
       .test('max', 'Not enough balance.', function (value: any) {
-        return value + fee <= balance;
+        return value + fee <= balance.toNumber();
       })
       .test('min', 'Amount must be more than 2.5 CSPR', function (value: any) {
         return value > 2.5;
@@ -91,7 +92,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   });
 
   const setBalance = () => {
-    setFieldValue('amount', `${balance - fee > 0 ? balance - fee : 0}`);
+    setFieldValue('amount', `${balance.toNumber() - fee > 0 ? balance.toNumber() - fee : 0}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -156,7 +157,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         {!!errors.validator && touched.validator && <Text style={styles.error}>{errors.validator}</Text>}
         <Row.LR mt={24} mb={16}>
           <Text style={styles.title}>Amount</Text>
-          <Text style={textStyles.Body1}>Balance: {toFormattedNumber(balance)}</Text>
+          <Text style={textStyles.Body1}>Balance: {toFormattedNumber(balance.toNumber())}</Text>
         </Row.LR>
         <CInputFormik
           name={'amount'}

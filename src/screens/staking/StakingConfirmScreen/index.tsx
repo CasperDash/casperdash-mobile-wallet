@@ -9,12 +9,11 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPublicKey, getMassagedUserDetails } from 'utils/selectors';
+import { getPublicKey } from 'utils/selectors';
 import { getConfigKey } from 'utils/selectors/configurations';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { ScreenProps } from 'navigation/ScreenProps';
 import InfoComponent from 'screens/staking/InfoComponent';
-
 import { ENTRY_POINT_DELEGATE, ENTRY_POINT_UNDELEGATE, StakingMode } from 'utils/constants/key';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
@@ -22,6 +21,7 @@ import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { useNavigation } from '@react-navigation/native';
 import { getStakeDeploy } from 'utils/services/stakeServices';
 import { MessageType } from 'components/CMessge/types';
+import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 
 const StakingConfirmScreen: React.FC<
   // @ts-ignore
@@ -40,8 +40,8 @@ const StakingConfirmScreen: React.FC<
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
-  const userDetails = useSelector(getMassagedUserDetails);
-  const balance = userDetails && userDetails.balance && userDetails.balance.displayBalance;
+  const { massagedData: userDetails } = useAccountInfo(publicKey);
+  const balance = userDetails?.balance?.displayBalance.toNumber() || 0;
 
   const [isForm, setIsForm] = useState<boolean>(name === StakingMode.Undelegate);
 

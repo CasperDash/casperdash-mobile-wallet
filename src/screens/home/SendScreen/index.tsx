@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useSelector } from 'react-redux';
-import { useTokenInfo } from 'utils/hooks/useTokenInfo';
+import { ITokenInfo, useTokenInfo } from 'utils/hooks/useTokenInfo';
 import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
@@ -22,6 +22,7 @@ import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
 import { getPublicKey } from 'utils/selectors';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const initialValues = {
   transferAmount: '0',
@@ -58,8 +59,8 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
       .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = (selectedToken && selectedToken.transferFee) || 0;
-        const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-        return selectedTokenAddress === 'CSPR' ? value + fee <= displayValue : true;
+        const displayValue = selectedToken?.balance?.displayValue?.toNumber() || 0;
+        return selectedTokenAddress === 'CSPR' ? displayValue >= value + fee : true;
       }),
     receivingAddress: yup
       .string()
@@ -86,8 +87,9 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   };
 
   const setBalance = () => {
-    const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-    const maxAmount = balance / percent - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0);
+    const balance = selectedToken?.balance?.displayValue || BigNumber.from(0);
+    const maxAmount =
+      balance.toNumber() / (percent - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0));
     setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 
@@ -144,7 +146,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
               }
               return <SelectDropdownComponent item={item} key={index} />;
             }}
-            renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
+            renderCustomizedRowChild={(item: ITokenInfo, index) => <DropdownItem item={item} key={index} />}
             data={allTokenInfo}
             onSelect={onSelectedToken}
             buttonTextAfterSelection={(item) => item}
