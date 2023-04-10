@@ -3,27 +3,6 @@ import qs from 'qs';
 export type NetworkPromiseResponse<T> = Promise<T>;
 
 /**
- * Get Account Information
- * @param {any} params - any
- * @returns The response is a promise that resolves to the response from the server.
- */
-function getAccountInformation<T>(params: any): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .authorizedRequest('/user/' + params, 'GET')
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
-/**
  *  Fetch accounts information by passing public keys.
  * `NetworkPromiseResponse<T>`
  * @param {any} params - any
@@ -33,22 +12,6 @@ function getAccounts<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
       .authorizedRequest('/users', 'POST', params)
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
-function fetchCSPRMarketInfoAPI<T>(): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .unAuthorizedRequest('/price/latest', 'GET')
       .then((res: any) => {
         if (!res || (res && res.status >= 400)) {
           return reject(res);
@@ -158,9 +121,7 @@ function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseRespon
 }
 
 export default {
-  getAccountInformation,
   getAccounts,
-  fetchCSPRMarketInfoAPI,
   getTokenAddressInfoAPI,
   getConfigurationsAPI,
   deployAPI,
