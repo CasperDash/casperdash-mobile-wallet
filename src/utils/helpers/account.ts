@@ -15,7 +15,6 @@ import { CONNECTION_TYPES } from 'utils/constants/settings';
 export interface WalletInfoDetails {
   walletInfo: WalletInfo;
   publicKey?: string;
-  balance?: number;
 }
 
 export interface CasperDashStoredInfo {

@@ -20,3 +20,13 @@ export const getAccountInfo = async (publicKey: string): Promise<IAccountRespons
 
   return (await response.json()) || {};
 };
+
+export const getListAccountInfo = async (publicKeys: string[]): Promise<IAccountResponse[]> => {
+  const response = await fetch(`${NETWORK_URL}/v2/users?${publicKeys.map((key) => `publicKeys=${key}`).join('&')}`);
+
+  if (!response.ok) {
+    throw new Error('Cant get token info');
+  }
+
+  return (await response.json()) || {};
+};

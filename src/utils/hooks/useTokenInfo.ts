@@ -28,7 +28,7 @@ const CSPR_INFO = {
 
 export const useTokenInfoWithBalance = (publicKey: string) => {
   const query = useQuery({
-    queryKey: [ERequestKeys.tokenInfoWithBalance],
+    queryKey: [ERequestKeys.tokenInfoWithBalance, publicKey],
     queryFn: () => getTokenInfoWithBalance(publicKey),
     enabled: !!publicKey,
   });

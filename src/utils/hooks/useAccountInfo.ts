@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { getAccountInfo } from 'services/User/userApis';
+import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { toCSPR } from 'utils/helpers/currency';
@@ -17,12 +17,12 @@ export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo 
 };
 
 export interface IAccountInfo extends IAccountResponse {
-  balance: IDisplayCSPRBalance;
+  balance?: IDisplayCSPRBalance;
 }
 
 export const useAccountInfo = (publicKey: string) => {
   const query = useQuery({
-    queryKey: [ERequestKeys.accountInfo],
+    queryKey: [ERequestKeys.accountInfo, publicKey],
     queryFn: () => getAccountInfo(publicKey),
     enabled: !!publicKey,
   });
@@ -32,6 +32,24 @@ export const useAccountInfo = (publicKey: string) => {
       return massageUserDetails(query.data);
     }
     return undefined;
+  }, [query.data]);
+
+  return { ...query, massagedData };
+};
+
+export const useListAccountInfo = (publicKeys: string[], keepPreviousData?: boolean) => {
+  const query = useQuery({
+    queryKey: [ERequestKeys.listAccountInfo, publicKeys],
+    queryFn: () => getListAccountInfo(publicKeys),
+    enabled: !!publicKeys && publicKeys.length > 0,
+    keepPreviousData: keepPreviousData,
+  });
+
+  const massagedData = useMemo(() => {
+    if (query.data) {
+      return query.data.map((userDetails: IAccountResponse) => massageUserDetails(userDetails));
+    }
+    return [];
   }, [query.data]);
 
   return { ...query, massagedData };
