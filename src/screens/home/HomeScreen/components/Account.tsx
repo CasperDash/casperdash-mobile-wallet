@@ -23,7 +23,7 @@ function Account() {
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
 
-  const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfo(publicKey);
+  const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfo(publicKey!);
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();
   const selectedWallet = useSelector<any, WalletInfoDetails>((state: any) => state.user.selectedWallet || {});
@@ -41,7 +41,7 @@ function Account() {
   }, [loginOptions]);
 
   const saveKey = () => {
-    copyToClipboard(publicKey);
+    copyToClipboard(publicKey!);
   };
 
   const navigateSendReceive = (screen: string) => {

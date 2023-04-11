@@ -49,8 +49,9 @@ export const getLoginOptions = ({ user }: { user: any }) => {
  * Given a user object, return the user's public key
  * @returns The public key of the user.
  */
-export const getPublicKey = ({ user }: { user: any }) => {
-  return user.casperdash && user.casperdash.publicKey;
-};
+export const getPublicKey = createSelector(
+  (state: any) => state.user,
+  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet.publicKey,
+);
 
 export const userDetailsSelector = (state: any) => state.user;
