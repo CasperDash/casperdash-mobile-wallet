@@ -10,7 +10,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
-import { getConfigKey } from 'utils/selectors/configurations';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { ScreenProps } from 'navigation/ScreenProps';
 import InfoComponent from 'screens/staking/InfoComponent';
@@ -22,6 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getStakeDeploy } from 'utils/services/stakeServices';
 import { MessageType } from 'components/CMessge/types';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
 
 const StakingConfirmScreen: React.FC<
   // @ts-ignore
@@ -33,14 +33,16 @@ const StakingConfirmScreen: React.FC<
     amount: '0',
     validator: validator,
   };
-  const fee = useSelector(
-    getConfigKey(name === StakingMode.Delegate ? 'CSPR_AUCTION_DELEGATE_FEE' : 'CSPR_AUCTION_UNDELEGATE_FEE'),
-  );
-  const publicKey = useSelector(getPublicKey);
+  const { data: configurations } = useConfigurations();
+  const fee =
+    (name === StakingMode.Delegate
+      ? configurations?.CSPR_AUCTION_DELEGATE_FEE
+      : configurations?.CSPR_AUCTION_UNDELEGATE_FEE) || 0;
+  const publicKey = useSelector(getPublicKey)!;
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
-  const { massagedData: userDetails } = useAccountInfo(publicKey);
+  const { massagedData: userDetails } = useAccountInfo(publicKey!);
   const balance = userDetails?.balance?.displayBalance.toNumber() || 0;
 
   const [isForm, setIsForm] = useState<boolean>(name === StakingMode.Undelegate);

@@ -15,7 +15,7 @@ export const getAccountInfo = async (publicKey: string): Promise<IAccountRespons
   const response = await fetch(`${NETWORK_URL}/user/${publicKey}`);
 
   if (!response.ok) {
-    throw new Error('Cant get token info');
+    throw new Error('Cant get account info');
   }
 
   return (await response.json()) || {};
@@ -25,7 +25,7 @@ export const getListAccountInfo = async (publicKeys: string[]): Promise<IAccount
   const response = await fetch(`${NETWORK_URL}/v2/users?${publicKeys.map((key) => `publicKeys=${key}`).join('&')}`);
 
   if (!response.ok) {
-    throw new Error('Cant get token info');
+    throw new Error('Cant get list account info');
   }
 
   return (await response.json()) || {};

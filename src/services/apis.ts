@@ -18,22 +18,6 @@ function getTokenAddressInfoAPI<T>(params: any): NetworkPromiseResponse<T> {
   });
 }
 
-function getConfigurationsAPI<T>(): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .authorizedRequest('/configurations', 'GET')
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
 function deployAPI<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
@@ -100,7 +84,6 @@ function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseRespon
 
 export default {
   getTokenAddressInfoAPI,
-  getConfigurationsAPI,
   deployAPI,
   getListNFTsAPI,
   getTransferDeploysStatusAPI,

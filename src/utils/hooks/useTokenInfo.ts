@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { getMassagedTokenData, getConfigurations } from 'utils/selectors';
+import { getMassagedTokenData } from 'utils/selectors';
 import { usePrice } from './usePrice';
 import * as DEFAULT_CONFIG from '../constants/key';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
@@ -10,6 +9,7 @@ import { ITokenInfoResponse } from 'services/User/userTypes';
 import { getTokenInfoWithBalance } from 'services/User/userApis';
 import { useAccountInfo } from './useAccountInfo';
 import { BigNumber } from '@ethersproject/bignumber';
+import { useConfigurations } from './useConfigurations';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;
@@ -60,14 +60,14 @@ export const useTokenInfo = (publicKey: string) => {
     isError: isAccountError,
   } = useAccountInfo(publicKey);
 
-  const configurations = useSelector(getConfigurations);
+  const { data: configurations } = useConfigurations();
 
   const { currentPrice: CSPRPrice, refetch: refetchPrice } = usePrice();
 
   const allTokenInfo = useMemo<ITokenInfo[]>(() => {
-    const transferFee = configurations.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
-    const minAmount = configurations.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
-    const tokenTransferFee = configurations.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
+    const transferFee = configurations?.CSPR_TRANSFER_FEE || DEFAULT_CONFIG.CSPR_TRANSFER_FEE;
+    const minAmount = configurations?.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
+    const tokenTransferFee = configurations?.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
     const CSPRBalance = accountDetails?.balance?.displayBalance || BigNumber.from(0);
 
