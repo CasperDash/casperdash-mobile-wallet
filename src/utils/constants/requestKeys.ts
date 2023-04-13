@@ -6,4 +6,5 @@ export enum ERequestKeys {
   tokenInfoWithBalance = 'tokenInfoWithBalance',
   accountInfo = 'accountInfo',
   listAccountInfo = 'listAccountInfo',
+  configurations = 'configurations',
 }

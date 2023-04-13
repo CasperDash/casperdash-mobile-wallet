@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 import Splash from 'react-native-splash-screen';
 import { Config, Keys } from 'utils';
@@ -7,23 +7,15 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { isEmpty } from 'lodash';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
 import { createAndStoreMasterPassword } from 'utils/helpers/account';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
 
 const SplashScreen = () => {
   const reStack = useRestack();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    //always get new config
-    dispatch(allActions.main.getConfigurations());
-    setupNavigation();
+  const { isLoading } = useConfigurations();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const setupNavigation = async () => {
+  const setupNavigation = useCallback(async () => {
     const overview = await Config.getItem(Keys.overview);
 
     const casperDashInfo = await Config.getItem(Keys.casperdash);
@@ -43,9 +35,13 @@ const SplashScreen = () => {
 
     reStack(StackName.AuthenticationStack, screen);
     Splash.hide();
-  };
+  }, [reStack]);
 
-  return <View />;
+  useEffect(() => {
+    setupNavigation();
+  }, [setupNavigation]);
+
+  return isLoading ? <ActivityIndicator /> : <View />;
 };
 
 export default SplashScreen;

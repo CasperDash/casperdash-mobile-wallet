@@ -29,11 +29,6 @@ export default function (state = initialState, action = { type: '', payload: {} 
         ...state,
         ...action.payload,
       };
-    case types.GET_CONFIGURATIONS_SUCCESS:
-      return {
-        ...state,
-        configurations: action.payload,
-      };
     case types.START_ACTION:
       return {
         ...state,

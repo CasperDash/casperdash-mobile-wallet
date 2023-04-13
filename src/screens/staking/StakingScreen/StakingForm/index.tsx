@@ -3,7 +3,6 @@ import { Row, CInputFormik, Col, CButton } from 'components';
 import { Text, View, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
 import { useSelector } from 'react-redux';
-import { getConfigKey } from 'utils/selectors/configurations';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
@@ -15,6 +14,7 @@ import CTextButton from 'components/CTextButton';
 import { EViews } from '../../utils';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { BigNumber } from '@ethersproject/bignumber';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
@@ -40,9 +40,10 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
 
   const { massagedData: userDetails } = useAccountInfo(publicKey);
   const balance = userDetails?.balance?.displayBalance || BigNumber.from(0);
-  const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
-  const minCSPRDelegateToNewValidator = useSelector(getConfigKey('MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR'));
-  const maxDelegatorPerValidator = useSelector(getConfigKey('MAX_DELEGATOR_PER_VALIDATOR'));
+  const { data: configurations } = useConfigurations();
+  const fee = configurations?.CSPR_AUCTION_DELEGATE_FEE || 0;
+  const minCSPRDelegateToNewValidator = configurations?.MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR || 0;
+  const maxDelegatorPerValidator = configurations?.MAX_DELEGATOR_PER_VALIDATOR || 1000000;
 
   const hasDelegated = React.useMemo(() => {
     return selectedValidator?.bidInfo?.bid?.delegators?.find((delegator: any) => delegator.public_key === publicKey);

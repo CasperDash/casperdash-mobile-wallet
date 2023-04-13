@@ -7,9 +7,6 @@ export const types = {
   LOAD_LOCAL_STORAGE: 'LOAD_LOCAL_STORAGE',
   LOAD_LOCAL_STORAGE_SUCCESS: 'LOAD_LOCAL_STORAGE_SUCCESS',
 
-  GET_CONFIGURATIONS: 'GET_CONFIGURATIONS',
-  GET_CONFIGURATIONS_SUCCESS: 'GET_CONFIGURATIONS_SUCCESS',
-
   START_ACTION: 'START_ACTION',
   STOP_ACTION: 'STOP_ACTION',
 
@@ -30,12 +27,6 @@ const showMessage = (message: Message, duration?: number) => {
 const loadLocalStorage = () => {
   return {
     type: types.LOAD_LOCAL_STORAGE,
-  };
-};
-
-const getConfigurations = () => {
-  return {
-    type: types.GET_CONFIGURATIONS,
   };
 };
 
@@ -80,7 +71,6 @@ export const clearAllData = () => {
 export default {
   showMessage,
   loadLocalStorage,
-  getConfigurations,
   startAction,
   stopAction,
   initState,
