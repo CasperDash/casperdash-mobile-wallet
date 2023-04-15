@@ -30,8 +30,6 @@ const initialValues = {
   transferID: '',
 };
 
-const percent = 1;
-
 // @ts-ignore
 const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) => {
   const { bottom } = useSafeAreaInsets();
@@ -88,8 +86,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
 
   const setBalance = () => {
     const balance = selectedToken?.balance?.displayValue || BigNumber.from(0);
-    const maxAmount =
-      balance.toNumber() / (percent - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0));
+    const maxAmount = balance.toNumber() - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0);
     setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 
