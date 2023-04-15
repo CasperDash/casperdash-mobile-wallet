@@ -1,36 +1,7 @@
 import { put, takeLatest, take, cancel } from 'redux-saga/effects';
 import { types } from './home_action';
 
-import { apis } from 'services';
 import { Config, Keys } from 'utils';
-
-export function* deploy(data: any) {
-  try {
-    // @ts-ignore
-    const response = yield apis.deployAPI(data.params);
-    if (response) {
-      yield put({ type: types.DEPLOY + '_SUCCESS', payload: response });
-      data.cb && data.cb(null, response);
-    } else {
-      data.cb && data.cb(true, null);
-    }
-  } catch (error: any) {
-    if (error && error.data) {
-      data.cb && data.cb(error.data, null);
-    } else {
-      data.cb && data.cb(error, null);
-    }
-  }
-}
-
-export function* watchDeploy() {
-  while (true) {
-    // @ts-ignore
-    const watcher = yield takeLatest(types.DEPLOY, deploy);
-    yield take(['LOGOUT', 'NETWORK']);
-    yield cancel(watcher);
-  }
-}
 
 export function* pushTransferToLocalStorage(data: any) {
   const { publicKey, transfer } = data;

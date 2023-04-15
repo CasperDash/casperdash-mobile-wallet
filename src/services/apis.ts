@@ -2,22 +2,6 @@ import network from 'services/network';
 import qs from 'qs';
 export type NetworkPromiseResponse<T> = Promise<T>;
 
-function deployAPI<T>(params: any): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .authorizedRequest('/deploy', 'POST', params)
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
 function getTransferDeploysStatusAPI<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
@@ -51,7 +35,6 @@ function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseRespon
 }
 
 export default {
-  deployAPI,
   getTransferDeploysStatusAPI,
   getValidatorsInformationAPI,
 };
