@@ -1,40 +1,8 @@
 import { put, takeLatest, take, cancel } from 'redux-saga/effects';
 import { types } from './home_action';
-import { types as userTypes } from '../user/user_action';
 
 import { apis } from 'services';
 import { Config, Keys } from 'utils';
-
-export function* getTokenAddressInfo(data: any) {
-  try {
-    // @ts-ignore
-    const response = yield apis.getTokenAddressInfoAPI(data.params);
-    if (response) {
-      yield put({
-        type: types.GET_TOKEN_ADDRESS_INFO + '_SUCCESS',
-        payload: response,
-      });
-      data.cb && data.cb(null, response);
-    } else {
-      data.cb && data.cb(true, null);
-    }
-  } catch (error: any) {
-    if (error && error.data) {
-      data.cb && data.cb(error.data, null);
-    } else {
-      data.cb && data.cb(error, null);
-    }
-  }
-}
-
-export function* watchGetTokenAddressInfo() {
-  while (true) {
-    // @ts-ignore
-    const watcher = yield takeLatest(types.GET_TOKEN_ADDRESS_INFO, getTokenAddressInfo);
-    yield take(['LOGOUT', 'NETWORK']);
-    yield cancel(watcher);
-  }
-}
 
 export function* deploy(data: any) {
   try {

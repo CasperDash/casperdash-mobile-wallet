@@ -3,7 +3,7 @@ import { watchLoadSelectedWallet } from '../user/user_saga';
 
 import { watchLoadLocalStorage, watchShowMessage } from '../main/main_saga';
 
-import { watchGetTokenAddressInfo, watchPushTransferToLocalStorage } from '../home/home_saga';
+import { watchPushTransferToLocalStorage } from '../home/home_saga';
 
 import { watchFetchNFTInfo } from '../nft/nft_saga';
 import { watchGetValidatorsInformation, watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
@@ -18,7 +18,6 @@ export default function* rootSaga() {
     watchLoadLocalStorage(),
 
     //home
-    watchGetTokenAddressInfo(),
     watchPushTransferToLocalStorage(),
     //wallet
 

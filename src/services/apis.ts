@@ -2,22 +2,6 @@ import network from 'services/network';
 import qs from 'qs';
 export type NetworkPromiseResponse<T> = Promise<T>;
 
-function getTokenAddressInfoAPI<T>(params: any): NetworkPromiseResponse<T> {
-  return new Promise((resolve, reject) => {
-    network
-      .authorizedRequest('/token/' + params, 'GET')
-      .then((res: any) => {
-        if (!res || (res && res.status >= 400)) {
-          return reject(res);
-        }
-        resolve(res as any);
-      })
-      .catch((err: any) => {
-        reject(err);
-      });
-  });
-}
-
 function deployAPI<T>(params: any): NetworkPromiseResponse<T> {
   return new Promise((resolve, reject) => {
     network
@@ -83,7 +67,6 @@ function getValidatorsInformationAPI<T>(publicKey: string): NetworkPromiseRespon
 }
 
 export default {
-  getTokenAddressInfoAPI,
   deployAPI,
   getListNFTsAPI,
   getTransferDeploysStatusAPI,
