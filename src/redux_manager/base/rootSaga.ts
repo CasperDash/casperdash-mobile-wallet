@@ -5,7 +5,6 @@ import { watchLoadLocalStorage, watchShowMessage } from '../main/main_saga';
 
 import { watchPushTransferToLocalStorage } from '../home/home_saga';
 
-import { watchFetchNFTInfo } from '../nft/nft_saga';
 import { watchGetValidatorsInformation, watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
 
 export default function* rootSaga() {
@@ -20,9 +19,6 @@ export default function* rootSaga() {
     //home
     watchPushTransferToLocalStorage(),
     //wallet
-
-    //NFTs
-    watchFetchNFTInfo(),
 
     //Staking
     watchGetValidatorsInformation(),
