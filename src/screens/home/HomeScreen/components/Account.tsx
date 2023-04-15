@@ -13,7 +13,7 @@ import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccount
 import { WalletInfoDetails } from 'utils/helpers/account';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
-import { useTokenInfo } from 'utils/hooks/useTokenInfo';
+import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -23,7 +23,7 @@ function Account() {
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
 
-  const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfo(publicKey!);
+  const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfoByPublicKey(publicKey!);
   const { navigate } = useNavigation();
   const selectAccountModalRef = useRef<any>();
   const selectedWallet = useSelector<any, WalletInfoDetails>((state: any) => state.user.selectedWallet || {});

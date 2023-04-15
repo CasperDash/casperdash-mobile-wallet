@@ -4,6 +4,7 @@ export enum ERequestKeys {
   latestPrice = 'latestPrice',
   priceHistory = 'priceHistory',
   tokenInfoWithBalance = 'tokenInfoWithBalance',
+  tokenInfo = 'tokenInfo',
   accountInfo = 'accountInfo',
   listAccountInfo = 'listAccountInfo',
   configurations = 'configurations',

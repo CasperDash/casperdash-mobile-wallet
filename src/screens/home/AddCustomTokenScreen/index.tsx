@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { CInput, CLayout, CLoading } from 'components';
 import { CHeader, Col } from 'components';
@@ -8,47 +8,38 @@ import CTextButton from 'components/CTextButton';
 import { Config, Keys } from 'utils';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { allActions } from 'redux_manager';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useTokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { getPublicKey } from 'utils/selectors';
 
+// TODO: recheck add custom token
 function AddCustomTokenScreen() {
-  const [error, setError] = useState('');
+  const publicKey = useSelector(getPublicKey);
+  const inputTokenAddress = useRef<string>('');
   const [tokenAddress, setTokenAddress] = useState('');
   const { goBack } = useNavigation<StackNavigationProp<any>>();
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const { refetch, error, isLoading, remove } = useTokenInfo(tokenAddress, { enabled: false });
+  const { refreshTokenInfo } = useTokenInfoByPublicKey(publicKey!);
 
   const onChange = (value?: string) => {
-    setTokenAddress(value ?? '');
+    inputTokenAddress.current = value ?? '';
+    remove();
   };
 
   const onAddPublicKey = async () => {
-    setLoading(true);
-    dispatch(
-      allActions.home.getTokenAddressInfo(tokenAddress, async (err: any, res: any) => {
-        if (res) {
-          if (res.address) {
-            let tokensAddressList = await Config.getItem(Keys.tokensAddressList);
-            if (tokensAddressList) {
-              const isExist = tokensAddressList.find((address: string) => address === res.address);
-              if (!isExist) {
-                tokensAddressList.push(res.address);
-              }
-            } else {
-              tokensAddressList = [res.address];
-            }
-            await Config.saveItem(Keys.tokensAddressList, tokensAddressList);
-            // TODO: replace with use react query
-            //dispatch(allActions.home.getTokenInfoWithBalance({ refreshing: false }, undefined));
-          }
-          setLoading(false);
-          goBack();
-        } else {
-          setLoading(false);
-          setError(err && err.message ? err.message : 'Can not find token info');
-        }
-      }),
-    );
+    setTokenAddress(inputTokenAddress.current);
+    const { data } = await refetch();
+    if (data?.address) {
+      let tokensAddressList = (await Config.getItem(Keys.tokensAddressList)) || [];
+      const isExist = tokensAddressList.find((address: string) => address === data.address);
+      if (!isExist) {
+        tokensAddressList.push(data.address);
+      }
+
+      await Config.saveItem(Keys.tokensAddressList, tokensAddressList);
+      refreshTokenInfo();
+      goBack();
+    }
   };
 
   return (
@@ -62,8 +53,13 @@ function AddCustomTokenScreen() {
           onChangeText={onChange}
           style={styles.inputContainer}
         />
-        <Text style={styles.errorText}>{error}</Text>
-        <CTextButton onPress={onAddPublicKey} disabled={!!error || !tokenAddress} style={styles.btnAdd} text={'Add'} />
+        <Text style={styles.errorText}>{error?.message}</Text>
+        <CTextButton
+          onPress={onAddPublicKey}
+          disabled={!!error || !inputTokenAddress}
+          style={styles.btnAdd}
+          text={'Add'}
+        />
       </Col>
       {isLoading && <CLoading />}
     </CLayout>
