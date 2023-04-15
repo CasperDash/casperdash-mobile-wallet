@@ -3,13 +3,14 @@ import { getMassagedTokenData } from 'utils/selectors';
 import { usePrice } from './usePrice';
 import * as DEFAULT_CONFIG from '../constants/key';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
-import { useQuery } from 'react-query';
+import { UseQueryOptions, useQuery } from 'react-query';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { ITokenInfoResponse } from 'services/User/userTypes';
 import { getTokenInfoWithBalance } from 'services/User/userApis';
 import { useAccountInfo } from './useAccountInfo';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useConfigurations } from './useConfigurations';
+import { getTokenInfo } from 'services/Token/tokenApis';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;
@@ -44,7 +45,7 @@ export const useTokenInfoWithBalance = (publicKey: string) => {
   return { ...query, massagedData };
 };
 
-export const useTokenInfo = (publicKey: string) => {
+export const useTokenInfoByPublicKey = (publicKey: string) => {
   const {
     massagedData: tokensData,
     refetch: refetchTokenData,
@@ -135,4 +136,24 @@ export const useTokenInfo = (publicKey: string) => {
     isFetching: isFetchingAccountInfo || isFetchingToken,
     isError: isAccountError || isTokenError,
   };
+};
+
+export const useTokenInfo = (
+  tokenAddress: string,
+  options: Omit<
+    UseQueryOptions<
+      unknown,
+      unknown,
+      Omit<ITokenInfoResponse, 'balance'>,
+      [ERequestKeys.tokenInfo, string | undefined]
+    >,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  const query = useQuery({
+    queryKey: [ERequestKeys.tokenInfo, tokenAddress],
+    queryFn: () => getTokenInfo(tokenAddress),
+    ...options,
+  });
+  return query;
 };

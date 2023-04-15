@@ -12,14 +12,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import { getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
-import { useTokenInfo } from 'utils/hooks/useTokenInfo';
+import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 
 function HomeScreen() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const publicKey = useSelector(getPublicKey);
-  const { allTokenInfo, refreshTokenInfo, isFetching, isLoading, isError } = useTokenInfo(publicKey);
+  const { allTokenInfo, refreshTokenInfo, isFetching, isLoading, isError } = useTokenInfoByPublicKey(publicKey!);
 
   const onRefresh = () => {
     refreshTokenInfo();

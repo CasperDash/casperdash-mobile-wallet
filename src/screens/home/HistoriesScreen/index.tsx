@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { ScreenProps } from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
-import { useTokenInfo } from 'utils/hooks/useTokenInfo';
+import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
 import { CButton, CHeader, CLayout, Col, Row } from 'components';
@@ -39,7 +39,7 @@ const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ r
     publicKey,
     status: selectedStatus,
   });
-  const { getTokenInfoByAddress } = useTokenInfo(publicKey);
+  const { getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey!);
   const tokenInfo = getTokenInfoByAddress(token.address);
 
   // Function

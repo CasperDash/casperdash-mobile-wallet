@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useSelector } from 'react-redux';
-import { ITokenInfo, useTokenInfo } from 'utils/hooks/useTokenInfo';
+import { ITokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
@@ -41,7 +41,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   const publicKey = useSelector(getPublicKey);
 
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>(token ? token.address : 'CSPR');
-  const { allTokenInfo, getTokenInfoByAddress } = useTokenInfo(publicKey);
+  const { allTokenInfo, getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey!);
   const selectedToken = getTokenInfoByAddress(selectedTokenAddress);
 
   const minAmount = selectedToken?.minAmount ?? 0;
