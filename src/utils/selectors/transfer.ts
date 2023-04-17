@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { IDeployStatusResponse } from 'services/Deploy/deployApis';
 import { Config, Keys } from 'utils';
 
 /* It's a selector, which is a function that returns a value from a state. */
@@ -24,7 +25,10 @@ export const getDeploysTransfer = createSelector(
  * @param path - The path to the file that contains the deploy.
  * @param [listHash] - A list of deploys that have been deployed.
  */
-export const updateTransferDeployStatus = async (publicKey: string, listHash = []) => {
+export const updateTransferDeployStatus = async (publicKey: string, listHash?: IDeployStatusResponse[]) => {
+  if (!listHash?.length) {
+    return;
+  }
   const deployStorageValue = (await Config.getItem(Keys.deploysTransfer)) || {};
   const deployStorageValueByPublicKey = deployStorageValue[publicKey] || [];
 
@@ -33,7 +37,7 @@ export const updateTransferDeployStatus = async (publicKey: string, listHash = [
       if (!deploy.deployHash) {
         return deploy;
       }
-      const hashStatus: any = listHash.find(
+      const hashStatus: any = listHash?.find(
         (item: any) => item.hash && item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
       );
       return {

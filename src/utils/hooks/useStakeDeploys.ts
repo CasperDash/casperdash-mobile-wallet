@@ -5,8 +5,8 @@ import { getDeployStakes, updateStakesDeployStatus } from '../selectors/stake';
 import { getListValidators } from '../selectors/validator';
 import { ENTRY_POINT_UNDELEGATE, DeployStatus } from '../constants/key';
 import { IconStatusReceive, IconStatusSend } from 'assets';
-import { apis } from 'services';
 import { allActions } from 'redux_manager';
+import { useDeployStatus } from './useDeployStatus';
 
 /**
  * It returns an icon based on the value of the stake
@@ -81,22 +81,20 @@ export const useStakeFromValidators = (publicKey: string) => {
   const pendingStakes = stakeDeployList.filter((stake: any) => stake.status === DeployStatus.pending);
   const pendingUndelegate = stakeDeployList.filter((stake: any) => stake.status === DeployStatus.undelegating);
 
+  const { data } = useDeployStatus(pendingStakes.concat(pendingUndelegate).map((deploy: any) => deploy.deployHash));
+
   useEffect(() => {
-    if (pendingStakes.length || pendingUndelegate.length) {
+    if (data?.length) {
       (async () => {
         if (!publicKey) {
           return;
         }
-        const pendingStakesDeployHash = pendingStakes.concat(pendingUndelegate).map((deploy: any) => deploy.deployHash);
-        const data: any = await apis.getTransferDeploysStatusAPI({
-          deployHash: pendingStakesDeployHash,
-        });
+
         await updateStakesDeployStatus(publicKey, data);
         dispatch(allActions.main.loadLocalStorage());
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(pendingStakes), dispatch, publicKey]);
+  }, [data, dispatch, publicKey]);
 
   const stakedValidators = getStakedValidators(validators, pendingStakes, publicKey);
   return stakedValidators;

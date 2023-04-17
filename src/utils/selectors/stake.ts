@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { IDeployStatusResponse } from 'services/Deploy/deployApis';
 import { Config, Keys } from 'utils';
 
 /**
@@ -67,7 +68,10 @@ export const getDeployStakes = createSelector(
  * @param path - The path to the file that was deployed.
  * @param [listHash] - A list of hashes of the deployed stakes.
  */
-export const updateStakesDeployStatus = async (publicKey: string, listHash = []) => {
+export const updateStakesDeployStatus = async (publicKey: string, listHash?: IDeployStatusResponse[]) => {
+  if (!listHash?.length) {
+    return;
+  }
   const deployStorageValue = (await Config.getItem(Keys.deploysStakes)) || {};
   const deployStorageValueByPublicKey = deployStorageValue[publicKey] || [];
 
@@ -76,8 +80,8 @@ export const updateStakesDeployStatus = async (publicKey: string, listHash = [])
       if (!deploy.deployHash) {
         return deploy;
       }
-      const hashStatus: any = listHash.find(
-        (item: any) => item.hash && item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
+      const hashStatus = listHash?.find(
+        (item) => item.hash && item.hash.toLowerCase() === deploy.deployHash.toLowerCase(),
       );
       return {
         ...deploy,
