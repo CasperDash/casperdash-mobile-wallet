@@ -57,7 +57,7 @@ const AccountItem = ({
                     <ActivityIndicator size="small" color={colors.N2} />
                   </View>
                 )}
-                {toFormattedNumber(data.balance?.displayBalance?.toNumber()) || 0} CSPR
+                {toFormattedNumber(data.balance?.displayBalance) || 0} CSPR
               </Text>
             </Col>
           </>

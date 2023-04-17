@@ -146,6 +146,7 @@
     "@babel/core": "^7.14.6",
     "@babel/runtime": "^7.14.6",
     "@react-native-community/eslint-config": "^3.2.0",
+    "@types/big.js": "^6.1.6",
     "@types/identicon.js": "^2.3.1",
     "@types/jest": "^26.0.23",
     "@types/react": "^17.0.13",

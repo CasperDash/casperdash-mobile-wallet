@@ -32,7 +32,7 @@ export const getListAccountInfo = async (publicKeys: string[]): Promise<IAccount
 };
 
 export const getAccountDelegation = async (publicKey: string): Promise<IAccountDelegationResponse[]> => {
-  const response = await fetch(`${NETWORK_URL}/delegations/${publicKey}`);
+  const response = await fetch(`${NETWORK_URL}/user/delegation/${publicKey}`);
 
   if (!response.ok) {
     throw new Error('Cant get account delegation');

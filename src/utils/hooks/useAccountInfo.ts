@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
-import { toCSPR } from 'utils/helpers/currency';
+import { toCSPRFromHex } from 'utils/helpers/currency';
 
 export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo => {
   const hexBalance = userDetails?.balance?.hex ?? 0;
@@ -11,7 +11,7 @@ export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo 
     ...userDetails,
     balance: {
       ...userDetails.balance,
-      displayBalance: toCSPR(hexBalance),
+      displayBalance: toCSPRFromHex(hexBalance).toNumber(),
     },
   };
 };
