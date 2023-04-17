@@ -8,7 +8,6 @@ import { ERequestKeys } from 'utils/constants/requestKeys';
 import { ITokenInfoResponse } from 'services/User/userTypes';
 import { getTokenInfoWithBalance } from 'services/User/userApis';
 import { useAccountInfo } from './useAccountInfo';
-import { BigNumber } from '@ethersproject/bignumber';
 import { useConfigurations } from './useConfigurations';
 import { getTokenInfo } from 'services/Token/tokenApis';
 
@@ -70,13 +69,13 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
     const minAmount = configurations?.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
     const tokenTransferFee = configurations?.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
-    const CSPRBalance = accountDetails?.balance?.displayBalance || BigNumber.from(0);
+    const CSPRBalance = accountDetails?.balance?.displayBalance || 0;
 
     const CSPRInfo = {
       ...CSPR_INFO,
       balance: { displayValue: CSPRBalance },
       price: CSPRPrice,
-      totalValue: CSPRBalance.toNumber() * CSPRPrice,
+      totalValue: CSPRBalance * CSPRPrice,
       transferFee: transferFee,
       minAmount: minAmount,
     };
@@ -84,19 +83,12 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
     const tokensInfo =
       tokensData && tokensData.length
         ? tokensData.map((datum) => {
-            const tokenDisplayValue = datum?.balance?.displayValue
-              ? BigNumber.from(datum.balance.hex)
-              : BigNumber.from(0);
             return {
               ...datum,
               price: tokenPrice,
-              totalValue: tokenDisplayValue.toNumber() * tokenPrice,
+              totalValue: (datum?.balance?.displayValue || 0) * tokenPrice,
               transferFee: tokenTransferFee,
               icon: getBase64IdentIcon(datum.address),
-              balance: {
-                ...datum.balance,
-                displayValue: tokenDisplayValue,
-              },
             };
           })
         : [];
@@ -106,7 +98,8 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
 
   const accountTotalBalanceInFiat = useMemo(() => {
     return allTokenInfo && allTokenInfo.length
-      ? allTokenInfo.reduce((out: number, datum: any) => {
+      ? allTokenInfo.reduce((out: number, datum: ITokenInfo) => {
+          console.log('🚀 ~ file: useTokenInfo.ts:108 ~ ?allTokenInfo.reduce ~ datum:', datum);
           return out + datum.totalValue;
         }, 0)
       : 0;

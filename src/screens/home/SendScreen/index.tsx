@@ -22,7 +22,6 @@ import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
 import { getPublicKey } from 'utils/selectors';
-import { BigNumber } from '@ethersproject/bignumber';
 
 const initialValues = {
   transferAmount: '0',
@@ -57,7 +56,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
       .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = (selectedToken && selectedToken.transferFee) || 0;
-        const displayValue = selectedToken?.balance?.displayValue?.toNumber() || 0;
+        const displayValue = selectedToken?.balance?.displayValue || 0;
         return selectedTokenAddress === 'CSPR' ? displayValue >= value + fee : true;
       }),
     receivingAddress: yup
@@ -85,8 +84,8 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   };
 
   const setBalance = () => {
-    const balance = selectedToken?.balance?.displayValue || BigNumber.from(0);
-    const maxAmount = balance.toNumber() - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0);
+    const balance = selectedToken?.balance?.displayValue || 0;
+    const maxAmount = balance - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0);
     setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 

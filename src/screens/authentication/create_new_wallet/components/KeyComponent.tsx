@@ -28,9 +28,7 @@ const KeyComponent = ({ value, onPress, index }: Props) => {
           </Col>
         </Row>
         <Col.R mx={12}>
-          <Text style={styles.sub1}>{`${toFormattedNumber(
-            value.balance.displayBalance.toNumber(),
-          )} ${CASPER_SYMBOL}`}</Text>
+          <Text style={styles.sub1}>{`${toFormattedNumber(value.balance?.displayBalance || 0)} ${CASPER_SYMBOL}`}</Text>
         </Col.R>
       </Row.LR>
     </CButton>

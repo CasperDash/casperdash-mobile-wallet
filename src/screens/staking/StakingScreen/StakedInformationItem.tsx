@@ -10,20 +10,22 @@ import { useNavigation } from '@react-navigation/native';
 import { StakingMode } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { IStakedInfo } from 'utils/hooks/useStakeDeploys';
+import { toCSPR } from 'utils/helpers/currency';
 
 interface Props {
-  value: any;
+  value: IStakedInfo;
   validatorsDetail?: IValidatorDetailsResponse;
 }
 
 function StakedInformationItem({ value, validatorsDetail }: Props) {
   const { navigate } = useNavigation();
-  const validatorDetail = validatorsDetail?.[value.validator];
+  const validatorDetail = validatorsDetail?.[value.validatorPublicKey];
 
   const undelegate = () => {
     navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
       name: StakingMode.Undelegate,
-      validator: value.validator,
+      validator: value.validatorPublicKey,
       stakedAmount: value.stakedAmount,
     });
   };
@@ -37,7 +39,7 @@ function StakedInformationItem({ value, validatorsDetail }: Props) {
       <Row.LR style={{ flex: 1 }}>
         <Col.TL>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
-            {validatorDetail?.name || value.validator || ''}
+            {validatorDetail?.name || value.validatorPublicKey || ''}
           </Text>
           <CTextButton
             onPress={undelegate}
@@ -45,17 +47,22 @@ function StakedInformationItem({ value, validatorsDetail }: Props) {
             type={'line'}
             textStyle={styles.textStyle}
             style={styles.btnUnDelegate}
-            disabled={!!value.pendingAmount}
           />
         </Col.TL>
         <Col.TR>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
-            <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount ?? 0)} CSPR`}</Text>
+            <Text style={textStyles.Sub1}>{`${toFormattedNumber(
+              toCSPR(value.stakedAmount ?? 0).toNumber(),
+            )} CSPR`}</Text>
           )}
-          {value.pendingAmount !== null && value.pendingAmount !== undefined && (
+          {(!!value.pendingDelegatedAmount.toNumber() || !!value.pendingUndelegatedAmount.toNumber()) && (
             <View style={styles.pendingContainer}>
               <View style={styles.circle} />
-              <Text style={[textStyles.Body2]}>{`${toFormattedNumber(value.pendingAmount)} CSPR`}</Text>
+              <Text style={[textStyles.Body2]}>{`${
+                value.pendingDelegatedAmount
+                  ? toFormattedNumber(value.pendingDelegatedAmount.toNumber())
+                  : -toFormattedNumber(value.pendingUndelegatedAmount.toNumber())
+              } CSPR`}</Text>
             </View>
           )}
         </Col.TR>

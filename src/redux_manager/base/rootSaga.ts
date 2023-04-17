@@ -5,7 +5,7 @@ import { watchLoadLocalStorage, watchShowMessage } from '../main/main_saga';
 
 import { watchPushTransferToLocalStorage } from '../home/home_saga';
 
-import { watchGetValidatorsInformation, watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
+import { watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
 
 export default function* rootSaga() {
   yield all([
@@ -21,7 +21,6 @@ export default function* rootSaga() {
     //wallet
 
     //Staking
-    watchGetValidatorsInformation(),
     watchPushStakeToLocalStorage(),
   ]);
 }

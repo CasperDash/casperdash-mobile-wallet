@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { ITokenInfoResponse } from 'services/User/userTypes';
+import Big from 'big.js';
 
 export const tokensSelector = (state: any) => state.home;
 
@@ -10,24 +11,28 @@ export const getMassagedTokenData = (data: ITokenInfoResponse[]): ITokenInfoResp
   }
 
   return data.map<ITokenInfoResponse>((datum) => {
-    const decimals = BigNumber.from(10).pow(datum?.decimals?.hex || 0);
+    const decimals = new Big(
+      BigNumber.from(10)
+        .pow(datum?.decimals?.hex || 0)
+        .toNumber(),
+    );
 
     return {
       ...datum,
       balance: {
         ...datum.balance,
-        displayValue: BigNumber.from(datum?.balance?.hex || 0).div(decimals),
+        displayValue: new Big(BigNumber.from(datum?.balance?.hex || 0).toNumber()).div(decimals).toNumber(),
       },
       total_supply: {
         ...datum.total_supply,
         displayValue:
           datum.total_supply && datum.total_supply.hex
-            ? BigNumber.from(datum.total_supply.hex).div(decimals)
-            : BigNumber.from(0),
+            ? new Big(BigNumber.from(datum.total_supply.hex).toNumber()).div(decimals).toNumber()
+            : 0,
       },
       decimals: {
         ...datum.decimals,
-        displayValue: datum.decimals && datum.decimals.hex ? BigNumber.from(datum.decimals.hex) : BigNumber.from(0),
+        displayValue: datum.decimals && datum.decimals.hex ? BigNumber.from(datum.decimals.hex).toNumber() : 0,
       },
     };
   });

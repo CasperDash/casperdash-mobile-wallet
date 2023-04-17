@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { MOTE_RATE } from '../constants/key';
+import Big from 'big.js';
 
 /**
  * Convert CSPR to motes
@@ -28,11 +29,21 @@ export const toMotes = (amount: number | string): BigNumber => {
  * @example
  * toCSPR(1000000000) // 1
  */
-export const toCSPR = (amount: number | string): BigNumber => {
+export const toCSPR = (amount: number | string): Big => {
   try {
-    const bigAmount = BigNumber.from(amount).div(MOTE_RATE);
+    const bigAmount = new Big(amount).div(MOTE_RATE);
     return bigAmount;
   } catch (error) {
-    return BigNumber.from(0);
+    return new Big(0);
+  }
+};
+
+export const toCSPRFromHex = (amountHex: string | number): Big => {
+  try {
+    const bigAmount = BigNumber.from(amountHex);
+
+    return toCSPR(bigAmount.toNumber());
+  } catch (error) {
+    return new Big(0);
   }
 };

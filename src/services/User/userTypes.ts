@@ -1,5 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber';
-
 export interface IBalance {
   hex?: string;
   type?: string;
@@ -7,11 +5,11 @@ export interface IBalance {
 
 export interface ITokenInfoResponse {
   address: string;
-  balance: { hex?: string; type?: string; displayValue?: BigNumber };
+  balance: { hex?: string; type?: string; displayValue?: number };
   name: string;
   symbol: string;
-  total_supply?: { hex?: string; type?: string; displayValue?: BigNumber };
-  decimals?: { hex?: string; type?: string; displayValue?: BigNumber };
+  total_supply?: { hex?: string; type?: string; displayValue?: number };
+  decimals?: { hex?: string; type?: string; displayValue?: number };
 }
 
 export interface INamedKey {
@@ -30,7 +28,7 @@ export interface IActionThresholds {
 }
 
 export interface IDisplayCSPRBalance extends IBalance {
-  displayBalance: BigNumber;
+  displayBalance: number;
 }
 
 export interface IAccountResponse {
@@ -44,7 +42,7 @@ export interface IAccountResponse {
 }
 
 export interface IAccountDelegationResponse {
-  blockHeight: number;
+  blockHeight?: number;
   validatorPublicKey: string;
   delegatorPublicKey: string;
   stakedAmount: string;

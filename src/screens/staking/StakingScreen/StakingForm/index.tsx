@@ -12,7 +12,6 @@ import { toFormattedNumber } from 'utils/helpers/format';
 import CTextButton from 'components/CTextButton';
 import { EViews } from '../../utils';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
-import { BigNumber } from '@ethersproject/bignumber';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { IValidator } from 'utils/hooks/useValidators';
 import { useStakedInfo } from 'utils/hooks/useStakeDeploys';
@@ -40,7 +39,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   const navigation = useNavigation();
 
   const { massagedData: userDetails } = useAccountInfo(publicKey);
-  const balance = userDetails?.balance?.displayBalance || BigNumber.from(0);
+  const balance = userDetails?.balance?.displayBalance || 0;
   const { data: configurations } = useConfigurations();
   const fee = configurations?.CSPR_AUCTION_DELEGATE_FEE || 0;
   const minCSPRDelegateToNewValidator = configurations?.MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR || 0;
@@ -79,7 +78,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         'max',
         'Insufficient balance to complete the transaction. Please add funds to your account and try again',
         function (value: any) {
-          return value + fee <= balance.toNumber();
+          return value + fee <= balance;
         },
       )
       .test(
@@ -109,7 +108,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   });
 
   const setBalance = () => {
-    setFieldValue('amount', `${balance.toNumber() - fee > 0 ? balance.toNumber() - fee : 0}`);
+    setFieldValue('amount', `${balance - fee > 0 ? balance - fee : 0}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -174,7 +173,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         {!!errors.validator && touched.validator && <Text style={styles.error}>{errors.validator}</Text>}
         <Row.LR mt={24} mb={16}>
           <Text style={styles.title}>Amount</Text>
-          <Text style={textStyles.Body1}>Balance: {toFormattedNumber(balance.toNumber())}</Text>
+          <Text style={textStyles.Body1}>Balance: {toFormattedNumber(balance)}</Text>
         </Row.LR>
         <CInputFormik
           name={'amount'}
