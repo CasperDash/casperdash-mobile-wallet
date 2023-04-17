@@ -4,58 +4,20 @@ import { scale } from 'device';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { getListValidators } from 'utils/selectors/validator';
-import { checkIfLoadingSelector, checkIfRefreshingSelector, getPublicKey } from 'utils/selectors';
-import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
 import { useNavigation } from '@react-navigation/native';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
-import { getValidatorsDetail } from 'services/Validators/validatorsApis';
-import { ERequestKeys } from 'utils/constants/requestKeys';
-import { useQuery } from 'react-query';
+import { IValidator, useValidators, useValidatorsDetail } from 'utils/hooks/useValidators';
 
 // @ts-ignore
 function ValidatorScreen() {
   const insets = useSafeAreaInsets();
-  const dispatch = useDispatch();
   const { navigate } = useNavigation();
 
-  const publicKey = useSelector(getPublicKey);
-  const isLoading = useSelector((state: any) =>
-    // @ts-ignore
-    checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
-  );
-
-  const isRefreshing = useSelector((state: any) =>
-    // @ts-ignore
-    checkIfRefreshingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
-  );
-  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
-    queryKey: [ERequestKeys.validatorsDetail],
-    queryFn: () => getValidatorsDetail(),
-  });
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail, isFetching } = useValidatorsDetail();
 
   const [search, setSearch] = useState('');
-  const listValidators = useSelector(getListValidators(search));
-
-  const onReload = () => {
-    dispatch(
-      allActions.staking.getValidatorsInformation({ refreshing: true, publicKey }, (error: any, _: any) => {
-        if (error) {
-          console.error(error);
-          dispatch(
-            allActions.main.showMessage({
-              message: error.message,
-              type: MessageType.error,
-            }),
-          );
-        }
-      }),
-    );
-  };
+  const { filteredData: listValidators, refetch, isLoading } = useValidators(search);
 
   const onSelectValidator = (validator: any) => {
     navigate('Staking', {
@@ -66,11 +28,11 @@ function ValidatorScreen() {
     });
   };
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item, index }: { item: IValidator; index: number }) => {
     return (
       <ValidatorItem
         data={item}
-        key={`${index} - ${item.public_key}`}
+        key={`${index} - ${item.validatorPublicKey}`}
         onSelectValidator={onSelectValidator}
         validatorsDetail={validatorsDetail}
       />
@@ -116,9 +78,9 @@ function ValidatorScreen() {
           }}
           data={listValidators}
           extraData={listValidators}
-          refreshing={isRefreshing}
-          onRefresh={onReload}
-          keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
+          refreshing={isFetching}
+          onRefresh={refetch}
+          keyExtractor={(item, index) => `${index} - ${item.validatorPublicKey}`}
           ListEmptyComponent={renderNoData}
           renderItem={renderItem}
         />

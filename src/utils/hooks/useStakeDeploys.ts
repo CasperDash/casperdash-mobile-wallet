@@ -7,6 +7,17 @@ import { ENTRY_POINT_UNDELEGATE, DeployStatus } from '../constants/key';
 import { IconStatusReceive, IconStatusSend } from 'assets';
 import { allActions } from 'redux_manager';
 import { useDeployStatus } from './useDeployStatus';
+import { useQuery } from 'react-query';
+import { ERequestKeys } from 'utils/constants/requestKeys';
+import { getAccountDelegation } from 'services/User/userApis';
+
+export const useStakedInfo = (publicKey: string) => {
+  const query = useQuery({
+    queryKey: [ERequestKeys.accountDelegation, publicKey],
+    queryFn: () => getAccountDelegation(publicKey),
+  });
+  return query;
+};
 
 /**
  * It returns an icon based on the value of the stake
