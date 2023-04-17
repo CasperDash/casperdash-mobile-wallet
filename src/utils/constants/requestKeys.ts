@@ -9,4 +9,5 @@ export enum ERequestKeys {
   listAccountInfo = 'listAccountInfo',
   configurations = 'configurations',
   nftsInfo = 'nftsInfo',
+  deploysStatus = 'deploysStatus',
 }
