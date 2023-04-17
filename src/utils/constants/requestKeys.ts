@@ -1,5 +1,7 @@
 export enum ERequestKeys {
   validatorsDetail = 'validatorsDetail',
+  validators = 'validators',
+  accountDelegation = 'accountDelegation',
   stakingRewards = 'stakingRewards',
   latestPrice = 'latestPrice',
   priceHistory = 'priceHistory',

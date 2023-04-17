@@ -1,5 +1,5 @@
 import { NETWORK_URL } from 'utils/constants/key';
-import { ITokenInfoResponse, IAccountResponse } from './userTypes';
+import { ITokenInfoResponse, IAccountResponse, IAccountDelegationResponse } from './userTypes';
 
 export const getTokenInfoWithBalance = async (publicKey: string): Promise<ITokenInfoResponse[]> => {
   const response = await fetch(`${NETWORK_URL}/tokens/getTokensInfo?publicKey=${publicKey}`);
@@ -26,6 +26,16 @@ export const getListAccountInfo = async (publicKeys: string[]): Promise<IAccount
 
   if (!response.ok) {
     throw new Error('Cant get list account info');
+  }
+
+  return (await response.json()) || {};
+};
+
+export const getAccountDelegation = async (publicKey: string): Promise<IAccountDelegationResponse[]> => {
+  const response = await fetch(`${NETWORK_URL}/delegations/${publicKey}`);
+
+  if (!response.ok) {
+    throw new Error('Cant get account delegation');
   }
 
   return (await response.json()) || {};

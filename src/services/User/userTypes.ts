@@ -42,3 +42,10 @@ export interface IAccountResponse {
   balance?: IBalance;
   publicKey: string;
 }
+
+export interface IAccountDelegationResponse {
+  blockHeight: number;
+  validatorPublicKey: string;
+  delegatorPublicKey: string;
+  stakedAmount: string;
+}

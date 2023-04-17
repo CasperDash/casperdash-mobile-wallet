@@ -14,35 +14,34 @@ import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStakeFromValidators, useStakedHistory } from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
+import { IValidator, useValidatorsDetail } from 'utils/hooks/useValidators';
 import StakedHistoryItem from './StakedHistoryItem';
 import { StakingRewards } from './StakingRewards';
 import { NoData } from './NoData';
 import StakingForm from './StakingForm';
 import { EViews } from '../utils';
-import { getValidatorsDetail } from 'services/Validators/validatorsApis';
-import { useQuery } from 'react-query';
-import { ERequestKeys } from 'utils/constants/requestKeys';
 
 // @ts-ignore
-const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ route }) => {
+const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
+  route,
+}: {
+  route: { params: { selectedValidator: IValidator } };
+}) => {
   const { selectedValidator } = route?.params || {};
   const { bottom } = useSafeAreaInsets();
   const dispatch = useDispatch();
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
 
-  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
-    queryKey: [ERequestKeys.validatorsDetail],
-    queryFn: () => getValidatorsDetail(),
-  });
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useValidatorsDetail();
 
   //State
   const [view, setView] = useState<EViews>(EViews.info);
 
   // Selector
   const publicKey = useSelector(getPublicKey);
-  const stackingList = useStakeFromValidators(publicKey);
-  const stakedHistory = useStakedHistory(publicKey);
+  const stackingList = useStakeFromValidators(publicKey!);
+  const stakedHistory = useStakedHistory(publicKey!);
 
   const isLoading = useSelector((state: any) =>
     // @ts-ignore
@@ -94,7 +93,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
 
   const renderStakingForm = () => (
     <StakingForm
-      publicKey={publicKey}
+      publicKey={publicKey!}
       setView={setView}
       view={view}
       selectedValidator={selectedValidator}
@@ -112,7 +111,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
         {view === EViews.rewards ? (
           <View style={{ marginTop: scale(22) }}>
             {renderStakingForm()}
-            <StakingRewards publicKey={publicKey} />
+            <StakingRewards publicKey={publicKey!} />
           </View>
         ) : (
           <ScrollView

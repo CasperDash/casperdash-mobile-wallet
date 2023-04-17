@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Row, CInputFormik, Col, CButton } from 'components';
 import { Text, View, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
-import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
@@ -15,11 +14,13 @@ import { EViews } from '../../utils';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { IValidator } from 'utils/hooks/useValidators';
+import { useStakedInfo } from 'utils/hooks/useStakeDeploys';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
   publicKey: string;
-  selectedValidator?: any;
+  selectedValidator?: IValidator;
   setView: React.Dispatch<React.SetStateAction<EViews>>;
   view: EViews;
 }
@@ -43,11 +44,12 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   const { data: configurations } = useConfigurations();
   const fee = configurations?.CSPR_AUCTION_DELEGATE_FEE || 0;
   const minCSPRDelegateToNewValidator = configurations?.MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR || 0;
-  const maxDelegatorPerValidator = configurations?.MAX_DELEGATOR_PER_VALIDATOR || 1000000;
+
+  const { data: stakedInfo } = useStakedInfo(publicKey);
 
   const hasDelegated = React.useMemo(() => {
-    return selectedValidator?.bidInfo?.bid?.delegators?.find((delegator: any) => delegator.public_key === publicKey);
-  }, [publicKey, selectedValidator]);
+    return !!stakedInfo?.find((item) => item.validatorPublicKey === selectedValidator?.validatorPublicKey);
+  }, [stakedInfo, selectedValidator]);
 
   const selectValidator = () => {
     navigation.navigate(MainRouter.VALIDATOR_SCREEN);
@@ -70,16 +72,26 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         }
         return +value.replace(/,/, '.');
       })
-      .required('Amount must be more than 0 CSPR')
-      .test('max', 'Not enough balance.', function (value: any) {
-        return value + fee <= balance.toNumber();
-      })
-      .test('min', 'Amount must be more than 2.5 CSPR', function (value: any) {
-        return value > 2.5;
-      })
+      .required(
+        'The entered amount is below the minimum required. Please input an amount greater than or equal to 2.5 CSPR',
+      )
+      .test(
+        'max',
+        'Insufficient balance to complete the transaction. Please add funds to your account and try again',
+        function (value: any) {
+          return value + fee <= balance.toNumber();
+        },
+      )
+      .test(
+        'min',
+        'The entered amount is below the minimum required. Please input an amount greater than or equal to 2.5 CSPR',
+        function (value: any) {
+          return value > 2.5;
+        },
+      )
       .test(
         'minByNewValidator',
-        `Amount must be more than or equal ${minCSPRDelegateToNewValidator} CSPR`,
+        `Please note that the minimum amount for your first staking is ${minCSPRDelegateToNewValidator} CSPR or more. Please adjust your amount and try again.`,
         function (value: any) {
           return hasDelegated || value >= minCSPRDelegateToNewValidator;
         },
@@ -87,9 +99,13 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
     validator: yup
       .string()
       .required('Validator is required')
-      .test('maxDelegator', 'Max delegators', () => {
-        return hasDelegated || selectedValidator?.bidInfo.bid?.delegators?.length <= maxDelegatorPerValidator;
-      }),
+      .test(
+        'maxDelegator',
+        'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',
+        () => {
+          return hasDelegated || !selectedValidator?.isFullDelegator;
+        },
+      ),
   });
 
   const setBalance = () => {
@@ -126,7 +142,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
 
   React.useEffect(() => {
     if (selectedValidator) {
-      setFieldValue('validator', selectedValidator && selectedValidator.public_key);
+      setFieldValue('validator', selectedValidator && selectedValidator.validatorPublicKey);
       setFieldValue('amount', '0');
       setErrors({ ...errors, validator: '' });
       setTouched({ ...touched, validator: false });

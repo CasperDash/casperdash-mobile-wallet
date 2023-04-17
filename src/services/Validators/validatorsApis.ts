@@ -4,6 +4,7 @@ interface IValidatorDetail {
   name: string;
   description: string;
   logo?: string;
+  priority?: boolean;
 }
 
 export interface IValidatorDetailsResponse {
@@ -18,4 +19,24 @@ export const getValidatorsDetail = async (): Promise<IValidatorDetailsResponse> 
   }
 
   return (await response.json()) || {};
+};
+
+export interface IValidatorResponse {
+  era: number;
+  blockHeight: number;
+  validatorPublicKey: string;
+  weight: string;
+  isActive: boolean;
+  isFullDelegator: boolean;
+  delegationRate: number;
+}
+
+export const getValidators = async (): Promise<IValidatorResponse[]> => {
+  const response = await fetch(`${NETWORK_URL}/v3/validators`);
+  if (!response.ok) {
+    console.error('Cant get validators');
+    return [];
+  }
+
+  return (await response.json()) || [];
 };
