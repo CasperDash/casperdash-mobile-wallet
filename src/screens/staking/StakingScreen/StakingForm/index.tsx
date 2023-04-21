@@ -69,15 +69,23 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         return +value.replace(/,/, '.');
       })
       .required('Amount must be more than 0 CSPR')
-      .test('max', 'Not enough balance.', function (value: any) {
-        return value + fee <= balance;
-      })
-      .test('min', 'Amount must be more than 2.5 CSPR', function (value: any) {
-        return value > 2.5;
-      })
+      .test(
+        'max',
+        'Insufficient balance to complete the transaction. Please add funds to your account and try again',
+        function (value: any) {
+          return value + fee <= balance;
+        },
+      )
+      .test(
+        'min',
+        'The entered amount is below the minimum required. Please input an amount greater than or equal to 2.5 CSPR',
+        function (value: any) {
+          return value > 2.5;
+        },
+      )
       .test(
         'minByNewValidator',
-        `Amount must be more than or equal ${minCSPRDelegateToNewValidator} CSPR`,
+        `Please note that the minimum amount for your first staking is ${minCSPRDelegateToNewValidator} CSPR or more. Please adjust your amount and try again.`,
         function (value: any) {
           return hasDelegated || value >= minCSPRDelegateToNewValidator;
         },
@@ -85,9 +93,13 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
     validator: yup
       .string()
       .required('Validator is required')
-      .test('maxDelegator', 'Max delegators', () => {
-        return hasDelegated || selectedValidator?.bidInfo.bid?.delegators?.length <= maxDelegatorPerValidator;
-      }),
+      .test(
+        'maxDelegator',
+        'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',
+        () => {
+          return hasDelegated || selectedValidator?.bidInfo.bid?.delegators?.length <= maxDelegatorPerValidator;
+        },
+      ),
   });
 
   const setBalance = () => {
