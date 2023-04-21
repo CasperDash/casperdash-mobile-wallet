@@ -1,4 +1,4 @@
-import { NETWORK_URL } from 'utils/constants/key';
+import { request } from 'services/request';
 
 export interface IPutDeployResponse {
   deployHash: string;
@@ -9,20 +9,9 @@ export interface IPutDeployRequest {
 }
 
 export const putDeploy = async (deploy: IPutDeployRequest): Promise<IPutDeployResponse> => {
-  const response = await fetch(`${NETWORK_URL}/deploy`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    mode: 'cors',
-    body: JSON.stringify(deploy),
-  });
+  const response = await request.post<IPutDeployResponse>('/deploy', deploy);
 
-  if (!response.ok) {
-    throw new Error('Cant put deploy');
-  }
-
-  return (await response.json()) || {};
+  return response.data;
 };
 
 export interface IDeployStatusResponse {
@@ -31,13 +20,7 @@ export interface IDeployStatusResponse {
 }
 
 export const getDeployStatus = async (deployHashes: string[]): Promise<IDeployStatusResponse[]> => {
-  const response = await fetch(
-    `${NETWORK_URL}/deploysStatus?${deployHashes.map((deployHash) => `deployHash=${deployHash}`).join('&')}`,
-  );
+  const response = request.get<IDeployStatusResponse[]>('/deploysStatus', { params: { deployHashes } });
 
-  if (!response.ok) {
-    throw new Error('Cant get deploy status');
-  }
-
-  return (await response.json()) || {};
+  return (await response).data;
 };

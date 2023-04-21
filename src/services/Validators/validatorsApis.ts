@@ -1,4 +1,4 @@
-import { NETWORK_URL } from 'utils/constants/key';
+import { request } from 'services/request';
 
 interface IValidatorDetail {
   name: string;
@@ -12,13 +12,9 @@ export interface IValidatorDetailsResponse {
 }
 
 export const getValidatorsDetail = async (): Promise<IValidatorDetailsResponse> => {
-  const response = await fetch(`${NETWORK_URL}/validatorsDetail`);
-  if (!response.ok) {
-    console.error('Cant get validator details');
-    return {};
-  }
+  const response = await request.get<IValidatorDetailsResponse>('/validatorsDetail');
 
-  return (await response.json()) || {};
+  return response.data;
 };
 
 export interface IValidatorResponse {
@@ -32,11 +28,7 @@ export interface IValidatorResponse {
 }
 
 export const getValidators = async (): Promise<IValidatorResponse[]> => {
-  const response = await fetch(`${NETWORK_URL}/v3/validators`);
-  if (!response.ok) {
-    console.error('Cant get validators');
-    return [];
-  }
+  const response = await request.get<IValidatorResponse[]>('/v3/validators');
 
-  return (await response.json()) || [];
+  return response.data;
 };

@@ -1,42 +1,26 @@
-import { NETWORK_URL } from 'utils/constants/key';
+import { request } from 'services/request';
 import { ITokenInfoResponse, IAccountResponse, IAccountDelegationResponse } from './userTypes';
 
 export const getTokenInfoWithBalance = async (publicKey: string): Promise<ITokenInfoResponse[]> => {
-  const response = await fetch(`${NETWORK_URL}/tokens/getTokensInfo?publicKey=${publicKey}`);
+  const response = await request.get<ITokenInfoResponse[]>('/tokens/getTokensInfo', { params: { publicKey } });
 
-  if (!response.ok) {
-    throw new Error('Cant get token info');
-  }
-
-  return (await response.json()) || {};
+  return response.data;
 };
 
 export const getAccountInfo = async (publicKey: string): Promise<IAccountResponse> => {
-  const response = await fetch(`${NETWORK_URL}/user/${publicKey}`);
+  const response = await request.get<IAccountResponse>(`/user/${publicKey}`);
 
-  if (!response.ok) {
-    throw new Error('Cant get account info');
-  }
-
-  return (await response.json()) || {};
+  return response.data;
 };
 
 export const getListAccountInfo = async (publicKeys: string[]): Promise<IAccountResponse[]> => {
-  const response = await fetch(`${NETWORK_URL}/v2/users?${publicKeys.map((key) => `publicKeys=${key}`).join('&')}`);
+  const response = await request.get<IAccountResponse[]>('/v2/users', { params: { publicKeys } });
 
-  if (!response.ok) {
-    throw new Error('Cant get list account info');
-  }
-
-  return (await response.json()) || {};
+  return response.data;
 };
 
 export const getAccountDelegation = async (publicKey: string): Promise<IAccountDelegationResponse[]> => {
-  const response = await fetch(`${NETWORK_URL}/user/delegation/${publicKey}`);
+  const response = await request.get<IAccountDelegationResponse[]>(`/user/delegation/${publicKey}`);
 
-  if (!response.ok) {
-    throw new Error('Cant get account delegation');
-  }
-
-  return (await response.json()) || {};
+  return response.data;
 };

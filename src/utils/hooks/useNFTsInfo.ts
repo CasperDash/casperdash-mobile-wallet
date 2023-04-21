@@ -42,7 +42,7 @@ export const useNFTsInfo = (
       const fuse = new Fuse(massagedData, { keys: ['nftName', 'name', 'contractName'], threshold: 0.1 });
       data = fuse.search(searchName).map((result) => result.item);
     }
-    if (orderBy && order) {
+    if (sortBy && order) {
       data = orderBy(data, sortBy, order);
     }
     return data;

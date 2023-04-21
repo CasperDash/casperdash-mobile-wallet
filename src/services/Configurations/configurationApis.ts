@@ -1,5 +1,6 @@
+import { request } from 'services/request';
+
 import {
-  NETWORK_URL,
   MOTE_RATE,
   CSPR_TRANSFER_FEE,
   CSPR_AUCTION_DELEGATE_FEE,
@@ -25,10 +26,10 @@ export interface IConfigurationResponse {
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
-  const response = await fetch(`${NETWORK_URL}/configurations`);
-  if (!response.ok) {
-    console.error(response);
-    return {
+  const response = await request.get<IConfigurationResponse>('/configurations');
+
+  return (
+    response.data || {
       MOTE_RATE,
       CSPR_TRANSFER_FEE,
       CSPR_AUCTION_DELEGATE_FEE,
@@ -39,8 +40,6 @@ export const getConfigurations = async (): Promise<IConfigurationResponse> => {
       STAKE_AUCTION_HASH: AUCTION_HASH,
       MIN_CSPR_TRANSFER,
       API_VERSION: '1.0.0',
-    };
-  }
-
-  return await response.json();
+    }
+  );
 };

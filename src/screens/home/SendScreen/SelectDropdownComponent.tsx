@@ -15,9 +15,7 @@ const SelectDropdownComponent = ({ item }: Props) => {
     <Row.LR px={8} style={styles.container}>
       <Text style={textStyles.Body1}>{item && item.symbol ? item.symbol : ''}</Text>
       <Row.C>
-        <Text style={textStyles.Sub1}>
-          {item.balance ? toFormattedNumber(item.balance.displayValue?.toNumber()) : '0'}
-        </Text>
+        <Text style={textStyles.Sub1}>{item.balance ? toFormattedNumber(item.balance.displayValue) : '0'}</Text>
         <View style={styles.verticalLine} />
         <IconArrowDown width={scale(10)} height={scale(6)} />
       </Row.C>
