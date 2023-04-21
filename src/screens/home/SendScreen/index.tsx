@@ -25,7 +25,7 @@ import { isValidPublicKey } from 'utils/validator';
 const initialValues = {
   transferAmount: '0',
   receivingAddress: '',
-  transferID: '',
+  transferID: 0,
 };
 
 const percent = 1;
@@ -54,7 +54,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
         return +value.replace(/,/, '.');
       })
       .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
-      .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
+      .required(`Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = (selectedToken && selectedToken.transferFee) || 0;
         const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
@@ -62,11 +62,11 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
       }),
     receivingAddress: yup
       .string()
-      .required('Required.')
+      .required('Receiving address is required')
       .test('isValidPublicKey', 'Invalid address.', function (value: any) {
         return isValidPublicKey(value);
       }),
-    transferID: yup.string(),
+    transferID: yup.number().typeError('Transfer ID must be a number'),
   });
 
   const { handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setErrors } = useFormik({
