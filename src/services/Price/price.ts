@@ -1,4 +1,4 @@
-import { NETWORK_URL } from 'utils/constants/key';
+import { request } from 'services/request';
 
 interface ILatestPrice {
   price: number;
@@ -10,19 +10,13 @@ interface ILatestPrice {
 }
 
 export const getLatestPrice = async (): Promise<ILatestPrice> => {
-  const response = await fetch(`${NETWORK_URL}/price/latest`);
-  if (!response.ok) {
-    throw new Error('Cant get latest price');
-  }
+  const response = await request.get<ILatestPrice>('/price/latest');
 
-  return (await response.json()) || {};
+  return response.data;
 };
 
 export const getPriceHistory = async (): Promise<number[][]> => {
-  const response = await fetch(`${NETWORK_URL}/price/history`);
-  if (!response.ok) {
-    throw new Error('Cant get price history');
-  }
+  const response = await request.get<number[][]>('/price/history');
 
-  return (await response.json()) || [];
+  return response.data;
 };

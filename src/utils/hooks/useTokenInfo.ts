@@ -99,7 +99,6 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
   const accountTotalBalanceInFiat = useMemo(() => {
     return allTokenInfo && allTokenInfo.length
       ? allTokenInfo.reduce((out: number, datum: ITokenInfo) => {
-          console.log('🚀 ~ file: useTokenInfo.ts:108 ~ ?allTokenInfo.reduce ~ datum:', datum);
           return out + datum.totalValue;
         }, 0)
       : 0;

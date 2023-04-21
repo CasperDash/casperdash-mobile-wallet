@@ -1,4 +1,4 @@
-import { NETWORK_URL } from 'utils/constants/key';
+import { request } from 'services/request';
 import { TBalance } from 'utils/types/types';
 
 export interface IMetadata {
@@ -21,11 +21,7 @@ export interface INFTInfo {
 }
 
 export const getNFTs = async (publicKey: string): Promise<INFTInfo[]> => {
-  const response = await fetch(`${NETWORK_URL}/nfts/${publicKey}`);
+  const response = await request.get<INFTInfo[]>(`/nfts/${publicKey}`);
 
-  if (!response.ok) {
-    throw new Error('Cant get nfts info');
-  }
-
-  return (await response.json()) || {};
+  return response.data;
 };
