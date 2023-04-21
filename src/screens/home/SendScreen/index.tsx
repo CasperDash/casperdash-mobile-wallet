@@ -57,7 +57,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = (selectedToken && selectedToken.transferFee) || 0;
         const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-        return selectedTokenAddress === 'CSPR' ? value + fee <= displayValue : true;
+        return selectedTokenAddress === 'CSPR' ? Big(value).add(fee).lte(displayValue) : true;
       }),
     receivingAddress: yup
       .string()
