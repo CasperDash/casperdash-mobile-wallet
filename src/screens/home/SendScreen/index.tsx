@@ -21,14 +21,13 @@ import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
+import Big from 'big.js';
 
 const initialValues = {
   transferAmount: '0',
   receivingAddress: '',
-  transferID: '',
+  transferID: 0,
 };
-
-const percent = 1;
 
 // @ts-ignore
 const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) => {
@@ -54,19 +53,19 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
         return +value.replace(/,/, '.');
       })
       .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
-      .required(`Amount must be more than 0 ${selectedToken && selectedToken.symbol}`)
+      .required(`Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = (selectedToken && selectedToken.transferFee) || 0;
         const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-        return selectedTokenAddress === 'CSPR' ? value + fee <= displayValue : true;
+        return selectedTokenAddress === 'CSPR' ? Big(value).add(fee).lte(displayValue) : true;
       }),
     receivingAddress: yup
       .string()
-      .required('Required.')
+      .required('Receiving address is required')
       .test('isValidPublicKey', 'Invalid address.', function (value: any) {
         return isValidPublicKey(value);
       }),
-    transferID: yup.string(),
+    transferID: yup.number().typeError('Transfer ID must be a number'),
   });
 
   const { handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setErrors } = useFormik({
@@ -86,8 +85,9 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
 
   const setBalance = () => {
     const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
-    const maxAmount = balance / percent - (selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
-    setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
+    const maxAmount = Big(balance).sub(selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
+
+    setFieldValue('transferAmount', maxAmount.gt(0) ? maxAmount.toString() : '0');
   };
 
   const onSelectedToken = (item: any) => {
