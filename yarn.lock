@@ -1495,10 +1495,10 @@
   dependencies:
     eslint-scope "5.1.1"
 
-"@noble/curves@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.npmjs.org/@noble/curves/-/curves-0.9.0.tgz"
-  integrity sha512-OAdtHMXBp7Chl2lcTn/i7vnFX/q+hhTwDnek5NfYfZsY4LyaUuHCcoq2JlLY3BTFTLT+ZhYZalhF6ejlV7KnJQ==
+"@noble/curves@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.0.0.tgz#e40be8c7daf088aaf291887cbc73f43464a92932"
+  integrity sha512-2upgEu0iLiDVDZkNLeFV2+ht0BAVgQnEmCk6JsOch9Rp8xfkMCbvbAZlA2pBHQc73dbl+vFOXfqkf4uemdn0bw==
   dependencies:
     "@noble/hashes" "1.3.0"
 
@@ -2250,6 +2250,11 @@
   integrity sha512-K2waXdXBi2302XUdcHcR1jCeU0LL4TD9HRs/gk0N2Xvrht+G/BfJa4QObBQZfhMdxiCpV3COl5Nfq4uKTeTnJA==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/big.js@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@types/big.js/-/big.js-6.1.6.tgz#3d417e758483d55345a03a087f7e0c87137ca444"
+  integrity sha512-0r9J+Zz9rYm2hOTwiMAVkm3XFQ4u5uTK37xrQMhc9bysn/sf/okzovWMYYIBMFTn/yrEZ11pusgLEaoarTlQbA==
 
 "@types/bn.js@*":
   version "5.1.0"
@@ -9816,12 +9821,12 @@ react-native-camera@^4.2.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-casper-storage@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/react-native-casper-storage/-/react-native-casper-storage-1.2.0.tgz"
-  integrity sha512-EPOWZ4Vz6n7mbLamzIE54lkHvD1digFV0k1D6dum3V5geY2Mmp7m/LcdItuCB8sjDPmWjWw+0nVMs4XGNn+jnA==
+react-native-casper-storage@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-casper-storage/-/react-native-casper-storage-1.2.1.tgz#d49a9a252d83aceecc0ae416d275f4a456ecb690"
+  integrity sha512-tLk5UZnpEgzSdQSPp9TLv50DKR+ovMSWqGidYiJWB1ieWTmjotFGulBVuPYtfj0Tc02gm1Y2sbmelZNLz1YxeA==
   dependencies:
-    "@noble/curves" "^0.9.0"
+    "@noble/curves" "^1.0.0"
     "@noble/hashes" "^1.3.0"
     "@scure/base" "^1.1.1"
     "@scure/bip39" "^1.2.0"
