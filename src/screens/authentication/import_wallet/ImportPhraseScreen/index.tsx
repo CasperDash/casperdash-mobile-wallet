@@ -14,7 +14,7 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
-import { NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import { DERIVATION_PATH, NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType, KeyFactory } from 'react-native-casper-storage';
 import { MessageType } from 'components/CMessge/types';
@@ -26,6 +26,7 @@ const ImportPhraseScreen = () => {
   const keyManager = KeyFactory.getInstance();
 
   const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
+  const [derivationPath, setDerivationPath] = useState(DERIVATION_PATH[0]);
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
   const [numberOfWord, setNumberOfWords] = useState<number>(NUMBER_OF_RECOVERY_WORDS[0]);
@@ -118,6 +119,7 @@ const ImportPhraseScreen = () => {
           showBack: true,
           phrases: phrases,
           algorithm,
+          derivationPath: derivationPath.value,
         },
       });
     } else {
@@ -184,7 +186,45 @@ const ImportPhraseScreen = () => {
             />
           </View>
         </Row.LR>
+        <Row.LR pt={16} px={16}>
+          <View style={styles.selectType}>
+            <Text style={styles.algorithmLabel}>Derivation path</Text>
+            <Text style={styles.algorithmDescription}>
+              A derivation path is a piece of data which tells a Hierarchical Deterministic (HD) wallet how to derive a
+              specific key within a tree of keys
+            </Text>
+            <SelectDropdown
+              dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+              buttonStyle={styles.rowPicker}
+              dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+              data={DERIVATION_PATH}
+              onSelect={(selectedItem) => {
+                setDerivationPath(selectedItem);
+              }}
+              renderCustomizedButtonChild={(item: any, index) => {
+                if (!item) {
+                  return null;
+                }
+                return <SelectDropdownComponent item={item.label} key={index} />;
+              }}
+              renderCustomizedRowChild={(item: any) => (
+                <Row.LR px={16} key={item.value}>
+                  <Text style={textStyles.Body1}>{item.label}</Text>
+                </Row.LR>
+              )}
+              defaultValueByIndex={1}
+              buttonTextAfterSelection={(selectedItem) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, _index) => {
+                return item;
+              }}
+              defaultValue={derivationPath}
+            />
+          </View>
+        </Row.LR>
         <Row.LR pt={16} px={16} style={styles.numberRow}>
+          <Text style={styles.numberOfWordsLabel}>Number of words</Text>
           {NUMBER_OF_RECOVERY_WORDS.map((number, index) => {
             return (
               <CTextButton
@@ -305,6 +345,11 @@ const styles = StyleSheet.create({
   algorithmDescription: {
     ...textStyles.Cap2,
     marginBottom: scale(12),
+  },
+  numberOfWordsLabel: {
+    ...textStyles.Sub2,
+    color: colors.N3,
+    marginRight: scale(12),
   },
   numberOfWordsButton: {
     width: scale(60),
