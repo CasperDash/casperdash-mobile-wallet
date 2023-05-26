@@ -91,6 +91,7 @@ const RecoveryPhraseScreen = () => {
           </View>
         </Row.LR>
         <Row.LR pt={16} px={16} style={styles.numberRow}>
+          <Text style={styles.numberOfWordsLabel}>Number of words</Text>
           {NUMBER_OF_RECOVERY_WORDS.map((number) => {
             return (
               <CTextButton
@@ -183,6 +184,11 @@ const styles = StyleSheet.create({
   algorithmDescription: {
     ...textStyles.Cap2,
     marginBottom: scale(12),
+  },
+  numberOfWordsLabel: {
+    ...textStyles.Sub2,
+    color: colors.N3,
+    marginRight: scale(12),
   },
   numberOfWordsButton: {
     width: scale(60),

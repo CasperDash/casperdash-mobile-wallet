@@ -37,3 +37,14 @@ export enum DeployStatus {
   completed = 'completed',
   undelegating = 'undelegating',
 }
+
+export const DERIVATION_PATH = [
+  {
+    value: `m/PURPOSE'/COINT_TYPE'/INDEX'`,
+    label: `m/44'/506'/index (CasperDash)`,
+  },
+  {
+    value: `m/PURPOSE'/COINT_TYPE'/0'/0/INDEX`,
+    label: `m/44'/506'/0'/0/index (Casper Wallet)`,
+  },
+];
