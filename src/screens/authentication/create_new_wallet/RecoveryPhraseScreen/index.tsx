@@ -62,7 +62,7 @@ const RecoveryPhraseScreen = () => {
       <CHeader title={'Recovery Phrase'} />
       <View style={styles.container}>
         <ListItem.Accordion
-          content={<Text style={styles.label}>Advance Settings</Text>}
+          content={<Text style={styles.label}>Advanced Settings</Text>}
           isExpanded={isExpandedAdvanced}
           onPress={() => setIsExpandedAdvanced(!isExpandedAdvanced)}
           style={styles.advancedSettings}
