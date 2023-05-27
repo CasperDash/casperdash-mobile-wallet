@@ -26,7 +26,7 @@ import Big from 'big.js';
 const initialValues = {
   transferAmount: '0',
   receivingAddress: '',
-  transferID: 0,
+  transferId: 0,
 };
 
 // @ts-ignore
@@ -65,7 +65,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
       .test('isValidPublicKey', 'Invalid address.', function (value: any) {
         return isValidPublicKey(value);
       }),
-    transferID: yup.number().typeError('Transfer ID must be a number'),
+    transferId: yup.number().typeError('Transfer ID must be a number'),
   });
 
   const { handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, setErrors } = useFormik({
@@ -176,7 +176,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
           </Row.L>
           <Text style={styles.title}>Transfer ID (optional)</Text>
           <CInputFormik
-            name={'transferID'}
+            name={'transferId'}
             inputStyle={styles.inputStyle}
             placeholder={'Enter note'}
             {...{ values, errors, touched, handleBlur, handleChange }}
