@@ -12,12 +12,13 @@ const ChoosePinScreen: React.FC<
   ScreenProps<ChoosePinRouter.CHOOSE_PIN_SCREEN>
 > = ({ route }) => {
   const { navigate } = useNavigation();
-  const { phrases, algorithm } = route.params;
+  const { phrases, algorithm, derivationPath } = route.params;
 
   const onFinishedEnterPin = () => {
     navigate(AuthenticationRouter.INIT_ACCOUNT_SCREEN, {
       phrases,
       algorithm,
+      derivationPath,
     });
   };
   return (

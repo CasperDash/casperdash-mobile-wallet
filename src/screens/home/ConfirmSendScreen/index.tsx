@@ -29,8 +29,8 @@ const ConfirmSendScreen: React.FC<
 
   const { token, transferAmount: amount, receivingAddress: toAddress, transferId, networkFee: fee } = route.params;
 
-  const price = (token && token.price) || 0;
-  const symbol = token && token.symbol ? token.symbol : '';
+  const price = token?.price || 0;
+  const symbol = token?.symbol || '';
 
   const { executeDeploy, isDeploying } = useConfirmDeploy();
 
@@ -92,7 +92,7 @@ const ConfirmSendScreen: React.FC<
         navigation.replace(MainRouter.HISTORIES_SCREEN, { token: token });
       }
     } catch (error: any) {
-      showMessage((error && error.message) || 'Transaction Failed', MessageType.error);
+      showMessage(error?.message || 'Transaction Failed', MessageType.error);
     }
   };
 
