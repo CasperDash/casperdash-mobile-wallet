@@ -41,22 +41,22 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   const allTokenInfo = useSelector(getAllTokenInfo);
   const selectedToken = useSelector(getTokenInfoByAddress({ address: selectedTokenAddress }));
 
-  const minAmount = (selectedToken && selectedToken.minAmount && selectedToken.minAmount) || 0;
+  const minAmount = selectedToken?.minAmount ?? 0;
 
   const validationSchema = yup.object().shape({
     transferAmount: yup
       .number()
       .transform((_, value) => {
-        if (value && value.includes('.')) {
+        if (value?.includes('.')) {
           return parseFloat(value);
         }
         return +value.replace(/,/, '.');
       })
-      .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
-      .required(`Amount must be at least ${minAmount} ${selectedToken && selectedToken.symbol}`)
+      .min(minAmount, `Amount must be at least ${minAmount} ${selectedToken?.symbol}`)
+      .required(`Amount must be at least ${minAmount} ${selectedToken?.symbol}`)
       .test('max', 'Not enough balance.', function (value: any) {
-        const fee = (selectedToken && selectedToken.transferFee) || 0;
-        const displayValue = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+        const fee = selectedToken?.transferFee ?? 0;
+        const displayValue = selectedToken?.balance?.displayValue ?? 0;
         return selectedTokenAddress === 'CSPR' ? Big(value).add(fee).lte(displayValue) : true;
       }),
     receivingAddress: yup
@@ -84,7 +84,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   };
 
   const setBalance = () => {
-    const balance = (selectedToken && selectedToken.balance && selectedToken.balance.displayValue) || 0;
+    const balance = selectedToken?.balance?.displayValue ?? 0;
     const maxAmount = Big(balance).sub(selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
 
     setFieldValue('transferAmount', maxAmount.gt(0) ? maxAmount.toString() : '0');
@@ -92,7 +92,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
 
   const onSelectedToken = (item: any) => {
     setErrors({});
-    setSelectedTokenAddress(item && item.address ? item.address : '');
+    setSelectedTokenAddress(item?.address || '');
   };
 
   const onShowQRCodeModal = async () => {
