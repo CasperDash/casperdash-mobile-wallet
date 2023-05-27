@@ -82,8 +82,6 @@ export const createNewUserWithHdWallet = async (
   derivationPath?: string,
 ) => {
   const user = createNewUser(password, derivationPath);
-  console.log('🚀 ~ file: account.ts:85 ~ derivationPath:', derivationPath);
-  console.log('🚀 ~ file: account.ts:87 ~ encryptionType:', encryptionType);
   await user.setHDWallet(recoveryPhase, encryptionType);
   return user;
 };
