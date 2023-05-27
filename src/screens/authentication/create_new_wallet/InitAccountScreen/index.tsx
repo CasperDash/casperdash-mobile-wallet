@@ -26,7 +26,7 @@ const InitAccountScreen: React.FC<
   // @ts-ignore
   ScreenProps<CreateNewWalletRouter.INIT_ACCOUNT_SCREEN>
 > = ({ route }) => {
-  const { phrases, algorithm, isLoadUser } = route.params;
+  const { phrases, algorithm, isLoadUser, derivationPath } = route.params;
 
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const InitAccountScreen: React.FC<
 
     try {
       const masterPassword = await Config.getItem(Keys.masterPassword);
-      const user = await createNewUserWithHdWallet(masterPassword, phrases, algorithm);
+      const user = await createNewUserWithHdWallet(masterPassword, phrases, algorithm, derivationPath);
       const acc0: IWallet<IHDKey> = await user.getWalletAccount(0);
       user.setWalletInfo(acc0.getReferenceKey(), new WalletDescriptor('Account 1'));
       const publicKey = await acc0.getPublicKey();
@@ -64,7 +64,7 @@ const InitAccountScreen: React.FC<
       };
       dispatch(allActions.main.showMessage(message, 10000));
     }
-  }, [algorithm, dispatch, phrases, currentUser]);
+  }, [algorithm, dispatch, phrases, currentUser, derivationPath]);
 
   const loadUser = useCallback(async () => {
     if (!currentUser) {
