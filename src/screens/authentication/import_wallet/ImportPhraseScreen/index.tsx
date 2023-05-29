@@ -209,6 +209,7 @@ const ImportPhraseScreen = () => {
                   dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
                   buttonStyle={styles.rowPicker}
                   dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+                  rowStyle={styles.rowStyle}
                   data={DERIVATION_PATH}
                   onSelect={(selectedItem) => {
                     setDerivationPath(selectedItem);
@@ -335,12 +336,14 @@ const styles = StyleSheet.create({
   },
   rowPicker: {
     minWidth: '100%',
-    minHeight: scale(48),
-    maxHeight: scale(100),
+    minHeight: scale(56),
     backgroundColor: colors.N5,
     color: colors.W1,
     borderRadius: scale(16),
     borderWidth: 0,
+  },
+  rowStyle: {
+    height: scale(60),
   },
   dropdownStyle: {
     borderRadius: scale(10),
@@ -352,6 +355,7 @@ const styles = StyleSheet.create({
     color: colors.N3,
     marginBottom: scale(12),
   },
+
   algorithmDescription: {
     ...textStyles.Cap2,
     marginBottom: scale(12),
