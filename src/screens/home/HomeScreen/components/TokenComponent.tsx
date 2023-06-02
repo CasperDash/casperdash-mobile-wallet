@@ -16,7 +16,7 @@ const TokenComponent = ({ value, onPress }: Props) => {
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
         <Row>
-          {value.symbol && <Image source={{ uri: value.icon }} style={styles.symbol} />}
+          {!!value.symbol && <Image source={{ uri: value.icon }} style={styles.symbol} />}
           <Col mx={12}>
             <Text style={styles.sub1}>{value.symbol ?? ''}</Text>
             <Text style={styles.body2}>{value.balance ? toFormattedNumber(value.balance.displayValue) : '0'}</Text>
