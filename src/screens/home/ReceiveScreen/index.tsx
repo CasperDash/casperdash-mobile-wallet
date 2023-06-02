@@ -15,7 +15,7 @@ const ReceiveScreen = () => {
   const copyToClipboard = useCopyToClipboard();
 
   const onCopy = async () => {
-    copyToClipboard(publicKey);
+    await copyToClipboard(publicKey || '');
   };
 
   return (

@@ -86,7 +86,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
     }
   };
 
-  const getAccountInformation = async (key: any) => {
+  const getAccountInformation = async (key: any): Promise<void> => {
     const { keyIndex } = key;
     const casperApp = new CasperApp(transport);
     const ledgerPublicKey = await getLedgerPublicKey(casperApp, keyIndex);
