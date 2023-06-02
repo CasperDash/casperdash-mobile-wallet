@@ -13,14 +13,17 @@ import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType } from 'react-native-casper-storage';
-import { NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
+import { DERIVATION_PATH, NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import { getRecoveryPhase } from '../../../../utils/helpers/account';
 import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { ListItem } from '@rneui/themed';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
   const copyToClipboard = useCopyToClipboard();
+  const [derivationPath, setDerivationPath] = useState(DERIVATION_PATH[0]);
+  const [isExpandedAdvanced, setIsExpandedAdvanced] = useState<boolean>(false);
 
   const [numberOfWord, setNumberOfWords] = useState<number>(NUMBER_OF_RECOVERY_WORDS[0]);
   const phraseString = getRecoveryPhase(numberOfWord);
@@ -46,6 +49,7 @@ const RecoveryPhraseScreen = () => {
           wordArray: JSON.parse(JSON.stringify(wordArray)),
           recoveryPhase: phraseString,
           algorithm,
+          derivationPath: derivationPath.value,
         });
       }
     } catch (e) {
@@ -57,40 +61,86 @@ const RecoveryPhraseScreen = () => {
     <CLayout>
       <CHeader title={'Recovery Phrase'} />
       <View style={styles.container}>
-        <Row.LR pt={16} px={16}>
-          <View style={styles.selectType}>
-            <Text style={styles.algorithmLabel}>Encryption Type</Text>
-            <Text style={styles.algorithmDescription}>
-              We recommend to choose ed25519 over secp256k1 for stronger security and better performance, unless you
-              explicitly want to use secp256k1 in order to compatible with Bitcoin, Ethereum chains
-            </Text>
-            <SelectDropdown
-              dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
-              buttonStyle={styles.rowPicker}
-              dropdownOverlayColor={'rgba(0,0,0,0.1)'}
-              data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
-              onSelect={(selectedItem, _index) => {
-                handleOnSelectAlgo(selectedItem);
-              }}
-              renderCustomizedButtonChild={(item: any, index) => {
-                if (!item) {
-                  return null;
-                }
-                return <SelectDropdownComponent item={item} key={index} />;
-              }}
-              renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
-              defaultValueByIndex={1}
-              buttonTextAfterSelection={(selectedItem, _index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, _index) => {
-                return item;
-              }}
-              defaultValue={algorithm}
-            />
-          </View>
-        </Row.LR>
+        <ListItem.Accordion
+          content={<Text style={styles.label}>Advanced Settings</Text>}
+          isExpanded={isExpandedAdvanced}
+          onPress={() => setIsExpandedAdvanced(!isExpandedAdvanced)}
+          style={styles.advancedSettings}
+        >
+          <Row.LR pt={16} px={16}>
+            <View style={styles.selectType}>
+              <Text style={styles.algorithmLabel}>Encryption Type</Text>
+              <Text style={styles.algorithmDescription}>
+                We recommend to choose ed25519 over secp256k1 for stronger security and better performance, unless you
+                explicitly want to use secp256k1 in order to compatible with Bitcoin, Ethereum chains
+              </Text>
+              <SelectDropdown
+                dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+                buttonStyle={styles.rowPicker}
+                dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+                data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
+                onSelect={(selectedItem, _index) => {
+                  handleOnSelectAlgo(selectedItem);
+                }}
+                renderCustomizedButtonChild={(item: any, index) => {
+                  if (!item) {
+                    return null;
+                  }
+                  return <SelectDropdownComponent item={item} key={index} />;
+                }}
+                renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
+                defaultValueByIndex={1}
+                buttonTextAfterSelection={(selectedItem, _index) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, _index) => {
+                  return item;
+                }}
+                defaultValue={algorithm}
+              />
+            </View>
+          </Row.LR>
+          <Row.LR pt={16} px={16}>
+            <View style={styles.selectType}>
+              <Text style={styles.algorithmLabel}>Derivation path</Text>
+              <Text style={styles.algorithmDescription}>
+                A derivation path is a piece of data which tells a Hierarchical Deterministic (HD) wallet how to derive
+                a specific key within a tree of keys
+              </Text>
+              <SelectDropdown
+                dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+                buttonStyle={styles.rowPicker}
+                dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+                rowStyle={styles.rowStyle}
+                data={DERIVATION_PATH}
+                onSelect={(selectedItem) => {
+                  setDerivationPath(selectedItem);
+                }}
+                renderCustomizedButtonChild={(item: any, index) => {
+                  if (!item) {
+                    return null;
+                  }
+                  return <SelectDropdownComponent item={item.label} key={index} />;
+                }}
+                renderCustomizedRowChild={(item: any) => (
+                  <Row.LR px={16} key={item.value}>
+                    <Text style={textStyles.Body1}>{item.label}</Text>
+                  </Row.LR>
+                )}
+                defaultValueByIndex={1}
+                buttonTextAfterSelection={(selectedItem) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, _index) => {
+                  return item;
+                }}
+                defaultValue={derivationPath}
+              />
+            </View>
+          </Row.LR>
+        </ListItem.Accordion>
         <Row.LR pt={16} px={16} style={styles.numberRow}>
+          <Text style={styles.numberOfWordsLabel}>Number of words</Text>
           {NUMBER_OF_RECOVERY_WORDS.map((number) => {
             return (
               <CTextButton
@@ -164,12 +214,14 @@ const styles = StyleSheet.create({
   },
   rowPicker: {
     minWidth: '100%',
-    minHeight: scale(48),
-    maxHeight: scale(100),
+    minHeight: scale(56),
     backgroundColor: colors.N5,
     color: colors.W1,
     borderRadius: scale(16),
     borderWidth: 0,
+  },
+  rowStyle: {
+    height: scale(60),
   },
   dropdownStyle: {
     borderRadius: scale(10),
@@ -184,6 +236,11 @@ const styles = StyleSheet.create({
     ...textStyles.Cap2,
     marginBottom: scale(12),
   },
+  numberOfWordsLabel: {
+    ...textStyles.Sub2,
+    color: colors.N3,
+    marginRight: scale(12),
+  },
   numberOfWordsButton: {
     width: scale(60),
     height: scale(30),
@@ -191,4 +248,6 @@ const styles = StyleSheet.create({
   numberRow: {
     justifyContent: 'flex-start',
   },
+  advancedSettings: { paddingLeft: scale(4), justifyContent: 'center' },
+  label: { ...textStyles.Sub2, color: colors.N3 },
 });
