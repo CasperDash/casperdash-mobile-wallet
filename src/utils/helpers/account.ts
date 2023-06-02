@@ -43,12 +43,16 @@ export const getRecoveryPhase = (numberOfWords: number) => {
  * @param {string} password - string - The password to set for the user.
  * @returns A new User object
  */
-export const createNewUser = (password: string): User => {
-  const user = new User(password, {
-    passwordValidator: {
-      validatorFunc: () => new ValidationResult(true),
+export const createNewUser = (password: string, derivationPath?: string): User => {
+  const user = new User(
+    password,
+    {
+      passwordValidator: {
+        validatorFunc: () => new ValidationResult(true),
+      },
     },
-  });
+    derivationPath,
+  );
 
   return user;
 };
@@ -74,8 +78,9 @@ export const createNewUserWithHdWallet = async (
   password: string,
   recoveryPhase: string,
   encryptionType: EncryptionType,
+  derivationPath?: string,
 ) => {
-  const user = createNewUser(password);
+  const user = createNewUser(password, derivationPath);
   await user.setHDWallet(recoveryPhase, encryptionType);
   return user;
 };

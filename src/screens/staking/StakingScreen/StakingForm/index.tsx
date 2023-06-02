@@ -97,7 +97,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
       ),
     validator: yup
       .string()
-      .required('Validator is required')
+      .required('Please choose a validator')
       .test(
         'maxDelegator',
         'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',

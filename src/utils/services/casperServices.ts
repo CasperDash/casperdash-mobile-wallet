@@ -9,6 +9,7 @@ import {
   CLPublicKey,
 } from 'casperdash-js-sdk';
 import { NETWORK_NAME, PAYMENT_AMOUNT, MOTE_RATE, DEPLOY_TTL_MS } from '../constants/key';
+import { BigNumberish } from '@ethersproject/bignumber';
 
 /**
  * Get Transfer deploy
@@ -22,8 +23,8 @@ import { NETWORK_NAME, PAYMENT_AMOUNT, MOTE_RATE, DEPLOY_TTL_MS } from '../const
 export const buildTransferDeploy = (
   fromAccount: CLPublicKey,
   toAccount: CLPublicKey,
-  amount: number,
-  transferId: any,
+  amount: BigNumberish,
+  transferId: BigNumberish,
   fee: any,
 ) => {
   const deployParams = new DeployUtil.DeployParams(fromAccount, NETWORK_NAME);

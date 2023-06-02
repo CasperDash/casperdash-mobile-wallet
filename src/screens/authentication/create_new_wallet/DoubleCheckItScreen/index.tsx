@@ -23,7 +23,7 @@ const DoubleCheckItScreen: React.FC<
 > = ({ route }) => {
   const [listData, setListData] = useState<any>([]);
   const [listDataSelected, setListDataSelected] = useState<any>([]);
-  const { wordArray, algorithm, recoveryPhase } = route.params;
+  const { wordArray, algorithm, recoveryPhase, derivationPath } = route.params;
   const numberOfWords = Math.floor(wordArray?.length / NUMBER_WORDS_PER_ROW);
 
   const { navigate } = useNavigation<StackNavigationProp<any>>();
@@ -84,6 +84,7 @@ const DoubleCheckItScreen: React.FC<
         showBack: true,
         phrases: recoveryPhase,
         algorithm,
+        derivationPath,
       },
     });
   };
