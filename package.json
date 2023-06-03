@@ -91,12 +91,10 @@
     "react-native-image-base64": "^0.1.4",
     "react-native-image-crop-picker": "^0.37.2",
     "react-native-image-viewing": "^0.2.1",
-    "react-native-key-encoder": "1.1.6",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-keychain": "^8.1.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-localize": "^2.2.0",
-    "react-native-masked-text": "^1.13.0",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^13.0.0",
     "react-native-modalize": "^2.0.12",
@@ -161,7 +159,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "^27.3.1",
     "metro-react-native-babel-preset": "0.73.7",
-    "react-native-svg-transformer": "^0.14.3",
+    "react-native-svg-transformer": "^1.0.0",
     "rn-nodeify": "10.3.0",
     "typescript": "^4.3.5"
   },
@@ -185,5 +183,9 @@
     "_stream_duplex": "readable-stream/duplex",
     "_stream_passthrough": "readable-stream/passthrough",
     "stream": "stream-browserify"
+  },
+  "resolutions": {
+    "d3-color": "^3.1.0",
+    "elliptic": "^6.5.4"
   }
 }
