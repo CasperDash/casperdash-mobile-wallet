@@ -51,7 +51,7 @@ export const getLoginOptions = ({ user }: { user: any }) => {
  */
 export const getPublicKey = createSelector(
   (state: any) => state.user,
-  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet.publicKey,
+  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet?.publicKey,
 );
 
 export const userDetailsSelector = (state: any) => state.user;

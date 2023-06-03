@@ -40,8 +40,8 @@ function Account() {
     );
   }, [loginOptions]);
 
-  const saveKey = () => {
-    copyToClipboard(publicKey!);
+  const saveKey = async () => {
+    await copyToClipboard(publicKey!);
   };
 
   const navigateSendReceive = (screen: string) => {
