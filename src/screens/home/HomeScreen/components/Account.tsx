@@ -11,7 +11,7 @@ import { toFormattedCurrency } from 'utils/helpers/format';
 import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 import { WalletInfoDetails } from 'utils/helpers/account';
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 
@@ -19,7 +19,7 @@ function Account() {
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-  const copyToClipboard = useCopyToClipboard();
+
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
 

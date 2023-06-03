@@ -8,12 +8,10 @@ import CTextButton from 'components/CTextButton';
 import { useSelector } from 'react-redux';
 import { getUser } from 'utils/selectors/user';
 import { User } from 'react-native-casper-storage';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { PhraseItem } from '../../authentication/create_new_wallet/components';
 
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
-
 const RecoveryPhraseScreen = () => {
-  const copyToClipboard = useCopyToClipboard();
   const [phrase, setPhrase] = useState('');
 
   const user = useSelector<any, User>(getUser);
@@ -62,7 +60,7 @@ const RecoveryPhraseScreen = () => {
             type={'line'}
             text={'Copy'}
             onPress={async () => {
-              copyToClipboard(phrase);
+              copyToClipboard(phrase, true);
             }}
           />
         </Row.C>

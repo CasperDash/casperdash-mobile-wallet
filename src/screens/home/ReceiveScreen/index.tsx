@@ -7,12 +7,10 @@ import QRCode from 'react-native-qrcode-svg';
 import CTextButton from 'components/CTextButton';
 import { useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const ReceiveScreen = () => {
   const publicKey = useSelector(getPublicKey);
-
-  const copyToClipboard = useCopyToClipboard();
 
   const onCopy = async () => {
     await copyToClipboard(publicKey || '');

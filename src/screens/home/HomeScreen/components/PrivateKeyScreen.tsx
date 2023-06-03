@@ -10,11 +10,9 @@ import { getUser, getSelectedWallet } from 'utils/selectors/user';
 import { User } from 'react-native-casper-storage';
 import { WalletInfoDetails, getWalletDetails } from 'utils/helpers/account';
 
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 const PrivateKeyScreen = () => {
-  const copyToClipboard = useCopyToClipboard();
-
   const user = useSelector<any, User>(getUser);
   const selectedWallet = useSelector<any, WalletInfoDetails>(getSelectedWallet);
 
@@ -39,7 +37,7 @@ const PrivateKeyScreen = () => {
             type={'line'}
             text={'Copy'}
             onPress={async () => {
-              copyToClipboard(privateKey || '');
+              copyToClipboard(privateKey || '', true);
             }}
           />
         </Row.B>
