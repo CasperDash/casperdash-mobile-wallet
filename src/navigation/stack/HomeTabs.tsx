@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Col } from 'components';
 import { isIos, scale } from 'device';
@@ -82,22 +82,15 @@ const listTabs = [
 const HomeTabs = () => {
   const insets = useSafeAreaInsets();
 
+  const renderIcon = ({ focused, tab }: { focused: any; tab: any }) => (
+    <TabItem {...{ focused }} label={tab.name}>
+      {focused ? tab.tabItemActive : tab.tabItemInActive}
+    </TabItem>
+  );
+
   return (
     <View style={{ flex: 1 }}>
-      <Tab.Navigator
-        initialRouteName="Home"
-        tabBarOptions={{
-          showLabel: false,
-          labelStyle: styles.labelStyle,
-          style: [
-            styles.tab,
-            {
-              height: tabBarHeight + insets.bottom,
-            },
-          ],
-          keyboardHidesTabBar: Platform.OS === 'android',
-        }}
-      >
+      <Tab.Navigator initialRouteName="Home">
         {listTabs.map((tab, index) => {
           return (
             <Tab.Screen
@@ -105,11 +98,15 @@ const HomeTabs = () => {
               name={tab.name}
               component={tab.component}
               options={{
-                tabBarIcon: ({ focused }) => (
-                  <TabItem {...{ focused }} label={tab.name}>
-                    {focused ? tab.tabItemActive : tab.tabItemInActive}
-                  </TabItem>
-                ),
+                tabBarIcon: ({ focused }) => renderIcon({ focused, tab }),
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarStyle: [
+                  styles.tab,
+                  {
+                    height: tabBarHeight + insets.bottom,
+                  },
+                ],
               }}
             />
           );

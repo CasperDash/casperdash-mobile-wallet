@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { AppNavigation } from 'navigation';
+import { AppNavigation } from './src/navigation';
 import { Provider } from 'react-redux';
-import { store } from 'redux_manager';
+import { store } from './src/redux_manager';
 import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
