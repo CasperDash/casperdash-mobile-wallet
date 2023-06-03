@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Modal, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { INFTInfo } from 'services/NFT/nftApis';
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 interface Props {
   route: any;
@@ -16,7 +16,6 @@ interface Props {
 }
 
 function NFTDetail({ route }: Props) {
-  const copyToClipboard = useCopyToClipboard();
   const [open, setOpen] = useState(false);
   const [showAttributes, setShowAttributes] = useState(true);
   const { bottom } = useSafeAreaInsets();

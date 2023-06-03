@@ -15,13 +15,12 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { EncryptionType } from 'react-native-casper-storage';
 import { DERIVATION_PATH, NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import { getRecoveryPhase } from '../../../../utils/helpers/account';
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { ListItem } from '@rneui/themed';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();
   const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
-  const copyToClipboard = useCopyToClipboard();
   const [derivationPath, setDerivationPath] = useState(DERIVATION_PATH[0]);
   const [isExpandedAdvanced, setIsExpandedAdvanced] = useState<boolean>(false);
 
@@ -174,7 +173,7 @@ const RecoveryPhraseScreen = () => {
             style={[styles.btnNext, { marginRight: scale(15) }]}
             text={'Copy'}
             onPress={async () => {
-              copyToClipboard(phraseString);
+              copyToClipboard(phraseString, true);
             }}
           />
           <CTextButton style={styles.btnNext} onPress={openDoubleCheckIt} text={'Next'} />
