@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useRef } from 'react';
-import { View, Image, StyleSheet, NativeModules, NativeEventEmitter } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { images } from 'assets';
 import { AppState } from 'react-native';
 // @ts-ignore

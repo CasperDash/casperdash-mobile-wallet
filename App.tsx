@@ -17,7 +17,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           <AppNavigation />
-          <Toast ref={ref => Toast.setRef(ref)} />
+          <Toast />
         </SafeAreaProvider>
       </QueryClientProvider>
     </Provider>
