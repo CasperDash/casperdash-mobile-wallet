@@ -71,19 +71,12 @@ const listTabs = [
     tabItemActive: <IconMenuNFTActive {...tabIcon25} />,
     tabItemInActive: <IconMenuNFT {...tabIcon25} />,
   },
-  //TODO: enabled when these tabs are completed.
   {
     name: 'Market',
     component: MarketNavigation,
     tabItemActive: <IconMenuMarketActive {...tabIcon24} />,
     tabItemInActive: <IconMenuMarket {...tabIcon24} />,
   },
-  /*{
-      name: 'KeyManager',
-      component: KeyManagerNavigation,
-      tabItemActive: <IconMenuKeyManagerActive {...tabIcon25}/>,
-      tabItemInActive:  <IconMenuKeyManager {...tabIcon25}/>,
-  },*/
 ];
 
 const HomeTabs = () => {

@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux';
 import { getUser, getSelectedWallet } from 'utils/selectors/user';
 import { User } from 'react-native-casper-storage';
 import { WalletInfoDetails, getWalletDetails } from 'utils/helpers/account';
-
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
 
 const PrivateKeyScreen = () => {
   const user = useSelector<any, User>(getUser);
@@ -25,24 +25,26 @@ const PrivateKeyScreen = () => {
   }, [user, selectedWallet]);
 
   return (
-    <CLayout bgColor={colors.cF8F8F8} edges={['top', 'left', 'right']} statusBgColor={colors.cF8F8F8}>
-      <CHeader title={'Private Key'} style={{ backgroundColor: colors.cF8F8F8 }} />
-      <Col mt={10} py={24} style={styles.container}>
-        <Text style={[styles.noteText]}>{selectedWallet.walletInfo.descriptor.name}</Text>
-        <Row.C style={styles.secretKeyContainer} mx={20} py={10} px={5}>
-          <Text>{privateKey}</Text>
-        </Row.C>
-        <Row.B style={styles.copyBtnContainer}>
-          <CTextButton
-            type={'line'}
-            text={'Copy'}
-            onPress={async () => {
-              copyToClipboard(privateKey || '', true);
-            }}
-          />
-        </Row.B>
-      </Col>
-    </CLayout>
+    <SensitiveInfoWrapper>
+      <CLayout bgColor={colors.cF8F8F8} edges={['top', 'left', 'right']} statusBgColor={colors.cF8F8F8}>
+        <CHeader title={'Private Key'} style={{ backgroundColor: colors.cF8F8F8 }} />
+        <Col mt={10} py={24} style={styles.container}>
+          <Text style={[styles.noteText]}>{selectedWallet.walletInfo.descriptor.name}</Text>
+          <Row.C style={styles.secretKeyContainer} mx={20} py={10} px={5}>
+            <Text>{privateKey}</Text>
+          </Row.C>
+          <Row.B style={styles.copyBtnContainer}>
+            <CTextButton
+              type={'line'}
+              text={'Copy'}
+              onPress={async () => {
+                copyToClipboard(privateKey || '', true);
+              }}
+            />
+          </Row.B>
+        </Col>
+      </CLayout>
+    </SensitiveInfoWrapper>
   );
 };
 
