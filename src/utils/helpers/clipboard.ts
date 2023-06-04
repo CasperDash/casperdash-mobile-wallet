@@ -16,9 +16,9 @@ const ClipboardManager = {
       clearTimeout(this.expireTime);
     }
     this.expireTime = setTimeout(async () => {
-      const string = await this.getString();
+      const cString = await this.getString();
 
-      if (!string) return;
+      if (!cString) return;
 
       Clipboard.setString('');
     }, expireTimeMs);

@@ -11,7 +11,7 @@ import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 interface Props {
   value: IAccountInfo;
   index: number;
-  onPress: (token: any) => void;
+  onPress: (token: any) => void | Promise<void>;
 }
 
 const KeyComponent = ({ value, onPress, index }: Props) => {

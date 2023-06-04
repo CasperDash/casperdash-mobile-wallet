@@ -176,7 +176,7 @@ const RecoveryPhraseScreen = () => {
               style={[styles.btnNext, { marginRight: scale(15) }]}
               text={'Copy'}
               onPress={async () => {
-                copyToClipboard(phraseString, true);
+                await copyToClipboard(phraseString, true);
               }}
             />
             <CTextButton style={styles.btnNext} onPress={openDoubleCheckIt} text={'Next'} />
