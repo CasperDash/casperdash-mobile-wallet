@@ -87,7 +87,7 @@ export const getEndString = (fullString: string, end: any) => {
  * @param {number} mote
  * @param {object} options
  */
-export const toDisplayValueFromMote = (mote: number, options: any) => {
+export const toDisplayValueFromMote = (mote: number, options?: any) => {
   return toFormattedNumber(mote / MOTE_RATE, options);
 };
 

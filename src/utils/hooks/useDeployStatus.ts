@@ -7,6 +7,7 @@ export const useDeployStatus = (deployHashes: string[]) => {
     queryKey: [ERequestKeys.deploysStatus, deployHashes],
     queryFn: () => getDeployStatus(deployHashes),
     enabled: !!deployHashes.length,
+    cacheTime: 10 * 1000,
   });
 
   return { ...query };

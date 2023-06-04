@@ -2,6 +2,7 @@ import { DeployUtil, RuntimeArgs, CLPublicKey, CLValueBuilder } from 'casperdash
 import { NETWORK_NAME, ENTRY_POINT_DELEGATE } from '../constants/key';
 import { contractHashes } from '../constants/stack';
 import { toMotes } from '../helpers/currency';
+import { BigNumber } from '@ethersproject/bignumber';
 
 /**
  * It creates a deploy that deploys the auction contract.
@@ -11,7 +12,7 @@ import { toMotes } from '../helpers/currency';
  * @param paymentAmount - The amount of tokens to send to the contract.
  * @returns The deploy object.
  */
-const buildStakeDeploy = (baseAccount: any, entryPoint: string, args: any, paymentAmount: any) => {
+const buildStakeDeploy = (baseAccount: any, entryPoint: string, args: any, paymentAmount: BigNumber) => {
   const deployParams = new DeployUtil.DeployParams(baseAccount, NETWORK_NAME);
   const runTimeArgs = RuntimeArgs.fromMap(args);
   const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
@@ -36,7 +37,7 @@ export const getStakeDeploy = ({
 }: {
   fromAddress: string;
   validator: string;
-  fee: any;
+  fee: number;
   amount: number;
   entryPoint: string;
 }) => {

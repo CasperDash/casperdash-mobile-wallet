@@ -10,7 +10,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
-import { toFormattedNumber } from 'utils/helpers/format';
+import { toDisplayValueFromMote } from 'utils/helpers/format';
 import { ScreenProps } from 'navigation/ScreenProps';
 import InfoComponent from 'screens/staking/InfoComponent';
 import { ENTRY_POINT_DELEGATE, ENTRY_POINT_UNDELEGATE, StakingMode } from 'utils/constants/key';
@@ -22,6 +22,7 @@ import { getStakeDeploy } from 'utils/services/stakeServices';
 import { MessageType } from 'components/CMessge/types';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { toCSPR } from 'utils/helpers/currency';
 
 const StakingConfirmScreen: React.FC<
   // @ts-ignore
@@ -79,7 +80,7 @@ const StakingConfirmScreen: React.FC<
   const { executeDeploy, isDeploying } = useConfirmDeploy();
 
   const setBalance = () => {
-    setFieldValue('amount', isDelegate ? `${stakedAmount - fee}` : `${stakedAmount}`);
+    setFieldValue('amount', isDelegate ? `${(stakedAmount - fee).toFixed(2)}` : `${toCSPR(stakedAmount).toFixed(2)}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -165,7 +166,7 @@ const StakingConfirmScreen: React.FC<
         </View>
         <Row.LR mt={24} mb={16}>
           <Text style={styles.title}>Amount</Text>
-          <Text style={textStyles.Body1}>My staked: {toFormattedNumber(stakedAmount)}</Text>
+          <Text style={textStyles.Body1}>My staked: {toDisplayValueFromMote(stakedAmount)}</Text>
         </Row.LR>
         <CInputFormik
           name={'amount'}

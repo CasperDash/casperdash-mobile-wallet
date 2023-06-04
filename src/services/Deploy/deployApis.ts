@@ -20,7 +20,7 @@ export interface IDeployStatusResponse {
 }
 
 export const getDeployStatus = async (deployHashes: string[]): Promise<IDeployStatusResponse[]> => {
-  const response = request.get<IDeployStatusResponse[]>('/deploysStatus', { params: { deployHashes } });
+  const response = request.get<IDeployStatusResponse[]>('/deploysStatus', { params: { deployHash: deployHashes } });
 
   return (await response).data;
 };

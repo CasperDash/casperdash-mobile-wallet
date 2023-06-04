@@ -33,9 +33,7 @@ const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
         </Col.TL>
         <Col.TR>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
-            <Text style={textStyles.Sub1}>{`${toFormattedNumber(
-              toCSPR(value.stakedAmount ?? 0).toNumber(),
-            )} CSPR`}</Text>
+            <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount)} CSPR`}</Text>
           )}
 
           <View style={styles.pendingContainer}>
