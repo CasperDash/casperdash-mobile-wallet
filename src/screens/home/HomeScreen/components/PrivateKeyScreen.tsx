@@ -38,7 +38,7 @@ const PrivateKeyScreen = () => {
               type={'line'}
               text={'Copy'}
               onPress={async () => {
-                copyToClipboard(privateKey || '', true);
+                await copyToClipboard(privateKey || '', true);
               }}
             />
           </Row.B>
