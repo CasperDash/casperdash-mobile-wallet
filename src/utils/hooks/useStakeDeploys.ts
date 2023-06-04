@@ -9,7 +9,6 @@ import { useQuery } from 'react-query';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { getAccountDelegation } from 'services/User/userApis';
 import { IAccountDelegationResponse } from 'services/User/userTypes';
-import Big from 'big.js';
 
 export const useStakedInfo = (publicKey: string) => {
   const query = useQuery({
@@ -30,14 +29,17 @@ export const getStakeIcon = (value: number) => {
 };
 
 export interface IStakedInfo extends IAccountDelegationResponse {
-  pendingDelegatedAmount: Big;
-  pendingUndelegatedAmount: Big;
+  pendingDelegatedAmount: number;
+  pendingUndelegatedAmount: number;
 }
 
-export interface IHistoryInfo extends IAccountDelegationResponse {
+export interface IHistoryInfo {
   icon: any;
   status: string;
   type: string;
+  validatorPublicKey: string;
+  delegatorPublicKey: string;
+  stakedAmount: number;
 }
 
 export const useStakeFromValidators = (publicKey: string) => {
@@ -77,15 +79,16 @@ export const useStakeFromValidators = (publicKey: string) => {
         const pendingUndelegated: any[] = pendingItems.filter(
           (stake: any) => stake.validator === item.validatorPublicKey && stake.entryPoint === ENTRY_POINT_UNDELEGATE,
         );
+
         return {
           ...item,
           stakedAmount: item.stakedAmount,
           pendingDelegatedAmount: pendingDelegated.length
-            ? pendingDelegated.reduce<Big>((acc: Big, pendingItem: any) => acc.add(pendingItem.amount), Big(0))
-            : Big(0),
+            ? pendingDelegated.reduce<number>((acc, pendingItem: any) => acc + pendingItem.amount, 0)
+            : 0,
           pendingUndelegatedAmount: pendingUndelegated.length
-            ? pendingUndelegated.reduce((acc: Big, pendingItem: any) => acc.add(pendingItem.amount), Big(0))
-            : Big(0),
+            ? pendingUndelegated.reduce<number>((acc: number, pendingItem: any) => acc + pendingItem.amount, 0)
+            : 0,
         };
       }) || []
     );
@@ -101,6 +104,7 @@ export const useStakedHistory = (publicKey: string): IHistoryInfo[] => {
     //@ts-ignore
     getDeployStakes(state, { publicKey }),
   );
+
   return stakeDeployList.map<IHistoryInfo>((item: any) => {
     return {
       validatorPublicKey: item.validator,

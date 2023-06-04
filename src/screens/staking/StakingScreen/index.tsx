@@ -36,11 +36,11 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   // Selector
   const publicKey = useSelector(getPublicKey);
-  const { stakedValidators: stackingList, isLoading, isRefetching, refetchInfo } = useStakeFromValidators(publicKey);
+  const { stakedValidators, isLoading, isRefetching, refetchInfo } = useStakeFromValidators(publicKey);
   const stakedHistory = useStakedHistory(publicKey);
 
   const renderItems = () => {
-    const listItems = view === EViews.history ? stakedHistory : stackingList;
+    const listItems = view === EViews.history ? stakedHistory : stakedValidators;
     const Comp = view === EViews.history ? StakedHistoryItem : StakedInformationItem;
     return listItems && listItems.length > 0 ? (
       listItems.map((item: any, index: any) => {

@@ -55,13 +55,13 @@ function StakedInformationItem({ value, validatorsDetail }: Props) {
               toCSPR(value.stakedAmount ?? 0).toNumber(),
             )} CSPR`}</Text>
           )}
-          {(!!value.pendingDelegatedAmount.toNumber() || !!value.pendingUndelegatedAmount.toNumber()) && (
+          {(!!value.pendingDelegatedAmount || !!value.pendingUndelegatedAmount) && (
             <View style={styles.pendingContainer}>
               <View style={styles.circle} />
               <Text style={[textStyles.Body2]}>{`${
                 value.pendingDelegatedAmount
-                  ? toFormattedNumber(value.pendingDelegatedAmount.toNumber())
-                  : -toFormattedNumber(value.pendingUndelegatedAmount.toNumber())
+                  ? toFormattedNumber(value.pendingDelegatedAmount)
+                  : -toFormattedNumber(value.pendingUndelegatedAmount)
               } CSPR`}</Text>
             </View>
           )}
