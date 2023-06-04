@@ -6117,6 +6117,11 @@ istanbul-reports@^3.1.3:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
+jail-monkey@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/jail-monkey/-/jail-monkey-2.8.0.tgz#ff8ce7e57c438c9351d6c97aefe1dce3269220c7"
+  integrity sha512-mz0sldKOEnt7qpqLLYM9Rwq9zGuGtj5nihz87KWBSy6PR9eu0cmyPkW3b+Exw4iVivcb2bFf6uVq0Q9aNgdIhw==
+
 jest-changed-files@^27.5.1:
   version "27.5.1"
   resolved "https://registry.npmjs.org/jest-changed-files/-/jest-changed-files-27.5.1.tgz"

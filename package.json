@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 14 Pro Max'",
+    "ios": "react-native run-ios --simulator='iPhone 14 Pro'",
     "start": "react-native start",
     "ios:mainnet": "yarn env:mainnet && react-native run-ios",
     "android:mainnet": "yarn env:mainnet && react-native run-android",
@@ -61,6 +61,7 @@
     "fuse.js": "^6.5.3",
     "global": "^4.4.0",
     "identicon.js": "^2.3.3",
+    "jail-monkey": "^2.8.0",
     "lodash": "^4.17.21",
     "memoize-one": "^6.0.0",
     "moment": "^2.29.1",
