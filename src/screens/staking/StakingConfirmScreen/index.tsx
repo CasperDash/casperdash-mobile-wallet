@@ -42,7 +42,7 @@ const StakingConfirmScreen: React.FC<
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
-  const { massagedData: userDetails } = useAccountInfo(publicKey!);
+  const { massagedData: userDetails } = useAccountInfo(publicKey);
   const balance = userDetails?.balance?.displayBalance ?? 0;
 
   const [isForm, setIsForm] = useState<boolean>(name === StakingMode.Undelegate);
