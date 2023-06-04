@@ -1,5 +1,5 @@
 import MainRouter from './MainRouter';
-import SettingsNavigation from 'navigation/SettingsNavigation';
+import SettingsSceen from 'screens/settings/SettingsScreen';
 import HomeTabs from 'navigation/stack/HomeTabs';
 import {
   AddCustomTokenScreen,
@@ -39,7 +39,7 @@ export const MainScreens = {
     title: '',
   },
   [SETTINGS_SCREEN]: {
-    screen: SettingsNavigation,
+    screen: SettingsSceen,
     title: '',
   },
   [ADD_CUSTOM_TOKEN_SCREEN]: {
