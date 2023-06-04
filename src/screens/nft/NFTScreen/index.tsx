@@ -23,7 +23,7 @@ function NFTScreen() {
   const [search, setSearch] = useState<string>('');
   const inputRef = useRef<any>();
   const publicKey = useSelector(getPublicKey);
-  const { filteredData: nfts, isLoading, isFetching, refetch } = useNFTsInfo(publicKey!, search, sort, order);
+  const { filteredData: nfts, isLoading, isFetching, refetch } = useNFTsInfo(publicKey, search, sort, order);
 
   const onFilterWith = (type: TSortField) => {
     if (type !== sort) {

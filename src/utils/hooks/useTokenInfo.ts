@@ -69,7 +69,7 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
     const minAmount = configurations?.MIN_CSPR_TRANSFER || DEFAULT_CONFIG.MIN_CSPR_TRANSFER;
     const tokenTransferFee = configurations?.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
-    const CSPRBalance = accountDetails?.balance?.displayBalance || 0;
+    const CSPRBalance = accountDetails?.balance?.displayBalance ?? 0;
 
     const CSPRInfo = {
       ...CSPR_INFO,
@@ -80,24 +80,23 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
       minAmount: minAmount,
     };
     const tokenPrice = 0;
-    const tokensInfo =
-      tokensData && tokensData.length
-        ? tokensData.map((datum) => {
-            return {
-              ...datum,
-              price: tokenPrice,
-              totalValue: (datum?.balance?.displayValue || 0) * tokenPrice,
-              transferFee: tokenTransferFee,
-              icon: getBase64IdentIcon(datum.address),
-            };
-          })
-        : [];
+    const tokensInfo = tokensData?.length
+      ? tokensData.map((datum) => {
+          return {
+            ...datum,
+            price: tokenPrice,
+            totalValue: (datum?.balance?.displayValue || 0) * tokenPrice,
+            transferFee: tokenTransferFee,
+            icon: getBase64IdentIcon(datum.address),
+          };
+        })
+      : [];
 
     return [CSPRInfo, ...tokensInfo];
   }, [accountDetails, CSPRPrice, tokensData, configurations]);
 
   const accountTotalBalanceInFiat = useMemo(() => {
-    return allTokenInfo && allTokenInfo.length
+    return allTokenInfo?.length
       ? allTokenInfo.reduce((out: number, datum: ITokenInfo) => {
           return out + datum.totalValue;
         }, 0)
@@ -106,7 +105,7 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
 
   const getTokenInfoByAddress = useCallback(
     (tokenAddress: string): ITokenInfo | undefined => {
-      return tokenAddress && allTokenInfo && allTokenInfo.length
+      return tokenAddress && allTokenInfo?.length
         ? allTokenInfo.find((info: ITokenInfo) => info.address === tokenAddress)
         : undefined;
     },
@@ -133,12 +132,7 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
 export const useTokenInfo = (
   tokenAddress: string,
   options: Omit<
-    UseQueryOptions<
-      unknown,
-      unknown,
-      Omit<ITokenInfoResponse, 'balance'>,
-      [ERequestKeys.tokenInfo, string | undefined]
-    >,
+    UseQueryOptions<unknown, any, Omit<ITokenInfoResponse, 'balance'>, [ERequestKeys.tokenInfo, string | undefined]>,
     'queryKey' | 'queryFn'
   >,
 ) => {

@@ -39,7 +39,7 @@ const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ r
     publicKey,
     status: selectedStatus,
   });
-  const { getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey!);
+  const { getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey);
   const tokenInfo = getTokenInfoByAddress(token.address);
 
   // Function

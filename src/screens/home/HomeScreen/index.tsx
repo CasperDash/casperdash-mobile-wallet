@@ -19,7 +19,7 @@ function HomeScreen() {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const publicKey = useSelector(getPublicKey);
-  const { allTokenInfo, refreshTokenInfo, isFetching, isLoading, isError } = useTokenInfoByPublicKey(publicKey!);
+  const { allTokenInfo, refreshTokenInfo, isFetching, isLoading, isError } = useTokenInfoByPublicKey(publicKey);
 
   const onRefresh = () => {
     refreshTokenInfo();

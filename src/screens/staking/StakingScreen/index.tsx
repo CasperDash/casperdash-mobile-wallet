@@ -36,8 +36,8 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   // Selector
   const publicKey = useSelector(getPublicKey);
-  const { stakedValidators: stackingList, isLoading, isRefetching, refetchInfo } = useStakeFromValidators(publicKey!);
-  const stakedHistory = useStakedHistory(publicKey!);
+  const { stakedValidators: stackingList, isLoading, isRefetching, refetchInfo } = useStakeFromValidators(publicKey);
+  const stakedHistory = useStakedHistory(publicKey);
 
   const renderItems = () => {
     const listItems = view === EViews.history ? stakedHistory : stackingList;
@@ -53,7 +53,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
 
   const renderStakingForm = () => (
     <StakingForm
-      publicKey={publicKey!}
+      publicKey={publicKey}
       setView={setView}
       view={view}
       selectedValidator={selectedValidator}
@@ -71,7 +71,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
         {view === EViews.rewards ? (
           <View style={{ marginTop: scale(22) }}>
             {renderStakingForm()}
-            <StakingRewards publicKey={publicKey!} />
+            <StakingRewards publicKey={publicKey} />
           </View>
         ) : (
           <ScrollView

@@ -43,7 +43,7 @@ const StakingConfirmScreen: React.FC<
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
   const { massagedData: userDetails } = useAccountInfo(publicKey!);
-  const balance = userDetails?.balance?.displayBalance || 0;
+  const balance = userDetails?.balance?.displayBalance ?? 0;
 
   const [isForm, setIsForm] = useState<boolean>(name === StakingMode.Undelegate);
 
@@ -121,6 +121,7 @@ const StakingConfirmScreen: React.FC<
             validator: validator,
             deployHash: deployHash,
             status: 'pending',
+            // @ts-ignore
             timestamp: signedDeploy?.deploy?.header.timestamp,
           }),
         );

@@ -19,7 +19,7 @@ function AddCustomTokenScreen() {
   const [tokenAddress, setTokenAddress] = useState('');
   const { goBack } = useNavigation<StackNavigationProp<any>>();
   const { refetch, error, isLoading, remove } = useTokenInfo(tokenAddress, { enabled: false });
-  const { refreshTokenInfo } = useTokenInfoByPublicKey(publicKey!);
+  const { refreshTokenInfo } = useTokenInfoByPublicKey(publicKey);
 
   const onChange = (value?: string) => {
     inputTokenAddress.current = value ?? '';

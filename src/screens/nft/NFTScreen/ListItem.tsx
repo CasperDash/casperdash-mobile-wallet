@@ -31,7 +31,7 @@ function NFTItem({ data, index }: { data: INFTInfo; index: number }) {
         </View>
         <View style={styles.nftItemContent}>
           <Text style={styles.nftName} numberOfLines={1}>
-            {nftName || tokenId || contractName}
+            {nftName ?? tokenId ?? contractName}
           </Text>
           <Text style={styles.contractNameNFT}>{contractName}</Text>
         </View>
