@@ -1,3 +1,4 @@
+import _orderBy from 'lodash/orderBy';
 import { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDeployStakes, updateStakesDeployStatus } from '../selectors/stake';
@@ -40,6 +41,7 @@ export interface IHistoryInfo {
   validatorPublicKey: string;
   delegatorPublicKey: string;
   stakedAmount: number;
+  timestamp: string;
 }
 
 export const useStakeFromValidators = (publicKey: string) => {
@@ -53,7 +55,12 @@ export const useStakeFromValidators = (publicKey: string) => {
     (stake: any) => stake.status === DeployStatus.pending || stake.status === DeployStatus.undelegating,
   );
 
-  const { data: deploysStatus } = useDeployStatus(pendingItems.map((deploy: any) => deploy.deployHash));
+  const {
+    data: deploysStatus,
+    refetch: refetchStatus,
+    isLoading: isLoadingStatus,
+    isRefetching: isRefetchingStatus,
+  } = useDeployStatus(pendingItems.map((deploy: any) => deploy.deployHash));
 
   const { data: stakedInfo, refetch, isLoading, isRefetching } = useStakedInfo(publicKey);
 
@@ -93,10 +100,18 @@ export const useStakeFromValidators = (publicKey: string) => {
       }) || []
     );
   }, [stakedInfo, pendingItems]);
+
   const refetchInfo = () => {
     refetch();
+    refetchStatus();
   };
-  return { stakedValidators, refetchInfo, isLoading, isRefetching };
+
+  return {
+    stakedValidators,
+    refetchInfo,
+    isLoading: isLoading || isLoadingStatus,
+    isRefetching: isRefetching || isRefetchingStatus,
+  };
 };
 
 export const useStakedHistory = (publicKey: string): IHistoryInfo[] => {
@@ -105,14 +120,19 @@ export const useStakedHistory = (publicKey: string): IHistoryInfo[] => {
     getDeployStakes(state, { publicKey }),
   );
 
-  return stakeDeployList.map<IHistoryInfo>((item: any) => {
-    return {
-      validatorPublicKey: item.validator,
-      delegatorPublicKey: publicKey,
-      stakedAmount: item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
-      icon: item.entryPoint === ENTRY_POINT_UNDELEGATE ? IconStatusSend : IconStatusReceive,
-      status: item.status,
-      type: item.entryPoint,
-    };
-  });
+  return _orderBy(
+    stakeDeployList.map<IHistoryInfo>((item: any) => {
+      return {
+        validatorPublicKey: item.validator,
+        delegatorPublicKey: publicKey,
+        stakedAmount: item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
+        icon: item.entryPoint === ENTRY_POINT_UNDELEGATE ? IconStatusSend : IconStatusReceive,
+        status: item.status,
+        type: item.entryPoint,
+        timestamp: item.timestamp,
+      };
+    }),
+    ['timestamp'],
+    ['desc'],
+  );
 };

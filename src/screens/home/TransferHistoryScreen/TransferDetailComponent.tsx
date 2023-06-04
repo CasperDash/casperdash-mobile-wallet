@@ -5,7 +5,7 @@ import { colors, IconCopy, textStyles } from 'assets';
 import { scale } from 'device';
 import { getValueByFormat } from 'utils/helpers/format';
 import { toFormattedDate } from 'utils/date';
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 interface Props {
   data: any;
@@ -14,7 +14,6 @@ interface Props {
 }
 
 const TransferDetailComponent = ({ data, deploy, index }: Props) => {
-  const copyToClipboard = useCopyToClipboard();
   const deployValue = deploy[data.value];
   const formattedValue = data.format
     ? data.format === 'date'
