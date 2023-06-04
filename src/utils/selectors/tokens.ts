@@ -13,7 +13,7 @@ export const getMassagedTokenData = (data: ITokenInfoResponse[]): ITokenInfoResp
   return data.map<ITokenInfoResponse>((datum) => {
     const decimals = new Big(
       BigNumber.from(10)
-        .pow(datum?.decimals?.hex || 0)
+        .pow(datum?.decimals?.hex ?? 0)
         .toNumber(),
     );
 
