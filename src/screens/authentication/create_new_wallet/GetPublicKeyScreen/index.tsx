@@ -133,7 +133,14 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
               <Text style={styles.title}>Choose your key</Text>
               <ScrollView>
                 {listKeys.map((ledgerKey, i: number) => {
-                  return <KeyComponent key={i} onPress={getAccountInformation} value={ledgerKey} index={i} />;
+                  return (
+                    <KeyComponent
+                      key={ledgerKey.publicKey}
+                      onPress={getAccountInformation}
+                      value={ledgerKey}
+                      index={i}
+                    />
+                  );
                 })}
               </ScrollView>
             </>

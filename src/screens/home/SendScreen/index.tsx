@@ -38,7 +38,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   const publicKey = useSelector(getPublicKey);
 
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>(token ? token.address : 'CSPR');
-  const { allTokenInfo, getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey!);
+  const { allTokenInfo, getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey);
   const selectedToken = getTokenInfoByAddress(selectedTokenAddress);
 
   const minAmount = selectedToken?.minAmount ?? 0;

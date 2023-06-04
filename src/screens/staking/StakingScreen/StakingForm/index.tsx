@@ -39,9 +39,9 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   const navigation = useNavigation();
 
   const { massagedData: userDetails } = useAccountInfo(publicKey);
-  const balance = userDetails?.balance?.displayBalance || 0;
+  const balance = userDetails?.balance?.displayBalance ?? 0;
   const { data: configurations } = useConfigurations();
-  const fee = configurations?.CSPR_AUCTION_DELEGATE_FEE || 0;
+  const fee = configurations?.CSPR_AUCTION_DELEGATE_FEE ?? 0;
   const minCSPRDelegateToNewValidator = configurations?.MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR || 0;
 
   const { data: stakedInfo } = useStakedInfo(publicKey);
@@ -141,7 +141,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
 
   React.useEffect(() => {
     if (selectedValidator) {
-      setFieldValue('validator', selectedValidator && selectedValidator.validatorPublicKey);
+      setFieldValue('validator', selectedValidator.validatorPublicKey);
       setFieldValue('amount', '0');
       setErrors({ ...errors, validator: '' });
       setTouched({ ...touched, validator: false });

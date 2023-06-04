@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState, useRef } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, AppState } from 'react-native';
 import { images } from 'assets';
-import { AppState } from 'react-native';
 // @ts-ignore
 import RNScreenshotPrevent, { addListener } from 'react-native-screenshot-prevent';
 import Toast from 'react-native-toast-message';

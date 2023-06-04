@@ -67,11 +67,7 @@ const ConfirmSendScreen: React.FC<
       };
 
       const buildDeployFn = () => buildTransferDeploy(transferDetails);
-      const { deployHash, signedDeploy } = await executeDeploy(
-        buildDeployFn,
-        transferDetails.fromAddress!,
-        showMessage,
-      );
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, transferDetails.fromAddress, showMessage);
 
       if (deployHash) {
         dispatch(

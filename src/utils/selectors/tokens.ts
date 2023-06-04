@@ -21,18 +21,17 @@ export const getMassagedTokenData = (data: ITokenInfoResponse[]): ITokenInfoResp
       ...datum,
       balance: {
         ...datum.balance,
-        displayValue: new Big(BigNumber.from(datum?.balance?.hex || 0).toNumber()).div(decimals).toNumber(),
+        displayValue: new Big(BigNumber.from(datum?.balance?.hex ?? 0).toNumber()).div(decimals).toNumber(),
       },
       total_supply: {
         ...datum.total_supply,
-        displayValue:
-          datum.total_supply && datum.total_supply.hex
-            ? new Big(BigNumber.from(datum.total_supply.hex).toNumber()).div(decimals).toNumber()
-            : 0,
+        displayValue: datum.total_supply?.hex
+          ? new Big(BigNumber.from(datum.total_supply.hex).toNumber()).div(decimals).toNumber()
+          : 0,
       },
       decimals: {
         ...datum.decimals,
-        displayValue: datum.decimals && datum.decimals.hex ? BigNumber.from(datum.decimals.hex).toNumber() : 0,
+        displayValue: datum.decimals?.hex ? BigNumber.from(datum.decimals.hex).toNumber() : 0,
       },
     };
   });

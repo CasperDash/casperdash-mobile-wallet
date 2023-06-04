@@ -7,7 +7,7 @@ import { ERequestKeys } from 'utils/constants/requestKeys';
 
 const getMetadataByKey = (metadata: IMetadata[], key: string) => {
   const data = metadata.find((item) => item.key === key);
-  return data?.value || '';
+  return data?.value ?? '';
 };
 
 export const useNFTsInfo = (
@@ -19,6 +19,7 @@ export const useNFTsInfo = (
   const query = useQuery({
     queryKey: [ERequestKeys.nftsInfo, publicKey],
     queryFn: () => getNFTs(publicKey),
+    enabled: !!publicKey,
   });
 
   const massagedData = useMemo<INFTInfo[]>(() => {
