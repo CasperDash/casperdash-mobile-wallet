@@ -51,9 +51,8 @@ export const JailbreakAlert: FC<JailbreakAlertProps> = ({ setupNavigation }) => 
 
   const onDebugDetect = useCallback(() => {
     const alert = {
-      buttonRight: 'Close',
+      showConfirm: false,
       showCancel: false,
-      onConfirm: onCloseApp,
       alertMessage: (
         <>
           <Text style={styles.title}>{`App Debugging Detected`}</Text>
@@ -71,9 +70,8 @@ export const JailbreakAlert: FC<JailbreakAlertProps> = ({ setupNavigation }) => 
 
   const onHookDetect = useCallback(() => {
     const alert = {
-      buttonRight: 'Close',
+      showConfirm: false,
       showCancel: false,
-      onConfirm: onCloseApp,
       alertMessage: (
         <>
           <Text style={styles.title}>{`Suspicious Applications Detected`}</Text>
