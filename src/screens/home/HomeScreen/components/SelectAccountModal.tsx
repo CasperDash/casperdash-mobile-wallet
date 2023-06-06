@@ -153,12 +153,12 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
           >
             {walletsWithBalance &&
               walletsWithBalance.length > 0 &&
-              walletsWithBalance.map((walletDetails: WalletInfoDetails & IAccountInfo, index: number) => {
+              walletsWithBalance.map((walletDetails: WalletInfoDetails & IAccountInfo) => {
                 return (
                   <AccountItem
                     isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails.walletInfo.uid}
                     data={walletDetails}
-                    key={index}
+                    key={walletDetails.walletInfo.uid}
                     onSelectWallet={onSelectWallet}
                     isLoadingBalance={isLoading}
                     onUpdateWalletName={onUpdateWalletName}
