@@ -12,4 +12,5 @@ export enum ERequestKeys {
   configurations = 'configurations',
   nftsInfo = 'nftsInfo',
   deploysStatus = 'deploysStatus',
+  releaseNotes = 'releaseNotes',
 }

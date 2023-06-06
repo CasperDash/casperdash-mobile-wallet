@@ -23,6 +23,8 @@ export interface IConfigurationResponse {
   MAX_DELEGATOR_PER_VALIDATOR: number;
   STAKE_AUCTION_HASH: string;
   MIN_CSPR_TRANSFER: number;
+  ANDROID_APP_VERSION?: string;
+  IOS_APP_VERSION?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
@@ -39,7 +41,7 @@ export const getConfigurations = async (): Promise<IConfigurationResponse> => {
       MAX_DELEGATOR_PER_VALIDATOR,
       STAKE_AUCTION_HASH: AUCTION_HASH,
       MIN_CSPR_TRANSFER,
-      API_VERSION: '1.0.0',
+      API_VERSION: '1.5.3',
     }
   );
 };

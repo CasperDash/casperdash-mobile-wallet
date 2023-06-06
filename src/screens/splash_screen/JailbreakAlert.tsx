@@ -7,26 +7,22 @@ import { CAlert } from 'components';
 import { isIos, scale } from 'device';
 
 interface JailbreakAlertProps {
-  setupNavigation: () => void;
+  onFinish: () => void;
 }
 
-export const JailbreakAlert: FC<JailbreakAlertProps> = ({ setupNavigation }) => {
+export const JailbreakAlert: FC<JailbreakAlertProps> = ({ onFinish }) => {
   const alertRef = useRef<any>();
   const ios = isIos();
   const [isJailbroken, setIsJailbroken] = React.useState<boolean | undefined>(undefined);
   const [isDebuggedMode, setIsDebuggedMode] = React.useState<boolean | undefined>(undefined);
   const [isHookDetected, setIsHookDetected] = React.useState<boolean | undefined>(undefined);
 
-  const onContinue = useCallback(() => {
-    setupNavigation();
-  }, [setupNavigation]);
-
   const onJailbrokenDetected = useCallback(() => {
     Splash.hide();
     const alert = {
       buttonRight: 'Agree & Continue',
       buttonLeft: 'Close',
-      onConfirm: onContinue,
+      onConfirm: onFinish,
       alertMessage: (
         <>
           <Text style={styles.title}>{`Device ${isIos() ? 'Jailbreak' : 'Root'}  Detected`}</Text>
@@ -43,7 +39,7 @@ export const JailbreakAlert: FC<JailbreakAlertProps> = ({ setupNavigation }) => 
       ),
     };
     alertRef.current.show(alert);
-  }, [ios, onContinue]);
+  }, [ios, onFinish]);
 
   const onCloseApp = () => {
     BackHandler.exitApp();
@@ -112,23 +108,15 @@ export const JailbreakAlert: FC<JailbreakAlertProps> = ({ setupNavigation }) => 
       return;
     }
 
-    setupNavigation();
-  }, [
-    setupNavigation,
-    onJailbrokenDetected,
-    onHookDetect,
-    onDebugDetect,
-    isJailbroken,
-    isHookDetected,
-    isDebuggedMode,
-  ]);
+    onFinish();
+  }, [onFinish, onJailbrokenDetected, onHookDetect, onDebugDetect, isJailbroken, isHookDetected, isDebuggedMode]);
 
   return (
     <CAlert
       ref={alertRef}
       hideClose
       onCancel={onCloseApp}
-      buttonConfirmStyle={{ width: 'auto', alignSelf: 'center' }}
+      buttonConfirmStyle={styles.confirmButton}
       buttonCancelStyle={{ width: scale(100) }}
       hideOnClickOutside={false}
     />
@@ -155,4 +143,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: scale(20),
   },
+  confirmButton: { width: 'auto', alignSelf: 'center' },
 });

@@ -16,7 +16,7 @@ import Big from 'big.js';
 export const toMotes = (amount: number | string): BigNumber => {
   try {
     // decimal can't convert to BigNumber, should convert to mote by Big.js first
-    const bigAmount = new Big(amount).mul(MOTE_RATE).toNumber();
+    const bigAmount = new Big(amount).mul(MOTE_RATE).round(0).toNumber();
     return BigNumber.from(bigAmount);
   } catch (error) {
     return BigNumber.from(0);

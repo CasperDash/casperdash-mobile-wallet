@@ -1,4 +1,6 @@
+import Big from 'big.js';
 import { toMotes, toCSPR } from './currency';
+import { BigNumber } from '@ethersproject/bignumber';
 
 describe('toMotes', () => {
   test('can convert cspr to mote with valid string number', () => {
@@ -14,7 +16,7 @@ describe('toMotes', () => {
   });
 
   test('can not covert cspr to mote with string', () => {
-    expect(toMotes('casperdash')).toEqual('-');
+    expect(toMotes('casperdash')).toEqual(BigNumber.from(0));
   });
 });
 
@@ -23,6 +25,6 @@ describe('toCSPR', () => {
     expect(toCSPR(10000000000).toString()).toEqual('10');
   });
   test('can not covert mote to CSPR with string', () => {
-    expect(toCSPR('casperdash')).toEqual('-');
+    expect(toCSPR('casperdash')).toEqual(new Big(0));
   });
 });

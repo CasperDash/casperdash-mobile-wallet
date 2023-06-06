@@ -12,9 +12,11 @@ import { createAndStoreMasterPassword } from 'utils/helpers/account';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { JailbreakAlert } from './JailbreakAlert';
 import { scale } from 'device';
+import ReleaseNotes from './ReleaseNotes';
 
 const SplashScreen = () => {
   const reStack = useRestack();
+  const [isCheckVersionFinished, setIsCheckVersionFinished] = React.useState(false);
 
   const { isLoading } = useConfigurations();
 
@@ -40,13 +42,28 @@ const SplashScreen = () => {
     Splash.hide();
   }, [reStack]);
 
+  const onFinishJailBreakCheck = useCallback(() => {
+    setupNavigation();
+  }, [setupNavigation]);
+
+  const onFinishReleaseNotes = useCallback(() => {
+    setIsCheckVersionFinished(true);
+  }, []);
+
   return (
     <CLayout>
       <Col style={styles.flex}>
         <Col.C style={styles.topContainer}>
           <Image source={images.logo} style={styles.logo} />
         </Col.C>
-        {isLoading ? <ActivityIndicator /> : <JailbreakAlert setupNavigation={setupNavigation} />}
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <>
+            <ReleaseNotes onFinish={onFinishReleaseNotes} />
+            {isCheckVersionFinished && <JailbreakAlert onFinish={onFinishJailBreakCheck} />}
+          </>
+        )}
       </Col>
     </CLayout>
   );
