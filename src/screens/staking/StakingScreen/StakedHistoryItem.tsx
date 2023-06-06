@@ -9,7 +9,6 @@ import { DeployStatus } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { IHistoryInfo } from 'utils/hooks/useStakeDeploys';
-import { toCSPR } from 'utils/helpers/currency';
 
 interface Props {
   value: IHistoryInfo;
