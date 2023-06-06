@@ -48,17 +48,13 @@ const CConfirmPinModal = ({ onCancel, onConfirm, isShow }: CAlertProps) => {
       hideModalContentWhileAnimating
       coverScreen={true}
       onBackdropPress={onCancel}
-      backdropColor={'transparent'}
+      backdropColor={'rgba(252, 252, 253, 1)'}
       isVisible={isShow}
       animationIn={'fadeIn'}
       animationOut={'fadeOut'}
+      backdropOpacity={0.4}
     >
       <Col style={styles.body}>
-        <Row.R>
-          <CButton onPress={onCancel}>
-            <IconCircleClose width={scale(24)} height={scale(24)} />
-          </CButton>
-        </Row.R>
         <Col.C mt={8} mb={16}>
           <Text style={styles.title}>Enter security PIN</Text>
           <SmoothPinCodeInput
