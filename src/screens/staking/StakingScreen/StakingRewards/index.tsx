@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 import { scale } from 'device';
 import { getStakingRewards } from 'services/StakingRewards/stakingRewardsApis';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
 import { StakingRewardItem } from './StakingRewardItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NoData } from '../NoData';
-import { getValidatorsDetail } from 'services/Validators/validatorsApis';
 import { ERequestKeys } from 'utils/constants/requestKeys';
+import { useValidatorsDetail } from 'utils/hooks/useValidators';
 
 interface IStakingRewardsProps {
   publicKey: string;
@@ -36,10 +36,7 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
     },
   });
 
-  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
-    queryKey: [ERequestKeys.validatorsDetail],
-    queryFn: () => getValidatorsDetail(),
-  });
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useValidatorsDetail();
 
   const displayData = useMemo(() => {
     return rewards?.pages.reduce<IStakingRewardItem[]>((out, datum) => out.concat(datum.data), []);

@@ -1,92 +1,46 @@
 import { CButton, CInput, Row } from 'components';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, StatusBar, FlatList, ActivityIndicator } from 'react-native';
-
 import { colors, IconArrowUp, IconCloseFilledN2, IconLogo, IconSearch, textStyles } from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
 import NFTItem from './ListItem';
-import { orderBy } from 'lodash';
-import { nonAccentText } from 'utils/helpers/format';
-import _ from 'lodash';
-import { allActions } from 'redux_manager';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNFTsInfo } from 'utils/hooks/useNFTsInfo';
+import { getPublicKey } from 'utils/selectors';
+import { INFTInfo } from 'services/NFT/nftApis';
 
 const hitSlop = { top: 10, bottom: 10, right: 10 };
 
+type TSortField = 'nftName' | 'contractName';
+
 function NFTScreen() {
-  const dispatch = useDispatch();
   const { top } = useSafeAreaInsets();
-  const [isLoading, setLoading] = useState(true);
-  const [nfts, setNFTs] = useState([]);
-  const listNFTs = useRef<any>();
-  const [sort, setSort] = useState('nftName');
-  const [reload, setReload] = useState(false);
-  const [filterName, setFilterName] = useState(false);
-  const [filterContractName, setFilterContractName] = useState(false);
+
+  const [sort, setSort] = useState<TSortField>('nftName');
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [search, setSearch] = useState<string>('');
   const inputRef = useRef<any>();
+  const publicKey = useSelector(getPublicKey);
+  const { filteredData: nfts, isLoading, isFetching, refetch } = useNFTsInfo(publicKey, search, sort, order);
 
-  useEffect(() => {
-    getData(false);
-  }, []);
-
-  const getData = (isRefresh: boolean) => {
-    dispatch(
-      allActions.nft.fetchNFTInfo((error: any, data: any) => {
-        if (data) {
-          listNFTs.current = data;
-          if (isRefresh) {
-            // @ts-ignore
-            setNFTs(orderBy(data, 'nftName', 'asc'));
-          } else {
-            setNFTs(data);
-          }
-        }
-        setReload(false);
-        setLoading(false);
-      }),
-    );
+  const onFilterWith = (type: TSortField) => {
+    if (type !== sort) {
+      setSort(type);
+      setOrder('desc');
+    } else {
+      setOrder((currentOrder) => (currentOrder === 'asc' ? 'desc' : 'asc'));
+    }
   };
-
-  const onFilterWith = (type: string) => {
-    if (type === 'nftName') {
-      setFilterName(!filterName);
-    }
-    setFilterContractName(!filterContractName);
-    if (type === sort) {
-      return nfts.reverse();
-    }
-    const newSortArr = orderBy(nfts, `${type}`, 'asc');
-    setNFTs(newSortArr);
-    setSort(type);
-  };
-
-  const onChangeText = _.debounce((text: string) => {
-    if (!text) {
-      setNFTs(listNFTs.current);
-      return;
-    }
-    if (text && listNFTs.current) {
-      const newFilterArr = listNFTs.current.filter((x: any) => nonAccentText(x.nftName).includes(nonAccentText(text)));
-      setNFTs(newFilterArr);
-    }
-  }, 500);
 
   const onClearSearch = () => {
     setSearch('');
     inputRef.current?.setText('');
     inputRef.current?.blur();
-    setNFTs(listNFTs.current);
   };
 
-  const onReload = () => {
-    setReload(true);
-    getData(true);
-  };
-
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item, index }: { item: INFTInfo; index: number }) => {
     return <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index} />;
   };
 
@@ -112,7 +66,6 @@ function NFTScreen() {
           ref={inputRef}
           onChangeText={(text) => {
             setSearch(text);
-            onChangeText(text);
           }}
           placeholder="Enter name"
           placeholderTextColor={colors.N4}
@@ -130,14 +83,16 @@ function NFTScreen() {
       <View style={styles.sortWrapper}>
         <TouchableOpacity style={styles.btnFilter} onPress={() => onFilterWith('nftName')}>
           <Text style={styles.titleSelect}>Name</Text>
-          <IconArrowUp style={[{ transform: [{ rotate: filterName ? '180deg' : '0deg' }] }]} />
+          <IconArrowUp
+            style={[{ transform: [{ rotate: sort === 'nftName' && order === 'desc' ? '180deg' : '0deg' }] }]}
+          />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnFilter} onPress={() => onFilterWith('nftContractName')}>
+        <TouchableOpacity style={styles.btnFilter} onPress={() => onFilterWith('contractName')}>
           <Text style={styles.titleSelect}>Contract Name</Text>
           <IconArrowUp
             style={[
               {
-                transform: [{ rotate: filterContractName ? '180deg' : '0deg' }],
+                transform: [{ rotate: sort === 'contractName' && order === 'desc' ? '180deg' : '0deg' }],
               },
             ]}
           />
@@ -156,9 +111,9 @@ function NFTScreen() {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.nftsList}
               data={nfts}
-              refreshing={reload}
+              refreshing={isFetching}
               extraData={nfts}
-              onRefresh={onReload}
+              onRefresh={refetch}
               keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
               ListEmptyComponent={renderNoData}
               renderItem={renderItem}

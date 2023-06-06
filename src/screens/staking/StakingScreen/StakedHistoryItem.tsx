@@ -8,14 +8,16 @@ import { StatusColorMapping } from 'utils/helpers/transaction';
 import { DeployStatus } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { IHistoryInfo } from 'utils/hooks/useStakeDeploys';
+import { toCSPR } from 'utils/helpers/currency';
 
 interface Props {
-  value: any;
+  value: IHistoryInfo;
   validatorsDetail?: IValidatorDetailsResponse;
 }
 
 const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
-  const validatorDetail = validatorsDetail?.[value.validator];
+  const validatorDetail = validatorsDetail?.[value.validatorPublicKey];
   return (
     <Row mx={16} py={16} style={styles.container}>
       <Image
@@ -25,13 +27,13 @@ const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
       <Row.LR style={{ flex: 1 }}>
         <Col.TL>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
-            {validatorDetail?.name || value.validator || ''}
+            {validatorDetail?.name || value.validatorPublicKey || ''}
           </Text>
           <Text style={[textStyles.Body2]}>{value.type}</Text>
         </Col.TL>
         <Col.TR>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
-            <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount ?? 0)} CSPR`}</Text>
+            <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount)} CSPR`}</Text>
           )}
 
           <View style={styles.pendingContainer}>

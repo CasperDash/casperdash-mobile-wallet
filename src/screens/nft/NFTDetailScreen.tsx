@@ -1,4 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
+import { BigNumber } from '@ethersproject/bignumber';
 import { colors, IconAttributes, IconCopy, images, textStyles } from 'assets';
 import { CButton, CFastImage, CHeader, CLayout, Row } from 'components';
 import { device, scale } from 'device';
@@ -6,7 +7,8 @@ import { device, scale } from 'device';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Modal, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useCopyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { INFTInfo } from 'services/NFT/nftApis';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 interface Props {
   route: any;
@@ -14,13 +16,12 @@ interface Props {
 }
 
 function NFTDetail({ route }: Props) {
-  const copyToClipboard = useCopyToClipboard();
   const [open, setOpen] = useState(false);
   const [showAttributes, setShowAttributes] = useState(true);
   const { bottom } = useSafeAreaInsets();
-  const data = route.params;
+  const data: INFTInfo = route.params;
 
-  const { nftImage, contractAddress, metadata, nftName, nftContractName, totalSupply } = data;
+  const { image, contractAddress, metadata, nftName, contractName, totalSupply } = data;
 
   const onOpenModal = () => {
     setOpen(!open);
@@ -45,7 +46,7 @@ function NFTDetail({ route }: Props) {
           <CFastImage
             disabled
             colorDef={'transparent'}
-            source={nftImage}
+            source={image}
             resizeMode={'contain'}
             sourceDef={images.imgnft}
             style={styles.nftImage}
@@ -87,11 +88,11 @@ function NFTDetail({ route }: Props) {
           <Text style={styles.time}>2021-11-09 23:45</Text> */}
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Total Supply:</Text>
-              <Text style={styles.contractContent}> {totalSupply}</Text>
+              <Text style={styles.contractContent}> {BigNumber.from(totalSupply.hex).toNumber()}</Text>
             </View>
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Name:</Text>
-              <Text style={styles.contractContent}> {nftContractName}</Text>
+              <Text style={styles.contractContent}> {contractName}</Text>
             </View>
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Address:</Text>
@@ -116,8 +117,8 @@ function NFTDetail({ route }: Props) {
             </TouchableOpacity>
             {showAttributes && (
               <View style={styles.metaData}>
-                {metadata.map((item: { name: string; key: string; value: string }) => (
-                  <View key={item.name} style={styles.metaDataItem}>
+                {metadata.map((item: { key: string; value: string }) => (
+                  <View key={item.key} style={styles.metaDataItem}>
                     <Text style={styles.keyMetaData}>{item.key}</Text>
                     <Text style={styles.valueMetaData}>{item.value}</Text>
                   </View>
@@ -131,7 +132,7 @@ function NFTDetail({ route }: Props) {
             <CFastImage
               disabled
               colorDef={'transparent'}
-              source={nftImage}
+              source={image}
               resizeMode={'contain'}
               sourceDef={images.imgnft}
               style={styles.nftImage}

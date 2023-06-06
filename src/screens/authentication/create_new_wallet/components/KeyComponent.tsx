@@ -6,13 +6,15 @@ import { colors, textStyles } from 'assets';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { CASPER_SYMBOL } from 'utils/constants/key';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 interface Props {
-  value: any;
-  onPress: (token: any) => void;
+  value: IAccountInfo;
+  index: number;
+  onPress: (token: any) => void | Promise<void>;
 }
 
-const KeyComponent = ({ value, onPress }: Props) => {
+const KeyComponent = ({ value, onPress, index }: Props) => {
   return (
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
@@ -22,11 +24,11 @@ const KeyComponent = ({ value, onPress }: Props) => {
             <Text numberOfLines={1} ellipsizeMode={'middle'} style={[styles.titleAccount, { maxWidth: scale(100) }]}>
               {value.publicKey}
             </Text>
-            <Text style={styles.body2}>Key #{value.keyIndex}</Text>
+            <Text style={styles.body2}>Key #{index}</Text>
           </Col>
         </Row>
         <Col.R mx={12}>
-          <Text style={styles.sub1}>{`${toFormattedNumber(value.balance)} ${CASPER_SYMBOL}`}</Text>
+          <Text style={styles.sub1}>{`${toFormattedNumber(value.balance?.displayBalance ?? 0)} ${CASPER_SYMBOL}`}</Text>
         </Col.R>
       </Row.LR>
     </CButton>

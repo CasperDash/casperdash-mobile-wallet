@@ -12,6 +12,7 @@ const Keys = {
   touchIdEnabled: 'touchIdEnabled',
   masterPassword: 'masterPassword',
   publicKeysCache: 'publicKeysCache',
+  skipShowReleaseNotesVersion: 'skipShowReleaseNotesVersion',
 };
 
 export default Keys;

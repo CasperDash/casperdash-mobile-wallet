@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useSelector } from 'react-redux';
-import { getAllTokenInfo, getTokenInfoByAddress } from 'utils/selectors/user';
+import { ITokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
@@ -21,7 +21,7 @@ import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
-import Big from 'big.js';
+import { getPublicKey } from 'utils/selectors';
 
 const initialValues = {
   transferAmount: '0',
@@ -35,11 +35,11 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const { token } = route.params;
   const scanQRCodeModalRef = useRef<any>();
+  const publicKey = useSelector(getPublicKey);
 
-  const [selectedTokenAddress, setSelectedTokenAddress] = useState(token ? token.address : 'CSPR');
-
-  const allTokenInfo = useSelector(getAllTokenInfo);
-  const selectedToken = useSelector(getTokenInfoByAddress({ address: selectedTokenAddress }));
+  const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>(token ? token.address : 'CSPR');
+  const { allTokenInfo, getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey);
+  const selectedToken = getTokenInfoByAddress(selectedTokenAddress);
 
   const minAmount = selectedToken?.minAmount ?? 0;
 
@@ -57,7 +57,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
       .test('max', 'Not enough balance.', function (value: any) {
         const fee = selectedToken?.transferFee ?? 0;
         const displayValue = selectedToken?.balance?.displayValue ?? 0;
-        return selectedTokenAddress === 'CSPR' ? Big(value).add(fee).lte(displayValue) : true;
+        return selectedTokenAddress === 'CSPR' ? displayValue >= value + fee : true;
       }),
     receivingAddress: yup
       .string()
@@ -84,10 +84,9 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   };
 
   const setBalance = () => {
-    const balance = selectedToken?.balance?.displayValue ?? 0;
-    const maxAmount = Big(balance).sub(selectedToken.address === 'CSPR' ? selectedToken.transferFee : 0);
-
-    setFieldValue('transferAmount', maxAmount.gt(0) ? maxAmount.toString() : '0');
+    const balance = selectedToken?.balance?.displayValue || 0;
+    const maxAmount = balance - (selectedToken?.address === 'CSPR' ? selectedToken?.transferFee || 0 : 0);
+    setFieldValue('transferAmount', maxAmount > 0 ? maxAmount.toString() : '0');
   };
 
   const onSelectedToken = (item: any) => {
@@ -143,7 +142,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
               }
               return <SelectDropdownComponent item={item} key={index} />;
             }}
-            renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
+            renderCustomizedRowChild={(item: ITokenInfo, index) => <DropdownItem item={item} key={index} />}
             data={allTokenInfo}
             onSelect={onSelectedToken}
             buttonTextAfterSelection={(item) => item}

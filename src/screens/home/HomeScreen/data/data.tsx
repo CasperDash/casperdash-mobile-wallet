@@ -1,5 +1,4 @@
-import React from 'react';
-import { IconSend, IconReceive, IconSwap } from 'assets';
+import { IconSend, IconReceive } from 'assets';
 import MainRouter from 'navigation/stack/MainRouter';
 
 export interface AccountAction {

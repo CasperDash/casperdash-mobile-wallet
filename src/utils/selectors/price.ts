@@ -9,10 +9,10 @@ export const getCurrentPrice = createSelector(getCSPRMarketInfo, ({ CSPRMarketIn
 });
 
 export const getPriceHistory = createSelector(priceHistory, ({ priceHistoryData: data }) => {
-  return data
-    ? data.prices.map((price: any) => ({
-        x: price[0],
-        y: parseFloat(parseFloat(price[1]).toFixed(4)),
-      }))
-    : [];
+  return (
+    data?.map((price: any) => ({
+      x: price[0],
+      y: parseFloat(parseFloat(price[1]).toFixed(4)),
+    })) || []
+  );
 });

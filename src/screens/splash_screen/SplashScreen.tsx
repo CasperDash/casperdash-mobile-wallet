@@ -1,29 +1,26 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
-
+import React, { useCallback } from 'react';
+import { ActivityIndicator, Image, StyleSheet } from 'react-native';
+import { CLayout, Col } from 'components';
+import { images } from 'assets';
 import Splash from 'react-native-splash-screen';
 import { Config, Keys } from 'utils';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { isEmpty } from 'lodash';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
 import { createAndStoreMasterPassword } from 'utils/helpers/account';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { JailbreakAlert } from './JailbreakAlert';
+import { scale } from 'device';
+import ReleaseNotes from './ReleaseNotes';
 
 const SplashScreen = () => {
   const reStack = useRestack();
-  const dispatch = useDispatch();
+  const [isCheckVersionFinished, setIsCheckVersionFinished] = React.useState(false);
 
-  useEffect(() => {
-    //always get new config
-    dispatch(allActions.main.getConfigurations());
-    setupNavigation();
+  const { isLoading } = useConfigurations();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const setupNavigation = async () => {
+  const setupNavigation = useCallback(async () => {
     const overview = await Config.getItem(Keys.overview);
 
     const casperDashInfo = await Config.getItem(Keys.casperdash);
@@ -43,9 +40,51 @@ const SplashScreen = () => {
 
     reStack(StackName.AuthenticationStack, screen);
     Splash.hide();
-  };
+  }, [reStack]);
 
-  return <View />;
+  const onFinishJailBreakCheck = useCallback(() => {
+    setupNavigation();
+  }, [setupNavigation]);
+
+  const onFinishReleaseNotes = useCallback(() => {
+    setIsCheckVersionFinished(true);
+  }, []);
+
+  return (
+    <CLayout>
+      <Col style={styles.flex}>
+        <Col.C style={styles.topContainer}>
+          <Image source={images.logo} style={styles.logo} />
+        </Col.C>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <>
+            <ReleaseNotes onFinish={onFinishReleaseNotes} />
+            {isCheckVersionFinished && <JailbreakAlert onFinish={onFinishJailBreakCheck} />}
+          </>
+        )}
+      </Col>
+    </CLayout>
+  );
 };
 
 export default SplashScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  topContainer: {
+    width: '100%',
+    height: '40%',
+  },
+  logo: {
+    width: scale(124),
+    height: scale(122),
+  },
+  flex: {
+    flex: 1,
+  },
+});

@@ -10,16 +10,6 @@ const initialState = {
 
 export default function (state = initialState, action = { type: '', payload: {} }) {
   switch (action.type) {
-    case types.GET_ACCOUNT_INFORMATION_SUCCESS:
-      return {
-        ...state,
-        info: action.payload,
-      };
-    case types.GET_ACCOUNTS_SUCCESS:
-      return {
-        ...state,
-        accounts: action.payload,
-      };
     case typesMain.LOAD_LOCAL_STORAGE_SUCCESS: {
       return {
         ...state,

@@ -17,7 +17,7 @@ const scale = (size: number) => {
 };
 
 const isIos = () => {
-  return Platform.OS == 'ios';
+  return Platform.OS === 'ios' || Platform.OS === 'macos';
 };
 
 const isNavigationTab = () => {

@@ -1,10 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function KeyManagerScreen() {
-  const insets = useSafeAreaInsets();
-
   return (
     <View style={styles.container}>
       <Text>KeyManagerScreen</Text>

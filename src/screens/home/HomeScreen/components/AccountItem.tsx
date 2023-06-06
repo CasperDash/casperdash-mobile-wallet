@@ -5,9 +5,10 @@ import { scale } from 'device';
 import { colors, textStyles, IconPencilFilled, IconCheck, IconCloseAlt } from 'assets';
 import { WalletInfoDetails } from 'utils/helpers/account';
 import { toFormattedNumber } from 'utils/helpers/format';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 interface IAccountItemProps {
-  data: WalletInfoDetails;
+  data: WalletInfoDetails & IAccountInfo;
   isCurrentAccount: boolean;
   onSelectWallet: (data: WalletInfoDetails) => void;
   isLoadingBalance?: boolean;
@@ -56,7 +57,7 @@ const AccountItem = ({
                     <ActivityIndicator size="small" color={colors.N2} />
                   </View>
                 )}
-                {toFormattedNumber(data.balance) || 0} CSPR
+                {toFormattedNumber(data.balance?.displayBalance) || 0} CSPR
               </Text>
             </Col>
           </>

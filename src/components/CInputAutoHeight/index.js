@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { TextInput } from 'react-native';
 import { scale } from 'device';
 
@@ -13,7 +13,7 @@ export default class CInputAutoHeight extends React.PureComponent {
   };
 
   render() {
-    let { style, defaultValue, onChangeText, placeholder, ref, lineHeight, scrollView, editable } = this.props;
+    let { style, defaultValue, onChangeText, placeholder, lineHeight, scrollView, editable } = this.props;
     let numOfLinesInput = 1;
     lineHeight = Math.max(scale(24), lineHeight);
     return (
@@ -22,7 +22,7 @@ export default class CInputAutoHeight extends React.PureComponent {
         editable={editable}
         style={[style]}
         multiline={true}
-        ref={(ref) => (this.input = ref)}
+        ref={(curRef) => (this.input = curRef)}
         numberOfLines={numOfLinesInput}
         defaultValue={defaultValue}
         onChangeText={onChangeText}
