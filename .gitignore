@@ -63,3 +63,4 @@ buck-out/
 /src/utils/config/env.*.js
 
 coverage/
+*.env.*
