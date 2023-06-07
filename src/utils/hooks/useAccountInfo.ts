@@ -4,6 +4,7 @@ import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { toCSPRFromHex } from 'utils/helpers/currency';
+import { toastError } from 'utils/helpers/errorHandler';
 
 export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo => {
   const hexBalance = userDetails?.balance?.hex ?? 0;
@@ -25,6 +26,9 @@ export const useAccountInfo = (publicKey: string) => {
     queryKey: [ERequestKeys.accountInfo, publicKey],
     queryFn: () => getAccountInfo(publicKey),
     enabled: !!publicKey,
+    onError: (error: any) => {
+      toastError(error?.response?.data?.message);
+    },
   });
 
   const massagedData = useMemo(() => {
@@ -43,6 +47,9 @@ export const useListAccountInfo = (publicKeys: string[], keepPreviousData?: bool
     queryFn: () => getListAccountInfo(publicKeys),
     enabled: !!publicKeys && publicKeys.length > 0,
     keepPreviousData: keepPreviousData,
+    onError: (error: any) => {
+      toastError(error?.response?.data?.message);
+    },
   });
 
   const massagedData = useMemo(() => {

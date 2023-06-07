@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NoData } from '../NoData';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { useValidatorsDetail } from 'utils/hooks/useValidators';
+import { toastError } from 'utils/helpers/errorHandler';
 
 interface IStakingRewardsProps {
   publicKey: string;
@@ -33,6 +34,9 @@ export const StakingRewards: React.FC<IStakingRewardsProps> = ({ publicKey }) =>
         return lastPage.page + 1;
       }
       return undefined;
+    },
+    onError: (error: any) => {
+      toastError(error?.response?.data?.message);
     },
   });
 
