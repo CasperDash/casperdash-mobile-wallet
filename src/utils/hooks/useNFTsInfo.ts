@@ -4,6 +4,7 @@ import Fuse from 'fuse.js';
 import { orderBy } from 'lodash';
 import { IMetadata, INFTInfo, getNFTs } from 'services/NFT/nftApis';
 import { ERequestKeys } from 'utils/constants/requestKeys';
+import { toastError } from 'utils/helpers/errorHandler';
 
 const getMetadataByKey = (metadata: IMetadata[], key: string) => {
   const data = metadata.find((item) => item.key === key);
@@ -20,6 +21,9 @@ export const useNFTsInfo = (
     queryKey: [ERequestKeys.nftsInfo, publicKey],
     queryFn: () => getNFTs(publicKey),
     enabled: !!publicKey,
+    onError: (error: any) => {
+      toastError(error?.response?.data?.message);
+    },
   });
 
   const massagedData = useMemo<INFTInfo[]>(() => {

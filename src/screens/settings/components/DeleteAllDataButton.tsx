@@ -33,7 +33,7 @@ const DeleteAllDataButton = () => {
             undone.
           </Text>
           <Text style={styles.deleteMessage}>
-            Your can ONLY recover this wallet with your Secret Recovery Phase CasperDash does not have your Secret
+            You can ONLY recover this wallet with your Secret Recovery Phase CasperDash does not have your Secret
             Recovery Phase.
           </Text>
         </>
@@ -65,7 +65,7 @@ const DeleteAllDataButton = () => {
       </CButton>
 
       {!showConfirmPin ? (
-        <CAlert ref={alertRef} onConfirm={onPressNext} />
+        <CAlert ref={alertRef} onConfirm={onPressNext} hideClose />
       ) : (
         <CConfirmPinModal isShow={showConfirmPin} onConfirm={deleteAllData} onCancel={() => setShowConfirmPin(false)} />
       )}
