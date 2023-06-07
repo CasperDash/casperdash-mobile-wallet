@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts, IconBack } from 'assets';
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
     lineHeight: scale(28),
     fontFamily: fonts.Poppins.regular,
-    color: colors.inkBasic,
   },
   indicator: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Col } from 'components';
 import { isIos, scale } from 'device';
@@ -14,8 +14,6 @@ import {
   IconMenuNFTActive,
   IconMenuMarket,
   IconMenuMarketActive,
-  IconMenuKeyManagerActive,
-  IconMenuKeyManager,
 } from 'assets';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -24,7 +22,6 @@ import StakingNavigation from 'navigation/StakingNavigation';
 import NFTNavigation from 'navigation/NFTNavigation';
 import MarketNavigation from 'navigation/MarketNavigation';
 import HomeNavigation from 'navigation/HomeNavigation';
-import KeyManagerNavigation from 'navigation/KeyManagerNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -74,40 +71,26 @@ const listTabs = [
     tabItemActive: <IconMenuNFTActive {...tabIcon25} />,
     tabItemInActive: <IconMenuNFT {...tabIcon25} />,
   },
-  //TODO: enabled when these tabs are completed.
   {
     name: 'Market',
     component: MarketNavigation,
     tabItemActive: <IconMenuMarketActive {...tabIcon24} />,
     tabItemInActive: <IconMenuMarket {...tabIcon24} />,
   },
-  /*{
-      name: 'KeyManager',
-      component: KeyManagerNavigation,
-      tabItemActive: <IconMenuKeyManagerActive {...tabIcon25}/>,
-      tabItemInActive:  <IconMenuKeyManager {...tabIcon25}/>,
-  },*/
 ];
 
 const HomeTabs = () => {
   const insets = useSafeAreaInsets();
 
+  const renderIcon = ({ focused, tab }: { focused: any; tab: any }) => (
+    <TabItem {...{ focused }} label={tab.name}>
+      {focused ? tab.tabItemActive : tab.tabItemInActive}
+    </TabItem>
+  );
+
   return (
     <View style={{ flex: 1 }}>
-      <Tab.Navigator
-        initialRouteName="Home"
-        tabBarOptions={{
-          showLabel: false,
-          labelStyle: styles.labelStyle,
-          style: [
-            styles.tab,
-            {
-              height: tabBarHeight + insets.bottom,
-            },
-          ],
-          keyboardHidesTabBar: Platform.OS === 'android',
-        }}
-      >
+      <Tab.Navigator initialRouteName="Home">
         {listTabs.map((tab, index) => {
           return (
             <Tab.Screen
@@ -115,11 +98,15 @@ const HomeTabs = () => {
               name={tab.name}
               component={tab.component}
               options={{
-                tabBarIcon: ({ focused }) => (
-                  <TabItem {...{ focused }} label={tab.name}>
-                    {focused ? tab.tabItemActive : tab.tabItemInActive}
-                  </TabItem>
-                ),
+                tabBarIcon: ({ focused }) => renderIcon({ focused, tab }),
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarStyle: [
+                  styles.tab,
+                  {
+                    height: tabBarHeight + insets.bottom,
+                  },
+                ],
               }}
             />
           );

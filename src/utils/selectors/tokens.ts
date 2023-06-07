@@ -1,52 +1,41 @@
-/* eslint-disable complexity */
-import { createSelector } from 'reselect';
+import { BigNumber } from '@ethersproject/bignumber';
+import { ITokenInfoResponse } from 'services/User/userTypes';
+import Big from 'big.js';
 
 export const tokensSelector = (state: any) => state.home;
 
 /* A selector that returns an array of objects. */
-export const getMassagedTokenData = createSelector(tokensSelector, ({ tokenInfoWithBalance: data }) => {
+export const getMassagedTokenData = (data: ITokenInfoResponse[]): ITokenInfoResponse[] => {
   if (!Array.isArray(data)) {
     return [];
   }
 
-  return data.map((datum) => {
-    try {
-      const decimals = (datum.decimals && datum.decimals.hex) || 0;
+  return data.map<ITokenInfoResponse>((datum) => {
+    const decimals = new Big(
+      BigNumber.from(10)
+        .pow(datum?.decimals?.hex ?? 0)
+        .toNumber(),
+    );
 
-      return {
-        ...datum,
-        balance:
-          typeof datum.balance === 'object'
-            ? {
-                ...datum.balance,
-                displayValue:
-                  datum.balance && datum.balance.hex
-                    ? parseFloat((datum.balance.hex / 10 ** decimals).toString()).toFixed(2)
-                    : 0,
-              }
-            : { displayValue: datum.balance || 0 },
-        total_supply: {
-          ...datum.total_supply,
-          displayValue:
-            datum.total_supply && datum.total_supply.hex
-              ? // eslint-disable-next-line radix
-                parseInt((datum.total_supply.hex / 10 ** decimals).toString())
-              : 0,
-        },
-        decimals: {
-          ...datum.decimals,
-          displayValue:
-            datum.decimals && datum.decimals.hex
-              ? // eslint-disable-next-line radix
-                parseInt(datum.decimals.hex)
-              : 0,
-        },
-      };
-    } catch (error) {
-      return {};
-    }
+    return {
+      ...datum,
+      balance: {
+        ...datum.balance,
+        displayValue: new Big(BigNumber.from(datum?.balance?.hex ?? 0).toNumber()).div(decimals).toNumber(),
+      },
+      total_supply: {
+        ...datum.total_supply,
+        displayValue: datum.total_supply?.hex
+          ? new Big(BigNumber.from(datum.total_supply.hex).toNumber()).div(decimals).toNumber()
+          : 0,
+      },
+      decimals: {
+        ...datum.decimals,
+        displayValue: datum.decimals?.hex ? BigNumber.from(datum.decimals.hex).toNumber() : 0,
+      },
+    };
   });
-});
+};
 
 /**
  * It returns a list of unique tokens addresses.

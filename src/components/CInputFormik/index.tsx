@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
   View,
   Text,
@@ -89,17 +89,17 @@ const CInput = forwardRef((props: Props, ref): any => {
     value: value,
   }));
 
-  const focus = (ref: any) => {
+  const focus = (curRef: any) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     onFocus && onFocus();
-    if (ref) {
+    if (curRef) {
       inputRef.current.focus();
     }
   };
-  const blur = (ref: any) => {
+  const blur = (curRef: any) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     onBlur && onBlur();
-    if (ref) {
+    if (curRef) {
       inputRef.current.blur();
     }
   };

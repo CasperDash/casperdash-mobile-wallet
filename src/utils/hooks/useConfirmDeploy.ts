@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useSigner from './useSigner';
-import { apis } from 'services';
+import { IPutDeployRequest, putDeploy } from 'services/Deploy/deployApis';
 import { MessageType } from 'components/CMessge/types';
 
 export const useConfirmDeploy = () => {
@@ -15,10 +15,10 @@ export const useConfirmDeploy = () => {
    * @param cb - callback function that will be called with the result of the deploy.
    * @returns The deployHash.
    */
-  const putSignedDeploy = async (signedDeploy: any) => {
+  const putSignedDeploy = async (signedDeploy: IPutDeployRequest) => {
     try {
-      const data: any = await apis.deployAPI(signedDeploy);
-      if (data) {
+      const data = await putDeploy(signedDeploy);
+      if (data?.deployHash) {
         return data.deployHash;
       }
       return null;

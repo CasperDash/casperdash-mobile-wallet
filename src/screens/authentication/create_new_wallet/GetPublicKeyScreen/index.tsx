@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { scale } from 'device';
 import { textStyles } from 'assets';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
 import { Config } from 'utils';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -16,9 +14,9 @@ import Col from 'react-native-col';
 import { ScrollView } from 'react-native-gesture-handler';
 import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { convertBalanceFromHex } from 'utils/helpers/balance';
 import CLoading from 'components/CLoading';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { useListAccountInfo } from 'utils/hooks/useAccountInfo';
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
 
@@ -30,11 +28,15 @@ interface Props {
 const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
   const [error, setError] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [listKeys, setListKeys] = useState<any>([]);
-  const [publicKey, setPublicKey] = useState<any>(null);
+  const [loadingKeys, setLoadingKeys] = useState<{ publicKey: string; keyIndex: number }[]>([]);
+  const [publicKey, setPublicKey] = useState<string>();
+
+  const { massagedData: listKeys } = useListAccountInfo(
+    loadingKeys.map((key) => key.publicKey),
+    true,
+  );
 
   const unmountRef = useRef<boolean>(false);
-  const dispatch = useDispatch();
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const insets = useSafeAreaInsets();
 
@@ -43,6 +45,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
     return () => {
       unmountRef.current = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setupFetchAddress = async () => {
@@ -67,30 +70,8 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
       if (ledgerPublicKey) {
         setError(null);
         const keys = await getListKeys(casperApp, listKeys.length, 5);
-        dispatch(
-          allActions.user.getAccounts({ publicKeys: keys }, async (err: any, data: any) => {
-            if (err) {
-              setError(err.message);
-              return;
-            }
+        setLoadingKeys(keys);
 
-            if (!data || !data.length) {
-              setListKeys(keys);
-              return;
-            }
-
-            const keysWithBalance = keys.map((key) => {
-              const found = data.find((item: { publicKey: string }) => item.publicKey === key.publicKey);
-              const balance = found && found.balance ? convertBalanceFromHex(found.balance.hex) : 0;
-              return {
-                ...key,
-                balance,
-              };
-            });
-            setIsLoading(false);
-            setListKeys(keysWithBalance);
-          }),
-        );
         unmountRef.current = true;
       } else {
         setTransport(null);
@@ -105,39 +86,29 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
     }
   };
 
-  const getAccountInformation = async (key: any) => {
+  const getAccountInformation = async (key: any): Promise<void> => {
     const { keyIndex } = key;
     const casperApp = new CasperApp(transport);
     const ledgerPublicKey = await getLedgerPublicKey(casperApp, keyIndex);
     setIsLoading(true);
     setPublicKey(ledgerPublicKey);
-    dispatch(
-      allActions.user.getAccountInformation({ publicKey: ledgerPublicKey }, async (err: any, data: any) => {
-        const notFundAccount = err && err.message && err.message.includes('ValueNotFound');
-        if (data || notFundAccount) {
-          await Config.saveItem(Keys.ledger, transport.device);
-          const info = {
-            publicKey: ledgerPublicKey,
-            loginOptions: {
-              connectionType: CONNECTION_TYPES.ledger,
-              keyIndex,
-            },
-          };
-          await Config.saveItem(Keys.casperdash, info);
-          setIsLoading(false);
-          replace(AuthenticationRouter.CHOOSE_PIN, {
-            screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-            params: {
-              showBack: false,
-            },
-          });
-        } else {
-          setIsLoading(false);
-          setTransport(null);
-          Config.alertMess(err);
-        }
-      }),
-    );
+
+    await Config.saveItem(Keys.ledger, transport.device);
+    const info = {
+      publicKey: ledgerPublicKey,
+      loginOptions: {
+        connectionType: CONNECTION_TYPES.ledger,
+        keyIndex,
+      },
+    };
+    await Config.saveItem(Keys.casperdash, info);
+    setIsLoading(false);
+    replace(AuthenticationRouter.CHOOSE_PIN, {
+      screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+      params: {
+        showBack: false,
+      },
+    });
   };
 
   /**
@@ -161,8 +132,15 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
             <>
               <Text style={styles.title}>Choose your key</Text>
               <ScrollView>
-                {listKeys.map((ledgerKey: Array<object>, i: any) => {
-                  return <KeyComponent key={i} onPress={getAccountInformation} value={ledgerKey} />;
+                {listKeys.map((ledgerKey, i: number) => {
+                  return (
+                    <KeyComponent
+                      key={ledgerKey.publicKey}
+                      onPress={getAccountInformation}
+                      value={ledgerKey}
+                      index={i}
+                    />
+                  );
                 })}
               </ScrollView>
             </>

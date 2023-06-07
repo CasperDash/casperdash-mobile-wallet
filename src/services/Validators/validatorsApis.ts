@@ -1,9 +1,10 @@
-import { NETWORK_URL } from 'utils/constants/key';
+import { request } from 'services/request';
 
 interface IValidatorDetail {
   name: string;
   description: string;
   logo?: string;
+  priority?: boolean;
 }
 
 export interface IValidatorDetailsResponse {
@@ -11,11 +12,23 @@ export interface IValidatorDetailsResponse {
 }
 
 export const getValidatorsDetail = async (): Promise<IValidatorDetailsResponse> => {
-  const response = await fetch(`${NETWORK_URL}/validatorsDetail`);
-  if (!response.ok) {
-    console.error('Cant get validator details');
-    return {};
-  }
+  const response = await request.get<IValidatorDetailsResponse>('/validatorsDetail');
 
-  return (await response.json()) || {};
+  return response.data;
+};
+
+export interface IValidatorResponse {
+  era: number;
+  blockHeight: number;
+  validatorPublicKey: string;
+  weight: string;
+  isActive: boolean;
+  isFullDelegator: boolean;
+  delegationRate: number;
+}
+
+export const getValidators = async (): Promise<IValidatorResponse[]> => {
+  const response = await request.get<IValidatorResponse[]>('/v3/validators');
+
+  return response.data;
 };

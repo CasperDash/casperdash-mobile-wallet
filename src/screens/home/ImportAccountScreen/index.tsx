@@ -100,7 +100,7 @@ function ImportAccountScreen() {
           <Text style={styles.title}>Secret Key</Text>
           <CInput
             placeholder={'Enter your secret key'}
-            inputStyle={[styles.input, { height: scale(120) }]}
+            inputStyle={styles.input}
             onChangeText={onChange}
             multiline
             value={secretKey}

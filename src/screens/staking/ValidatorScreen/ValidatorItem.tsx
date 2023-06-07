@@ -5,15 +5,16 @@ import { scale } from 'device';
 import { colors, textStyles, images } from 'assets';
 import { getValueByFormat } from 'utils/helpers/format';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { IValidator } from 'utils/hooks/useValidators';
 
 interface ValidatorItemProps {
-  data: any;
+  data: IValidator;
   onSelectValidator: Function;
   validatorsDetail?: IValidatorDetailsResponse;
 }
 
 function ValidatorItem({ data, onSelectValidator, validatorsDetail }: ValidatorItemProps) {
-  const validatorDetail = validatorsDetail?.[data.public_key];
+  const validatorDetail = validatorsDetail?.[data.validatorPublicKey];
   return (
     <CButton onPress={() => onSelectValidator(data)}>
       <Row px={16} py={16} style={styles.container}>
@@ -24,15 +25,15 @@ function ValidatorItem({ data, onSelectValidator, validatorsDetail }: ValidatorI
         <Row.LR pl={4} style={styles.rightContainer}>
           <Col.L>
             <Text ellipsizeMode={'middle'} numberOfLines={1} style={[styles.title, { width: scale(100) }]}>
-              {validatorDetail?.name || data?.name || data.public_key}
+              {validatorDetail?.name || data?.name || data.validatorPublicKey}
             </Text>
             <Text ellipsizeMode={'middle'} numberOfLines={1} style={[textStyles.Body1, { width: scale(100) }]}>
-              {data.public_key}
+              {data.validatorPublicKey}
             </Text>
           </Col.L>
           <Col.R>
             <Text style={textStyles.Body1}>
-              {getValueByFormat(data.bidInfo?.bid?.delegation_rate || 0, {
+              {getValueByFormat(data.delegationRate || 0, {
                 format: 'percentage',
               })}{' '}
               Fee

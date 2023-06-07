@@ -14,7 +14,6 @@ const HomeNavigation = () => {
   const reStack = useRestack();
 
   useEffect(() => {
-    // eslint-disable-next-line no-undef
     let timeOut: NodeJS.Timeout;
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState.match(/inactive|background/)) {
@@ -34,6 +33,7 @@ const HomeNavigation = () => {
     return () => {
       subscription.remove();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Stack.Navigator

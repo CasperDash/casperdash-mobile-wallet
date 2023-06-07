@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { Text, StyleSheet, Platform, ScrollView, ActivityIndicator, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { scale } from 'device';
@@ -18,12 +18,11 @@ import {
   serializeAndStoreUser,
   setSelectedWallet,
 } from 'utils/helpers/account';
-import { convertBalanceFromHex } from 'utils/helpers/balance';
 import ViewPrivateKeyButton from './ViewPrivateKeyButton';
+import { IAccountInfo, useListAccountInfo } from 'utils/hooks/useAccountInfo';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const [isVisible, setVisible] = useState<boolean>(false);
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(false);
 
   const { navigate } = useNavigation();
@@ -35,30 +34,24 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
 
   const [listWalletsDetails, setListWalletsDetails] = useState<WalletInfoDetails[]>(listWallets);
 
+  const { massagedData, isLoading } = useListAccountInfo(
+    listWalletsDetails.filter((item) => item.publicKey).map((item) => item.publicKey!),
+  );
+
+  const walletsWithBalance = useMemo<(WalletInfoDetails & IAccountInfo)[]>(() => {
+    return listWalletsDetails.map((wallet) => {
+      const found = massagedData.find((item: { publicKey: string }) => item.publicKey === wallet.publicKey);
+      return {
+        ...wallet,
+        ...found!,
+      };
+    });
+  }, [massagedData, listWalletsDetails]);
+
   useEffect(() => {
     if (isVisible) {
       getWalletInfoWithPublicKey(user, listWallets).then((walletInfoWithPublicKey) => {
         setListWalletsDetails(walletInfoWithPublicKey);
-        setIsLoadingBalance(true);
-        const publicKeys = walletInfoWithPublicKey
-          .filter((info) => info.publicKey)
-          .map((info) => ({
-            publicKey: info.publicKey,
-          }));
-        dispatch(
-          allActions.user.getAccounts({ publicKeys }, async (_err: any, data: any) => {
-            const walletsWithBalance = walletInfoWithPublicKey.map((wallet) => {
-              const found = data.find((item: { publicKey: string }) => item.publicKey === wallet.publicKey);
-              const balance = found && found.balance ? convertBalanceFromHex(found?.balance?.hex) : 0;
-              return {
-                ...wallet,
-                balance,
-              };
-            });
-            setIsLoadingBalance(false);
-            setListWalletsDetails(walletsWithBalance);
-          }),
-        );
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,16 +151,16 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
             style={{ maxHeight: scale(220) }}
             contentContainerStyle={{ paddingVertical: scale(10) }}
           >
-            {listWalletsDetails &&
-              listWalletsDetails.length > 0 &&
-              listWalletsDetails.map((walletDetails: WalletInfoDetails, index: number) => {
+            {walletsWithBalance &&
+              walletsWithBalance.length > 0 &&
+              walletsWithBalance.map((walletDetails: WalletInfoDetails & IAccountInfo) => {
                 return (
                   <AccountItem
                     isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails.walletInfo.uid}
                     data={walletDetails}
-                    key={index}
+                    key={walletDetails.walletInfo.uid}
                     onSelectWallet={onSelectWallet}
-                    isLoadingBalance={isLoadingBalance}
+                    isLoadingBalance={isLoading}
                     onUpdateWalletName={onUpdateWalletName}
                   />
                 );

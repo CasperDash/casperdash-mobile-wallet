@@ -12,7 +12,7 @@ jest.mock('utils', () => ({ __esModule: true, Config: {} }));
 
 test('toFormattedNumber', () => {
   expect(toFormattedNumber(10)).toEqual('10');
-  expect(toFormattedNumber(10.9999)).toEqual('10.9999');
+  expect(toFormattedNumber(10.9999, { maximumFractionDigits: 4 })).toEqual('10.9999');
   expect(toFormattedNumber(10.9999999999)).toEqual('11');
   expect(toFormattedNumber(10000, 'ja-JP')).toEqual('10,000');
   expect(toFormattedNumber(10.6666, { maximumSignificantDigits: 3 })).toEqual('10.7');
