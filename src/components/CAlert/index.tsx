@@ -22,6 +22,7 @@ interface CAlertProps {
   buttonConfirmStyle?: CSSProperties;
   buttonCancelStyle?: CSSProperties;
   hideOnClickOutside?: boolean;
+  backdropColor?: string;
 }
 
 const defaultAlertType = {
@@ -41,6 +42,7 @@ const CAlert = forwardRef(
       buttonConfirmStyle,
       buttonCancelStyle,
       hideOnClickOutside = true,
+      backdropColor = 'rgba(252, 252, 253, 1)',
     }: CAlertProps,
     ref,
   ) => {
@@ -82,7 +84,7 @@ const CAlert = forwardRef(
         hideModalContentWhileAnimating
         coverScreen={true}
         onBackdropPress={hideOnClickOutside ? hide : undefined}
-        backdropColor={'transparent'}
+        backdropColor={backdropColor || 'transparent'}
         isVisible={isVisible}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
@@ -100,7 +102,7 @@ const CAlert = forwardRef(
           ) : (
             <>{alert.alertMessage}</>
           )}
-          <Row.LR style={{ gap: scale(4), justifyContent: 'center' }}>
+          <Row.LR style={styles.actions}>
             {alert.showCancel && (
               <CTextButton
                 onPress={cancel}
@@ -159,4 +161,5 @@ const styles = StyleSheet.create({
     width: scale(136),
     height: scale(40),
   },
+  actions: { gap: scale(4), justifyContent: 'center' },
 });
