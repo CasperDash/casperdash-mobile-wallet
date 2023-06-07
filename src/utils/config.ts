@@ -74,6 +74,7 @@ const saveItem = async (key: string, value: any, options?: any) => {
     ...options,
     sharedPreferencesName: 'casperdashSharedPrefs',
     keychainService: 'casperdashKeychain',
+    kSecAccessControl: 'kSecAccessControlBiometryAny',
   });
 };
 
