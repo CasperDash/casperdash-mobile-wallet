@@ -36,9 +36,10 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    RNScreenshotPrevent.enabled(true);
     if (isIos()) {
       RNScreenshotPrevent.enableSecureView();
+    } else {
+      RNScreenshotPrevent.enabled(true);
     }
     const subscription = addListener(() => {
       Toast.show({
@@ -48,9 +49,10 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
     });
 
     return () => {
-      RNScreenshotPrevent.enabled(false);
       if (isIos()) {
         RNScreenshotPrevent.disableSecureView();
+      } else {
+        RNScreenshotPrevent.enabled(false);
       }
       subscription.remove();
     };

@@ -161,5 +161,5 @@ const styles = StyleSheet.create({
     width: scale(136),
     height: scale(40),
   },
-  actions: { gap: scale(4), justifyContent: 'center' },
+  actions: { justifyContent: 'space-between' },
 });
