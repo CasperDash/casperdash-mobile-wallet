@@ -668,7 +668,7 @@
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CasperDash/Info.plist;
@@ -700,7 +700,7 @@
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

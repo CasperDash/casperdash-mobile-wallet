@@ -9,7 +9,6 @@ import com.polidea.reactnativeble.BlePackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
-import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
