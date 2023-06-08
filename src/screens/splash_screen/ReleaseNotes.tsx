@@ -9,6 +9,7 @@ import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import Splash from 'react-native-splash-screen';
 import { colors } from 'assets';
 import { scale } from 'device';
+import { IReleaseNotes } from 'services/ReleaseNotes/releaseNotes';
 
 interface IReleaseNotesProps {
   onFinish: () => void;
@@ -17,43 +18,17 @@ interface IReleaseNotesProps {
 const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish }) => {
   const [shouldShowAgain, setShouldShowAgain] = React.useState(false);
   const [newVersionInfo, setNewVersionInfo] = React.useState<CheckVersionResponse>();
-  const [isSkipped, setIsSkipped] = React.useState(true);
+
   const [isLoadingVersion, setIsLoadingVersion] = React.useState(false);
 
   const alertRef = React.useRef<any>();
 
-  const { data: releaseNotes, isLoading } = useReleaseNotes({ enabled: newVersionInfo?.needsUpdate });
+  const { isLoading, refetch: fetchReleaseNotes } = useReleaseNotes({ enabled: false });
 
-  const isForceUpdate = React.useMemo(() => {
-    return releaseNotes?.some((item) => item.isForceUpdate);
-  }, [releaseNotes]);
+  const showReleaseNotes = React.useCallback(
+    (releaseNotes: IReleaseNotes[]) => {
+      const isForceUpdate = releaseNotes?.some((item) => item.isForceUpdate);
 
-  React.useEffect(() => {
-    Splash.hide();
-    setIsLoadingVersion(true);
-    async function checkUpdateVersion() {
-      const newVersion = await checkVersion();
-      // return if no need update
-      if (!newVersion.needsUpdate) {
-        onFinish();
-        return;
-      }
-      const skipVersion = await Config.getItem(Keys.skipShowReleaseNotesVersion);
-      // return if skip show on current version
-      if (skipVersion === newVersion.version) {
-        onFinish();
-        return;
-      }
-      // set state info
-      setNewVersionInfo(newVersion);
-      setIsSkipped(false);
-      setIsLoadingVersion(false);
-    }
-    checkUpdateVersion();
-  }, [onFinish]);
-
-  React.useEffect(() => {
-    if (releaseNotes?.length && !isSkipped) {
       const alert = {
         buttonLeft: 'Cancel',
         buttonRight: 'Update',
@@ -63,7 +38,7 @@ const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish })
             <ScrollView style={styles.container}>
               <Text style={styles.title}>New version available!!</Text>
               {releaseNotes?.map((item) => (
-                <View key={item.version} style={{ gap: scale(2) }}>
+                <View key={item.version} style={{ flex: 1 }}>
                   <Text style={styles.version}>{item.version}</Text>
                   {item.releaseNotes?.map((note, index) => (
                     <Text key={index}>- {note}</Text>
@@ -81,8 +56,40 @@ const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish })
         ),
       };
       alertRef.current.show(alert);
+    },
+    [shouldShowAgain],
+  );
+
+  React.useEffect(() => {
+    Splash.hide();
+    setIsLoadingVersion(true);
+    async function checkUpdateVersion() {
+      const newVersion = await checkVersion();
+
+      // return if no need update
+      if (!newVersion.needsUpdate) {
+        onFinish();
+        return;
+      }
+      const skipVersion = await Config.getItem(Keys.skipShowReleaseNotesVersion);
+      // return if skip show on current version
+      if (skipVersion === newVersion.version) {
+        onFinish();
+        return;
+      }
+      // set state info
+      setNewVersionInfo(newVersion);
+
+      setIsLoadingVersion(false);
+      const res = await fetchReleaseNotes();
+      if (res.data?.length) {
+        showReleaseNotes(res.data);
+      } else {
+        onFinish();
+      }
     }
-  }, [releaseNotes, isForceUpdate, shouldShowAgain, onFinish, isSkipped]);
+    checkUpdateVersion();
+  }, [onFinish, fetchReleaseNotes, showReleaseNotes]);
 
   const updateSkipFlag = async () => {
     if (shouldShowAgain) {
@@ -92,10 +99,6 @@ const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish })
 
   const onCancel = async () => {
     await updateSkipFlag();
-
-    if (!isForceUpdate) {
-      onFinish();
-    }
   };
 
   const onConfirm = async () => {

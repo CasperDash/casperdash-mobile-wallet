@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { isReadyRef, navigationRef } from 'navigation/RootNavigation';
 import AuthenticationNavigation from './AuthenticationNavigation';
-import { SplashScreen } from 'screens';
+import SplashScreen from 'screens/splash_screen/SplashScreen';
 import CMessge from 'components/CMessge';
 import MainNavigation from 'navigation/stack';
 

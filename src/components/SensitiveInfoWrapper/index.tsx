@@ -1,16 +1,26 @@
 import React, { FC, useEffect, useState, useRef } from 'react';
-import { View, Image, StyleSheet, AppState } from 'react-native';
+import { View, Image, StyleSheet, AppState, Platform, NativeEventSubscription } from 'react-native';
 import { images } from 'assets';
 // @ts-ignore
 import RNScreenshotPrevent, { addListener } from 'react-native-screenshot-prevent';
 import Toast from 'react-native-toast-message';
+import { isIos } from 'device';
 
 export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
   const appState = useRef(AppState.currentState);
   const [isOnBackground, setIsOnBackground] = useState(false);
 
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
+    let subscription: NativeEventSubscription;
+    if (Platform.OS === 'android') {
+      subscription = AppState.addEventListener('blur', () => {
+        setIsOnBackground(true);
+      });
+      subscription = AppState.addEventListener('focus', () => {
+        setIsOnBackground(false);
+      });
+    }
+    subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState.match(/inactive|background/)) {
         setIsOnBackground(true);
       }
@@ -26,7 +36,10 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    RNScreenshotPrevent.enableSecureView();
+    RNScreenshotPrevent.enabled(true);
+    if (isIos()) {
+      RNScreenshotPrevent.enableSecureView();
+    }
     const subscription = addListener(() => {
       Toast.show({
         type: 'info',
@@ -35,7 +48,10 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
     });
 
     return () => {
-      RNScreenshotPrevent.disableSecureView();
+      RNScreenshotPrevent.enabled(false);
+      if (isIos()) {
+        RNScreenshotPrevent.disableSecureView();
+      }
       subscription.remove();
     };
   }, []);

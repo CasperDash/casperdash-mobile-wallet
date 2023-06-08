@@ -5,8 +5,6 @@ import { scale } from 'device';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CButton, Col, Row } from 'components';
 import { colors, textStyles, IconCloseFilledN4, IconScanCameraTimeout } from 'assets';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
 
 interface Props {
   onScanSuccess: (data: string) => void;
@@ -76,7 +74,7 @@ const ScanQrCodeModal = forwardRef(({ onScanSuccess }: Props, ref) => {
     >
       {_renderHeader()}
       <Col mt={48}>
-        <QRCodeScanner
+        {/* <QRCodeScanner
           reactivate
           reactivateTimeout={1000}
           onRead={onSuccess}
@@ -90,7 +88,7 @@ const ScanQrCodeModal = forwardRef(({ onScanSuccess }: Props, ref) => {
               You can only scan your QR from this page. To view your QR please select the icon on your account
             </Text>
           }
-        />
+        /> */}
         {!isCameraReady && (
           <IconScanCameraTimeout width={scale(160)} height={scale(160)} style={styles.cameraTimeout} />
         )}

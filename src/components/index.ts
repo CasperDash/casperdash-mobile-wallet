@@ -10,7 +10,7 @@ export { default as CInput } from './CInput';
 export { default as CLoading } from './CLoading';
 export { default as CCarousel } from './CCarousel';
 export { default as CPaginationDot } from './CPaginationDot';
-export { default as CWebView } from './CWebView';
+
 export { default as CButton } from './CButton';
 export { default as CFastImage } from './CFastImage';
 export { default as CListView } from './CListView';
