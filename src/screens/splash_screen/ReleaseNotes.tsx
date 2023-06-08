@@ -9,6 +9,7 @@ import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
 import Splash from 'react-native-splash-screen';
 import { colors } from 'assets';
 import { scale } from 'device';
+import { IReleaseNotes } from 'services/ReleaseNotes/releaseNotes';
 
 interface IReleaseNotesProps {
   onFinish: () => void;
@@ -17,16 +18,45 @@ interface IReleaseNotesProps {
 const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish }) => {
   const [shouldShowAgain, setShouldShowAgain] = React.useState(false);
   const [newVersionInfo, setNewVersionInfo] = React.useState<CheckVersionResponse>();
-  const [isSkipped, setIsSkipped] = React.useState(true);
   const [isLoadingVersion, setIsLoadingVersion] = React.useState(false);
 
   const alertRef = React.useRef<any>();
 
-  const { data: releaseNotes, isLoading } = useReleaseNotes({ enabled: newVersionInfo?.needsUpdate });
+  const { isLoading, refetch: fetchReleaseNotes } = useReleaseNotes({ enabled: false });
 
-  const isForceUpdate = React.useMemo(() => {
-    return releaseNotes?.some((item) => item.isForceUpdate);
-  }, [releaseNotes]);
+  const showReleaseNotes = React.useCallback(
+    (releaseNotes: IReleaseNotes[]) => {
+      const isForceUpdate = releaseNotes?.some((item) => item.isForceUpdate);
+      const alert = {
+        buttonLeft: 'Skip',
+        buttonRight: 'Update',
+        showButtonLeft: !isForceUpdate,
+        alertMessage: (
+          <>
+            <ScrollView style={styles.container}>
+              <Text style={styles.title}>New version available!!</Text>
+              {releaseNotes?.map((item) => (
+                <View key={item.version} style={{ flex: 1 }}>
+                  <Text style={styles.version}>{item.version}</Text>
+                  {item.releaseNotes?.map((note, index) => (
+                    <Text key={index}>- {note}</Text>
+                  ))}
+                </View>
+              ))}
+            </ScrollView>
+            <CheckBox
+              onPress={() => setShouldShowAgain((prev) => !prev)}
+              checked={shouldShowAgain}
+              title="Do not show again"
+              checkedColor={colors.R1}
+            />
+          </>
+        ),
+      };
+      alertRef.current.show(alert);
+    },
+    [shouldShowAgain],
+  );
 
   React.useEffect(() => {
     Splash.hide();
@@ -46,43 +76,16 @@ const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish })
       }
       // set state info
       setNewVersionInfo(newVersion);
-      setIsSkipped(false);
+      const res = await fetchReleaseNotes();
       setIsLoadingVersion(false);
+      if (res.data?.length) {
+        showReleaseNotes(res.data);
+      } else {
+        onFinish();
+      }
     }
     checkUpdateVersion();
-  }, [onFinish]);
-
-  React.useEffect(() => {
-    if (releaseNotes?.length && !isSkipped) {
-      const alert = {
-        buttonLeft: 'Cancel',
-        buttonRight: 'Update',
-        showButtonLeft: !isForceUpdate,
-        alertMessage: (
-          <>
-            <ScrollView style={styles.container}>
-              <Text style={styles.title}>New version available!!</Text>
-              {releaseNotes?.map((item) => (
-                <View key={item.version} style={{ gap: scale(2) }}>
-                  <Text style={styles.version}>{item.version}</Text>
-                  {item.releaseNotes?.map((note, index) => (
-                    <Text key={index}>- {note}</Text>
-                  ))}
-                </View>
-              ))}
-            </ScrollView>
-            <CheckBox
-              onPress={() => setShouldShowAgain((prev) => !prev)}
-              checked={shouldShowAgain}
-              title="Do not show again"
-              checkedColor={colors.R1}
-            />
-          </>
-        ),
-      };
-      alertRef.current.show(alert);
-    }
-  }, [releaseNotes, isForceUpdate, shouldShowAgain, onFinish, isSkipped]);
+  }, [onFinish, showReleaseNotes, fetchReleaseNotes]);
 
   const updateSkipFlag = async () => {
     if (shouldShowAgain) {
@@ -92,10 +95,7 @@ const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish })
 
   const onCancel = async () => {
     await updateSkipFlag();
-
-    if (!isForceUpdate) {
-      onFinish();
-    }
+    onFinish();
   };
 
   const onConfirm = async () => {
