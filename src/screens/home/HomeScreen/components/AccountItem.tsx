@@ -66,7 +66,7 @@ const AccountItem = ({
             <Col style={styles.leftContent}>
               <CInput
                 value={name}
-                inputStyle={{ ...styles.body, height: scale(20) }}
+                inputStyle={{ ...styles.body, height: scale(30) }}
                 containerStyle={{ width: scale(210), height: scale(30), marginLeft: scale(8) }}
                 onChangeText={(value) => setName(value)}
               />

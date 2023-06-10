@@ -36,7 +36,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
 
   const { massagedData, isLoading } = useListAccountInfo(
     listWalletsDetails.filter((item) => item.publicKey).map((item) => item.publicKey!),
-    { enabled: isVisible, staleTime: 100 },
+    { enabled: isVisible, staleTime: 1000 * 60 },
   );
 
   const walletsWithBalance = useMemo<(WalletInfoDetails & IAccountInfo)[]>(() => {
