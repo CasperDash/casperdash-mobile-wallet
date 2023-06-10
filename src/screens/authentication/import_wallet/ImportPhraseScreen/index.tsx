@@ -153,109 +153,108 @@ const ImportPhraseScreen = () => {
   };
 
   return (
-    <SensitiveInfoWrapper>
-      <CLayout>
-        <CHeader title={'Import Phrase'} />
-        <View style={styles.container}>
-          <KeyboardAwareScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.contentContainerStyle}
+    <CLayout>
+      <CHeader title={'Import Phrase'} />
+      <View style={styles.container}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainerStyle}
+        >
+          <ListItem.Accordion
+            content={<Text style={styles.label}>Advanced Settings</Text>}
+            isExpanded={isExpandedAdvanced}
+            onPress={() => setIsExpandedAdvanced(!isExpandedAdvanced)}
+            style={styles.advancedSettings}
           >
-            <ListItem.Accordion
-              content={<Text style={styles.label}>Advanced Settings</Text>}
-              isExpanded={isExpandedAdvanced}
-              onPress={() => setIsExpandedAdvanced(!isExpandedAdvanced)}
-              style={styles.advancedSettings}
-            >
-              <Row.LR pt={16} px={16}>
-                <View style={styles.selectType}>
-                  <Text style={styles.algorithmLabel}>Encryption Type</Text>
-                  <Text style={styles.algorithmDescription}>
-                    We recommend to choose ed25519 over secp256k1 for stronger security and better performance, unless
-                    you explicitly want to use secp256k1 in order to compatible with Bitcoin, Ethereum chains
-                  </Text>
-                  <SelectDropdown
-                    dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
-                    buttonStyle={styles.rowPicker}
-                    dropdownOverlayColor={'rgba(0,0,0,0.1)'}
-                    data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
-                    onSelect={(selectedItem, _index) => {
-                      handleOnSelectAlgo(selectedItem);
-                    }}
-                    renderCustomizedButtonChild={(item: any, index) => {
-                      if (!item) {
-                        return null;
-                      }
-                      return <SelectDropdownComponent item={item} key={index} />;
-                    }}
-                    renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
-                    defaultValueByIndex={1}
-                    buttonTextAfterSelection={(selectedItem, _index) => {
-                      return selectedItem;
-                    }}
-                    rowTextForSelection={(item, _index) => {
-                      return item;
-                    }}
-                    defaultValue={algorithm}
-                  />
-                </View>
-              </Row.LR>
-              <Row.LR pt={16} px={16}>
-                <View style={styles.selectType}>
-                  <Text style={styles.algorithmLabel}>Derivation path</Text>
-                  <Text style={styles.algorithmDescription}>
-                    A derivation path is a piece of data which tells a Hierarchical Deterministic (HD) wallet how to
-                    derive a specific key within a tree of keys
-                  </Text>
-                  <SelectDropdown
-                    dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
-                    buttonStyle={styles.rowPicker}
-                    dropdownOverlayColor={'rgba(0,0,0,0.1)'}
-                    rowStyle={styles.rowStyle}
-                    data={DERIVATION_PATH}
-                    onSelect={(selectedItem) => {
-                      setDerivationPath(selectedItem);
-                    }}
-                    renderCustomizedButtonChild={(item: any, index) => {
-                      if (!item) {
-                        return null;
-                      }
-                      return <SelectDropdownComponent item={item.label} key={index} />;
-                    }}
-                    renderCustomizedRowChild={(item: any) => (
-                      <Row.LR px={16} key={item.value}>
-                        <Text style={textStyles.Body1}>{item.label}</Text>
-                      </Row.LR>
-                    )}
-                    defaultValueByIndex={1}
-                    buttonTextAfterSelection={(selectedItem) => {
-                      return selectedItem;
-                    }}
-                    rowTextForSelection={(item, _index) => {
-                      return item;
-                    }}
-                    defaultValue={derivationPath}
-                  />
-                </View>
-              </Row.LR>
-            </ListItem.Accordion>
-            <Row.LR pt={16} px={16} style={styles.numberRow}>
-              <Text style={styles.numberOfWordsLabel}>Number of words</Text>
-              {NUMBER_OF_RECOVERY_WORDS.map((number, index) => {
-                return (
-                  <CTextButton
-                    key={index}
-                    type={numberOfWord === number ? 'default' : 'line'}
-                    style={[styles.numberOfWordsButton, { marginRight: scale(12) }]}
-                    text={number.toString()}
-                    onPress={() => onChangeNumberOfWords(number)}
-                    variant={numberOfWord === number ? 'primary' : 'secondary'}
-                  />
-                );
-              })}
+            <Row.LR pt={16} px={16}>
+              <View style={styles.selectType}>
+                <Text style={styles.algorithmLabel}>Encryption Type</Text>
+                <Text style={styles.algorithmDescription}>
+                  We recommend to choose ed25519 over secp256k1 for stronger security and better performance, unless you
+                  explicitly want to use secp256k1 in order to compatible with Bitcoin, Ethereum chains
+                </Text>
+                <SelectDropdown
+                  dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+                  buttonStyle={styles.rowPicker}
+                  dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+                  data={[EncryptionType.Ed25519, EncryptionType.Secp256k1]}
+                  onSelect={(selectedItem, _index) => {
+                    handleOnSelectAlgo(selectedItem);
+                  }}
+                  renderCustomizedButtonChild={(item: any, index) => {
+                    if (!item) {
+                      return null;
+                    }
+                    return <SelectDropdownComponent item={item} key={index} />;
+                  }}
+                  renderCustomizedRowChild={(item: any, index) => <DropdownItem item={item} key={index} />}
+                  defaultValueByIndex={1}
+                  buttonTextAfterSelection={(selectedItem, _index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, _index) => {
+                    return item;
+                  }}
+                  defaultValue={algorithm}
+                />
+              </View>
             </Row.LR>
-
-            <Row.LR py={16} px={16} mt={16} style={styles.body}>
+            <Row.LR pt={16} px={16}>
+              <View style={styles.selectType}>
+                <Text style={styles.algorithmLabel}>Derivation path</Text>
+                <Text style={styles.algorithmDescription}>
+                  A derivation path is a piece of data which tells a Hierarchical Deterministic (HD) wallet how to
+                  derive a specific key within a tree of keys
+                </Text>
+                <SelectDropdown
+                  dropdownStyle={[styles.rowPicker, styles.dropdownStyle]}
+                  buttonStyle={styles.rowPicker}
+                  dropdownOverlayColor={'rgba(0,0,0,0.1)'}
+                  rowStyle={styles.rowStyle}
+                  data={DERIVATION_PATH}
+                  onSelect={(selectedItem) => {
+                    setDerivationPath(selectedItem);
+                  }}
+                  renderCustomizedButtonChild={(item: any, index) => {
+                    if (!item) {
+                      return null;
+                    }
+                    return <SelectDropdownComponent item={item.label} key={index} />;
+                  }}
+                  renderCustomizedRowChild={(item: any) => (
+                    <Row.LR px={16} key={item.value}>
+                      <Text style={textStyles.Body1}>{item.label}</Text>
+                    </Row.LR>
+                  )}
+                  defaultValueByIndex={1}
+                  buttonTextAfterSelection={(selectedItem) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, _index) => {
+                    return item;
+                  }}
+                  defaultValue={derivationPath}
+                />
+              </View>
+            </Row.LR>
+          </ListItem.Accordion>
+          <Row.LR pt={16} px={16} style={styles.numberRow}>
+            <Text style={styles.numberOfWordsLabel}>Number of words</Text>
+            {NUMBER_OF_RECOVERY_WORDS.map((number, index) => {
+              return (
+                <CTextButton
+                  key={index}
+                  type={numberOfWord === number ? 'default' : 'line'}
+                  style={[styles.numberOfWordsButton, { marginRight: scale(12) }]}
+                  text={number.toString()}
+                  onPress={() => onChangeNumberOfWords(number)}
+                  variant={numberOfWord === number ? 'primary' : 'secondary'}
+                />
+              );
+            })}
+          </Row.LR>
+          <Row.LR py={16} px={16} mt={16} style={styles.body}>
+            <SensitiveInfoWrapper>
               <View style={styles.flex}>
                 {listLeft.map((item, index) => {
                   return (
@@ -278,28 +277,28 @@ const ImportPhraseScreen = () => {
                   );
                 })}
               </View>
-            </Row.LR>
-            {isWrongPhrase && <Text style={styles.txtError}>Wrong Phrase</Text>}
-          </KeyboardAwareScrollView>
-          <Row.C>
-            <CTextButton
-              type={'line'}
-              style={[styles.btnNext, { marginRight: scale(15) }]}
-              text={'Clear'}
-              onPress={onCancel}
-              variant="secondary"
-            />
-            <CTextButton
-              onPress={onPress}
-              style={styles.btnNext}
-              text={
-                listLeft.find((i) => i.word === '') || listRight.find((i) => i.word === '') ? 'Paste Phrase' : 'Import'
-              }
-            />
-          </Row.C>
-        </View>
-      </CLayout>
-    </SensitiveInfoWrapper>
+            </SensitiveInfoWrapper>
+          </Row.LR>
+          {isWrongPhrase && <Text style={styles.txtError}>Wrong Phrase</Text>}
+        </KeyboardAwareScrollView>
+        <Row.C>
+          <CTextButton
+            type={'line'}
+            style={[styles.btnNext, { marginRight: scale(15) }]}
+            text={'Clear'}
+            onPress={onCancel}
+            variant="secondary"
+          />
+          <CTextButton
+            onPress={onPress}
+            style={styles.btnNext}
+            text={
+              listLeft.find((i) => i.word === '') || listRight.find((i) => i.word === '') ? 'Paste Phrase' : 'Import'
+            }
+          />
+        </Row.C>
+      </View>
+    </CLayout>
   );
 };
 
