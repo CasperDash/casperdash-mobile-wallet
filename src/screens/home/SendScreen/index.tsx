@@ -165,14 +165,14 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
             {...{ values, errors, touched, handleBlur, handleChange }}
             containerStyle={styles.rowPicker}
           />
-          <Row.L mt={16}>
+          {/* <Row.L mt={16}>
             <CButton onPress={onShowQRCodeModal}>
               <Row.C style={styles.scanQRCodeContainer}>
                 <IconScanQRCode />
                 <Text style={styles.txtQRCode}>QR code</Text>
               </Row.C>
             </CButton>
-          </Row.L>
+          </Row.L> */}
           <Text style={styles.title}>Transfer ID (optional)</Text>
           <CInputFormik
             name={'transferId'}
@@ -192,7 +192,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
           text={'Confirm'}
         />
       </Col>
-      <ScanQrCodeModal ref={scanQRCodeModalRef} onScanSuccess={onScanSuccess} />
+      {/* <ScanQrCodeModal ref={scanQRCodeModalRef} onScanSuccess={onScanSuccess} /> */}
     </CLayout>
   );
 };

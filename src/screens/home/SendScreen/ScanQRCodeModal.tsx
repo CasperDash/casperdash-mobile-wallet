@@ -89,9 +89,9 @@ const ScanQrCodeModal = forwardRef(({ onScanSuccess }: Props, ref) => {
             </Text>
           }
         /> */}
-        {!isCameraReady && (
+        {/* {!isCameraReady && (
           <IconScanCameraTimeout width={scale(160)} height={scale(160)} style={styles.cameraTimeout} />
-        )}
+        )} */}
       </Col>
     </Modalize>
   );
