@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { CButton, CHeader, CInputFormik, CLayout, Col, Row } from 'components';
 import { colors, IconScanQRCode, textStyles } from 'assets';
@@ -17,11 +17,12 @@ import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
-import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
 import { getPublicKey } from 'utils/selectors';
+import QRScanner from 'components/QRScanner/QRScanner';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const initialValues = {
   transferAmount: '0',
@@ -34,8 +35,8 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
   const { bottom } = useSafeAreaInsets();
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const { token } = route.params;
-  const scanQRCodeModalRef = useRef<any>();
   const publicKey = useSelector(getPublicKey);
+  const [showQR, setShowQR] = useState<boolean>(false);
 
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>(token ? token.address : 'CSPR');
   const { allTokenInfo, getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey);
@@ -102,7 +103,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
         message: 'CasperDash need access to camera to scan QR Code',
       },
       () => {
-        scanQRCodeModalRef?.current?.open();
+        setShowQR(true);
       },
     );
   };
@@ -165,14 +166,14 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
             {...{ values, errors, touched, handleBlur, handleChange }}
             containerStyle={styles.rowPicker}
           />
-          {/* <Row.L mt={16}>
+          <Row.L mt={16}>
             <CButton onPress={onShowQRCodeModal}>
               <Row.C style={styles.scanQRCodeContainer}>
                 <IconScanQRCode />
                 <Text style={styles.txtQRCode}>QR code</Text>
               </Row.C>
             </CButton>
-          </Row.L> */}
+          </Row.L>
           <Text style={styles.title}>Transfer ID (optional)</Text>
           <CInputFormik
             name={'transferId'}
@@ -192,7 +193,12 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
           text={'Confirm'}
         />
       </Col>
-      {/* <ScanQrCodeModal ref={scanQRCodeModalRef} onScanSuccess={onScanSuccess} /> */}
+      <QRScanner
+        visible={showQR}
+        onScanSuccess={onScanSuccess}
+        onScanError={(error: string) => Toast.show({ type: 'error', text1: 'Oops!', text2: error })}
+        hideModal={() => setShowQR(false)}
+      />
     </CLayout>
   );
 };

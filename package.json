@@ -27,8 +27,15 @@
     "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
     "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
     "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && bundle exec fastlane internal --verbose",
-    "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package"
+    "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package && react-native setup-ios-permissions && pod-install"
   },
+  "reactNativePermissionsIOS": [
+    "Camera",
+    "FaceID",
+    "BluetoothPeripheral",
+    "PhotoLibrary",
+    "Notifications"
+  ],
   "dependencies": {
     "@ethersproject/bignumber": "^5.7.0",
     "@haskkor/react-native-pincode": "^1.22.6",
@@ -66,6 +73,7 @@
     "memoize-one": "^6.0.0",
     "moment": "^2.29.1",
     "patch-package": "^7.0.0",
+    "pod-install": "^0.1.38",
     "prettier": "^2.8.7",
     "process": "^0.11.0",
     "prop-types": "^15.7.2",
@@ -80,6 +88,7 @@
     "react-native-background-timer": "^2.4.1",
     "react-native-ble-plx": "^2.0.3",
     "react-native-bluetooth-state-manager": "^1.3.2",
+    "react-native-camera": "^4.2.1",
     "react-native-casper-storage": "^1.3.1",
     "react-native-check-version": "^1.1.1",
     "react-native-col": "^1.1.5",
@@ -102,7 +111,7 @@
     "react-native-modalize": "^2.0.12",
     "react-native-orientation": "^3.1.3",
     "react-native-pager-view": "^5.2.1",
-    "react-native-permissions": "^3.1.0",
+    "react-native-permissions": "^3.8.0",
     "react-native-push-notification": "^7.4.0",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-qrcode-svg": "^6.1.2",

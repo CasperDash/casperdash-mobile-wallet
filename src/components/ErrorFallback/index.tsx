@@ -12,7 +12,7 @@ export const ErrorFallback = ({ resetErrorBoundary }: { error: any; resetErrorBo
         <Col.C style={styles.topContainer}>
           <Image source={images.logo} style={styles.logo} />
         </Col.C>
-        <Col.C style={{ gap: scale(10) }}>
+        <Col.C>
           <Text>Oops! Something went wrong. Please try again.</Text>
           <CTextButton onPress={resetErrorBoundary} text="Retry" style={[styles.button]} />
         </Col.C>
@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
   button: {
     width: scale(136),
     height: scale(40),
+    marginTop: scale(20),
   },
 });
