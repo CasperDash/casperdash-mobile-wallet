@@ -16,11 +16,11 @@ target 'CasperDash' do
 
 #   pod 'FBSDKLoginKit'
 #   pod 'GoogleSignIn', '~> 6.0.2'
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  # permissions_path = '../node_modules/react-native-permissions/ios'
+  # pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  # pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  # pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
+  # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
