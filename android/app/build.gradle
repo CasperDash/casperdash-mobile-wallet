@@ -139,7 +139,7 @@ android {
         versionName "2.0.0"
         setProperty("archivesBaseName", "CasperDash")
         vectorDrawables.useSupportLibrary = true
-        // missingDimensionStrategy 'react-native-camera', 'general'
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
 
     signingConfigs {
