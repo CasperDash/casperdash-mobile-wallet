@@ -43,7 +43,7 @@
     "@ledgerhq/react-native-hw-transport-ble": "^6.20.0",
     "@popmotion/popcorn": "^0.4.4",
     "@react-native-async-storage/async-storage": "^1.18.1",
-    "@react-native-community/clipboard": "^1.5.1",
+    "@react-native-clipboard/clipboard": "1.8.4",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/push-notification-ios": "^1.8.0",
@@ -161,6 +161,7 @@
     "@types/jest": "^29.5.2",
     "@types/react": "^17.0.2",
     "@types/react-native": "0.67.5",
+    "@types/react-native-background-timer": "^2.0.0",
     "@types/react-native-push-notification": "^7.3.3",
     "@types/react-native-vector-icons": "^6.4.8",
     "@types/rn-material-ui-textfield": "^1.0.2",
@@ -195,6 +196,7 @@
   },
   "resolutions": {
     "d3-color": "^3.1.0",
-    "elliptic": "^6.5.4"
+    "elliptic": "^6.5.4",
+    "hermes-engine": "0.11.0"
   }
 }

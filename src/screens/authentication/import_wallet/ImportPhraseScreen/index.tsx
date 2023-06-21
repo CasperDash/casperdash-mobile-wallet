@@ -8,7 +8,7 @@ import CTextButton from 'components/CTextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Phrase } from 'screens/authentication/data/data';
 import { PhraseInputItem } from 'screens/authentication/import_wallet/components';
-import Clipboard from '@react-native-community/clipboard';
+import ClipboardManager from 'utils/helpers/clipboard';
 import { useDispatch } from 'react-redux';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { useNavigation } from '@react-navigation/native';
@@ -78,7 +78,7 @@ const ImportPhraseScreen = () => {
   const onPress = async () => {
     if (listLeft.find((i) => i.word === '') || listRight.find((i) => i.word === '')) {
       //paste phrase
-      const phraseString = await Clipboard.getString();
+      const phraseString = await ClipboardManager.getString();
       if (phraseString && phraseString.length > 0) {
         let listWords: Array<Phrase> = phraseString.split(/\s+/).map((word, index) => ({
           id: index,
