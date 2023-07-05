@@ -10,16 +10,12 @@ import { useQuery } from 'react-query';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { getAccountDelegation } from 'services/User/userApis';
 import { IAccountDelegationResponse } from 'services/User/userTypes';
-import { toastError } from 'utils/helpers/errorHandler';
 
 export const useStakedInfo = (publicKey: string) => {
   const query = useQuery({
     queryKey: [ERequestKeys.accountDelegation, publicKey],
     queryFn: () => getAccountDelegation(publicKey),
     enabled: !!publicKey,
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
   });
   return query;
 };

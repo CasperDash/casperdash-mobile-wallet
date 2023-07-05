@@ -329,6 +329,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				FBB05CA40E4DD45C4D4C9EED /* [CP] Embed Pods Frameworks */,
 				3ABE7F956503443371C29828 /* [CP] Copy Pods Resources */,
+				38FCCD4D8DD84AA1ACD5B1A2 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -442,7 +443,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n\n/bin/sh ../node_modules/@sentry/react-native/scripts/collect-modules.sh\n";
 		};
 		1C2AEFD7983A6D86DF1C8034 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -482,6 +483,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		38FCCD4D8DD84AA1ACD5B1A2 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\nexport SENTRY_PROPERTIES=sentry.properties\n[[ $SENTRY_INCLUDE_NATIVE_SOURCES == \"true\" ]] && INCLUDE_SOURCES_FLAG=\"--include-sources\" || INCLUDE_SOURCES_FLAG=\"\"\n../node_modules/@sentry/cli/bin/sentry-cli debug-files upload \"$INCLUDE_SOURCES_FLAG\" \"$DWARF_DSYM_FOLDER_PATH\"\n";
 		};
 		3ABE7F956503443371C29828 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

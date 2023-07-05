@@ -4,7 +4,6 @@ import { ERequestKeys } from 'utils/constants/requestKeys';
 import { IValidatorResponse, getValidators, getValidatorsDetail } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { useMemo } from 'react';
-import { toastError } from 'utils/helpers/errorHandler';
 
 export interface IValidator extends IValidatorResponse {
   name?: string;
@@ -18,9 +17,6 @@ export const useValidatorsDetail = () => {
   const query = useQuery({
     queryKey: [ERequestKeys.validatorsDetail],
     queryFn: () => getValidatorsDetail(),
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
   });
   return query;
 };
@@ -31,9 +27,6 @@ export const useValidators = (searchTerm: string) => {
   const query = useQuery({
     queryKey: [ERequestKeys.validators],
     queryFn: () => getValidators(),
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
   });
 
   const massagedData = useMemo<IValidator[]>(

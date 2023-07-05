@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Image, StyleSheet } from 'react-native';
 import { CLayout, Col } from 'components';
 import { images } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
+import Sentry from '@sentry/react-native';
 
-export const ErrorFallback = ({ resetErrorBoundary }: { error: any; resetErrorBoundary: any }) => {
+export const ErrorFallback = ({ resetErrorBoundary, error }: { error: any; resetErrorBoundary: any }) => {
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
+
   return (
     <CLayout>
       <Col style={styles.flex}>
