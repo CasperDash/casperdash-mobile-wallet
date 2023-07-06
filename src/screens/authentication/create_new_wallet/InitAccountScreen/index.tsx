@@ -71,14 +71,15 @@ const InitAccountScreen: React.FC<
       const masterPassword = await Config.getItem(Keys.masterPassword);
       const loadedUser = await getUserFromStorage(masterPassword);
       if (loadedUser) {
-        const selectedWallet = await Config.getItem(Keys.selectedWallet);
+        let selectedWallet = await Config.getItem(Keys.selectedWallet);
         // if no uid should set default wallet to first hd wallet
         if (!selectedWallet?.walletInfo?.uid) {
           const defaultWallet = loadedUser.getHDWallet().derivedWallets?.[0];
           const wallet = await loadedUser.getWalletAccount(defaultWallet.index);
           const publicKey = await wallet.getPublicKey();
-          await setSelectedWallet(defaultWallet, publicKey);
+          selectedWallet = await setSelectedWallet(defaultWallet, publicKey);
         }
+        dispatch(allActions.user.getSelectedWalletSuccess(selectedWallet));
         dispatch(allActions.user.getUserSuccess(loadedUser));
         dispatch(allActions.main.initState());
       }

@@ -22,7 +22,7 @@ const ReleaseNotes: React.FunctionComponent<IReleaseNotesProps> = ({ onFinish })
 
   const alertRef = React.useRef<any>();
 
-  const { isLoading, refetch: fetchReleaseNotes } = useReleaseNotes({ enabled: false });
+  const { isLoading, refetch: fetchReleaseNotes } = useReleaseNotes({ enabled: newVersionInfo?.needsUpdate });
 
   const showReleaseNotes = React.useCallback(
     (releaseNotes: IReleaseNotes[]) => {

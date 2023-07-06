@@ -31,10 +31,7 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
   const [loadingKeys, setLoadingKeys] = useState<{ publicKey: string; keyIndex: number }[]>([]);
   const [publicKey, setPublicKey] = useState<string>();
 
-  const { massagedData: listKeys } = useListAccountInfo(
-    loadingKeys.map((key) => key.publicKey),
-    true,
-  );
+  const { massagedData: listKeys } = useListAccountInfo(loadingKeys.map((key) => key.publicKey));
 
   const unmountRef = useRef<boolean>(false);
   const { replace } = useNavigation<StackNavigationProp<any>>();
@@ -83,11 +80,13 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
       }
       setError(err);
       return null;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const getAccountInformation = async (key: any): Promise<void> => {
-    const { keyIndex } = key;
+    const keyIndex = loadingKeys.find((item) => item.publicKey === key.publicKey)?.keyIndex;
     const casperApp = new CasperApp(transport);
     const ledgerPublicKey = await getLedgerPublicKey(casperApp, keyIndex);
     setIsLoading(true);

@@ -27,7 +27,9 @@
     "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
     "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
     "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && bundle exec fastlane internal --verbose",
-    "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package && react-native setup-ios-permissions && pod-install"
+    "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package && react-native setup-ios-permissions && pod-install",
+    "sourcemaps:android": "node_modules/.bin/react-native bundle --platform android --entry-file index.js --dev false --reset-cache --bundle-output /tmp/bundle.android.js --assets-dest /tmp/ --sourcemap-output sourcemaps/android/index.js.map",
+    "sourcemaps:ios": "node_modules/.bin/react-native bundle --platform ios --entry-file index.js --dev false --reset-cache --bundle-output /tmp/bundle.ios.js --assets-dest /tmp/ --sourcemap-output sourcemaps/ios/index.js.map"
   },
   "reactNativePermissionsIOS": [
     "Camera",
@@ -56,7 +58,7 @@
     "@sentry/react-native": "^5.6.0",
     "@types/qs": "^6.9.7",
     "@types/redux-logger": "^3.0.8",
-    "@zondax/ledger-casper": "^0.0.1",
+    "@zondax/ledger-casper": "^2.6.1",
     "axios": "^0.21.1",
     "base-64": "^1.0.0",
     "big-integer": "1.6.51",

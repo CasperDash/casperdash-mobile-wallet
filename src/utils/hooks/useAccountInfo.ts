@@ -41,11 +41,12 @@ export const useListAccountInfo = (
   publicKeys: string[],
   options?: Omit<UseQueryOptions<unknown, any, IAccountResponse[], any>, 'queryKey' | 'queryFn'>,
 ) => {
+  const { enabled, ...rest } = options || {};
   const query = useQuery({
     queryKey: [ERequestKeys.listAccountInfo, publicKeys],
     queryFn: () => getListAccountInfo(publicKeys),
-    enabled: !!publicKeys && publicKeys.length > 0 && options?.enabled,
-    ...options,
+    enabled: !!publicKeys && publicKeys.length > 0 && enabled,
+    ...rest,
   });
 
   const massagedData = useMemo(() => {

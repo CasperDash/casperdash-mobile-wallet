@@ -4,7 +4,7 @@ import { getLoginOptions, getSelectedWallet, getUser } from '../selectors/user';
 import { signDeployByLedger } from '../services/ledgerServices';
 import { getWalletKeyPair } from 'utils/helpers/account';
 import { DeployUtil } from 'casperdash-js-sdk';
-
+import * as Sentry from '@sentry/react-native';
 /**
  * Use the signer specified in the login options to sign a deploy.
  * @returns The signed deploy is being returned.
@@ -35,6 +35,7 @@ const useSigner = () => {
       }
     } catch (error: any) {
       console.error(error);
+      Sentry.captureException(error);
       throw Error(`Error on signing deploy. \n ${error?.message}`);
     }
   };

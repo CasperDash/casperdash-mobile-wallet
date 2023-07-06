@@ -683,7 +683,7 @@
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 54;
 				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CasperDash/Info.plist;
@@ -691,7 +691,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -715,14 +715,14 @@
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 54;
 				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
