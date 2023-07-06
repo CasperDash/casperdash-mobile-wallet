@@ -742,10 +742,17 @@
   resolved "https://registry.npmjs.org/@babel/regjsgen/-/regjsgen-0.8.0.tgz"
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.9", "@babel/runtime@^7.14.6", "@babel/runtime@^7.15.4", "@babel/runtime@^7.2.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.6", "@babel/runtime@^7.15.4", "@babel/runtime@^7.2.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.22.3"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.3.tgz"
   integrity sha512-XsDuspWKLUsxwCp6r7EhsExHtYfbe5oAGQ19kqngTdCPUoPQzOPdUbD/pB9PJiwb2ptYKQDjSJT3R6dC+EPqfQ==
+  dependencies:
+    regenerator-runtime "^0.13.11"
+
+"@babel/runtime@^7.21.0":
+  version "7.22.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.6.tgz#57d64b9ae3cff1d67eb067ae117dac087f5bd438"
+  integrity sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==
   dependencies:
     regenerator-runtime "^0.13.11"
 
@@ -1367,22 +1374,22 @@
   dependencies:
     invariant "2"
 
-"@ledgerhq/devices@^5.51.1":
-  version "5.51.1"
-  resolved "https://registry.npmjs.org/@ledgerhq/devices/-/devices-5.51.1.tgz"
-  integrity sha512-4w+P0VkbjzEXC7kv8T1GJ/9AVaP9I6uasMZ/JcdwZBS3qwvKo5A5z9uGhP5c7TvItzcmPb44b5Mw2kT+WjUuAA==
-  dependencies:
-    "@ledgerhq/errors" "^5.50.0"
-    "@ledgerhq/logs" "^5.50.0"
-    rxjs "6"
-    semver "^7.3.5"
-
 "@ledgerhq/devices@^8.0.3":
   version "8.0.3"
   resolved "https://registry.npmjs.org/@ledgerhq/devices/-/devices-8.0.3.tgz"
   integrity sha512-Q7/vqkGELSBuwFafFoTqlHIRyOjw8JqbSgiQwe2R38xN0RKtKIh+5E6UfMKyoExiq+SrQg0IC8P2LS+XdjOHLw==
   dependencies:
     "@ledgerhq/errors" "^6.12.6"
+    "@ledgerhq/logs" "^6.10.1"
+    rxjs "6"
+    semver "^7.3.5"
+
+"@ledgerhq/devices@^8.0.4":
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-8.0.4.tgz#ebc7779adbbec2d046424603a481623eb3fbe306"
+  integrity sha512-dxOiWZmtEv1tgw70+rW8gviCRZUeGDUnxY6HUPiRqTAc0Ts2AXxiJChgAsPvIywWTGW+S67Nxq1oTZdpRbdt+A==
+  dependencies:
+    "@ledgerhq/errors" "^6.12.7"
     "@ledgerhq/logs" "^6.10.1"
     rxjs "6"
     semver "^7.3.5"
@@ -1401,15 +1408,15 @@
     react "^17.0.2"
     react-dom "^17.0.2"
 
-"@ledgerhq/errors@^5.50.0":
-  version "5.50.0"
-  resolved "https://registry.npmjs.org/@ledgerhq/errors/-/errors-5.50.0.tgz"
-  integrity sha512-gu6aJ/BHuRlpU7kgVpy2vcYk6atjB4iauP2ymF7Gk0ez0Y/6VSMVSJvubeEQN+IV60+OBK0JgeIZG7OiHaw8ow==
-
 "@ledgerhq/errors@^6.12.6":
   version "6.12.6"
   resolved "https://registry.npmjs.org/@ledgerhq/errors/-/errors-6.12.6.tgz"
   integrity sha512-D+r2B09vaRO06wfGoss+rNgwqWSoK0bCtsaJWzlD2hv1zxTtucqVtSztbRFypIqxWTCb3ix5Nh2dWHEJVTp2Xw==
+
+"@ledgerhq/errors@^6.12.7":
+  version "6.12.7"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-6.12.7.tgz#c7b630488d5713bc7b1e1682d6ab5d08918c69f1"
+  integrity sha512-1BpjzFErPK7qPFx0oItcX0mNLJMplVAm2Dpl5urZlubewnTyyw5sahIBjU+8LLCWJ2eGEh/0wyvh0jMtR0n2Mg==
 
 "@ledgerhq/hw-app-eth@^6.23.0":
   version "6.33.4"
@@ -1436,13 +1443,13 @@
     "@ledgerhq/hw-transport" "^6.28.4"
     "@ledgerhq/logs" "^6.10.1"
 
-"@ledgerhq/hw-transport@^5.45.0":
-  version "5.51.1"
-  resolved "https://registry.npmjs.org/@ledgerhq/hw-transport/-/hw-transport-5.51.1.tgz"
-  integrity sha512-6wDYdbWrw9VwHIcoDnqWBaDFyviyjZWv6H9vz9Vyhe4Qd7TIFmbTl/eWs6hZvtZBza9K8y7zD8ChHwRI4s9tSw==
+"@ledgerhq/hw-transport@^6.28.2":
+  version "6.28.5"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-6.28.5.tgz#675193be2f695a596068145351da598316c25831"
+  integrity sha512-xmw5RhYbqExBBqTvOnOjN/RYNIGMBxFJ+zcYNfkfw/E+uEY3L7xq8Z7sC/n7URTT6xtEctElqduBJnBQE4OQtw==
   dependencies:
-    "@ledgerhq/devices" "^5.51.1"
-    "@ledgerhq/errors" "^5.50.0"
+    "@ledgerhq/devices" "^8.0.4"
+    "@ledgerhq/errors" "^6.12.7"
     events "^3.3.0"
 
 "@ledgerhq/hw-transport@^6.28.4":
@@ -1453,11 +1460,6 @@
     "@ledgerhq/devices" "^8.0.3"
     "@ledgerhq/errors" "^6.12.6"
     events "^3.3.0"
-
-"@ledgerhq/logs@^5.50.0":
-  version "5.50.0"
-  resolved "https://registry.npmjs.org/@ledgerhq/logs/-/logs-5.50.0.tgz"
-  integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
 "@ledgerhq/logs@^6.10.1":
   version "6.10.1"
@@ -2526,9 +2528,9 @@
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.12.tgz"
   integrity sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==
 
-"@types/ledgerhq__hw-transport@^4.21.3":
+"@types/ledgerhq__hw-transport@^4.21.4":
   version "4.21.4"
-  resolved "https://registry.npmjs.org/@types/ledgerhq__hw-transport/-/ledgerhq__hw-transport-4.21.4.tgz"
+  resolved "https://registry.yarnpkg.com/@types/ledgerhq__hw-transport/-/ledgerhq__hw-transport-4.21.4.tgz#3a78a02d2b51d2b0dd8099412d5567d21118225c"
   integrity sha512-vep+6yZnGv6owAthIY0w3f72w4dJIb4+yE5PCHveInTlZE9wukvU6Wc5Eig0OUUxcdhTazzeZx1xUaNVLqyQSg==
   dependencies:
     "@types/node" "*"
@@ -2919,14 +2921,14 @@
   resolved "https://registry.npmjs.org/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zondax/ledger-casper@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@zondax/ledger-casper/-/ledger-casper-0.0.1.tgz"
-  integrity sha512-m+Y/ASywxFvNEmtQaAswxvtnQkToAzyB3pGELESiv2IXI4Sq396Ahxdo1iHt7syT1CPgcVrsiYP9qWYxTJXtHw==
+"@zondax/ledger-casper@^2.6.3":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@zondax/ledger-casper/-/ledger-casper-2.6.1.tgz#768026df8d581044ecf1ec5929e71926d73ec9f3"
+  integrity sha512-Zk+DOVK9G9Gyt7ua9x/G5iVVSlNfp1l+Tek+7+MoqP5aTr4YznBJIhdnPD8yYSxEEZZLs8Q0tV0TyfsXeRokQw==
   dependencies:
-    "@babel/runtime" "^7.13.9"
-    "@ledgerhq/hw-transport" "^5.45.0"
-    "@types/ledgerhq__hw-transport" "^4.21.3"
+    "@babel/runtime" "^7.21.0"
+    "@ledgerhq/hw-transport" "^6.28.2"
+    "@types/ledgerhq__hw-transport" "^4.21.4"
 
 abab@^2.0.6:
   version "2.0.6"
