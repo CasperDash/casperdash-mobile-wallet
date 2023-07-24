@@ -10,6 +10,8 @@ import {
   MAX_DELEGATOR_PER_VALIDATOR,
   AUCTION_HASH,
   MIN_CSPR_TRANSFER,
+  SUPPORT_URL,
+  DOCS_URL,
 } from 'utils/constants/key';
 
 export interface IConfigurationResponse {
@@ -25,6 +27,8 @@ export interface IConfigurationResponse {
   MIN_CSPR_TRANSFER: number;
   ANDROID_APP_VERSION?: string;
   IOS_APP_VERSION?: string;
+  SUPPORT_URL?: string;
+  DOCS_URL?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
@@ -42,6 +46,8 @@ export const getConfigurations = async (): Promise<IConfigurationResponse> => {
       STAKE_AUCTION_HASH: AUCTION_HASH,
       MIN_CSPR_TRANSFER,
       API_VERSION: '1.5.3',
+      SUPPORT_URL,
+      DOCS_URL,
     }
   );
 };

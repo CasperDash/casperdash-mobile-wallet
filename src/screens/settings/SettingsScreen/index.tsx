@@ -7,7 +7,7 @@ import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { CASPERDASH_URL } from 'utils/constants/key';
+import { CASPERDASH_URL, DOCS_URL, SUPPORT_URL } from 'utils/constants/key';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
@@ -16,6 +16,7 @@ import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
 import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
 
 function SettingsScreen() {
   const reStack = useRestack();
@@ -23,6 +24,7 @@ function SettingsScreen() {
 
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
+  const { data: configurations } = useConfigurations();
 
   let listMenu: Array<SettingMenu> = [
     {
@@ -30,7 +32,7 @@ function SettingsScreen() {
       title: 'About Us',
       icon: () => <IconLogo width={scale(32)} height={scale(32)} />,
       subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)} />,
-      onPress: () => openUrl(),
+      onPress: () => openUrl(CASPERDASH_URL),
     },
     {
       id: 2,
@@ -48,6 +50,18 @@ function SettingsScreen() {
     },
     {
       id: 4,
+      title: 'Documentation',
+      icon: () => <Image source={images.docs} style={{ width: scale(32), height: scale(32) }} />,
+      onPress: () => openUrl(configurations?.DOCS_URL || DOCS_URL),
+    },
+    {
+      id: 5,
+      title: 'Support',
+      icon: () => <Image source={images.support} style={{ width: scale(32), height: scale(32) }} />,
+      onPress: () => openUrl(configurations?.SUPPORT_URL || SUPPORT_URL),
+    },
+    {
+      id: 6,
       title: 'Version',
       icon: () => <Image source={images.version} style={{ width: scale(32), height: scale(32) }} />,
       actionComp: () => (
@@ -73,10 +87,10 @@ function SettingsScreen() {
     });
   }
 
-  const openUrl = async () => {
-    const supported = await Linking.canOpenURL(CASPERDASH_URL);
+  const openUrl = async (url: string) => {
+    const supported = await Linking.canOpenURL(url);
     if (supported) {
-      await Linking.openURL(CASPERDASH_URL);
+      await Linking.openURL(url);
     }
   };
 
