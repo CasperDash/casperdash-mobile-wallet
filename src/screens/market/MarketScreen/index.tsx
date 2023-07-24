@@ -8,6 +8,7 @@ import ChartComponent from 'screens/market/components/ChartComponent';
 import { useScrollToTop } from '@react-navigation/native';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
 import { usePrice, usePriceHistory } from 'utils/hooks/usePrice';
+import { News } from '../components/News';
 
 const getIcon = (type: string) => {
   return type === 'up' ? (
@@ -133,7 +134,7 @@ function MarketScreen() {
             <ChartComponent data={priceHistory} onDeactivated={onDeactivated} onActivated={onActivated} />
             {_renderRowInfo()}
           </Col>
-          <TransactionComponent />
+          <News />
         </ScrollView>
       </View>
     </CLayout>

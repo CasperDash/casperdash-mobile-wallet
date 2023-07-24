@@ -12,11 +12,14 @@ import { ErrorFallback } from './src/components/ErrorFallback';
 import { toastError } from './src/utils/helpers/errorHandler';
 import * as Sentry from '@sentry/react-native';
 import APP_CONFIGS from './src/utils/config/index';
+import DeviceInfo from 'react-native-device-info';
 
 Sentry.init({
   dsn: APP_CONFIGS.SENTRY_DSN,
   debug: __DEV__,
   environment: __DEV__ ? 'development' : 'production',
+  release: `io.casperdash.casperwallet@${DeviceInfo.getVersion()}`,
+  dist: DeviceInfo.getBuildNumber(),
 });
 
 // Create a client

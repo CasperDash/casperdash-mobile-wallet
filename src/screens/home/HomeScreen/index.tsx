@@ -13,6 +13,7 @@ import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import { getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { News } from './components/News';
 
 function HomeScreen() {
   const { navigate } = useNavigation();
@@ -76,7 +77,7 @@ function HomeScreen() {
   return (
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
       <View style={styles.container}>
-        <Row.LR pl={24} pr={16} pt={10} pb={20}>
+        <Row.LR pl={24} pr={16} pt={10} pb={8}>
           <Row style={styles.alignCenter}>
             <IconLogo width={scale(28)} height={scale(28)} />
             <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>Home</Text>
@@ -87,6 +88,7 @@ function HomeScreen() {
             </CButton>
           </Row.C>
         </Row.LR>
+        <News />
         <ScrollView
           nestedScrollEnabled
           stickyHeaderIndices={[0]}
