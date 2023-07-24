@@ -1,13 +1,17 @@
 import React from 'react';
-import { colors } from 'assets';
+import { colors, IconList } from 'assets';
 import { scale } from 'device';
 import { View, Text, Dimensions, SafeAreaView, Linking, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNews } from 'utils/hooks/useNews';
 import Carousel from 'react-native-reanimated-carousel';
+import { useNavigation } from '@react-navigation/native';
+import MarketRouter from 'navigation/MarketNavigation/MarketRouter';
 
 export const News = () => {
   const { data } = useNews();
   const width = Dimensions.get('window').width;
+  const { navigate } = useNavigation();
+
   const onPress = async (url?: string) => {
     if (!url) {
       return;
@@ -17,32 +21,37 @@ export const News = () => {
       await Linking.openURL(url);
     }
   };
+
+  const onPressMore = () => {
+    navigate('Market', { screen: MarketRouter.MARKET_SCREEN });
+  };
+
   return (
     <SafeAreaView>
       <Carousel
         loop
         autoPlay
         data={data || []}
-        width={width}
         height={scale(30)}
         scrollAnimationDuration={2000}
         autoPlayInterval={5000}
         vertical
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity onPress={() => onPress(item.url)}>
-              <View style={styles.itemContainer}>
-                <View style={styles.badgeContainer}>
-                  <Text style={styles.badge}>{item.label}</Text>
-                </View>
-                <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-                  {item?.title}
-                </Text>
+            <TouchableOpacity onPress={() => onPress(item.url)} style={styles.itemContainer}>
+              <View style={styles.badgeContainer}>
+                <Text style={styles.badge}>{item.label}</Text>
               </View>
+              <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+                {item?.title}
+              </Text>
             </TouchableOpacity>
           );
         }}
       />
+      <TouchableOpacity style={styles.moreIcon} onPress={onPressMore}>
+        <IconList />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -53,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingLeft: scale(24),
     paddingBottom: scale(8),
-    width: scale(300),
+    width: scale(284),
   },
   badgeContainer: {
     paddingHorizontal: scale(4),
@@ -70,5 +79,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: '700',
+  },
+  moreIcon: {
+    position: 'absolute',
+    right: scale(24),
   },
 });
