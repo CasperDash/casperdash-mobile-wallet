@@ -198,6 +198,12 @@ const StakingConfirmScreen: React.FC<
               fee={fee}
             />
           )}
+          {name === StakingMode.Undelegate && (
+            <Text style={styles.notes}>
+              * Please note that the waiting time for the undelegate process is approximately 7-8 eras, which translates
+              to around 14-16 hours.
+            </Text>
+          )}
           <CTextButton
             onPress={isForm ? handleSubmit : onConfirm}
             text={name === StakingMode.Undelegate ? (isForm ? 'Confirm' : 'Undelegate') : 'Delegate'}
@@ -274,5 +280,11 @@ const styles = StyleSheet.create({
     marginTop: scale(12),
     fontWeight: '400',
     fontFamily: fonts.Poppins.regular,
+  },
+  notes: {
+    ...textStyles.Body2,
+    color: colors.N3,
+    marginTop: scale(16),
+    marginBottom: scale(16),
   },
 });

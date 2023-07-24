@@ -13,7 +13,7 @@ interface Props {
 
 const InfoComponent = ({ validator, amount, fee }: Props) => {
   return (
-    <Col pt={24} mb={40}>
+    <Col pt={24}>
       <Text style={styles.caption}>Validator</Text>
       <Text style={styles.value}>{validator}</Text>
       <Text style={styles.caption}>Amount</Text>
