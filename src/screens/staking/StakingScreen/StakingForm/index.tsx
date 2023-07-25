@@ -108,7 +108,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   });
 
   const setBalance = () => {
-    setFieldValue('amount', `${balance - fee > 0 ? (balance - fee).toFixed(2) : 0}`);
+    setFieldValue('amount', `${balance - fee > 0 ? (Math.floor((balance - fee) * 100) / 100).toFixed(2) : 0}`);
     setErrors({ ...errors, amount: '' });
   };
 

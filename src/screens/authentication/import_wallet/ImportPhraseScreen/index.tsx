@@ -253,7 +253,7 @@ const ImportPhraseScreen = () => {
               );
             })}
           </Row.LR>
-          <Row.LR py={16} px={16} mt={16} style={styles.body}>
+          <Row.LR py={16} px={16} mt={16} ml={16} style={styles.body}>
             <SensitiveInfoWrapper>
               <View style={styles.flex}>
                 {listLeft.map((item, index) => {

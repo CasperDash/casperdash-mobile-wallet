@@ -80,7 +80,10 @@ const StakingConfirmScreen: React.FC<
   const { executeDeploy, isDeploying } = useConfirmDeploy();
 
   const setBalance = () => {
-    setFieldValue('amount', isDelegate ? `${(stakedAmount - fee).toFixed(2)}` : `${toCSPR(stakedAmount).toFixed(2)}`);
+    setFieldValue(
+      'amount',
+      isDelegate ? `${Math.floor(stakedAmount - fee).toFixed(2)}` : `${toCSPR(stakedAmount).round(2, 0).toFixed(2)}`,
+    );
     setErrors({ ...errors, amount: '' });
   };
 
