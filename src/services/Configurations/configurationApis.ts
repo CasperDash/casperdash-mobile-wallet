@@ -30,6 +30,7 @@ export interface IConfigurationResponse {
   SUPPORT_URL?: string;
   DOCS_URL?: string;
   PRIVACY_URL?: string;
+  UNDELEGATE_TIME_NOTICE?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {

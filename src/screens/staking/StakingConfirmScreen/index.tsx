@@ -200,8 +200,8 @@ const StakingConfirmScreen: React.FC<
           )}
           {name === StakingMode.Undelegate && (
             <Text style={styles.notes}>
-              * Please note that the waiting time for the undelegate process is approximately 7-8 eras, which translates
-              to around 14-16 hours.
+              {configurations?.UNDELEGATE_TIME_NOTICE ||
+                '* Please note that the waiting time for the undelegate process is approximately 7-8 eras, which translates to around 14-16 hours.'}
             </Text>
           )}
           <CTextButton
