@@ -29,6 +29,7 @@ export interface IConfigurationResponse {
   IOS_APP_VERSION?: string;
   SUPPORT_URL?: string;
   DOCS_URL?: string;
+  PRIVACY_URL?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {

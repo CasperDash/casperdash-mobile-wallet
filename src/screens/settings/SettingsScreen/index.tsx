@@ -7,7 +7,7 @@ import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { CASPERDASH_URL, DOCS_URL, SUPPORT_URL } from 'utils/constants/key';
+import { CASPERDASH_URL, DOCS_URL, PRIVACY_URL, SUPPORT_URL } from 'utils/constants/key';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
@@ -62,6 +62,12 @@ function SettingsScreen() {
     },
     {
       id: 6,
+      title: 'Privacy Policy',
+      icon: () => <Image source={images.privacy} style={{ width: scale(32), height: scale(32) }} />,
+      onPress: () => openUrl(configurations?.PRIVACY_URL || PRIVACY_URL),
+    },
+    {
+      id: 7,
       title: 'Version',
       icon: () => <Image source={images.version} style={{ width: scale(32), height: scale(32) }} />,
       actionComp: () => (

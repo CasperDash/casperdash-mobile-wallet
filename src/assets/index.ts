@@ -84,6 +84,7 @@ const images = {
   frame: require('./images/frame.png'),
   support: require('./images/ic_support.png'),
   docs: require('./images/ic_docs.png'),
+  privacy: require('./images/ic_privacy.png'),
 };
 
 const colors = {

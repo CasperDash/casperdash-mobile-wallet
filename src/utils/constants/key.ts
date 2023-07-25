@@ -29,6 +29,7 @@ export const NUMBER_WORDS_PER_ROW = 3;
 export const PIN_LENGTH = 6;
 export const SUPPORT_URL = 'https://t.me/CasperDash_Official';
 export const DOCS_URL = 'https://docs.casperdash.io/';
+export const PRIVACY_URL = 'https://casperdash.io/privacy-policy.html';
 export enum StakingMode {
   Undelegate = 'Undelegate',
   Delegate = 'Delegate',
