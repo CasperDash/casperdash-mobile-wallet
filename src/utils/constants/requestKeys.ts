@@ -9,9 +9,12 @@ export enum ERequestKeys {
   tokenInfo = 'tokenInfo',
   accountInfo = 'accountInfo',
   listAccountInfo = 'listAccountInfo',
+  myAccounts = 'myAccounts',
   configurations = 'configurations',
   nftsInfo = 'nftsInfo',
   deploysStatus = 'deploysStatus',
   releaseNotes = 'releaseNotes',
   news = 'news',
+  dappParsedDeployData = 'dappParsedDeployData',
+  dapps = 'dapps',
 }

@@ -29,7 +29,8 @@ const useSigner = () => {
           });
         }
         default: {
-          const keyPair = await getWalletKeyPair(user, selectedWallet);
+          const { uid, encryptionType } = selectedWallet.walletInfo;
+          const keyPair = await getWalletKeyPair(user, { uid, encryptionType });
           return DeployUtil.deployToJson(DeployUtil.signDeploy(deploy, keyPair));
         }
       }

@@ -4,6 +4,13 @@ import { SECP256k1, CONNECT_ERROR_MESSAGE } from '../constants/ledger';
 import { CASPER_KEY_PATH } from '../constants/key';
 import { Config, Keys } from 'utils';
 import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
+import { DeployTypes, getDeployType } from 'utils/helpers/parser';
+
+let cacheKey: Record<number | string, string> = {};
+
+type LedgerOption = {
+  keyIndex?: string | number;
+};
 
 /**
  * Initial ledger app
@@ -19,14 +26,24 @@ export const initLedgerApp = async () => {
  * @param {object} deploy
  * @param {object} options
  */
-export const signDeployByLedger = async (deploy: any, options: any = {}) => {
+export const signDeployByLedger = async (deploy: DeployUtil.Deploy, options: any = {}) => {
   const { casperApp, transport } = await initLedgerApp();
 
-  const responseDeploy = await casperApp.sign(
-    `${CASPER_KEY_PATH}${options.keyIndex}`,
-    //@ts-ignore
-    DeployUtil.deployToBytes(deploy),
-  );
+  let responseDeploy;
+  const deployType = getDeployType(deploy);
+  if (deployType === DeployTypes.Wasm) {
+    responseDeploy = await casperApp.signWasmDeploy(
+      `${CASPER_KEY_PATH}${options.keyIndex}`,
+      //@ts-ignore
+      DeployUtil.deployToBytes(deploy),
+    );
+  } else {
+    responseDeploy = await casperApp.sign(
+      `${CASPER_KEY_PATH}${options.keyIndex}`,
+      //@ts-ignore
+      DeployUtil.deployToBytes(deploy),
+    );
+  }
 
   if (!responseDeploy.signatureRS) {
     transport.close();
@@ -48,18 +65,49 @@ export const signDeployByLedger = async (deploy: any, options: any = {}) => {
   }
 };
 
+export const signMessage = async (
+  message: string,
+  { keyIndex = '0' }: LedgerOption = { keyIndex: '0' },
+): Promise<string> => {
+  const { casperApp, transport } = await initLedgerApp();
+
+  const ledgerPrefix = 'Casper Message:\n';
+
+  const signatureResponse = await casperApp.signMessage(
+    `${CASPER_KEY_PATH}${keyIndex}`,
+    Buffer.from(`${ledgerPrefix}${message}`, 'utf8'),
+  );
+
+  if (!signatureResponse) {
+    await transport.close();
+
+    throw new Error('Error on sign message with ledger.');
+  }
+
+  await transport.close();
+
+  return Buffer.from(signatureResponse.signatureRSV).toString('hex');
+};
+
 /**
  * Get public key from ledger
  * @param {object} app casper app
  * @param {number} keyIndex ledger key index
  */
-export const getLedgerPublicKey = async (app: any, keyIndex = 0) => {
+export const getLedgerPublicKey = async (app: any, keyIndex: string | number = 0) => {
+  if (cacheKey[keyIndex]) {
+    return cacheKey[keyIndex];
+  }
+
   const { publicKey = '' } = await app.getAddressAndPubKey(`${CASPER_KEY_PATH}${keyIndex}`);
 
   if (!publicKey) {
     throw Error(CONNECT_ERROR_MESSAGE);
   }
-  return `${SECP256k1}${publicKey.toString('hex')}`;
+
+  cacheKey[keyIndex] = `${SECP256k1}${publicKey.toString('hex')}`;
+
+  return cacheKey[keyIndex];
 };
 
 /**
@@ -93,4 +141,8 @@ export const getLedgerError = (error: any, code: number) => {
     return 'Unsupported Deploy';
   }
   return error.message;
+};
+
+export const resetCache = () => {
+  cacheKey = {};
 };

@@ -11,6 +11,7 @@ import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { scale } from 'device';
 import { validatePin } from 'utils/helpers/account';
 import { Keys, Config } from 'utils';
+import { resetCache } from 'utils/services/ledgerServices';
 
 const MAX_ATTEMPT = 5;
 
@@ -46,6 +47,7 @@ const EnterPinScreen = () => {
     Object.entries(Keys).map((key) => {
       return Config.deleteItem(key[1]);
     });
+    resetCache();
     NativeModules.DevSettings.reload();
   };
 
