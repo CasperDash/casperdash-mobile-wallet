@@ -16,4 +16,5 @@ export enum ERequestKeys {
   releaseNotes = 'releaseNotes',
   news = 'news',
   dappParsedDeployData = 'dappParsedDeployData',
+  dapps = 'dapps',
 }
