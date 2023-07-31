@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { colors, textStyles } from 'assets';
 import { DeployUtil } from 'casperdash-js-sdk';
-import { CButton } from 'components';
 import { scale } from 'device';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import BrowserContext from 'screens/browser/context';
@@ -11,6 +10,7 @@ import { buildRawSender } from 'screens/browser/utils/jsInjector';
 import { useSignerWithWallet } from 'utils/hooks/useSignerWithUid';
 import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
 import { RequestTypes } from 'redux_manager/browser/browser_reducer';
+import CTextButton from 'components/CTextButton';
 
 type Props = {
   onClose?: () => void;
@@ -76,12 +76,13 @@ const SignContent = ({ onClose, params }: Props) => {
         </ScrollView>
       </View>
       <View style={styles.footer}>
-        <CButton onPress={handleOnApprove} style={[styles.button, styles.buttonPrimary]}>
-          <Text>Approve</Text>
-        </CButton>
-        <CButton onPress={handleOnReject} style={[styles.button, styles.buttonOutline]}>
-          <Text>Reject</Text>
-        </CButton>
+        <CTextButton text={'Approve'} onPress={handleOnApprove} style={[styles.button, styles.buttonPrimary]} />
+        <CTextButton
+          text={'Reject'}
+          type="line"
+          onPress={handleOnReject}
+          style={[styles.button, styles.buttonOutline]}
+        />
       </View>
     </View>
   );

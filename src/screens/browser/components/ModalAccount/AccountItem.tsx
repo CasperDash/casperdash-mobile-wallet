@@ -1,4 +1,4 @@
-import { colors, textStyles } from 'assets';
+import { colors } from 'assets';
 import CRowItem from 'components/CRowItem';
 import CTextButton from 'components/CTextButton';
 import { scale } from 'device';
@@ -44,6 +44,7 @@ const AccountItem = ({
       </TouchableOpacity>
       <View>
         <CTextButton
+          variant="primary"
           textStyle={styles.buttonTextStyle}
           type={buttonType}
           text={buttonText}
@@ -89,8 +90,9 @@ const styles = StyleSheet.create({
     width: 'auto',
   },
   buttonTextStyle: {
-    ...textStyles.Body2,
     fontSize: scale(12),
+    minWidth: scale(70),
+    textAlign: 'center',
   },
   buttonOutline: {},
 });

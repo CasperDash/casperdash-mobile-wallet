@@ -51,7 +51,7 @@ const BrowserHeadBar = () => {
     setUrl(webUrl);
   }, [webUrl]);
 
-  const isDisabledAccount = _.isEmpty(webUrl) || !isConnected || isWebLoading;
+  const isDisabledAccount = _.isEmpty(webUrl) || !isConnected;
   const isDisabledReload = _.isEmpty(webUrl);
 
   return (

@@ -1,5 +1,4 @@
 import { colors, textStyles } from 'assets';
-import { CButton } from 'components';
 import { scale } from 'device';
 import URL from 'url-parse';
 import React, { useState } from 'react';
@@ -10,6 +9,7 @@ import ListAccounts from './ListAccounts';
 import { getUrlWithProtocol, prefixUrlWithProtocol } from 'screens/browser/utils/url';
 import { useConnectWithAccount } from 'screens/browser/hooks/useConnectWithAccount';
 import { AccountInfo } from 'utils/hooks/useAccountInfo';
+import CTextButton from 'components/CTextButton';
 
 type Props = {
   onClose?: () => void;
@@ -54,12 +54,13 @@ const ConnectContent = ({ onClose, url }: Props) => {
         />
       </View>
       <View style={styles.footer}>
-        <CButton onPress={handleOnPress} style={[styles.button, styles.buttonPrimary]} disabled={!selectedAccount}>
-          <Text>Connect</Text>
-        </CButton>
-        <CButton onPress={onClose} style={[styles.button, styles.buttonOutline]}>
-          <Text>Cancel</Text>
-        </CButton>
+        <CTextButton
+          text={'Connect'}
+          onPress={handleOnPress}
+          style={[styles.button, styles.buttonPrimary]}
+          disabled={!selectedAccount}
+        />
+        <CTextButton text={'Cancel'} type="line" onPress={onClose} style={[styles.button, styles.buttonOutline]} />
       </View>
     </View>
   );
@@ -105,11 +106,7 @@ const styles = StyleSheet.create({
   buttonPrimary: {
     backgroundColor: colors.R1,
   },
-  buttonOutline: {
-    borderRadius: scale(90),
-    borderWidth: scale(1),
-    borderColor: colors.c000000,
-  },
+  buttonOutline: {},
 });
 
 export default ConnectContent;

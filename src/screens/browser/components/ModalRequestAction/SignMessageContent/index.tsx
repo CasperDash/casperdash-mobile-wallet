@@ -1,5 +1,5 @@
 import { colors, textStyles } from 'assets';
-import { CButton } from 'components';
+import CTextButton from 'components/CTextButton';
 import { scale } from 'device';
 import _ from 'lodash';
 import React, { useContext } from 'react';
@@ -63,12 +63,13 @@ const SignMessageContent = ({ onClose, params }: Props) => {
         </ScrollView>
       </View>
       <View style={styles.footer}>
-        <CButton onPress={handleOnApprove} style={[styles.button, styles.buttonPrimary]}>
-          <Text>Approve</Text>
-        </CButton>
-        <CButton onPress={handleOnReject} style={[styles.button, styles.buttonOutline]}>
-          <Text>Reject</Text>
-        </CButton>
+        <CTextButton text={'Approve'} onPress={handleOnApprove} style={[styles.button, styles.buttonPrimary]} />
+        <CTextButton
+          text={'Reject'}
+          type="line"
+          onPress={handleOnReject}
+          style={[styles.button, styles.buttonOutline]}
+        />
       </View>
     </View>
   );
@@ -115,10 +116,6 @@ const styles = StyleSheet.create({
   buttonPrimary: {
     backgroundColor: colors.R1,
   },
-  buttonOutline: {
-    borderRadius: scale(90),
-    borderWidth: scale(1),
-    borderColor: colors.c000000,
-  },
+  buttonOutline: {},
 });
 export default SignMessageContent;
