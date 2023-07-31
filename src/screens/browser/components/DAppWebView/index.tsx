@@ -18,11 +18,9 @@ import { web3Script } from 'screens/browser/scripts/web3';
 import { buildDebugConsole } from 'screens/browser/utils/jsInjector';
 import { getwebUrl } from 'utils/selectors';
 
-type Props = {
-  defaultUrl?: string;
-};
+type Props = {};
 
-const DAppWebView = ({}: Props, webRef: any) => {
+const DAppWebView = (_props: Props, webRef: any) => {
   const webUrl = useSelector(getwebUrl);
   const dispatch = useDispatch();
   const [isCanForward, setIsCanForward] = useState(false);

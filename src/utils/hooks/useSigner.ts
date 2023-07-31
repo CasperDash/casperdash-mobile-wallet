@@ -29,7 +29,8 @@ const useSigner = () => {
           });
         }
         default: {
-          const keyPair = await getWalletKeyPair(user, selectedWallet);
+          const { uid, encryptionType } = selectedWallet.walletInfo;
+          const keyPair = await getWalletKeyPair(user, { uid, encryptionType });
           return DeployUtil.deployToJson(DeployUtil.signDeploy(deploy, keyPair));
         }
       }
@@ -54,8 +55,9 @@ const useSigner = () => {
           } catch (err) {
             throw new Error('Could not format message: ' + err);
           }
+          const { uid, encryptionType } = selectedWallet.walletInfo;
 
-          const asymKey = await getWalletKeyPair(user, selectedWallet);
+          const asymKey = await getWalletKeyPair(user, { uid, encryptionType });
           if (!asymKey) {
             throw new Error('Can not generate key pair');
           }

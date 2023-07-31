@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from '../constants/settings';
 import { getLoginOptions, getUser } from '../selectors/user';
 import { signDeployByLedger } from '../services/ledgerServices';
-import { getWalletKeyPairByWallet } from 'utils/helpers/account';
+import { getWalletKeyPair } from 'utils/helpers/account';
 import { DeployUtil, encodeBase16, formatMessageWithHeaders, signFormattedMessage } from 'casperdash-js-sdk';
 import * as Sentry from '@sentry/react-native';
 import { WalletInfo } from 'react-native-casper-storage';
@@ -33,7 +33,7 @@ export const useSignerWithWallet = (wallet?: WalletInfo) => {
           });
         }
         default: {
-          const keyPair = await getWalletKeyPairByWallet(user, wallet);
+          const keyPair = await getWalletKeyPair(user, wallet);
           return DeployUtil.deployToJson(DeployUtil.signDeploy(deploy, keyPair));
         }
       }
@@ -63,7 +63,7 @@ export const useSignerWithWallet = (wallet?: WalletInfo) => {
             throw new Error('Could not format message: ' + err);
           }
 
-          const keyPair = await getWalletKeyPairByWallet(user, wallet);
+          const keyPair = await getWalletKeyPair(user, wallet);
           if (!keyPair) {
             throw new Error('Can not generate key pair');
           }

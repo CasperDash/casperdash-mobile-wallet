@@ -24,6 +24,8 @@ export const useConnectWithAccount = () => {
       const { uid } = walletInfo;
       const publicKey = await getPublicKeyCache(uid);
 
+      console.log('connectedSites: ', connectedSites);
+
       if (connectedSites && connectedSites[urlWithProtocol]) {
         const { account } = connectedSites[urlWithProtocol];
         if (account?.publicKey && publicKey !== account?.publicKey) {
@@ -50,9 +52,9 @@ export const useConnectWithAccount = () => {
       } else {
         dispatch(
           allActions.browser.updateConnectedSites({
-            ...connectedSites,
+            ...(connectedSites ? connectedSites : {}),
             [urlWithProtocol]: {
-              ...connectedSites[urlWithProtocol],
+              ...(connectedSites && connectedSites[urlWithProtocol] ? connectedSites[urlWithProtocol] : []),
               account: {
                 publicKey: publicKey,
                 uid,
@@ -64,7 +66,9 @@ export const useConnectWithAccount = () => {
         );
       }
 
-      browserRef?.current?.injectJavaScript(buildRawSender(RequestTypes.CONNECT, 'true'));
+      setTimeout(() => {
+        browserRef?.current?.injectJavaScript(buildRawSender(RequestTypes.CONNECT, 'true'));
+      }, 100);
       handleOnConnected(publicKey);
     },
     [browserRef, connectedSites, dispatch, handleOnAccountChange, handleOnConnected],

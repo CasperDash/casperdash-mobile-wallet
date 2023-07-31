@@ -1,56 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>CasperDash</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>55</string>
-	<key>CodePushDeploymentKey</key>
-	<string>PEuhtbin9q4psJtEqhufLI5PozrJuSlMrrVUY</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fbapi20130214</string>
-		<string>fbapi20130410</string>
-		<string>fbapi20130702</string>
-		<string>fbapi20131010</string>
-		<string>fbapi20131219</string>
-		<string>fbapi20140410</string>
-		<string>fbapi20140116</string>
-		<string>fbapi20150313</string>
-		<string>fbapi20150629</string>
-		<string>fbapi20160328</string>
-		<string>fbauth</string>
-		<string>fb-messenger-share-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-		<string>fb</string>
-		<string>facebook</string>
-		<string>twitter</string>
-		<string>instagram</string>
-		<string>vnd.youtube</string>
-		<string>linkedin</string>
-	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>en</string>
@@ -101,94 +51,95 @@
 		<key>LSRequiresIPhoneOS</key>
 		<true />
 		<key>NSAppTransportSecurity</key>
-		<key>NSExceptionDomains</key>
 		<dict>
-			<key>localhost</key>
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true />
+				</dict>
 			</dict>
 		</dict>
-	</dict>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Enabling Face ID allows you quick and secure access to your account.</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your camera for scanning QR Code to get receiver’s
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Enabling Face ID allows you quick and secure access to your account.</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>$(PRODUCT_NAME) will able to discover and connect to devices on the networks you use</string>
+		<key>NSCameraUsageDescription</key>
+		<string>$(PRODUCT_NAME) need to access your camera for scanning QR Code to get receiver’s
 			public key</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) use to save image to your library</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) use to upload your avatar</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>Poppins-Black.ttf</string>
-		<string>Poppins-BlackItalic.ttf</string>
-		<string>Poppins-Bold.ttf</string>
-		<string>Poppins-BoldItalic.ttf</string>
-		<string>Poppins-ExtraBold.ttf</string>
-		<string>Poppins-ExtraBoldItalic.ttf</string>
-		<string>Poppins-ExtraLight.ttf</string>
-		<string>Poppins-ExtraLightItalic.ttf</string>
-		<string>Poppins-Italic.ttf</string>
-		<string>Poppins-Light.ttf</string>
-		<string>Poppins-LightItalic.ttf</string>
-		<string>Poppins-Medium.ttf</string>
-		<string>Poppins-MediumItalic.ttf</string>
-		<string>Poppins-Regular.ttf</string>
-		<string>Poppins-SemiBold.ttf</string>
-		<string>Poppins-SemiBoldItalic.ttf</string>
-		<string>Poppins-Thin.ttf</string>
-		<string>Poppins-ThinItalic.ttf</string>
-		<string>DMSans-Bold.ttf</string>
-		<string>DMSans-BoldItalic.ttf</string>
-		<string>DMSans-Italic.ttf</string>
-		<string>DMSans-Medium.ttf</string>
-		<string>DMSans-MediumItalic.ttf</string>
-		<string>DMSans-Regular.ttf</string>
-		<string>Lato-Black.ttf</string>
-		<string>Lato-BlackItalic.ttf</string>
-		<string>Lato-Bold.ttf</string>
-		<string>Lato-BoldItalic.ttf</string>
-		<string>Lato-Italic.ttf</string>
-		<string>Lato-Light.ttf</string>
-		<string>Lato-LightItalic.ttf</string>
-		<string>Lato-Regular.ttf</string>
-		<string>Lato-Thin.ttf</string>
-		<string>Lato-ThinItalic.ttf</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-</dict>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>$(PRODUCT_NAME) use to save image to your library</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>$(PRODUCT_NAME) use to upload your avatar</string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>AntDesign.ttf</string>
+			<string>Entypo.ttf</string>
+			<string>EvilIcons.ttf</string>
+			<string>Feather.ttf</string>
+			<string>FontAwesome.ttf</string>
+			<string>FontAwesome5_Brands.ttf</string>
+			<string>FontAwesome5_Regular.ttf</string>
+			<string>FontAwesome5_Solid.ttf</string>
+			<string>Fontisto.ttf</string>
+			<string>Foundation.ttf</string>
+			<string>Ionicons.ttf</string>
+			<string>MaterialCommunityIcons.ttf</string>
+			<string>MaterialIcons.ttf</string>
+			<string>Octicons.ttf</string>
+			<string>SimpleLineIcons.ttf</string>
+			<string>Zocial.ttf</string>
+			<string>Poppins-Black.ttf</string>
+			<string>Poppins-BlackItalic.ttf</string>
+			<string>Poppins-Bold.ttf</string>
+			<string>Poppins-BoldItalic.ttf</string>
+			<string>Poppins-ExtraBold.ttf</string>
+			<string>Poppins-ExtraBoldItalic.ttf</string>
+			<string>Poppins-ExtraLight.ttf</string>
+			<string>Poppins-ExtraLightItalic.ttf</string>
+			<string>Poppins-Italic.ttf</string>
+			<string>Poppins-Light.ttf</string>
+			<string>Poppins-LightItalic.ttf</string>
+			<string>Poppins-Medium.ttf</string>
+			<string>Poppins-MediumItalic.ttf</string>
+			<string>Poppins-Regular.ttf</string>
+			<string>Poppins-SemiBold.ttf</string>
+			<string>Poppins-SemiBoldItalic.ttf</string>
+			<string>Poppins-Thin.ttf</string>
+			<string>Poppins-ThinItalic.ttf</string>
+			<string>DMSans-Bold.ttf</string>
+			<string>DMSans-BoldItalic.ttf</string>
+			<string>DMSans-Italic.ttf</string>
+			<string>DMSans-Medium.ttf</string>
+			<string>DMSans-MediumItalic.ttf</string>
+			<string>DMSans-Regular.ttf</string>
+			<string>Lato-Black.ttf</string>
+			<string>Lato-BlackItalic.ttf</string>
+			<string>Lato-Bold.ttf</string>
+			<string>Lato-BoldItalic.ttf</string>
+			<string>Lato-Italic.ttf</string>
+			<string>Lato-Light.ttf</string>
+			<string>Lato-LightItalic.ttf</string>
+			<string>Lato-Regular.ttf</string>
+			<string>Lato-Thin.ttf</string>
+			<string>Lato-ThinItalic.ttf</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>armv7</string>
+		</array>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UIUserInterfaceStyle</key>
+		<string>Light</string>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false />
+	</dict>
 </plist>

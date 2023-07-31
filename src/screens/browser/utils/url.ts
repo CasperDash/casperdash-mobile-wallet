@@ -8,7 +8,11 @@ export const prefixUrlWithProtocol = (url: string, defaultProtocol = 'https://')
 };
 
 export const normalizeUrl = (input: string, searchEngine = 'DuckDuckGo', defaultProtocol = 'https://') => {
-  const regEx = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!&',;=.+]+$/g);
+  //NOSONAR
+  const regEx = new RegExp(
+    // eslint-disable-next-line no-useless-escape
+    /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g,
+  );
   if (!isUrl(input) && !regEx.test(input)) {
     if (!input.startsWith('http://localhost') && !input.startsWith('localhost')) {
       let searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
