@@ -58,6 +58,13 @@ import IconHistory from './images/ic_history.svg';
 import IconCheck from './images/ic_check.svg';
 import IconCloseAlt from './images/ic_close_alt.svg';
 import IconList from './images/ic_list.svg';
+import IconBrowser from './images/ic_browser.svg';
+import IconBrowserActive from './images/ic_browser_active.svg';
+import IconTabs from './images/ic_tabs.svg';
+import IconArrowBack from './images/ic_arrow_back.svg';
+import IconArrowForward from './images/ic_arrow_forward.svg';
+import IconReload from './images/ic_reload.svg';
+import IconUser from './images/ic_user.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -85,6 +92,12 @@ const images = {
   support: require('./images/ic_support.png'),
   docs: require('./images/ic_docs.png'),
   privacy: require('./images/ic_privacy.png'),
+
+  eggforce: require('./images/eggforce.webp'),
+  friendlyMarket: require('./images/friendly_market.jpeg'),
+  casperPunk: require('./images/casperpunk.jpeg'),
+  melem: require('./images/melem.webp'),
+  casperStats: require('./images/casperstats.png'),
 };
 
 const colors = {
@@ -271,4 +284,11 @@ export {
   IconCheck,
   IconCloseAlt,
   IconList,
+  IconBrowser,
+  IconBrowserActive,
+  IconTabs,
+  IconArrowBack,
+  IconArrowForward,
+  IconReload,
+  IconUser,
 };

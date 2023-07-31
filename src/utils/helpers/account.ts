@@ -90,7 +90,7 @@ export const createNewUserWithHdWallet = async (
  * @param {string} uid - The user ID of the user you want to get the public key for.
  * @returns The public key for the user with the given uid.
  */
-export const getPublicKeyCache = async (uid: string) => {
+export const getPublicKeyCache = async (uid: string): Promise<string> => {
   const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
 
   return publicKeysCache && publicKeysCache[uid];
@@ -180,6 +180,36 @@ export const getWalletKeyPair = async (user: User, selectedWallet: WalletInfoDet
 };
 
 /**
+ * It takes a user and a wallet, and returns the public and private keys for that wallet
+ * @param {User} user - User - the user object
+ * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
+ * @returns A key pair
+ */
+export const getWalletKeyPairByWallet = async (
+  user: User,
+  { uid, encryptionType }: Pick<WalletInfo, 'uid' | 'encryptionType'>,
+) => {
+  let publicKey: Uint8Array;
+  let privateKey: Uint8Array;
+  //const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
+  const walletDetails = await getWalletDetailsByUid(user, uid);
+  if (walletDetails) {
+    publicKey = await walletDetails.getPublicKeyByteArray();
+    privateKey = walletDetails.getPrivateKeyByteArray();
+
+    // need to slice prefix
+    const trimmedPublicKey = publicKey.slice(1);
+    if (encryptionType === EncryptionType.Ed25519) {
+      return Keys.Ed25519.parseKeyPair(trimmedPublicKey, privateKey);
+    } else {
+      return Keys.Secp256K1.parseKeyPair(trimmedPublicKey, privateKey, 'raw');
+    }
+  } else {
+    throw Error('Error on get Keys');
+  }
+};
+
+/**
  * It gets the user from storage, and returns it
  * @param {string} pin - The pin that the user entered
  * @returns The user object
@@ -201,6 +231,7 @@ export const getUserFromStorage = async (pin: string): Promise<User | undefined>
 };
 
 /**
+ * TODO: Refactor later with getWalletDetailsByUid
  * It takes a user object and a wallet object and returns a wallet object
  * @param {User} user - User - this is the user object that you get from the login function
  * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
@@ -215,6 +246,20 @@ export const getWalletDetails = async (user: User, selectedWallet: WalletInfoDet
     return wallet;
   } else if (fullWalletInfo.isLegacy) {
     const wallet = new CasperLegacyWallet(fullWalletInfo.id, fullWalletInfo.encryptionType);
+    return wallet;
+  }
+};
+
+export const getWalletDetailsByUid = async (user: User, uid: string) => {
+  const fullWalletInfo = user.getWalletInfo(uid);
+  if (fullWalletInfo.isHDWallet) {
+    const { index } = fullWalletInfo;
+    const wallet = await user.getWalletAccount(index);
+
+    return wallet;
+  } else if (fullWalletInfo.isLegacy) {
+    const wallet = new CasperLegacyWallet(fullWalletInfo.id, fullWalletInfo.encryptionType);
+
     return wallet;
   }
 };

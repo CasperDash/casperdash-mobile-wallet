@@ -1,6 +1,7 @@
 import { checkIfLoadingSelector, checkIfRefreshingSelector } from './main';
 import { getPublicKey, userDetailsSelector } from './user';
 import { getMassagedTokenData, tokensSelector, getTokensAddressList } from './tokens';
+import { getwebUrl } from './browser';
 
 export {
   checkIfLoadingSelector,
@@ -10,4 +11,5 @@ export {
   getMassagedTokenData,
   tokensSelector,
   getTokensAddressList,
+  getwebUrl,
 };

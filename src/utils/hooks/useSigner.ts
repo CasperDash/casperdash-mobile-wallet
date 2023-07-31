@@ -3,7 +3,7 @@ import { CONNECTION_TYPES } from '../constants/settings';
 import { getLoginOptions, getSelectedWallet, getUser } from '../selectors/user';
 import { signDeployByLedger } from '../services/ledgerServices';
 import { getWalletKeyPair } from 'utils/helpers/account';
-import { DeployUtil } from 'casperdash-js-sdk';
+import { DeployUtil, encodeBase16, formatMessageWithHeaders, signFormattedMessage } from 'casperdash-js-sdk';
 import * as Sentry from '@sentry/react-native';
 /**
  * Use the signer specified in the login options to sign a deploy.
@@ -40,7 +40,38 @@ const useSigner = () => {
     }
   };
 
-  return { sign };
+  const signMessage = async (message: string) => {
+    try {
+      switch (loginOptions.connectionType) {
+        case CONNECTION_TYPES.ledger: {
+          // TODO: Implement signMessageByLedger
+          break;
+        }
+        default: {
+          let messageBytes;
+          try {
+            messageBytes = formatMessageWithHeaders(message);
+          } catch (err) {
+            throw new Error('Could not format message: ' + err);
+          }
+
+          const asymKey = await getWalletKeyPair(user, selectedWallet);
+          if (!asymKey) {
+            throw new Error('Can not generate key pair');
+          }
+
+          const result = signFormattedMessage(asymKey, messageBytes);
+
+          return encodeBase16(result);
+        }
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw Error(`Error on signing message. \n ${error?.message}`);
+    }
+  };
+
+  return { sign, signMessage };
 };
 
 export default useSigner;
