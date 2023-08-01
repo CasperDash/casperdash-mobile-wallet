@@ -393,7 +393,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.19.1):
     - React-Core
-  - RNCClipboard (1.11.2):
+  - RNCClipboard (1.8.4):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
@@ -797,7 +797,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBluetoothStateManager: 724f2c76b04e0a2b840dfd7305b68f614bc01c81
   RNCAsyncStorage: f47fe18526970a69c34b548883e1aeceb115e3e1
-  RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
+  RNCClipboard: ddd4d291537f1667209c9c405aaa4307297e252e
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
