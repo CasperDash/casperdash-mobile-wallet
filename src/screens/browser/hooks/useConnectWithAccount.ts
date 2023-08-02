@@ -2,12 +2,13 @@ import { useCallback, useContext } from 'react';
 import { WalletInfo } from 'react-native-casper-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
-import { getPublicKeyCache } from 'utils/helpers/account';
+import { getPublicKeyCache, isLedgerMode } from 'utils/helpers/account';
 import { getConnectedSites } from 'utils/selectors/browser';
 import { buildRawSender } from '../utils/jsInjector';
 import BrowserContext from '../context';
 import { RequestTypes } from 'redux_manager/browser/browser_reducer';
 import { useSendDAppEvent } from './useSendDAppEvent';
+import { getLedgerPublicKey, initLedgerApp } from 'utils/services/ledgerServices';
 
 export const useConnectWithAccount = () => {
   const dispatch = useDispatch();
@@ -22,9 +23,16 @@ export const useConnectWithAccount = () => {
       }
 
       const { uid } = walletInfo;
-      const publicKey = await getPublicKeyCache(uid);
+      let publicKey;
+      const isLedger = await isLedgerMode();
+      if (isLedger) {
+        const { casperApp, transport } = await initLedgerApp();
+        publicKey = await getLedgerPublicKey(casperApp, uid);
 
-      console.log('connectedSites: ', connectedSites);
+        await transport.close();
+      } else {
+        publicKey = await getPublicKeyCache(uid);
+      }
 
       if (connectedSites && connectedSites[urlWithProtocol]) {
         const { account } = connectedSites[urlWithProtocol];

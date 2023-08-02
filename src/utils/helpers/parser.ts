@@ -13,7 +13,14 @@ import {
   DeployUtil,
   encodeBase16,
 } from 'casperdash-js-sdk';
-import { SignDeployParams } from '../types/signing';
+import { SignDeployParams } from '../../screens/browser/types/signing';
+
+export enum DeployTypes {
+  Transfer = 'Transfer',
+  Wasm = 'WASM-Based Deploy',
+  ContractCall = 'Contract Call',
+  ContractPackageCall = 'Contract Package Call',
+}
 
 export const parseDeployData = async ({
   deploy: deployJson,
@@ -50,12 +57,12 @@ export function getDeployPayment(deploy: DeployUtil.Deploy) {
 
 export function getDeployType(deploy: DeployUtil.Deploy) {
   return deploy.isTransfer()
-    ? 'Transfer'
+    ? DeployTypes.Transfer
     : deploy.session.isModuleBytes()
-    ? 'WASM-Based Deploy'
+    ? DeployTypes.Wasm
     : deploy.session.isStoredContractByHash() || deploy.session.isStoredContractByName()
-    ? 'Contract Call'
-    : 'Contract Package Call';
+    ? DeployTypes.ContractCall
+    : DeployTypes.ContractPackageCall;
 }
 
 export function getDeployArgs(deploy: DeployUtil.Deploy, targetKey: string) {

@@ -274,3 +274,9 @@ export const setSelectedWallet = async (walletInfo: WalletInfo, publicKey: strin
   await Config.saveItem(StorageKeys.selectedWallet, selectedWallet);
   return selectedWallet;
 };
+
+export const isLedgerMode = async () => {
+  const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
+
+  return casperDashInfo?.loginOptions?.connectionType === CONNECTION_TYPES.ledger;
+};

@@ -1,6 +1,6 @@
 import { UseQueryOptions, useQuery } from 'react-query';
 import { SignDeployParams } from '../types/signing';
-import { parseDeployData } from '../utils/parser';
+import { parseDeployData } from '../../../utils/helpers/parser';
 import _ from 'lodash';
 
 type DeployParam = {

@@ -2,15 +2,16 @@ import React, { useContext } from 'react';
 import { colors, textStyles } from 'assets';
 import { DeployUtil } from 'casperdash-js-sdk';
 import { scale } from 'device';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import BrowserContext from 'screens/browser/context';
 import { useGetParsedDeployData } from 'screens/browser/hooks/useGetParsedDeployData';
 import { SignDeployParams } from 'screens/browser/types/signing';
 import { buildRawSender } from 'screens/browser/utils/jsInjector';
-import { useSignerWithWallet } from 'utils/hooks/useSignerWithUid';
 import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
 import { RequestTypes } from 'redux_manager/browser/browser_reducer';
 import CTextButton from 'components/CTextButton';
+import { useSignDeploy } from 'utils/hooks/useSignDeploy';
+import { CButton } from 'components';
 
 type Props = {
   onClose?: () => void;
@@ -19,7 +20,7 @@ type Props = {
 const SignContent = ({ onClose, params }: Props) => {
   const browserRef = useContext(BrowserContext);
   const { connectedSite } = useConnectedSite();
-  const { sign } = useSignerWithWallet(connectedSite?.account?.walletInfo);
+  const { signAsync, isLoading } = useSignDeploy(connectedSite?.account?.walletInfo);
 
   const { data: parsedDeployData } = useGetParsedDeployData(params);
 
@@ -34,7 +35,10 @@ const SignContent = ({ onClose, params }: Props) => {
       return;
     }
 
-    const signedDeploy = await sign(deployFromJson.val, params.targetPublicKeyHex);
+    const signedDeploy = await signAsync({
+      deploy: deployFromJson.val,
+      mainAccountHex: params.targetPublicKeyHex,
+    });
     const jsScript = buildRawSender(RequestTypes.SIGN, JSON.stringify(signedDeploy));
 
     browserRef.current.injectJavaScript(jsScript);
@@ -76,13 +80,10 @@ const SignContent = ({ onClose, params }: Props) => {
         </ScrollView>
       </View>
       <View style={styles.footer}>
-        <CTextButton text={'Approve'} onPress={handleOnApprove} style={[styles.button, styles.buttonPrimary]} />
-        <CTextButton
-          text={'Reject'}
-          type="line"
-          onPress={handleOnReject}
-          style={[styles.button, styles.buttonOutline]}
-        />
+        <CButton onPress={handleOnApprove} style={[styles.button, styles.buttonPrimary]} disabled={isLoading}>
+          {isLoading ? <ActivityIndicator /> : <Text style={styles.buttonText}>Approve</Text>}
+        </CButton>
+        <CTextButton text={'Reject'} variant={'primary'} type="line" onPress={handleOnReject} style={[styles.button]} />
       </View>
     </View>
   );
@@ -129,10 +130,10 @@ const styles = StyleSheet.create({
   buttonPrimary: {
     backgroundColor: colors.R1,
   },
-  buttonOutline: {
-    borderRadius: scale(90),
-    borderWidth: scale(1),
-    borderColor: colors.c000000,
+  buttonText: {
+    fontSize: scale(16),
+    color: colors.W1,
+    fontWeight: 'bold',
   },
 });
 

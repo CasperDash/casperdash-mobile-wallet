@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     height: scale(48),
     color: colors.c000000,
     paddingVertical: 0,
-    fontSize: scale(12),
+    fontSize: scale(14),
     textAlignVertical: 'center',
   },
   homeIcon: {
