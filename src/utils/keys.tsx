@@ -13,6 +13,7 @@ const Keys = {
   masterPassword: 'masterPassword',
   publicKeysCache: 'publicKeysCache',
   skipShowReleaseNotesVersion: 'skipShowReleaseNotesVersion',
+  connectedSites: 'connectedSites',
 };
 
 export default Keys;

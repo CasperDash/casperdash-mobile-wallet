@@ -90,7 +90,7 @@ export const createNewUserWithHdWallet = async (
  * @param {string} uid - The user ID of the user you want to get the public key for.
  * @returns The public key for the user with the given uid.
  */
-export const getPublicKeyCache = async (uid: string) => {
+export const getPublicKeyCache = async (uid: string): Promise<string> => {
   const publicKeysCache = await Config.getItem(StorageKeys.publicKeysCache);
 
   return publicKeysCache && publicKeysCache[uid];
@@ -139,12 +139,13 @@ export const getWalletInfoWithPublicKey = async (user: User, walletList: WalletI
   return await Promise.all(
     walletList.map(async (walletInfo) => {
       let publicKey;
-      publicKey = await getPublicKeyCache(walletInfo.walletInfo.uid);
+      const { uid } = walletInfo.walletInfo;
+      publicKey = await getPublicKeyCache(uid);
       if (!publicKey) {
-        const walletDetails = await getWalletDetails(user, walletInfo);
+        const walletDetails = await getWalletDetails(user, uid);
         publicKey = await walletDetails?.getPublicKey();
         if (publicKey) {
-          await cachePublicKey(walletInfo.walletInfo.uid, publicKey);
+          await cachePublicKey(uid, publicKey);
         }
       }
       return { ...walletInfo, publicKey };
@@ -158,18 +159,20 @@ export const getWalletInfoWithPublicKey = async (user: User, walletList: WalletI
  * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
  * @returns A key pair
  */
-export const getWalletKeyPair = async (user: User, selectedWallet: WalletInfoDetails) => {
+export const getWalletKeyPair = async (
+  user: User,
+  { uid, encryptionType }: Pick<WalletInfo, 'uid' | 'encryptionType'>,
+) => {
   let publicKey: Uint8Array;
   let privateKey: Uint8Array;
-  //const fullWalletInfo = user.getWalletInfo(selectedWallet.walletInfo.uid);
-  const walletDetails = await getWalletDetails(user, selectedWallet);
+  const walletDetails = await getWalletDetails(user, uid);
   if (walletDetails) {
     publicKey = await walletDetails.getPublicKeyByteArray();
     privateKey = walletDetails.getPrivateKeyByteArray();
 
     // need to slice prefix
     const trimmedPublicKey = publicKey.slice(1);
-    if (selectedWallet.walletInfo.encryptionType === EncryptionType.Ed25519) {
+    if (encryptionType === EncryptionType.Ed25519) {
       return Keys.Ed25519.parseKeyPair(trimmedPublicKey, privateKey);
     } else {
       return Keys.Secp256K1.parseKeyPair(trimmedPublicKey, privateKey, 'raw');
@@ -203,18 +206,19 @@ export const getUserFromStorage = async (pin: string): Promise<User | undefined>
 /**
  * It takes a user object and a wallet object and returns a wallet object
  * @param {User} user - User - this is the user object that you get from the login function
- * @param {WalletInfoDetails} selectedWallet - WalletInfoDetails
+ * @param {uid} uid - User ID
  * @returns A wallet object
  */
-export const getWalletDetails = async (user: User, selectedWallet: WalletInfoDetails) => {
-  const uid = selectedWallet.walletInfo.uid;
+export const getWalletDetails = async (user: User, uid: string) => {
   const fullWalletInfo = user.getWalletInfo(uid);
   if (fullWalletInfo.isHDWallet) {
-    const index = fullWalletInfo.index;
+    const { index } = fullWalletInfo;
     const wallet = await user.getWalletAccount(index);
+
     return wallet;
   } else if (fullWalletInfo.isLegacy) {
     const wallet = new CasperLegacyWallet(fullWalletInfo.id, fullWalletInfo.encryptionType);
+
     return wallet;
   }
 };
@@ -269,4 +273,10 @@ export const setSelectedWallet = async (walletInfo: WalletInfo, publicKey: strin
   };
   await Config.saveItem(StorageKeys.selectedWallet, selectedWallet);
   return selectedWallet;
+};
+
+export const isLedgerMode = async () => {
+  const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
+
+  return casperDashInfo?.loginOptions?.connectionType === CONNECTION_TYPES.ledger;
 };

@@ -1,3 +1,5 @@
+import { WalletInfo } from 'react-native-casper-storage';
+
 export interface IBalance {
   hex?: string;
   type?: string;
@@ -40,6 +42,7 @@ export interface IAccountResponse {
   actionThresholds?: IActionThresholds;
   balance?: IBalance;
   publicKey: string;
+  walletInfo?: WalletInfo;
 }
 
 export interface IAccountDelegationResponse {

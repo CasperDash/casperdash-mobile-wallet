@@ -10,6 +10,7 @@ import { allActions } from 'redux_manager';
 import CConfirmPinModal from 'components/CConfirmPinModal';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
+import { resetCache } from 'utils/services/ledgerServices';
 
 const DeleteAllDataButton = () => {
   const alertRef = useRef<any>();
@@ -50,6 +51,7 @@ const DeleteAllDataButton = () => {
     ).then(async () => {
       dispatch(allActions.main.clearAllData());
       setShowConfirmPin(false);
+      resetCache();
       resetStack(AuthenticationRouter.CREATE_NEW_WALLET);
     });
   };

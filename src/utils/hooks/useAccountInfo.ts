@@ -1,9 +1,19 @@
 import { useMemo } from 'react';
+import { EncryptionType, WalletInfo } from 'react-native-casper-storage';
 import { UseQueryOptions, useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
+import { getWalletInfoWithPublicKey, isLedgerMode } from 'utils/helpers/account';
 import { toCSPRFromHex } from 'utils/helpers/currency';
+import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
+import { getListKeys, initLedgerApp } from 'utils/services/ledgerServices';
+
+type LedgerAccount = {
+  publicKey: string;
+  keyIndex: number;
+};
 
 export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo => {
   const hexBalance = userDetails?.balance?.hex ?? 0;
@@ -19,6 +29,11 @@ export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo 
 export interface IAccountInfo extends IAccountResponse {
   balance?: IDisplayCSPRBalance;
 }
+
+export type AccountInfo = {
+  publicKey?: string;
+  walletInfo: WalletInfo;
+};
 
 export const useAccountInfo = (publicKey: string) => {
   const query = useQuery({
@@ -57,4 +72,51 @@ export const useListAccountInfo = (
   }, [query.data]);
 
   return { ...query, massagedData };
+};
+
+export const useMyAccounts = (
+  options?: Omit<UseQueryOptions<AccountInfo[], any, AccountInfo[], any>, 'queryKey' | 'queryFn'>,
+) => {
+  const user = useSelector(getUser);
+  const publicKey = useSelector(getPublicKey);
+  const listWallets = useSelector(getListWallets);
+  const uids = listWallets
+    .filter((item: { walletInfo: WalletInfo }) => item.walletInfo.uid)
+    .map((item: { walletInfo: WalletInfo }) => item.walletInfo.uid);
+
+  return useQuery({
+    queryKey: [
+      ERequestKeys.myAccounts,
+      publicKey,
+      {
+        uids,
+      },
+    ],
+    queryFn: async () => {
+      if (await isLedgerMode()) {
+        const { casperApp, transport } = await initLedgerApp();
+
+        const accounts = await getListKeys(casperApp, 0, 10);
+
+        await transport.close();
+
+        return accounts.map((account: LedgerAccount) => {
+          const walletInfo = new WalletInfo(account.publicKey, EncryptionType.Secp256k1);
+
+          return {
+            publicKey: account.publicKey,
+            walletInfo: {
+              ...walletInfo,
+              uid: account.keyIndex,
+            } as unknown as WalletInfo,
+          };
+        });
+      }
+      const wallets: AccountInfo[] = await getWalletInfoWithPublicKey(user, listWallets);
+
+      return wallets;
+    },
+    ...options,
+    enabled: !!publicKey,
+  });
 };
