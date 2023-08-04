@@ -63,7 +63,7 @@ function ValidatorScreen() {
           <CInput
             onChangeText={setSearch}
             style={styles.input}
-            placeholder={'Enter Validator'}
+            placeholder={'Search by name or public key'}
             placeholderTextColor={colors.N3}
           />
         </View>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Row, CInputFormik, Col, CButton } from 'components';
-import { Text, View, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Platform, StyleSheet, Image } from 'react-native';
 import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
@@ -160,14 +160,27 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         </Row.LR>
         <CButton onPress={selectValidator}>
           <View style={styles.selectValidator}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode={'middle'}
-              style={[styles.nameValidator, !!values.validator && { color: colors.N2 }]}
-            >
-              {values.validator ? values.validator : 'Select Validator'}
-            </Text>
-            <IconArrowDown />
+            {values.validator ? (
+              <>
+                <View style={styles.selectContent}>
+                  <View style={styles.iconWrapper}>
+                    <Image source={{ uri: selectedValidator?.logo || selectedValidator?.icon }} style={styles.icon} />
+                  </View>
+                  <View>
+                    <Text style={styles.nameValidator}>{selectedValidator?.name}</Text>
+                    <Text numberOfLines={1} ellipsizeMode={'middle'} style={[styles.publicKeyValidator]}>
+                      {values.validator}
+                    </Text>
+                  </View>
+                </View>
+                <IconArrowDown />
+              </>
+            ) : (
+              <>
+                <Text style={styles.placeholder}>Select a validator</Text>
+                <IconArrowDown />
+              </>
+            )}
           </View>
         </CButton>
         {!!errors.validator && touched.validator && <Text style={styles.error}>{errors.validator}</Text>}
@@ -246,7 +259,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   selectValidator: {
-    height: scale(48),
+    height: scale(80),
     backgroundColor: colors.N5,
     flexDirection: 'row',
     alignItems: 'center',
@@ -255,14 +268,28 @@ const styles = StyleSheet.create({
     paddingVertical: scale(9),
     borderRadius: scale(16),
   },
+  selectContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   nameValidator: {
+    ...textStyles.Body1,
+    color: colors.N2,
+    fontSize: scale(16),
+    lineHeight: scale(30),
+    width: scale(200),
+  },
+  placeholder: {
+    ...textStyles.Body1,
+    color: colors.N3,
+  },
+  publicKeyValidator: {
     ...textStyles.Body1,
     color: colors.N3,
     fontSize: scale(16),
     lineHeight: scale(30),
-    width: scale(295),
+    width: scale(200),
   },
-
   btnStaking: {
     marginTop: scale(22),
     marginBottom: scale(20),
@@ -284,5 +311,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: scale(16),
+  },
+  icon: {
+    width: scale(36),
+    height: scale(36),
+  },
+  iconWrapper: {
+    flexBasis: scale(50),
   },
 });
