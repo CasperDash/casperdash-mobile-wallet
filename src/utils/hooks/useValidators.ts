@@ -52,7 +52,8 @@ export const useValidators = (searchTerm: string) => {
     if (!massagedData) {
       return [];
     }
-    const fuse = new Fuse(massagedData, { keys: ['public_key', 'name'], threshold: 0.1 });
+
+    const fuse = new Fuse(massagedData, { keys: ['validatorPublicKey', 'name'], threshold: 0.1 });
     return fuse.search(searchTerm).map((result) => result.item);
   }, [massagedData, searchTerm]);
 
