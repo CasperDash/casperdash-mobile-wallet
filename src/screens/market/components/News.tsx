@@ -1,23 +1,25 @@
 import React from 'react';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
-import { View, Text, Dimensions, Linking, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNews } from 'utils/hooks/useNews';
 import Carousel from 'react-native-reanimated-carousel';
 import { Col } from 'components';
+import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 
 export const News = () => {
   const { data } = useNews();
+  const { navigateToWebView } = useNavigateSimpleWebView();
   const width = Dimensions.get('window').width;
 
-  const onPress = async (url?: string) => {
+  const onPress = async (url?: string, title?: string) => {
     if (!url) {
       return;
     }
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    }
+    navigateToWebView({
+      url,
+      title,
+    });
   };
   return (
     <Col style={{ backgroundColor: colors.cF8F8F8 }}>
@@ -33,7 +35,10 @@ export const News = () => {
         mode="parallax"
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity onPress={() => onPress(item.url)} style={{ display: 'flex', alignItems: 'center' }}>
+            <TouchableOpacity
+              onPress={() => onPress(item.url, item.title)}
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
               <Image
                 source={{ uri: item?.bannerUrl }}
                 style={{ width: width, height: scale(200), marginBottom: scale(24), borderRadius: scale(8) }}

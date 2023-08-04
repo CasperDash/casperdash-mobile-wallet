@@ -65,6 +65,7 @@ import IconArrowBack from './images/ic_arrow_back.svg';
 import IconArrowForward from './images/ic_arrow_forward.svg';
 import IconReload from './images/ic_reload.svg';
 import IconUser from './images/ic_user.svg';
+import IconShare from './images/ic_share.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -285,4 +286,5 @@ export {
   IconArrowForward,
   IconReload,
   IconUser,
+  IconShare,
 };
