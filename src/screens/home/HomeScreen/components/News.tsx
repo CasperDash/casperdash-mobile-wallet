@@ -1,25 +1,27 @@
 import React from 'react';
 import { colors, IconList } from 'assets';
 import { scale } from 'device';
-import { View, Text, Dimensions, SafeAreaView, Linking, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNews } from 'utils/hooks/useNews';
 import Carousel from 'react-native-reanimated-carousel';
-import { useNavigation } from '@react-navigation/native';
 import MarketRouter from 'navigation/MarketNavigation/MarketRouter';
+import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
+import { useNavigation } from '@react-navigation/native';
 
 export const News = () => {
   const { data } = useNews();
-  const width = Dimensions.get('window').width;
   const { navigate } = useNavigation();
+  const { navigateToWebView } = useNavigateSimpleWebView();
 
-  const onPress = async (url?: string) => {
+  const onPress = async (url?: string, title?: string) => {
     if (!url) {
       return;
     }
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    }
+
+    navigateToWebView({
+      url,
+      title,
+    });
   };
 
   const onPressMore = () => {
@@ -38,7 +40,7 @@ export const News = () => {
         vertical
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity onPress={() => onPress(item.url)} style={styles.itemContainer}>
+            <TouchableOpacity onPress={() => onPress(item.url, item?.title)} style={styles.itemContainer}>
               <View style={styles.badgeContainer}>
                 <Text style={styles.badge}>{item.label}</Text>
               </View>

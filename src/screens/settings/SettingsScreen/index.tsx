@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Linking, Switch, Image, Text } from 'react-native';
+import { StyleSheet, Switch, Image, Text } from 'react-native';
 import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import DeviceInfo from 'react-native-device-info';
@@ -17,8 +17,10 @@ import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 
 function SettingsScreen() {
+  const { navigateToWebView } = useNavigateSimpleWebView();
   const reStack = useRestack();
   const loginOptions = useSelector(getLoginOptions);
 
@@ -26,13 +28,28 @@ function SettingsScreen() {
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
   const { data: configurations } = useConfigurations();
 
+  const navigateTo = (url: string, title: string) => {
+    navigateToWebView({
+      url,
+      title,
+    });
+  };
+
+  const lockScreen = () => {
+    resetStack(AuthenticationRouter.ENTER_PIN);
+  };
+
+  const resetStack = (name: string) => {
+    reStack(StackName.AuthenticationStack, name);
+  };
+
   let listMenu: Array<SettingMenu> = [
     {
       id: 0,
       title: 'About Us',
       icon: () => <IconLogo width={scale(32)} height={scale(32)} />,
       subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)} />,
-      onPress: () => openUrl(CASPERDASH_URL),
+      onPress: () => navigateTo(CASPERDASH_URL, 'About Us'),
     },
     {
       id: 2,
@@ -52,19 +69,19 @@ function SettingsScreen() {
       id: 4,
       title: 'Documentation',
       icon: () => <Image source={images.docs} style={{ width: scale(32), height: scale(32) }} />,
-      onPress: () => openUrl(configurations?.DOCS_URL || DOCS_URL),
+      onPress: () => navigateTo(configurations?.DOCS_URL || DOCS_URL, 'Documentation'),
     },
     {
       id: 5,
       title: 'Support',
       icon: () => <Image source={images.support} style={{ width: scale(32), height: scale(32) }} />,
-      onPress: () => openUrl(configurations?.SUPPORT_URL || SUPPORT_URL),
+      onPress: () => navigateTo(configurations?.SUPPORT_URL || SUPPORT_URL, 'Support'),
     },
     {
       id: 6,
       title: 'Privacy Policy',
       icon: () => <Image source={images.privacy} style={{ width: scale(32), height: scale(32) }} />,
-      onPress: () => openUrl(configurations?.PRIVACY_URL || PRIVACY_URL),
+      onPress: () => navigateTo(configurations?.PRIVACY_URL || PRIVACY_URL, 'Privacy Policy'),
     },
     {
       id: 7,
@@ -92,21 +109,6 @@ function SettingsScreen() {
       actionComp: () => <Switch value={isBiometryEnabled} onValueChange={onUpdateBiometryStatus} />,
     });
   }
-
-  const openUrl = async (url: string) => {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    }
-  };
-
-  const lockScreen = () => {
-    resetStack(AuthenticationRouter.ENTER_PIN);
-  };
-
-  const resetStack = (name: string) => {
-    reStack(StackName.AuthenticationStack, name);
-  };
 
   return (
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>

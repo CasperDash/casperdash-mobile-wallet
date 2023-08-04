@@ -41,6 +41,10 @@ export type ScreenParams = {
     name: string;
     amount: number;
   };
+  SIMPLE_WEB_VIEW: {
+    url: string;
+    title: string;
+  };
 };
 
 type ScreenNavigationProp<T extends keyof ScreenParams> = StackNavigationProp<ScreenParams, T>;
