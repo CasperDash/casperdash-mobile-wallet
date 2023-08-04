@@ -7,7 +7,7 @@ import { CButton, Col, Row } from 'components';
 import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
-import { getListWallets, getUser } from 'utils/selectors/user';
+import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { WalletDescriptor, User } from 'react-native-casper-storage';
 import { allActions } from 'redux_manager';
@@ -20,8 +20,10 @@ import {
 } from 'utils/helpers/account';
 import ViewPrivateKeyButton from './ViewPrivateKeyButton';
 import { IAccountInfo, useListAccountInfo } from 'utils/hooks/useAccountInfo';
+import ViewAccountOnExplorer from './ViewAccountOnExplorer';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
+  const publicKey = useSelector(getPublicKey);
   const [isVisible, setVisible] = useState<boolean>(false);
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(false);
 
@@ -187,6 +189,7 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
           </Row>
         </CButton>
         <ViewPrivateKeyButton onConfirm={hide} />
+        <ViewAccountOnExplorer publicKey={publicKey} onPress={hide} />
       </Col>
     </Modal>
   );
