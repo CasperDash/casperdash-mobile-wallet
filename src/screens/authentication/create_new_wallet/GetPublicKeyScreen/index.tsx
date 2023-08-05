@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { scale } from 'device';
 import { textStyles } from 'assets';
@@ -7,8 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Keys from 'utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { getLedgerPublicKey, getListKeys } from 'utils/services/ledgerServices';
-import CasperApp from '@zondax/ledger-casper';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import Col from 'react-native-col';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -16,92 +14,43 @@ import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CLoading from 'components/CLoading';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
-import { useListAccountInfo } from 'utils/hooks/useAccountInfo';
+import { LedgerAccountInfo, useLedgerAccounts } from 'utils/hooks/useAccountInfo';
+import CTextButton from 'components/CTextButton';
+import Toast from 'react-native-toast-message';
 
-const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
+interface Props {}
 
-interface Props {
-  transport: any;
-  setTransport: (transport: any) => void;
-}
-
-const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
+const GetPublicKeyScreen = ({}: Props) => {
   const [error, setError] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loadingKeys, setLoadingKeys] = useState<{ publicKey: string; keyIndex: number }[]>([]);
-  const [publicKey, setPublicKey] = useState<string>();
 
-  const { massagedData: listKeys } = useListAccountInfo(loadingKeys.map((key) => key.publicKey));
+  const { mergedData, isLoading, fetchNextPage, isFetching } = useLedgerAccounts(
+    { startIndex: 0, numberOfKeys: 5 },
+    {
+      onError: (err) =>
+        mergedData.length
+          ? Toast.show({
+              type: 'error',
+              text1: 'Oops!',
+              text2: 'A problem occurred, make sure to open the Casper application on your Ledger Nano X.',
+            })
+          : setError(err),
+      retry: 1,
+    },
+  );
 
-  const unmountRef = useRef<boolean>(false);
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const insets = useSafeAreaInsets();
 
-  useEffect(() => {
-    setupFetchAddress();
-    return () => {
-      unmountRef.current = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const setupFetchAddress = async () => {
-    while (!publicKey) {
-      if (unmountRef.current) {
-        return;
-      }
-      await fetchAddress();
-      await delay(700);
-    }
-    await fetchAddress();
-  };
-
-  const fetchAddress = async () => {
-    try {
-      const casperApp = new CasperApp(transport);
-      const ledgerPublicKey = await getLedgerPublicKey(casperApp);
-      if (unmountRef.current) {
-        return;
-      }
-      setIsLoading(true);
-      if (ledgerPublicKey) {
-        setError(null);
-        const keys = await getListKeys(casperApp, listKeys.length, 5);
-        setLoadingKeys(keys);
-
-        unmountRef.current = true;
-      } else {
-        setTransport(null);
-      }
-    } catch (err) {
-      setIsLoading(false);
-      if (unmountRef.current) {
-        return;
-      }
-      setError(err);
-      return null;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getAccountInformation = async (key: any): Promise<void> => {
-    const keyIndex = loadingKeys.find((item) => item.publicKey === key.publicKey)?.keyIndex;
-    const casperApp = new CasperApp(transport);
-    const ledgerPublicKey = await getLedgerPublicKey(casperApp, keyIndex);
-    setIsLoading(true);
-    setPublicKey(ledgerPublicKey);
-
-    await Config.saveItem(Keys.ledger, transport.device);
+  const onSelectKey = async (key: LedgerAccountInfo): Promise<void> => {
     const info = {
-      publicKey: ledgerPublicKey,
+      publicKey: key.publicKey,
       loginOptions: {
         connectionType: CONNECTION_TYPES.ledger,
-        keyIndex,
+        keyIndex: key.keyIndex,
       },
     };
     await Config.saveItem(Keys.casperdash, info);
-    setIsLoading(false);
+
     replace(AuthenticationRouter.CHOOSE_PIN, {
       screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
       params: {
@@ -113,16 +62,14 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
   /**
    * Render the key component to display public key and index.
    */
-  const _renderKeys = () => {
+  const renderKeys = () => {
     const height = insets.bottom === 0 ? 0 : insets.bottom + scale(72);
     return (
-      listKeys &&
-      listKeys.length > 0 && (
+      mergedData?.length > 0 && (
         <Col
           style={[
             styles.listContainer,
             {
-              paddingBottom: scale(72) + insets.bottom,
               minHeight: scale(315) + height,
             },
           ]}
@@ -131,17 +78,11 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
             <>
               <Text style={styles.title}>Choose your key</Text>
               <ScrollView>
-                {listKeys.map((ledgerKey, i: number) => {
-                  return (
-                    <KeyComponent
-                      key={ledgerKey.publicKey}
-                      onPress={getAccountInformation}
-                      value={ledgerKey}
-                      index={i}
-                    />
-                  );
+                {mergedData.map((ledgerKey) => {
+                  return <KeyComponent key={ledgerKey.publicKey} onPress={onSelectKey} value={ledgerKey} />;
                 })}
               </ScrollView>
+              <CTextButton text={'Load more'} onPress={fetchNextPage} />
             </>
           }
         </Col>
@@ -151,18 +92,15 @@ const GetPublicKeyScreen = ({ transport, setTransport }: Props) => {
 
   return (
     <View style={styles.ShowAddressScreen}>
-      {isLoading ? (
-        <CLoading />
+      {(isLoading || isFetching) && <CLoading />}
+      {error && !mergedData.length ? (
+        <Text style={styles.error}>
+          A problem occurred, make sure to open the Casper application on your Ledger Nano X. (
+          {String((error && error.message) || error)})
+        </Text>
       ) : (
-        !publicKey &&
-        error && (
-          <Text style={styles.error}>
-            A problem occurred, make sure to open the Casper application on your Ledger Nano X. (
-            {String((error && error.message) || error)})
-          </Text>
-        )
+        renderKeys()
       )}
-      {!isLoading && _renderKeys()}
     </View>
   );
 };

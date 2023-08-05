@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { EncryptionType, WalletInfo } from 'react-native-casper-storage';
-import { UseQueryOptions, useQuery } from 'react-query';
+import { UseInfiniteQueryOptions, UseQueryOptions, useInfiniteQuery, useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
@@ -119,4 +119,49 @@ export const useMyAccounts = (
     ...options,
     enabled: !!publicKey,
   });
+};
+
+export interface LedgerAccountInfo extends IAccountInfo {
+  keyIndex: number;
+}
+
+export const useLedgerAccounts = (
+  { startIndex = 0, numberOfKeys = 10 },
+  options?: Omit<
+    UseInfiniteQueryOptions<LedgerAccountInfo[], any, LedgerAccountInfo[], LedgerAccountInfo[], any>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  const query = useInfiniteQuery({
+    queryKey: [ERequestKeys.ledgerAccounts],
+    queryFn: async ({ pageParam = startIndex }) => {
+      const { casperApp, transport } = await initLedgerApp();
+
+      const accounts = await getListKeys(casperApp, pageParam, numberOfKeys);
+      await transport.close();
+      const accountsResponse = await getListAccountInfo(accounts.map((account) => account.publicKey));
+
+      return accounts.map((account: LedgerAccount) => {
+        const accountResponse = accountsResponse.find((item) => item.publicKey === account.publicKey);
+        const massagedDetails = massageUserDetails(accountResponse!);
+        return {
+          ...massagedDetails,
+          ...account,
+        };
+      });
+    },
+    getNextPageParam: (lastPage) => lastPage[lastPage.length - 1].keyIndex + 1,
+    ...options,
+  });
+
+  const mergedData = useMemo(() => {
+    if (query.data?.pages) {
+      return query.data.pages.reduce((acc, page) => {
+        return acc.concat(page);
+      }, []);
+    }
+    return [];
+  }, [query.data]);
+
+  return { ...query, mergedData };
 };
