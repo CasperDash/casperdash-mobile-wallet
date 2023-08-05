@@ -19,7 +19,6 @@ const SplashScreen = () => {
   const [isCheckVersionFinished, setIsCheckVersionFinished] = React.useState(false);
 
   const { isLoading } = useConfigurations();
-  console.log('🚀 ~ file: SplashScreen.tsx:22 ~ SplashScreen ~ isLoading:', isLoading);
 
   const setupNavigation = useCallback(async () => {
     const overview = await Config.getItem(Keys.overview);
