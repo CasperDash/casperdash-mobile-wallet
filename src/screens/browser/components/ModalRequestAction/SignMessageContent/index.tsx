@@ -27,6 +27,7 @@ const SignMessageContent = ({ onClose, params }: Props) => {
     const signedMessage = await signMessageAsync({
       message: params.message,
     });
+
     const jsScript = buildRawSender(RequestTypes.SIGN_MESSAGE, `'${signedMessage}'`);
 
     browserRef.current.injectJavaScript(jsScript);
