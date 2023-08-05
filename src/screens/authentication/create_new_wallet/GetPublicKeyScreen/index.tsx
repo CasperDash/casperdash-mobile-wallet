@@ -18,9 +18,7 @@ import { LedgerAccountInfo, useLedgerAccounts } from 'utils/hooks/useAccountInfo
 import CTextButton from 'components/CTextButton';
 import Toast from 'react-native-toast-message';
 
-interface Props {}
-
-const GetPublicKeyScreen = ({}: Props) => {
+const GetPublicKeyScreen = () => {
   const [error, setError] = useState<any>();
 
   const { mergedData, isLoading, fetchNextPage, isFetching } = useLedgerAccounts(
