@@ -21,7 +21,7 @@ export const useSignMessage = (wallet?: WalletInfo, options?: UseMutationOptions
       try {
         if (loginOptions.connectionType === CONNECTION_TYPES.ledger) {
           return signMessage(message, {
-            keyIndex: loginOptions.keyIndex,
+            keyIndex: wallet?.uid,
           });
         } else {
           if (!wallet) {
