@@ -1,4 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
+
 import { isIos } from 'device';
 
 export const EXPIRE_CLIPBOARD_TIME_MS = 60000;

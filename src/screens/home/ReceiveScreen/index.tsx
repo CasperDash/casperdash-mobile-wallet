@@ -1,13 +1,15 @@
 import React from 'react';
 import { Text, ScrollView, StyleSheet } from 'react-native';
-import { Col, CHeader, CLayout } from 'components';
-import { scale } from 'device';
-import { colors, textStyles } from 'assets';
+
 import QRCode from 'react-native-qrcode-svg';
-import CTextButton from 'components/CTextButton';
 import { useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
+
+import { colors, textStyles } from 'assets';
+import { Col, CHeader, CLayout } from 'components';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { getPublicKey } from 'utils/selectors';
 
 const ReceiveScreen = () => {
   const publicKey = useSelector(getPublicKey);

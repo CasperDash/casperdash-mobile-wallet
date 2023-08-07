@@ -1,5 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+
 import { Config, Keys } from 'utils';
+
 import { types } from './browser_action';
 
 function* updateConnectedSites({ payload }: any) {

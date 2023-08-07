@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet, Image } from 'react-native';
-import { scale } from 'device';
-import { Row, Col, CButton } from 'components';
+
 import { colors, textStyles } from 'assets';
+import { Row, Col, CButton } from 'components';
+import { scale } from 'device';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
 import { ITokenInfo } from 'utils/hooks/useTokenInfo';
 

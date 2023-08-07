@@ -1,10 +1,12 @@
+import React, { useContext } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import _ from 'lodash';
+
 import { colors, textStyles } from 'assets';
 import { CButton } from 'components';
 import CTextButton from 'components/CTextButton';
 import { scale } from 'device';
-import _ from 'lodash';
-import React, { useContext } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestTypes } from 'redux_manager/browser/browser_reducer';
 import BrowserContext from 'screens/browser/context';
 import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';

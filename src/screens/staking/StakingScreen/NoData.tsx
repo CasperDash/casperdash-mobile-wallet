@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, ActivityIndicator, Text, Image, StyleSheet } from 'react-native';
+
 import { images, colors, textStyles } from 'assets';
 import { scale } from 'device';
 

@@ -1,3 +1,4 @@
+import { BigNumberish } from '@ethersproject/bignumber';
 import {
   DeployUtil,
   Signer,
@@ -8,8 +9,8 @@ import {
   CLTypeBuilder,
   CLPublicKey,
 } from 'casperdash-js-sdk';
+
 import { NETWORK_NAME, PAYMENT_AMOUNT, MOTE_RATE, DEPLOY_TTL_MS } from '../constants/key';
-import { BigNumberish } from '@ethersproject/bignumber';
 
 /**
  * Get Transfer deploy

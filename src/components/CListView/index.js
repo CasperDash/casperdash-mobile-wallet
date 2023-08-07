@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { StyleSheet, Text, View, ActivityIndicator, Platform, RefreshControl } from 'react-native';
 
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
+
 import { colors, fonts } from 'assets';
 import { scale } from 'device';
 

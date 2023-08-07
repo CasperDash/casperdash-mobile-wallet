@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
-import { colors, textStyles } from 'assets';
-import { DeployUtil } from 'casperdash-js-sdk';
-import { scale } from 'device';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import { DeployUtil } from 'casperdash-js-sdk';
+
+import { colors, textStyles } from 'assets';
+import { CButton } from 'components';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import { RequestTypes } from 'redux_manager/browser/browser_reducer';
 import BrowserContext from 'screens/browser/context';
+import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
 import { useGetParsedDeployData } from 'screens/browser/hooks/useGetParsedDeployData';
 import { SignDeployParams } from 'screens/browser/types/signing';
 import { buildRawErrSender, buildRawSender } from 'screens/browser/utils/jsInjector';
-import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
-import { RequestTypes } from 'redux_manager/browser/browser_reducer';
-import CTextButton from 'components/CTextButton';
 import { useSignDeploy } from 'utils/hooks/useSignDeploy';
-import { CButton } from 'components';
 
 type Props = {
   onClose?: () => void;

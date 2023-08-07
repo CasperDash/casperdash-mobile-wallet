@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+
+import { colors, textStyles } from 'assets';
+import { CButton, CHeader, CLayout, Col, Row } from 'components';
+import { scale } from 'device';
 import { ScreenProps } from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
-import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
-import { useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
-import { CButton, CHeader, CLayout, Col, Row } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import TransactionItem from 'screens/home/HistoriesScreen/components/TransactionItem';
 import NoDataComponent from 'screens/home/HistoriesScreen/components/NoDataComponent';
-import { useNavigation } from '@react-navigation/native';
-import { useDeploysWithStatus } from 'utils/hooks/useTransferDeploys';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenInfoComponent from 'screens/home/HistoriesScreen/components/TokenInfoComponent';
+import TransactionItem from 'screens/home/HistoriesScreen/components/TransactionItem';
 import { enrichTransactionWithIcon } from 'utils/helpers/transaction';
+import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { useDeploysWithStatus } from 'utils/hooks/useTransferDeploys';
+import { getPublicKey } from 'utils/selectors';
 
 export const STATUS_MAPPING = [
   { value: '', label: 'All', color: colors.N2 },

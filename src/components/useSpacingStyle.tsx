@@ -1,4 +1,5 @@
 import { scale } from 'device';
+
 import { SpacingValue } from './base.props';
 
 const verticalIdentifiers = ['t', 'b', 'y'];

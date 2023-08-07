@@ -1,3 +1,4 @@
+import { Keys } from 'casperdash-js-sdk';
 import {
   KeyFactory,
   User,
@@ -7,7 +8,6 @@ import {
   CasperLegacyWallet,
   PasswordOptions,
 } from 'react-native-casper-storage';
-import { Keys } from 'casperdash-js-sdk';
 
 import { Config, Keys as StorageKeys } from 'utils';
 import { CONNECTION_TYPES } from 'utils/constants/settings';

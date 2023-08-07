@@ -1,19 +1,21 @@
 import React, { useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+
+import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
-import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
-import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
-import { useSelector } from 'react-redux';
-import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
-import { toFormattedCurrency } from 'utils/helpers/format';
-import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
-import { WalletInfoDetails } from 'utils/helpers/account';
-import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { WalletInfoDetails } from 'utils/helpers/account';
+import { toFormattedCurrency } from 'utils/helpers/format';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
 
 function Account() {
   if (Platform.OS === 'android') {

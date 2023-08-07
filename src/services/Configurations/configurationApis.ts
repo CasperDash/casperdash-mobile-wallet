@@ -1,5 +1,4 @@
 import { request } from 'services/request';
-
 import {
   MOTE_RATE,
   CSPR_TRANSFER_FEE,

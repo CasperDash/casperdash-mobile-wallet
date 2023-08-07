@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, StyleSheet, Image } from 'react-native';
-import { scale } from 'device';
-import { Row, Col, CButton } from 'components';
+
 import { colors, textStyles } from 'assets';
-import { getBase64IdentIcon } from 'utils/helpers/identicon';
-import { toFormattedNumber } from 'utils/helpers/format';
+import { Row, Col, CButton } from 'components';
+import { scale } from 'device';
 import { CASPER_SYMBOL } from 'utils/constants/key';
+import { toFormattedNumber } from 'utils/helpers/format';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 interface Props {

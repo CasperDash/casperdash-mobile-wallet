@@ -1,4 +1,5 @@
 import { Dimensions, Platform } from 'react-native';
+
 import { hasNotch } from 'react-native-device-info';
 
 const width = 375;

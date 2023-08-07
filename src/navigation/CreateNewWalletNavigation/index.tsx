@@ -1,7 +1,10 @@
 import React from 'react';
-import { CreateNewWalletScreens } from './CreateNewWalletScreens';
+
 import { createStackNavigator } from '@react-navigation/stack';
+
 import { ScreenParams } from 'navigation/ScreenProps';
+
+import { CreateNewWalletScreens } from './CreateNewWalletScreens';
 
 const Stack = createStackNavigator<ScreenParams>();
 

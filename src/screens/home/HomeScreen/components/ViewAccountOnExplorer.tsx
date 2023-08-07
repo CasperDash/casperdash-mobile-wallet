@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
+
+import { textStyles, IconBlock } from 'assets';
 import { CButton, Row } from 'components';
 import { scale } from 'device';
-import { textStyles, IconKey, IconBlock } from 'assets';
-import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 import config from 'utils/config';
+import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 
 type Props = {
   publicKey: string;

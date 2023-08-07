@@ -1,4 +1,5 @@
 import { WalletInfo } from 'react-native-casper-storage';
+
 import { types } from './browser_action';
 
 export enum RequestTypes {

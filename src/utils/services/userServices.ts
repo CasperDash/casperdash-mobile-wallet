@@ -1,6 +1,8 @@
 import { CLPublicKey } from 'casperdash-js-sdk';
-import { buildTransferDeploy } from './casperServices';
+
 import { toMotes } from 'utils/helpers/currency';
+
+import { buildTransferDeploy } from './casperServices';
 
 /**
  * It builds a transfer deploy.

@@ -1,6 +1,7 @@
 import _ from 'lodash';
-import { SignDeployParams, SignMessageParams } from '../types/signing';
 import { JsonTypes } from 'typedjson';
+
+import { SignDeployParams, SignMessageParams } from '../types/signing';
 
 export const normalizeSignDeployParams = (params?: Record<string, string | undefined>): SignDeployParams => {
   return {

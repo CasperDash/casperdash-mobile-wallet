@@ -1,23 +1,26 @@
 import React, { useMemo, useState } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
-import { CLayout, CHeader } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import { PhraseItem, SelectDropdownComponent, DropdownItem } from '../components';
-import { Row } from 'components';
-import CTextButton from 'components/CTextButton';
+
 import { useNavigation } from '@react-navigation/native';
-import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Phrase } from '../../data/data';
-import { Config } from 'utils';
-import SelectDropdown from 'react-native-select-dropdown';
+import { ListItem } from '@rneui/themed';
 import { EncryptionType } from 'react-native-casper-storage';
+import SelectDropdown from 'react-native-select-dropdown';
+
+import { colors, textStyles } from 'assets';
+import { Row } from 'components';
+import { CLayout, CHeader } from 'components';
+import CTextButton from 'components/CTextButton';
+import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { scale } from 'device';
+import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
+import { Config } from 'utils';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
+
 import { DERIVATION_PATH, NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import { getRecoveryPhase } from '../../../../utils/helpers/account';
-import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
-import { ListItem } from '@rneui/themed';
-import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { Phrase } from '../../data/data';
+import { PhraseItem, SelectDropdownComponent, DropdownItem } from '../components';
 
 const RecoveryPhraseScreen = () => {
   const { navigate } = useNavigation<StackNavigationProp<any>>();

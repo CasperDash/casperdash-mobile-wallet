@@ -1,8 +1,11 @@
 import { useCallback, useContext } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { getLoadingProgress } from 'utils/selectors/browser';
-import BrowserContext from '../context';
+
 import { allActions } from 'redux_manager';
+import { getLoadingProgress } from 'utils/selectors/browser';
+
+import BrowserContext from '../context';
 
 export const useLoadingProgress = () => {
   const dispatch = useDispatch();

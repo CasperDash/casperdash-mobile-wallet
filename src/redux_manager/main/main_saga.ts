@@ -1,8 +1,11 @@
 import { put, takeLatest, delay, take, cancel } from 'redux-saga/effects';
-import { types } from './main_action';
+
 import { Config, Keys } from 'utils';
+
 import { types as typesHome } from '../home/home_action';
 import { types as typesStaking } from '../staking/staking_action';
+
+import { types } from './main_action';
 
 export function* showMessage(data: any) {
   yield put({ type: types.SHOW_MESSAGE_SUCCESS, payload: data.message });

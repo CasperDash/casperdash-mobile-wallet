@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux';
-import { getwebUrl } from 'utils/selectors/browser';
-import { prefixUrlWithProtocol } from '../utils/url';
 import URL from 'url-parse';
+
+import { getwebUrl } from 'utils/selectors/browser';
+
+import { prefixUrlWithProtocol } from '../utils/url';
 
 export const useCurrentUrl = () => {
   const url = useSelector(getwebUrl);

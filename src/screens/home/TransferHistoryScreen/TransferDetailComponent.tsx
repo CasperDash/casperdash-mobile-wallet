@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { CButton, Row } from 'components';
+
 import { colors, IconCopy, textStyles } from 'assets';
+import { CButton, Row } from 'components';
 import { scale } from 'device';
-import { getValueByFormat } from 'utils/helpers/format';
 import { toFormattedDate } from 'utils/date';
+import { getValueByFormat } from 'utils/helpers/format';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 
 interface Props {

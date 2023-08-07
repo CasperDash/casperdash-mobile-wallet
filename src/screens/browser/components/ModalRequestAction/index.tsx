@@ -1,14 +1,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { allActions } from 'redux_manager';
+import { RequestMessage, RequestTypes } from 'redux_manager/browser/browser_reducer';
+import { normalizeSignDeployParams, normalizeSignMessageParams } from 'screens/browser/utils/normalizer';
 import { getRequestMessage } from 'utils/selectors/browser';
+
 import ConnectContent from './ConnectContent';
 import SignContent from './SignContent';
 import SignMessageContent from './SignMessageContent';
-import { normalizeSignDeployParams, normalizeSignMessageParams } from 'screens/browser/utils/normalizer';
-import { RequestMessage, RequestTypes } from 'redux_manager/browser/browser_reducer';
 
 const ModalRequestAction = () => {
   const dispatch = useDispatch();

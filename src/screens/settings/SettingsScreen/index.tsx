@@ -1,24 +1,26 @@
 import React from 'react';
 import { StyleSheet, Switch, Image, Text } from 'react-native';
-import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images, IconSupport } from 'assets';
-import { CHeader, CLayout, Col } from 'components';
-import DeviceInfo from 'react-native-device-info';
-import { scale } from 'device';
-import { SettingMenu } from 'screens/settings/data';
-import SettingMenuComponent from '../components/SettingMenuComponent';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { CASPERDASH_URL } from 'utils/constants/key';
-import { useRestack } from 'utils/hooks/useRestack';
-import { StackName } from 'navigation/ScreenProps';
-import DeleteAllDataButton from '../components/DeleteAllDataButton';
-import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
-import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
-import { getLoginOptions } from 'utils/selectors/user';
-import { useSelector } from 'react-redux';
-import { CONNECTION_TYPES } from 'utils/constants/settings';
-import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
+
 import { useNavigation } from '@react-navigation/native';
+import DeviceInfo from 'react-native-device-info';
+import { useSelector } from 'react-redux';
+
+import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
+import { CHeader, CLayout, Col } from 'components';
+import { scale } from 'device';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import { StackName } from 'navigation/ScreenProps';
 import MainRouter from 'navigation/stack/MainRouter';
+import { SettingMenu } from 'screens/settings/data';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
+import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
+import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
+import { useRestack } from 'utils/hooks/useRestack';
+import { getLoginOptions } from 'utils/selectors/user';
+
+import DeleteAllDataButton from '../components/DeleteAllDataButton';
+import SettingMenuComponent from '../components/SettingMenuComponent';
+import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
 
 function SettingsScreen() {
   const { navigate } = useNavigation();

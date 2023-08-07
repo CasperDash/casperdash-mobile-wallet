@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { Row } from 'components';
+
 import { colors, textStyles } from 'assets';
+import { Row } from 'components';
 import { scale } from 'device';
 
 interface Props {

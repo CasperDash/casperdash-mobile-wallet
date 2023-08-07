@@ -1,13 +1,15 @@
+import * as Sentry from '@sentry/react-native';
+import { DeployUtil } from 'casperdash-js-sdk';
+import { WalletInfo } from 'react-native-casper-storage';
+import { UseMutationOptions, useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
+import { JsonTypes } from 'typedjson';
+
+import { getWalletKeyPair } from 'utils/helpers/account';
+
 import { CONNECTION_TYPES } from '../constants/settings';
 import { getLoginOptions, getUser } from '../selectors/user';
 import { signDeployByLedger } from '../services/ledgerServices';
-import { getWalletKeyPair } from 'utils/helpers/account';
-import { DeployUtil } from 'casperdash-js-sdk';
-import * as Sentry from '@sentry/react-native';
-import { WalletInfo } from 'react-native-casper-storage';
-import { UseMutationOptions, useMutation } from 'react-query';
-import { JsonTypes } from 'typedjson';
 
 type Params = {
   deploy: DeployUtil.Deploy;

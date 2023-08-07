@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, Image, StyleSheet } from 'react-native';
-import { CLayout, Col } from 'components';
+
 import { images } from 'assets';
-import { scale } from 'device';
+import { CLayout, Col } from 'components';
 import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
 
 export const ErrorFallback = ({ resetErrorBoundary }: { error: any; resetErrorBoundary: any }) => {
   return (

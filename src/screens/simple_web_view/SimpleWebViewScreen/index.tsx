@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import WebView from 'react-native-webview';
+
 import { useNavigation } from '@react-navigation/native';
+import share from 'react-native-share';
+import WebView from 'react-native-webview';
+
 import { IconCloseAlt, IconShare, colors } from 'assets';
 import { CLayout } from 'components';
 import { scale } from 'device';
 import { ScreenProps } from 'navigation/ScreenProps';
-import share from 'react-native-share';
 
 type Props = ScreenProps<'SIMPLE_WEB_VIEW'>;
 

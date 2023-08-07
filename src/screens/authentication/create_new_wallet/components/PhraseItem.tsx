@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
+
+import { colors, textStyles } from 'assets';
 import { Row } from 'components';
 import { scale } from 'device';
-import { colors, textStyles } from 'assets';
 
 interface PhraseItemProps {
   data: any;

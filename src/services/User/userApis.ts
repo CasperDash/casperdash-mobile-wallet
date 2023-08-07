@@ -1,4 +1,5 @@
 import { request } from 'services/request';
+
 import { ITokenInfoResponse, IAccountResponse, IAccountDelegationResponse } from './userTypes';
 
 export const getTokenInfoWithBalance = async (publicKey: string): Promise<ITokenInfoResponse[]> => {

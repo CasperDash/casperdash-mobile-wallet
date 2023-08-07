@@ -1,5 +1,6 @@
-import { MOTE_RATE } from '../constants/key';
 import { Config } from 'utils';
+
+import { MOTE_RATE } from '../constants/key';
 
 /**
  * Return formatted number.

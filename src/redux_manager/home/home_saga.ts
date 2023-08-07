@@ -1,7 +1,8 @@
 import { put, takeLatest, take, cancel } from 'redux-saga/effects';
-import { types } from './home_action';
 
 import { Config, Keys } from 'utils';
+
+import { types } from './home_action';
 
 export function* pushTransferToLocalStorage(data: any) {
   const { publicKey, transfer } = data;

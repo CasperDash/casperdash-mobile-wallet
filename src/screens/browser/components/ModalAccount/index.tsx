@@ -1,24 +1,26 @@
 // Create sample react native template component
 import React, { useContext } from 'react';
-import { scale } from 'device';
-import Modal from 'react-native-modal';
-import { useSelector } from 'react-redux';
 import { View, StyleSheet, Text, Platform, ActivityIndicator, ScrollView } from 'react-native';
 
+import Modal from 'react-native-modal';
+import { useSelector } from 'react-redux';
+
 import { IconCircleClose, colors, textStyles } from 'assets';
-import { getwebUrl } from 'utils/selectors';
-import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { CButton } from 'components';
-import { AccountInfo, useMyAccounts } from 'utils/hooks/useAccountInfo';
-import AccountItem from './AccountItem';
 import CTextButton from 'components/CTextButton';
-import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
-import { useUpdateAccountConnectedSite } from 'screens/browser/hooks/useUpdateAccountConnectedSite';
-import { useDisconnectWithAccount } from 'screens/browser/hooks/useDisconnectWithAccount';
-import { useDisconnectAllAccounts } from 'screens/browser/hooks/useDisconnectAllAccounts';
-import { useConnectWithAccount } from 'screens/browser/hooks/useConnectWithAccount';
-import { getUrlWithProtocol } from 'screens/browser/utils/url';
+import { scale } from 'device';
 import BrowserContext from 'screens/browser/context';
+import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
+import { useConnectWithAccount } from 'screens/browser/hooks/useConnectWithAccount';
+import { useDisconnectAllAccounts } from 'screens/browser/hooks/useDisconnectAllAccounts';
+import { useDisconnectWithAccount } from 'screens/browser/hooks/useDisconnectWithAccount';
+import { useUpdateAccountConnectedSite } from 'screens/browser/hooks/useUpdateAccountConnectedSite';
+import { getUrlWithProtocol } from 'screens/browser/utils/url';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { AccountInfo, useMyAccounts } from 'utils/hooks/useAccountInfo';
+import { getwebUrl } from 'utils/selectors';
+
+import AccountItem from './AccountItem';
 
 type Props = {
   isVisible: boolean;

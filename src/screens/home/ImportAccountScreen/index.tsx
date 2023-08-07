@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, Keyboard } from 'react-native';
-import { CHeader, Col, Row, CInput, CLayout } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
+
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { allActions } from 'redux_manager';
-import { useDispatch, useSelector } from 'react-redux';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { MessageType } from 'components/CMessge/types';
 import { KeyParser, CasperLegacyWallet, User, WalletDescriptor } from 'react-native-casper-storage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { colors, textStyles } from 'assets';
+import { CHeader, Col, Row, CInput, CLayout } from 'components';
+import { MessageType } from 'components/CMessge/types';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import { allActions } from 'redux_manager';
 import { Config, Keys } from 'utils';
 
 function ImportAccountScreen() {

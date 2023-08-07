@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { CInput, CLayout, CLoading } from 'components';
-import { CHeader, Col } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
-import { Config, Keys } from 'utils';
+
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
+
+import { colors, textStyles } from 'assets';
+import { CInput, CLayout, CLoading } from 'components';
+import { CHeader, Col } from 'components';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import { Config, Keys } from 'utils';
 import { useTokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { getPublicKey } from 'utils/selectors';
 

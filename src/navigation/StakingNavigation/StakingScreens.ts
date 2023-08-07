@@ -1,4 +1,5 @@
 import { StakingScreen } from 'screens';
+
 import StakingRouter from './StakingRouter';
 
 const { STAKING_SCREEN } = StakingRouter;

@@ -1,7 +1,9 @@
 import React from 'react';
-import { AuthenticationScreens } from './AuthenticationScreens';
-import AuthenticationRouter from './AuthenticationRouter';
+
 import { createStackNavigator } from '@react-navigation/stack';
+
+import AuthenticationRouter from './AuthenticationRouter';
+import { AuthenticationScreens } from './AuthenticationScreens';
 
 const Stack = createStackNavigator();
 

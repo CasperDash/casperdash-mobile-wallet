@@ -1,5 +1,6 @@
-import ClipboardManager from 'utils/helpers/clipboard';
 import Toast from 'react-native-toast-message';
+
+import ClipboardManager from 'utils/helpers/clipboard';
 
 export const copyToClipboard = async (value: string, expire?: boolean) => {
   if (expire) {

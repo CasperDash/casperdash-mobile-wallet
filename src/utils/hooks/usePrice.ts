@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
+
 import { useQuery } from 'react-query';
+
 import { getLatestPrice, getPriceHistory } from 'services/Price/price';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 

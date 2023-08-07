@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { isReadyRef, navigationRef } from 'navigation/RootNavigation';
-import AuthenticationNavigation from './AuthenticationNavigation';
-import { SplashScreen } from 'screens';
 import CMessge from 'components/CMessge';
+import { isReadyRef, navigationRef } from 'navigation/RootNavigation';
 import MainNavigation from 'navigation/stack';
+import { SplashScreen } from 'screens';
+
+import AuthenticationNavigation from './AuthenticationNavigation';
 
 const Stack = createStackNavigator();
 

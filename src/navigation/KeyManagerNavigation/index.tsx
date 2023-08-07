@@ -1,7 +1,9 @@
 import React from 'react';
-import { KeyManagerScreens } from './KeyManagerScreens';
-import KeyManagerRouter from './KeyManagerRouter';
+
 import { createStackNavigator } from '@react-navigation/stack';
+
+import KeyManagerRouter from './KeyManagerRouter';
+import { KeyManagerScreens } from './KeyManagerScreens';
 
 const Stack = createStackNavigator();
 

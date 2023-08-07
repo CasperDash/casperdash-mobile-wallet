@@ -1,15 +1,17 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text } from 'react-native';
+
 import DeviceInfo from 'react-native-device-info';
 
 import { colors, textStyles, images, IconLogo, IconAbout } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
-import SettingMenuComponent from '../components/SettingMenuComponent';
 import { CASPERDASH_URL, DOCS_URL, PRIVACY_URL, SUPPORT_URL } from 'utils/constants/key';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
+
+import SettingMenuComponent from '../components/SettingMenuComponent';
 
 const AboutCasperDash = () => {
   const { navigateToWebView } = useNavigateSimpleWebView();

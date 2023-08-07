@@ -1,9 +1,11 @@
-import { useQuery } from 'react-query';
-import Fuse from 'fuse.js';
-import { ERequestKeys } from 'utils/constants/requestKeys';
-import { IValidatorResponse, getValidators, getValidatorsDetail } from 'services/Validators/validatorsApis';
-import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { useMemo } from 'react';
+
+import Fuse from 'fuse.js';
+import { useQuery } from 'react-query';
+
+import { IValidatorResponse, getValidators, getValidatorsDetail } from 'services/Validators/validatorsApis';
+import { ERequestKeys } from 'utils/constants/requestKeys';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
 
 export interface IValidator extends IValidatorResponse {
   name?: string;

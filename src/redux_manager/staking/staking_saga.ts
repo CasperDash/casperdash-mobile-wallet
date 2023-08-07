@@ -1,6 +1,8 @@
 import { cancel, put, take, takeLatest } from 'redux-saga/effects';
-import { types } from './staking_action';
+
 import { Config, Keys } from 'utils';
+
+import { types } from './staking_action';
 
 export function* pushStakeToLocalStorage(data: any) {
   const { publicKey, stake } = data;

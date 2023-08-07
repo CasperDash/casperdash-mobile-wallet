@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { View, TextInput, TouchableWithoutFeedback, Keyboard, Platform, I18nManager } from 'react-native';
+
 import ClipboardManager from 'utils/helpers/clipboard';
-import styles from './styles';
-import { isAutoFillSupported } from './helpers/device';
+
 import { codeToArray } from './helpers/codeToArray';
+import { isAutoFillSupported } from './helpers/device';
+import styles from './styles';
 export default class OTPInputView extends Component {
   constructor(props) {
     super(props);

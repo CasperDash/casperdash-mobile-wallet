@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { CButton, Row } from 'components';
-import { scale } from 'device';
-import { textStyles, IconKey } from 'assets';
+
 import { useNavigation } from '@react-navigation/native';
+
+import { textStyles, IconKey } from 'assets';
+import { CButton, Row } from 'components';
 import CConfirmPinModal from 'components/CConfirmPinModal';
+import { scale } from 'device';
 import MainRouter from 'navigation/stack/MainRouter';
 
 interface IProps {

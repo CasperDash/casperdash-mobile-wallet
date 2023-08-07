@@ -1,8 +1,9 @@
 import React from 'react';
-import { MarketScreens } from './MarketScreens';
-import MarketRouter from './MarketRouter';
 
 import { createStackNavigator } from '@react-navigation/stack';
+
+import MarketRouter from './MarketRouter';
+import { MarketScreens } from './MarketScreens';
 
 const Stack = createStackNavigator();
 

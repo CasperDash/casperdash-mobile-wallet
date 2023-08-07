@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-
 import { ActivityIndicator, View, StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
+
 import FastImage from 'react-native-fast-image';
+
 import { fonts } from 'assets';
 import { scale } from 'device';
 

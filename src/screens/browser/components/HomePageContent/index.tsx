@@ -1,8 +1,9 @@
-import { scale } from 'device';
 import React from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';
+
 import CRowItemButton from 'components/CRowItemButton';
+import { scale } from 'device';
+import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';
 import { useGetDApps } from 'utils/hooks/useGetDApps';
 
 type DApp = {

@@ -1,8 +1,9 @@
 import React from 'react';
-import { NFTScreens } from './NFTScreens';
-import NFTRouter from './NFTRouter';
 
 import { createStackNavigator } from '@react-navigation/stack';
+
+import NFTRouter from './NFTRouter';
+import { NFTScreens } from './NFTScreens';
 
 const Stack = createStackNavigator();
 

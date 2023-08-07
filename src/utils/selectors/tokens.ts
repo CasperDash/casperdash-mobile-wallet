@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { ITokenInfoResponse } from 'services/User/userTypes';
 import Big from 'big.js';
+
+import { ITokenInfoResponse } from 'services/User/userTypes';
 
 export const tokensSelector = (state: any) => state.home;
 

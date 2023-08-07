@@ -1,15 +1,17 @@
-import { CheckBox } from '@rneui/themed';
-import { CAlert } from 'components';
 import * as React from 'react';
-import { Config, Keys } from 'utils';
-import { useReleaseNotes } from 'utils/hooks/useReleaseNotes';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ActivityIndicator, Text, View, Linking, StyleSheet } from 'react-native';
+
+import { CheckBox } from '@rneui/themed';
 import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
+import { ScrollView } from 'react-native-gesture-handler';
 import Splash from 'react-native-splash-screen';
+
 import { colors } from 'assets';
+import { CAlert } from 'components';
 import { scale } from 'device';
 import { IReleaseNotes } from 'services/ReleaseNotes/releaseNotes';
+import { Config, Keys } from 'utils';
+import { useReleaseNotes } from 'utils/hooks/useReleaseNotes';
 
 interface IReleaseNotesProps {
   onFinish: () => void;

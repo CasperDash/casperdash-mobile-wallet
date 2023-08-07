@@ -1,15 +1,19 @@
-import _orderBy from 'lodash/orderBy';
 import { useEffect, useMemo } from 'react';
+
+import _orderBy from 'lodash/orderBy';
+import { useQuery } from 'react-query';
 import { useSelector, useDispatch } from 'react-redux';
-import { getDeployStakes, updateStakesDeployStatus } from '../selectors/stake';
-import { ENTRY_POINT_UNDELEGATE, ENTRY_POINT_DELEGATE, DeployStatus } from '../constants/key';
+
 import { IconStatusReceive, IconStatusSend } from 'assets';
 import { allActions } from 'redux_manager';
-import { useDeployStatus } from './useDeployStatus';
-import { useQuery } from 'react-query';
-import { ERequestKeys } from 'utils/constants/requestKeys';
 import { getAccountDelegation } from 'services/User/userApis';
 import { IAccountDelegationResponse } from 'services/User/userTypes';
+import { ERequestKeys } from 'utils/constants/requestKeys';
+
+import { ENTRY_POINT_UNDELEGATE, ENTRY_POINT_DELEGATE, DeployStatus } from '../constants/key';
+import { getDeployStakes, updateStakesDeployStatus } from '../selectors/stake';
+
+import { useDeployStatus } from './useDeployStatus';
 
 export const useStakedInfo = (publicKey: string) => {
   const query = useQuery({

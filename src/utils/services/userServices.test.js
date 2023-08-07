@@ -1,5 +1,5 @@
-import { getTransferDeploy } from './userServices';
 import { buildTransferDeploy } from './casperServices';
+import { getTransferDeploy } from './userServices';
 jest.mock('./casperServices', () => {
   return {
     buildTransferDeploy: jest.fn(),

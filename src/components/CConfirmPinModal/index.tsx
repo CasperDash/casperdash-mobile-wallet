@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+
 // @ts-ignore
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import Modal from 'react-native-modal';
-import { scale } from 'device';
-import { colors, IconCircleClose, textStyles, fonts } from 'assets';
-import { Row, Col, CButton } from 'components';
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+
+import { colors, textStyles, fonts } from 'assets';
+import { Row, Col } from 'components';
 import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
 import { PIN_LENGTH } from 'utils/constants/key';
 import { validatePin } from 'utils/helpers/account';
 

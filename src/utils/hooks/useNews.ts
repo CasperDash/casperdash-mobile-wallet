@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+
 import { getNews } from 'services/News/NewsApis';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 

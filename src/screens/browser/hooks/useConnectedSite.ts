@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
+
 import { useSelector } from 'react-redux';
+
 import { getConnectedSites } from 'utils/selectors/browser';
+
 import { useCurrentUrl } from './useCurrentUrl';
 
 export const useConnectedSite = () => {

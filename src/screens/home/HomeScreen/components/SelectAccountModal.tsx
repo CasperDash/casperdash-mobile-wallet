@@ -1,16 +1,17 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { Text, StyleSheet, Platform, ScrollView, ActivityIndicator, View } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { WalletDescriptor, User } from 'react-native-casper-storage';
 import Modal from 'react-native-modal';
-import { scale } from 'device';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { colors, IconCircleClose, textStyles, IconPlusCircle, IconImportAccount } from 'assets';
 import { CButton, Col, Row } from 'components';
-import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
-import { useNavigation } from '@react-navigation/native';
+import { scale } from 'device';
 import MainRouter from 'navigation/stack/MainRouter';
-import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
-import { useDispatch, useSelector } from 'react-redux';
-import { WalletDescriptor, User } from 'react-native-casper-storage';
 import { allActions } from 'redux_manager';
+import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
 import {
   getWalletInfoWithPublicKey,
   WalletInfoDetails,
@@ -18,9 +19,11 @@ import {
   serializeAndStoreUser,
   setSelectedWallet,
 } from 'utils/helpers/account';
-import ViewPrivateKeyButton from './ViewPrivateKeyButton';
 import { IAccountInfo, useListAccountInfo } from 'utils/hooks/useAccountInfo';
+import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
+
 import ViewAccountOnExplorer from './ViewAccountOnExplorer';
+import ViewPrivateKeyButton from './ViewPrivateKeyButton';
 
 const SelectAccountModal = forwardRef((props: any, ref) => {
   const publicKey = useSelector(getPublicKey);

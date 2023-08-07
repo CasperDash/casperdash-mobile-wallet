@@ -1,22 +1,26 @@
 import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+
+import { useScrollToTop } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+
 import { colors, IconLogo, textStyles } from 'assets';
 import { Row, CLayout, Col } from 'components';
 import { scale } from 'device';
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import { useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
-import { useScrollToTop } from '@react-navigation/native';
 import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useStakeFromValidators, useStakedHistory } from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
+import { useStakeFromValidators, useStakedHistory } from 'utils/hooks/useStakeDeploys';
 import { IValidator, useValidatorsDetail } from 'utils/hooks/useValidators';
-import StakedHistoryItem from './StakedHistoryItem';
-import { StakingRewards } from './StakingRewards';
-import { NoData } from './NoData';
-import StakingForm from './StakingForm';
+import { getPublicKey } from 'utils/selectors';
+
 import { EViews } from '../utils';
+
+import { NoData } from './NoData';
+import StakedHistoryItem from './StakedHistoryItem';
+import StakingForm from './StakingForm';
+import { StakingRewards } from './StakingRewards';
 
 // @ts-ignore
 const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({

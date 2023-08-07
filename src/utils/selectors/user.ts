@@ -1,5 +1,6 @@
-import { createSelector } from 'reselect';
 import { WalletInfo, User } from 'react-native-casper-storage';
+import { createSelector } from 'reselect';
+
 import { WalletInfoDetails } from 'utils/helpers/account';
 
 export const getListWallets = createSelector<any, any>(

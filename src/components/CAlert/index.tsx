@@ -1,10 +1,12 @@
 import React, { CSSProperties, forwardRef, useImperativeHandle, useState } from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
+
 import Modal from 'react-native-modal';
-import { scale } from 'device';
+
 import { colors, IconCircleClose, textStyles } from 'assets';
 import { Row, Col, CButton } from 'components';
 import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
 
 interface AlertType {
   alertMessage: string | Text;

@@ -1,15 +1,18 @@
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import URL from 'url-parse';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
 import { useSelector } from 'react-redux';
-import { getwebUrl } from 'utils/selectors';
-import ListAccounts from './ListAccounts';
-import { getUrlWithProtocol, prefixUrlWithProtocol } from 'screens/browser/utils/url';
-import { useConnectWithAccount } from 'screens/browser/hooks/useConnectWithAccount';
-import { AccountInfo } from 'utils/hooks/useAccountInfo';
+import URL from 'url-parse';
+
+import { colors, textStyles } from 'assets';
 import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import { useConnectWithAccount } from 'screens/browser/hooks/useConnectWithAccount';
+import { getUrlWithProtocol, prefixUrlWithProtocol } from 'screens/browser/utils/url';
+import { AccountInfo } from 'utils/hooks/useAccountInfo';
+import { getwebUrl } from 'utils/selectors';
+
+import ListAccounts from './ListAccounts';
 
 type Props = {
   onClose?: () => void;

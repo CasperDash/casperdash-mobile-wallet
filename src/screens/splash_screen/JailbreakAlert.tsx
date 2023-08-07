@@ -1,8 +1,10 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { Text, StyleSheet, BackHandler } from 'react-native';
-import { colors, fonts } from 'assets';
-import Splash from 'react-native-splash-screen';
+
 import JailMonkey from 'jail-monkey';
+import Splash from 'react-native-splash-screen';
+
+import { colors, fonts } from 'assets';
 import { CAlert } from 'components';
 import { isIos, scale } from 'device';
 

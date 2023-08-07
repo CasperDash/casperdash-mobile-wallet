@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { CLayout, CHeader } from 'components';
+
+import { User } from 'react-native-casper-storage';
+import { useSelector } from 'react-redux';
+
 import { colors } from 'assets';
-import { scale } from 'device';
+import { CLayout, CHeader } from 'components';
 import { Row } from 'components';
 import CTextButton from 'components/CTextButton';
-import { useSelector } from 'react-redux';
-import { getUser } from 'utils/selectors/user';
-import { User } from 'react-native-casper-storage';
-import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
-import { PhraseItem } from '../../authentication/create_new_wallet/components';
 import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { scale } from 'device';
+import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
+import { getUser } from 'utils/selectors/user';
+
+import { PhraseItem } from '../../authentication/create_new_wallet/components';
 
 const RecoveryPhraseScreen = () => {
   const [phrase, setPhrase] = useState('');

@@ -1,10 +1,14 @@
 import { useCallback, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getConnectedSites } from 'utils/selectors/browser';
-import { allActions } from 'redux_manager';
+
 import { WalletInfo } from 'react-native-casper-storage';
-import { useSendDAppEvent } from './useSendDAppEvent';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { allActions } from 'redux_manager';
+import { getConnectedSites } from 'utils/selectors/browser';
+
 import BrowserContext from '../context';
+
+import { useSendDAppEvent } from './useSendDAppEvent';
 
 export const useUpdateAccountConnectedSite = () => {
   const connectedSites = useSelector(getConnectedSites);

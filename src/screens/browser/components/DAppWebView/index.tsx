@@ -1,8 +1,6 @@
-import { IconArrowBack, IconArrowForward, IconMenuHome, colors } from 'assets';
-import { CButton } from 'components';
-import { isIos, scale } from 'device';
 import React, { forwardRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import WebView from 'react-native-webview';
 import {
   ShouldStartLoadRequest,
@@ -11,6 +9,10 @@ import {
   WebViewProgressEvent,
 } from 'react-native-webview/lib/WebViewTypes';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { IconArrowBack, IconArrowForward, IconMenuHome, colors } from 'assets';
+import { CButton } from 'components';
+import { isIos, scale } from 'device';
 import { allActions } from 'redux_manager';
 import { useWatchBrowserMessage } from 'screens/browser/hooks/useWatchBrowserMessage';
 import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';

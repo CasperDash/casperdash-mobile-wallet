@@ -1,4 +1,5 @@
 import IdentIcon from 'identicon.js';
+
 import { getBase64IdentIcon } from './identicon';
 
 jest.mock('identicon.js', () => ({ __esModule: true, default: jest.fn() }));

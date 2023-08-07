@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { images, IconPlusCircle, IconConnectLedger, IconImportPhrase } from 'assets';
 import { scale } from 'device';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';

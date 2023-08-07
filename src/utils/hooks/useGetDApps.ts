@@ -1,4 +1,5 @@
 import { UseQueryResult, useQuery } from 'react-query';
+
 import { IDApp, getDApps } from 'services/DApps/dapps';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 

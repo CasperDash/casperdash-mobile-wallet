@@ -1,15 +1,18 @@
-import { CButton, CInput, Row } from 'components';
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, StatusBar, FlatList, ActivityIndicator } from 'react-native';
+
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+
 import { colors, IconArrowUp, IconCloseFilledN2, IconLogo, IconSearch, textStyles } from 'assets';
 import { images } from 'assets';
+import { CButton, CInput, Row } from 'components';
 import { device, scale } from 'device';
-import NFTItem from './ListItem';
-import { useSelector } from 'react-redux';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { INFTInfo } from 'services/NFT/nftApis';
 import { useNFTsInfo } from 'utils/hooks/useNFTsInfo';
 import { getPublicKey } from 'utils/selectors';
-import { INFTInfo } from 'services/NFT/nftApis';
+
+import NFTItem from './ListItem';
 
 const hitSlop = { top: 10, bottom: 10, right: 10 };
 

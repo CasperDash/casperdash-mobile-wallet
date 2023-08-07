@@ -1,11 +1,13 @@
 import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import { colors, images, textStyles } from 'assets';
+import { CFastImage } from 'components';
 import { device, scale } from 'device';
 import { navigate } from 'navigation/RootNavigation';
 import MainRouter from 'navigation/stack/MainRouter';
-import { View, Text, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { CFastImage } from 'components';
 import { INFTInfo } from 'services/NFT/nftApis';
 
 function NFTItem({ data, index }: { data: INFTInfo; index: number }) {

@@ -1,5 +1,7 @@
 import memoizeOne from 'memoize-one';
+
 import { IconStatusSend, IconStatusReceive, colors } from 'assets';
+
 import { DeployStatus } from '../constants/key';
 
 /**

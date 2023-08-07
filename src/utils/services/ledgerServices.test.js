@@ -1,7 +1,9 @@
-import { DeployUtil } from 'casperdash-js-sdk';
 import TransportWebUSB from '@ledgerhq/react-native-hw-transport-ble';
 import CasperApp from '@zondax/ledger-casper';
+import { DeployUtil } from 'casperdash-js-sdk';
+
 import { CONNECT_ERROR_MESSAGE } from '../constants/ledger';
+
 import * as ledgerService from './ledgerServices';
 
 jest.mock('utils', () => ({

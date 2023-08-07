@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { CButton, Row } from 'components';
-import { SettingMenu } from 'screens/settings/data';
-import { scale } from 'device';
+
 import { textStyles } from 'assets';
+import { CButton, Row } from 'components';
+import { scale } from 'device';
+import { SettingMenu } from 'screens/settings/data';
 
 interface Props {
   data: SettingMenu;

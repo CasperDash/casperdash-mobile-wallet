@@ -1,6 +1,8 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { StackName } from 'navigation/ScreenProps';
 import { useCallback } from 'react';
+
+import { CommonActions, useNavigation } from '@react-navigation/native';
+
+import { StackName } from 'navigation/ScreenProps';
 
 export const useRestack = () => {
   const navigation = useNavigation();

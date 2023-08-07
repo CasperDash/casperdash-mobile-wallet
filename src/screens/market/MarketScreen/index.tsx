@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+
+import { useScrollToTop } from '@react-navigation/native';
+
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
 import { CLayout, Row, Col } from 'components';
 import { scale } from 'device';
-import TransactionComponent from 'screens/market/components/TransactionComponent';
 import ChartComponent from 'screens/market/components/ChartComponent';
-import { useScrollToTop } from '@react-navigation/native';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
 import { usePrice, usePriceHistory } from 'utils/hooks/usePrice';
+
 import { News } from '../components/News';
 
 const getIcon = (type: string) => {

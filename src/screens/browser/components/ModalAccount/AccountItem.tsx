@@ -1,10 +1,12 @@
+import React from 'react';
+import { View, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
+
+import _ from 'lodash';
+
 import { colors } from 'assets';
 import CRowItem from 'components/CRowItem';
 import CTextButton from 'components/CTextButton';
 import { scale } from 'device';
-import _ from 'lodash';
-import React from 'react';
-import { View, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
 import { AccountInfo } from 'utils/hooks/useAccountInfo';
 
 type Props = {

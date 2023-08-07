@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { CLayout, CHeader } from 'components';
+
+import { User } from 'react-native-casper-storage';
+import { useSelector } from 'react-redux';
+
 import { colors, textStyles } from 'assets';
-import { scale } from 'device';
+import { CLayout, CHeader } from 'components';
 import { Row, Col } from 'components';
 import CTextButton from 'components/CTextButton';
-import { useSelector } from 'react-redux';
-import { getUser, getSelectedWallet } from 'utils/selectors/user';
-import { User } from 'react-native-casper-storage';
+import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { scale } from 'device';
 import { WalletInfoDetails, getWalletDetails } from 'utils/helpers/account';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
-import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { getUser, getSelectedWallet } from 'utils/selectors/user';
 
 const PrivateKeyScreen = () => {
   const user = useSelector<any, User>(getUser);

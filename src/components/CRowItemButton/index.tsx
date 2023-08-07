@@ -1,9 +1,11 @@
+import React from 'react';
+import { View, Text, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
+
 import { Image } from '@rneui/base';
+
 import { colors, textStyles } from 'assets';
 import CTextButton from 'components/CTextButton';
 import { scale } from 'device';
-import React from 'react';
-import { View, Text, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
 
 type Props = {
   logo: ImageSourcePropType;

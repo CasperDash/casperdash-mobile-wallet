@@ -1,17 +1,20 @@
 import React, { useCallback } from 'react';
 import { ActivityIndicator, Image, StyleSheet } from 'react-native';
-import { CLayout, Col } from 'components';
-import { images } from 'assets';
-import Splash from 'react-native-splash-screen';
-import { Config, Keys } from 'utils';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+
 import { isEmpty } from 'lodash';
-import { useRestack } from 'utils/hooks/useRestack';
+import Splash from 'react-native-splash-screen';
+
+import { images } from 'assets';
+import { CLayout, Col } from 'components';
+import { scale } from 'device';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { StackName } from 'navigation/ScreenProps';
+import { Config, Keys } from 'utils';
 import { createAndStoreMasterPassword } from 'utils/helpers/account';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { useRestack } from 'utils/hooks/useRestack';
+
 import { JailbreakAlert } from './JailbreakAlert';
-import { scale } from 'device';
 import ReleaseNotes from './ReleaseNotes';
 
 const SplashScreen = () => {

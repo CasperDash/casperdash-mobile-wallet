@@ -1,11 +1,13 @@
 import React from 'react';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
 import { View, Text, Dimensions, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useNews } from 'utils/hooks/useNews';
+
 import Carousel from 'react-native-reanimated-carousel';
+
+import { colors, textStyles } from 'assets';
 import { Col } from 'components';
+import { scale } from 'device';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
+import { useNews } from 'utils/hooks/useNews';
 
 export const News = () => {
   const { data } = useNews();

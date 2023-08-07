@@ -1,13 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
-import { Row, Col } from 'components';
+
 import { colors, textStyles } from 'assets';
+import { Row, Col } from 'components';
 import { scale } from 'device';
-import { toFormattedNumber } from 'utils/helpers/format';
-import { StatusColorMapping } from 'utils/helpers/transaction';
-import { DeployStatus } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { DeployStatus } from 'utils/constants/key';
+import { toFormattedNumber } from 'utils/helpers/format';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { StatusColorMapping } from 'utils/helpers/transaction';
 import { IHistoryInfo } from 'utils/hooks/useStakeDeploys';
 
 interface Props {

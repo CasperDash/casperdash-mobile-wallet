@@ -1,9 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { getConnectedSites } from 'utils/selectors/browser';
 import { useCallback } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
 import { allActions } from 'redux_manager';
 import { ConnectedSiteParams } from 'redux_manager/browser/browser_reducer';
 import { getPublicKeyCache } from 'utils/helpers/account';
+import { getConnectedSites } from 'utils/selectors/browser';
+
 import { useSendDAppEvent } from './useSendDAppEvent';
 
 type Params = {
