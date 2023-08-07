@@ -1,12 +1,16 @@
-import { RequestTypes } from 'redux_manager/browser/browser_reducer';
-import { useConnectedSite } from './useConnectedSite';
-import { useDisconnectWithAccount } from './useDisconnectWithAccount';
 import { useContext } from 'react';
+
+import { useDispatch } from 'react-redux';
+
+import { allActions } from 'redux_manager';
+import { RequestTypes } from 'redux_manager/browser/browser_reducer';
+
 import BrowserContext from '../context';
 import { buildRawErrSender, buildRawSender } from '../utils/jsInjector';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
 import { compareUrls } from '../utils/url';
+
+import { useConnectedSite } from './useConnectedSite';
+import { useDisconnectWithAccount } from './useDisconnectWithAccount';
 
 export const useWatchBrowserMessage = () => {
   const dispatch = useDispatch();

@@ -13,6 +13,7 @@ import {
   DeployUtil,
   encodeBase16,
 } from 'casperdash-js-sdk';
+
 import { SignDeployParams } from '../../screens/browser/types/signing';
 
 export enum DeployTypes {

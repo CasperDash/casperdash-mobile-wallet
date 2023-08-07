@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect } from 'react';
 import { Text, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
-import { ScreenProps } from 'navigation/ScreenProps';
-import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
-import { CLayout, Col } from 'components';
-import { colors, fonts, textStyles, images } from 'assets';
-import { scale } from 'device';
+
 // @ts-ignore
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Config, Keys } from 'utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
 import { IHDKey, IWallet, WalletDescriptor } from 'react-native-casper-storage';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { colors, fonts, textStyles, images } from 'assets';
+import { CLayout, Col } from 'components';
+import { MessageType } from 'components/CMessge/types';
+import { scale } from 'device';
+import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
+import { ScreenProps } from 'navigation/ScreenProps';
+import { allActions } from 'redux_manager';
+import { Config, Keys } from 'utils';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import {
   createNewUserWithHdWallet,

@@ -1,22 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { scale } from 'device';
-import { textStyles } from 'assets';
-import { Config } from 'utils';
+
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Keys from 'utils/keys';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { getLedgerPublicKey, getListKeys } from 'utils/services/ledgerServices';
 import CasperApp from '@zondax/ledger-casper';
-import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import Col from 'react-native-col';
 import { ScrollView } from 'react-native-gesture-handler';
-import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { textStyles } from 'assets';
 import CLoading from 'components/CLoading';
+import { scale } from 'device';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import { Config } from 'utils';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useListAccountInfo } from 'utils/hooks/useAccountInfo';
+import Keys from 'utils/keys';
+import { getLedgerPublicKey, getListKeys } from 'utils/services/ledgerServices';
+
+import KeyComponent from '../components/KeyComponent';
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
 

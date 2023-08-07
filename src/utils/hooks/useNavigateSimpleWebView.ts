@@ -1,6 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-import MainRouter from 'navigation/stack/MainRouter';
 import { useCallback } from 'react';
+
+import { useNavigation } from '@react-navigation/native';
+
+import MainRouter from 'navigation/stack/MainRouter';
 import { toastError } from 'utils/helpers/errorHandler';
 
 type Params = {

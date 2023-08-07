@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { View, Text, Platform } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import messaging from '@react-native-firebase/messaging';
 import PushNotification, { Importance } from 'react-native-push-notification';
 import { useDispatch } from 'react-redux';
+
 import { allActions } from 'redux_manager';
 
 PushNotification.createChannel(

@@ -1,10 +1,12 @@
-import { DeployUtil, CLPublicKey, formatMessageWithHeaders, encodeBase16 } from 'casperdash-js-sdk';
-import CasperApp from '@zondax/ledger-casper';
-import { SECP256k1, CONNECT_ERROR_MESSAGE } from '../constants/ledger';
-import { CASPER_KEY_PATH } from '../constants/key';
-import { Config, Keys } from 'utils';
 import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
+import CasperApp from '@zondax/ledger-casper';
+import { DeployUtil, CLPublicKey, formatMessageWithHeaders, encodeBase16 } from 'casperdash-js-sdk';
+
+import { Config, Keys } from 'utils';
 import { DeployTypes, getDeployType } from 'utils/helpers/parser';
+
+import { CASPER_KEY_PATH } from '../constants/key';
+import { SECP256k1, CONNECT_ERROR_MESSAGE } from '../constants/ledger';
 
 let cacheKey: Record<number | string, string> = {};
 

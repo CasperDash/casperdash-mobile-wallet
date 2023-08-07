@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { CButton } from 'components';
+
 import { useNavigation } from '@react-navigation/native';
+
+import { IconEye } from 'assets';
+import { CButton } from 'components';
 import CConfirmPinModal from 'components/CConfirmPinModal';
 import MainRouter from 'navigation/stack/MainRouter';
-import { IconEye } from 'assets';
 
 const ShowRecoveryPhrase = () => {
   const { navigate } = useNavigation();

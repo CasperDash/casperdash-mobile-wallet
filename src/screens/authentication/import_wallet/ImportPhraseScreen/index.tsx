@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { CHeader, CLayout, Row } from 'components';
-import { SelectDropdownComponent, DropdownItem } from '../../create_new_wallet/components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ListItem } from '@rneui/themed';
+import { EncryptionType, KeyFactory } from 'react-native-casper-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import SelectDropdown from 'react-native-select-dropdown';
+import { useDispatch } from 'react-redux';
+
+import { colors, textStyles } from 'assets';
+import { CHeader, CLayout, Row } from 'components';
+import { MessageType } from 'components/CMessge/types';
+import CTextButton from 'components/CTextButton';
+import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { scale } from 'device';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import { allActions } from 'redux_manager';
 import { Phrase } from 'screens/authentication/data/data';
 import { PhraseInputItem } from 'screens/authentication/import_wallet/components';
 import ClipboardManager from 'utils/helpers/clipboard';
-import { useDispatch } from 'react-redux';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+
 import { DERIVATION_PATH, NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
-import SelectDropdown from 'react-native-select-dropdown';
-import { EncryptionType, KeyFactory } from 'react-native-casper-storage';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
-import { ListItem } from '@rneui/themed';
-import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { SelectDropdownComponent, DropdownItem } from '../../create_new_wallet/components';
 
 const ImportPhraseScreen = () => {
   const dispatch = useDispatch();

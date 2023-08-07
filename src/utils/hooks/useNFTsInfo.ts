@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
-import { useQuery } from 'react-query';
+
 import Fuse from 'fuse.js';
 import { orderBy } from 'lodash';
+import { useQuery } from 'react-query';
+
 import { IMetadata, INFTInfo, getNFTs } from 'services/NFT/nftApis';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 

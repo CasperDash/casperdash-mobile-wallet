@@ -1,4 +1,5 @@
 import { MarketScreen } from 'screens';
+
 import MarketRouter from './MarketRouter';
 
 const { MARKET_SCREEN } = MarketRouter;

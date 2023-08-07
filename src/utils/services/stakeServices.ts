@@ -1,8 +1,9 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { DeployUtil, RuntimeArgs, CLPublicKey, CLValueBuilder } from 'casperdash-js-sdk';
+
 import { NETWORK_NAME, ENTRY_POINT_DELEGATE } from '../constants/key';
 import { contractHashes } from '../constants/stack';
 import { toMotes } from '../helpers/currency';
-import { BigNumber } from '@ethersproject/bignumber';
 
 /**
  * It creates a deploy that deploys the auction contract.

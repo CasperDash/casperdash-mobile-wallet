@@ -1,11 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
-import { CLayout, Col } from 'components';
-import { images } from 'assets';
-import { scale } from 'device';
-import { ListCreateNewWalletMenu } from 'screens/authentication/data/data';
+
 import { useNavigation } from '@react-navigation/native';
+
+import { images } from 'assets';
+import { CLayout, Col } from 'components';
+import { scale } from 'device';
 import { ListItem } from 'screens/authentication/create_new_wallet/components';
+import { ListCreateNewWalletMenu } from 'screens/authentication/data/data';
 
 function CreateNewWalletScreen() {
   const { navigate } = useNavigation();

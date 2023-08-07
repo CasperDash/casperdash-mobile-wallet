@@ -1,16 +1,20 @@
 import React, { useMemo } from 'react';
+import { StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
+
+import { FlatList } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useInfiniteQuery } from 'react-query';
+
 import { scale } from 'device';
 import { getStakingRewards } from 'services/StakingRewards/stakingRewardsApis';
-import { useInfiniteQuery } from 'react-query';
-import { StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
-import { StakingRewardItem } from './StakingRewardItem';
-import { FlatList } from 'react-native-gesture-handler';
 import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NoData } from '../NoData';
 import { ERequestKeys } from 'utils/constants/requestKeys';
-import { useValidatorsDetail } from 'utils/hooks/useValidators';
 import { toastError } from 'utils/helpers/errorHandler';
+import { useValidatorsDetail } from 'utils/hooks/useValidators';
+
+import { NoData } from '../NoData';
+
+import { StakingRewardItem } from './StakingRewardItem';
 
 interface IStakingRewardsProps {
   publicKey: string;

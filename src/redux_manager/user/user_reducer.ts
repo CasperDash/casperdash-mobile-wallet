@@ -1,5 +1,6 @@
-import { types } from './user_action';
 import { types as typesMain } from '../main/main_action';
+
+import { types } from './user_action';
 
 const initialState = {
   info: null,

@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { CLayout } from 'components';
+
+import PINCode, { IProps } from '@haskkor/react-native-pincode';
+
 import { colors } from 'assets';
+import { CLayout } from 'components';
 import { scale } from 'device';
 // @ts-ignore
 import { PIN_LENGTH } from 'utils/constants/key';
-import PINCode, { IProps } from '@haskkor/react-native-pincode';
 
 const PinCodeWrapper = (props: Partial<IProps>) => {
   return (

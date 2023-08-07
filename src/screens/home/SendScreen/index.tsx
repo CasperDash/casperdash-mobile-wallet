@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { CButton, CHeader, CInputFormik, CLayout, Col, Row } from 'components';
-import { colors, IconScanQRCode, textStyles } from 'assets';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
+
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useFormik } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { PERMISSIONS } from 'react-native-permissions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MainRouter from 'navigation/stack/MainRouter';
-import { useSelector } from 'react-redux';
-import { ITokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
-import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useSelector } from 'react-redux';
+import * as yup from 'yup';
+
+import { colors, IconScanQRCode, textStyles } from 'assets';
+import { CButton, CHeader, CInputFormik, CLayout, Col, Row } from 'components';
+import CTextButton from 'components/CTextButton';
+import QRScanner from 'components/QRScanner/QRScanner';
+import { scale } from 'device';
+import { ScreenProps } from 'navigation/ScreenProps';
+import MainRouter from 'navigation/stack/MainRouter';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Config } from 'utils';
-import { PERMISSIONS } from 'react-native-permissions';
-import { isValidPublicKey } from 'utils/validator';
+import { ITokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { getPublicKey } from 'utils/selectors';
-import QRScanner from 'components/QRScanner/QRScanner';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { isValidPublicKey } from 'utils/validator';
 
 const initialValues = {
   transferAmount: '0',

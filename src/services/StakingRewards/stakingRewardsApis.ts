@@ -1,4 +1,5 @@
 import { ICommonListResponse } from 'services/apiTypes';
+
 import { IStakingRewardItem } from './stakingRewardsType';
 
 type TRewardRequest = {

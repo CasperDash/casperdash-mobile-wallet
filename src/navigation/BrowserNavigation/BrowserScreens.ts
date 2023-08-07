@@ -1,4 +1,5 @@
 import { BrowserScreen } from 'screens';
+
 import BrowserRouter from './BrowserRouter';
 
 const { BROWSER_SCREEN } = BrowserRouter;

@@ -1,8 +1,9 @@
-import { isIos } from 'device';
+import DeviceInfo from 'react-native-device-info';
 import { UseQueryOptions, useQuery } from 'react-query';
+
+import { isIos } from 'device';
 import { IReleaseNotes, getReleaseNotes } from 'services/ReleaseNotes/releaseNotes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
-import DeviceInfo from 'react-native-device-info';
 
 export const useReleaseNotes = (
   options: Omit<UseQueryOptions<unknown, any, IReleaseNotes[], any>, 'queryKey' | 'queryFn'>,

@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { Intro } from 'screens/authentication/data/data';
-import { scale } from 'device';
-import { colors, textStyles } from 'assets';
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { colors, textStyles } from 'assets';
+import { scale } from 'device';
+import { Intro } from 'screens/authentication/data/data';
 
 const introDescription = 'CasperDash is a platform that aims to build a new creative economy.';
 

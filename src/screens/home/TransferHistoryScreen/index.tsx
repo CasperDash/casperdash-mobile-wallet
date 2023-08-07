@@ -1,12 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
+
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { colors, IconViewExplorer, textStyles } from 'assets';
 import { CButton, CHeader, CLayout, Col, Row } from 'components';
-import { ScreenProps } from 'navigation/ScreenProps';
 import { scale } from 'device';
-import TransferDetailComponent from 'screens/home/TransferHistoryScreen/TransferDetailComponent';
+import { ScreenProps } from 'navigation/ScreenProps';
 import { STATUS_MAPPING } from 'screens/home/HistoriesScreen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import TransferDetailComponent from 'screens/home/TransferHistoryScreen/TransferDetailComponent';
 import { Config } from 'utils';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 

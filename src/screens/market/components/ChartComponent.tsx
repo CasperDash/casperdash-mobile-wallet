@@ -1,9 +1,11 @@
 import React from 'react';
-import { VictoryChart, VictoryLine, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from 'victory-native';
-import { Col } from 'components';
-import moment from 'moment';
-import { colors, textStyles } from 'assets';
 import { Text } from 'react-native';
+
+import moment from 'moment';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from 'victory-native';
+
+import { colors, textStyles } from 'assets';
+import { Col } from 'components';
 import { scale } from 'device';
 
 const ChartComponent = ({ data, onActivated, onDeactivated }: any) => {

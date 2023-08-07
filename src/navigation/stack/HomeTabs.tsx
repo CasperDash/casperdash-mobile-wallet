@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Col } from 'components';
-import { isIos, scale } from 'device';
+
 import {
   colors,
   fonts,
@@ -17,14 +18,13 @@ import {
   IconBrowser,
   IconBrowserActive,
 } from 'assets';
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import StakingNavigation from 'navigation/StakingNavigation';
-import NFTNavigation from 'navigation/NFTNavigation';
-import MarketNavigation from 'navigation/MarketNavigation';
-import HomeNavigation from 'navigation/HomeNavigation';
+import { Col } from 'components';
+import { isIos, scale } from 'device';
 import BrowserNavigation from 'navigation/BrowserNavigation';
+import HomeNavigation from 'navigation/HomeNavigation';
+import MarketNavigation from 'navigation/MarketNavigation';
+import NFTNavigation from 'navigation/NFTNavigation';
+import StakingNavigation from 'navigation/StakingNavigation';
 
 const Tab = createBottomTabNavigator();
 

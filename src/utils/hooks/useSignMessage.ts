@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux';
-import { CONNECTION_TYPES } from '../constants/settings';
-import { getLoginOptions, getUser } from '../selectors/user';
-import { getWalletKeyPair } from 'utils/helpers/account';
 import { encodeBase16, formatMessageWithHeaders, signFormattedMessage } from 'casperdash-js-sdk';
 import { WalletInfo } from 'react-native-casper-storage';
 import { UseMutationOptions, useMutation } from 'react-query';
+import { useSelector } from 'react-redux';
+
+import { getWalletKeyPair } from 'utils/helpers/account';
 import { signMessage } from 'utils/services/ledgerServices';
+
+import { CONNECTION_TYPES } from '../constants/settings';
+import { getLoginOptions, getUser } from '../selectors/user';
 
 type Params = {
   message: string;

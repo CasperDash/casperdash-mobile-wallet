@@ -1,7 +1,8 @@
 import { useCallback, useContext } from 'react';
+
 import BrowserContext from '../context';
-import { buildCustomEvent } from '../utils/jsInjector';
 import { DAppCustomEvents } from '../enums/events';
+import { buildCustomEvent } from '../utils/jsInjector';
 
 export const useSendDAppEvent = () => {
   const browserRef = useContext(BrowserContext);

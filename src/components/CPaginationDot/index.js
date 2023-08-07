@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
+
 import { scale } from 'device';
 
 class CPaginationDot extends Component {

@@ -1,4 +1,3 @@
-import { IconReload, IconUser, colors } from 'assets';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -9,14 +8,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import _ from 'lodash';
 import { useSelector } from 'react-redux';
+
+import { IconReload, IconUser, colors } from 'assets';
 import { scale } from 'device';
+import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
 import { useLoadingProgress } from 'screens/browser/hooks/useLoadingProgress';
 import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';
 import { getwebUrl } from 'utils/selectors';
+
 import ModalAccount from '../ModalAccount';
-import _ from 'lodash';
-import { useConnectedSite } from 'screens/browser/hooks/useConnectedSite';
 
 const BrowserHeadBar = () => {
   const webUrl = useSelector(getwebUrl);

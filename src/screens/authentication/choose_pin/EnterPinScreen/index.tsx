@@ -1,17 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { CLayout, CButton } from 'components';
 import { Image, StyleSheet, Text, NativeModules } from 'react-native';
+
 // @ts-ignore
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import PinCodeWrapper from '../PinCodeWrapper';
+
 import { images, colors, textStyles } from 'assets';
-import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
+import { CLayout, CButton } from 'components';
 import { scale } from 'device';
-import { validatePin } from 'utils/helpers/account';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { Keys, Config } from 'utils';
+import { validatePin } from 'utils/helpers/account';
+import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { resetCache } from 'utils/services/ledgerServices';
+
+import PinCodeWrapper from '../PinCodeWrapper';
 
 const MAX_ATTEMPT = 5;
 

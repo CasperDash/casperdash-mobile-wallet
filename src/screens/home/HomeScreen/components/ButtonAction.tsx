@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { AccountAction } from 'screens/home/HomeScreen/data/data';
+
+import { colors, textStyles } from 'assets';
 import { CButton, Col } from 'components';
 import { scale } from 'device';
-import { colors, textStyles } from 'assets';
+import { AccountAction } from 'screens/home/HomeScreen/data/data';
 
 interface Props {
   data: AccountAction;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity } from 'react-native';
+
+import { colors, textStyles, IconPencilFilled, IconCheck, IconCloseAlt } from 'assets';
 import { Row, Col, CButton, CInput } from 'components';
 import { scale } from 'device';
-import { colors, textStyles, IconPencilFilled, IconCheck, IconCloseAlt } from 'assets';
 import { WalletInfoDetails } from 'utils/helpers/account';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { IAccountInfo } from 'utils/hooks/useAccountInfo';

@@ -1,20 +1,23 @@
 import * as React from 'react';
-import { Row, CInputFormik, Col, CButton } from 'components';
 import { Text, View, TouchableOpacity, Platform, StyleSheet, Image } from 'react-native';
-import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
+
 import { useNavigation } from '@react-navigation/native';
-import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
-import { StakingMode } from 'utils/constants/key';
 import * as yup from 'yup';
-import { scale } from 'device';
-import { toFormattedNumber } from 'utils/helpers/format';
+
+import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
+import { Row, CInputFormik, Col, CButton } from 'components';
 import CTextButton from 'components/CTextButton';
-import { EViews } from '../../utils';
+import { scale } from 'device';
+import MainRouter from 'navigation/stack/MainRouter';
+import { StakingMode } from 'utils/constants/key';
+import { toFormattedNumber } from 'utils/helpers/format';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
-import { IValidator } from 'utils/hooks/useValidators';
 import { useStakedInfo } from 'utils/hooks/useStakeDeploys';
+import { IValidator } from 'utils/hooks/useValidators';
+
+import { EViews } from '../../utils';
 
 interface IStakingFormProps {
   isRefreshing: boolean;

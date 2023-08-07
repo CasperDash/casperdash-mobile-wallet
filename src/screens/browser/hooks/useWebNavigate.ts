@@ -1,7 +1,10 @@
 import { useCallback, useContext } from 'react';
-import BrowserContext from '../context';
+
 import { useDispatch } from 'react-redux';
+
 import { allActions } from 'redux_manager';
+
+import BrowserContext from '../context';
 import { normalizeUrl } from '../utils/url';
 
 export const useWebNavigate = () => {

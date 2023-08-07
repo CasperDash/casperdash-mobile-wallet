@@ -1,15 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
+
+import { useDispatch } from 'react-redux';
+
 import { colors, textStyles, fonts } from 'assets';
 import { CAlert, CButton } from 'components';
+import CConfirmPinModal from 'components/CConfirmPinModal';
 import { scale } from 'device';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { Config, Keys } from 'utils';
-import { useDispatch } from 'react-redux';
-import { allActions } from 'redux_manager';
-import CConfirmPinModal from 'components/CConfirmPinModal';
-import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
+import { allActions } from 'redux_manager';
+import { Config, Keys } from 'utils';
+import { useRestack } from 'utils/hooks/useRestack';
 import { resetCache } from 'utils/services/ledgerServices';
 
 const DeleteAllDataButton = () => {

@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
+
 import { EncryptionType, WalletInfo } from 'react-native-casper-storage';
 import { UseQueryOptions, useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
+
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';

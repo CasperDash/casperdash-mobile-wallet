@@ -1,4 +1,5 @@
 import { JsonTypes } from 'typedjson';
+
 import { DAppCustomEvents } from '../enums/events';
 
 type Params = {

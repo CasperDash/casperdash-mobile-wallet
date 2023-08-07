@@ -1,28 +1,30 @@
 import React, { useMemo, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { useFormik } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
+
 import { colors, fonts, textStyles } from 'assets';
 import { Row, CInputFormik, CLayout, Col, CButton, CHeader } from 'components';
-import { scale } from 'device';
-import { useFormik } from 'formik';
-import MainRouter from 'navigation/stack/MainRouter';
-import { View, Text, StyleSheet } from 'react-native';
-import * as yup from 'yup';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { MessageType } from 'components/CMessge/types';
 import CTextButton from 'components/CTextButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
-import { toDisplayValueFromMote } from 'utils/helpers/format';
+import { scale } from 'device';
 import { ScreenProps } from 'navigation/ScreenProps';
+import MainRouter from 'navigation/stack/MainRouter';
+import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
+import { allActions } from 'redux_manager';
 import InfoComponent from 'screens/staking/InfoComponent';
 import { ENTRY_POINT_DELEGATE, ENTRY_POINT_UNDELEGATE, StakingMode } from 'utils/constants/key';
-import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
-import { allActions } from 'redux_manager';
-import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
-import { useNavigation } from '@react-navigation/native';
-import { getStakeDeploy } from 'utils/services/stakeServices';
-import { MessageType } from 'components/CMessge/types';
+import { toCSPR } from 'utils/helpers/currency';
+import { toDisplayValueFromMote } from 'utils/helpers/format';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
-import { toCSPR } from 'utils/helpers/currency';
+import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
+import { getPublicKey } from 'utils/selectors';
+import { getStakeDeploy } from 'utils/services/stakeServices';
 
 const StakingConfirmScreen: React.FC<
   // @ts-ignore

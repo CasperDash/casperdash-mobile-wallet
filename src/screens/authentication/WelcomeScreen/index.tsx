@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, LayoutAnimation } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Row, Col, CButton, CPaginationDot } from 'components';
-import { ListIntro } from 'screens/authentication/data/data';
-import { colors, fonts, IconArrowLeft2, IconArrowRight, textStyles } from 'assets';
-import { scale } from 'device';
-import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
+
 import { useNavigation } from '@react-navigation/native';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { colors, fonts, IconArrowLeft2, IconArrowRight, textStyles } from 'assets';
+import { Row, Col, CButton, CPaginationDot } from 'components';
+import { scale } from 'device';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import { ListIntro } from 'screens/authentication/data/data';
+import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
 import { Config, Keys } from 'utils';
 
 const translatePreset = {

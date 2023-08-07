@@ -1,5 +1,3 @@
-import MainRouter from './MainRouter';
-import SettingsSceen from 'screens/settings/SettingsScreen';
 import HomeTabs from 'navigation/stack/HomeTabs';
 import {
   AddCustomTokenScreen,
@@ -15,8 +13,11 @@ import {
   ShowPrivateKeyScreen,
 } from 'screens';
 import NFTDetail from 'screens/nft/NFTDetailScreen';
-import SimpleWebViewScreen from 'screens/simple_web_view/SimpleWebViewScreen';
 import AboutCasperDash from 'screens/settings/AboutCasperDash';
+import SettingsSceen from 'screens/settings/SettingsScreen';
+import SimpleWebViewScreen from 'screens/simple_web_view/SimpleWebViewScreen';
+
+import MainRouter from './MainRouter';
 
 const {
   SETTINGS_SCREEN,

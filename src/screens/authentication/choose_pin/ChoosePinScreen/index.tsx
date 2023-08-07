@@ -1,10 +1,13 @@
 import React from 'react';
-import { ScreenProps } from 'navigation/ScreenProps';
-import { CHeader, CLayout } from 'components';
+
 import { useNavigation } from '@react-navigation/native';
-import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+
+import { CHeader, CLayout } from 'components';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import { ScreenProps } from 'navigation/ScreenProps';
 import { createAndStoreMasterPassword } from 'utils/helpers/account';
+
 import PinCodeWrapper from '../PinCodeWrapper';
 
 const ChoosePinScreen: React.FC<

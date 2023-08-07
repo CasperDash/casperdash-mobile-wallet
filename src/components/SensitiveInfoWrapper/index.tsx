@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState, useRef } from 'react';
 import { View, Image, StyleSheet, AppState, Platform, NativeEventSubscription } from 'react-native';
-import { images } from 'assets';
-// @ts-ignore
+
 import RNScreenshotPrevent, { addListener } from 'react-native-screenshot-prevent';
 import Toast from 'react-native-toast-message';
+
+import { images } from 'assets';
+// @ts-ignore
 import { isIos } from 'device';
 
 export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {

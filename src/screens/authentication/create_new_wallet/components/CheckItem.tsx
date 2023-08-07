@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { CButton, Col, Row } from 'components';
+
 import { colors, fonts, textStyles } from 'assets';
+import { CButton, Col, Row } from 'components';
 import { isIos, scale } from 'device';
 
 interface CheckItemProps {

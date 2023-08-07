@@ -1,18 +1,20 @@
-import { colors } from 'assets';
-import { CLayout } from 'components';
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BrowserContext from '../context';
-import BrowserHeadBar from '../components/BrowserHeadBar';
-import DAppWebView from '../components/DAppWebView';
-import { getDisplayType } from 'utils/selectors/browser';
-import HomePageContent from '../components/HomePageContent';
+import { colors } from 'assets';
+import { CLayout } from 'components';
 import { scale } from 'device';
 import { allActions } from 'redux_manager';
+import { getDisplayType } from 'utils/selectors/browser';
+
+import BrowserHeadBar from '../components/BrowserHeadBar';
+import DAppWebView from '../components/DAppWebView';
+import HomePageContent from '../components/HomePageContent';
 import ModalRequestAction from '../components/ModalRequestAction';
+import BrowserContext from '../context';
 
 const BrowserScreen = () => {
   const displayType = useSelector(getDisplayType);

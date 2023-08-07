@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, Image, StyleSheet } from 'react-native';
+
 import { colors, images, textStyles } from 'assets';
 import { Col } from 'components';
 import { scale } from 'device';

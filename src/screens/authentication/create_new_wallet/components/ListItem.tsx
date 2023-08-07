@@ -1,14 +1,16 @@
 import React from 'react';
 import { Text, StyleSheet, Platform, Linking } from 'react-native';
-import { CreateNewWalletMenu } from 'screens/authentication/data/data';
-import { Row, CButton } from 'components';
-import { scale } from 'device';
-import { colors, fonts } from 'assets';
-import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
-import { Config } from 'utils';
-import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+
 import AndroidOpenSettings from 'react-native-android-open-settings';
 import BluetoothStateManager from 'react-native-bluetooth-state-manager';
+import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+
+import { colors, fonts } from 'assets';
+import { Row, CButton } from 'components';
+import { scale } from 'device';
+import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
+import { CreateNewWalletMenu } from 'screens/authentication/data/data';
+import { Config } from 'utils';
 
 interface ListItemProps {
   onPress: (screen: string) => void;

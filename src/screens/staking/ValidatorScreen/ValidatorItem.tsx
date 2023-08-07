@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet, Image } from 'react-native';
+
+import { colors, textStyles, images } from 'assets';
 import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
-import { colors, textStyles, images } from 'assets';
-import { getValueByFormat } from 'utils/helpers/format';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { getValueByFormat } from 'utils/helpers/format';
 import { IValidator } from 'utils/hooks/useValidators';
 
 interface ValidatorItemProps {

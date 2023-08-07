@@ -1,15 +1,19 @@
 import { useCallback, useMemo } from 'react';
-import { getMassagedTokenData } from 'utils/selectors';
-import { usePrice } from './usePrice';
-import * as DEFAULT_CONFIG from '../constants/key';
-import { getBase64IdentIcon } from 'utils/helpers/identicon';
+
 import { UseQueryOptions, useQuery } from 'react-query';
-import { ERequestKeys } from 'utils/constants/requestKeys';
-import { ITokenInfoResponse } from 'services/User/userTypes';
+
+import { getTokenInfo } from 'services/Token/tokenApis';
 import { getTokenInfoWithBalance } from 'services/User/userApis';
+import { ITokenInfoResponse } from 'services/User/userTypes';
+import { ERequestKeys } from 'utils/constants/requestKeys';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { getMassagedTokenData } from 'utils/selectors';
+
+import * as DEFAULT_CONFIG from '../constants/key';
+
 import { useAccountInfo } from './useAccountInfo';
 import { useConfigurations } from './useConfigurations';
-import { getTokenInfo } from 'services/Token/tokenApis';
+import { usePrice } from './usePrice';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;

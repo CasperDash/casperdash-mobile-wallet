@@ -1,7 +1,9 @@
 import React from 'react';
-import { StakingScreens } from './StakingScreens';
-import StakingRouter from './StakingRouter';
+
 import { createStackNavigator } from '@react-navigation/stack';
+
+import StakingRouter from './StakingRouter';
+import { StakingScreens } from './StakingScreens';
 
 const Stack = createStackNavigator();
 

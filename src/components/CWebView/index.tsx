@@ -1,10 +1,12 @@
 import React, { forwardRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
+
+import AutoHeightWebView from 'react-native-autoheight-webview';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { colors, fonts, IconBack } from 'assets';
 import { device, scale } from 'device';
 import { ScreenProps } from 'navigation/ScreenProps';
-import AutoHeightWebView from 'react-native-autoheight-webview';
 
 const stylesWebView = `<style>
     img { display: block; max-width: ${device.w - 20}px; height: auto;}

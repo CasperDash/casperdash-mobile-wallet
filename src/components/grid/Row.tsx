@@ -1,7 +1,9 @@
 import React from 'react';
-import { Row as BaseRow, RowComponent } from 'react-native-col';
-import { isFunction, isString } from 'lodash';
 import { ViewProps } from 'react-native';
+
+import { isFunction, isString } from 'lodash';
+import { Row as BaseRow, RowComponent } from 'react-native-col';
+
 import { useSpacingStyle } from 'components';
 import { BaseProps } from 'components/base.props';
 

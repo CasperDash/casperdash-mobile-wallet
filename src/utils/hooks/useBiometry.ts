@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Config, Keys } from 'utils';
+
 import TouchID from 'react-native-touch-id';
+
+import { Config, Keys } from 'utils';
 
 export enum BiometryType {
   FaceID = 'FaceID',

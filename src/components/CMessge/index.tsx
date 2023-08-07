@@ -1,11 +1,14 @@
 import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
+
 import Modal from 'react-native-modal';
-import { scale } from 'device';
-import { colors, IconMessageSuccess, IconMessageError, IconMessageWarning, textStyles } from 'assets';
 import { useSelector } from 'react-redux';
-import { MessageType } from './types';
+
+import { colors, IconMessageSuccess, IconMessageError, IconMessageWarning, textStyles } from 'assets';
 import { Row, Col } from 'components';
+import { scale } from 'device';
+
+import { MessageType } from './types';
 
 const CMessage = () => {
   const { CMessageData } = useSelector((state: any) => state && state.main);

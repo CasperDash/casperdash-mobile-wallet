@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+
 import { colors, IconArrowDown, textStyles } from 'assets';
 import { Row } from 'components';
 import { scale } from 'device';

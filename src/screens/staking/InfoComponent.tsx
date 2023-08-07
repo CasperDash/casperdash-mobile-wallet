@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { toFormattedNumber } from 'utils/helpers/format';
-import { Col } from 'components';
+
 import { colors, textStyles } from 'assets';
+import { Col } from 'components';
 import { scale } from 'device';
+import { toFormattedNumber } from 'utils/helpers/format';
 
 interface Props {
   validator: string;

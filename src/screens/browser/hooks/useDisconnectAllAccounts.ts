@@ -1,10 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { getConnectedSites } from 'utils/selectors/browser';
 import { useCallback, useContext } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
 import { allActions } from 'redux_manager';
 import { ConnectedSiteParams } from 'redux_manager/browser/browser_reducer';
-import { useSendDAppEvent } from './useSendDAppEvent';
+import { getConnectedSites } from 'utils/selectors/browser';
+
 import BrowserContext from '../context';
+
+import { useSendDAppEvent } from './useSendDAppEvent';
 
 export const useDisconnectAllAccounts = () => {
   const dispatch = useDispatch();

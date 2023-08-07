@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
-import { CHeader, CLayout } from 'components';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
 import { Observable } from 'rxjs';
-// @ts-ignore
 import { Subscription } from 'rxjs/src/internal/Subscription';
-import { DeviceItem } from 'screens/authentication/create_new_wallet/components';
-import { scale } from 'device';
+
 import { textStyles } from 'assets';
+import { CHeader, CLayout } from 'components';
+import { scale } from 'device';
+// @ts-ignore
+
 import { GetPublicKeyScreen } from 'screens';
+import { DeviceItem } from 'screens/authentication/create_new_wallet/components';
 
 const deviceAddition = (device: any, devices: any) =>
   devices.some((i: any) => i.id === device.id) ? devices : devices.concat(device);

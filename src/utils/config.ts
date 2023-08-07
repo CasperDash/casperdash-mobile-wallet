@@ -1,8 +1,11 @@
 import { Alert, Linking } from 'react-native';
+
+import * as RNLocalize from 'react-native-localize';
 import { check, request, RESULTS } from 'react-native-permissions';
 import SInfo from 'react-native-sensitive-info';
-import * as RNLocalize from 'react-native-localize';
+
 import { EXPLORER_URL } from 'utils/constants/key';
+
 import Keys from './keys';
 
 const locales = RNLocalize.getLocales();

@@ -1,8 +1,11 @@
 import React from 'react';
-import BaseCol, { ColComponent } from 'react-native-col';
-import { isFunction, isString } from 'lodash';
 import { ViewProps } from 'react-native';
+
+import { isFunction, isString } from 'lodash';
+import BaseCol, { ColComponent } from 'react-native-col';
+
 import { useSpacingStyle } from 'components';
+
 import { BaseProps } from '../base.props';
 
 export interface ColProps extends BaseProps, ViewProps {}

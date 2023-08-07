@@ -1,7 +1,10 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { types } from './user_action';
-import { types as mainTypes } from '../main/main_action';
+
 import { Config, Keys } from 'utils';
+
+import { types as mainTypes } from '../main/main_action';
+
+import { types } from './user_action';
 
 export function* getSelectedWalletFromStorage() {
   // @ts-ignore

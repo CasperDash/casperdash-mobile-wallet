@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
 import { SafeAreaView, Image, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+
 import { RNCamera } from 'react-native-camera';
-import { colors, images } from 'assets';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import { colors, images } from 'assets';
 import { scale } from 'device';
 
 const styles = StyleSheet.create({

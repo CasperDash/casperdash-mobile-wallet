@@ -1,12 +1,14 @@
 import React from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import Carousel from 'react-native-reanimated-carousel';
+
 import { colors, IconList } from 'assets';
 import { scale } from 'device';
-import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNews } from 'utils/hooks/useNews';
-import Carousel from 'react-native-reanimated-carousel';
 import MarketRouter from 'navigation/MarketNavigation/MarketRouter';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
-import { useNavigation } from '@react-navigation/native';
+import { useNews } from 'utils/hooks/useNews';
 
 export const News = () => {
   const { data } = useNews();

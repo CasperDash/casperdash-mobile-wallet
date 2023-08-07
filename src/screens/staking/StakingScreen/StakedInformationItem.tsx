@@ -1,17 +1,19 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
-import { Row, Col } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
-import { toFormattedNumber } from 'utils/helpers/format';
-import MainRouter from 'navigation/stack/MainRouter';
+
 import { useNavigation } from '@react-navigation/native';
-import { StakingMode } from 'utils/constants/key';
+
+import { colors, textStyles } from 'assets';
+import { Row, Col } from 'components';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import MainRouter from 'navigation/stack/MainRouter';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { StakingMode } from 'utils/constants/key';
+import { toCSPR } from 'utils/helpers/currency';
+import { toFormattedNumber } from 'utils/helpers/format';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { IStakedInfo } from 'utils/hooks/useStakeDeploys';
-import { toCSPR } from 'utils/helpers/currency';
 
 interface Props {
   value: IStakedInfo;

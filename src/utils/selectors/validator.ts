@@ -1,7 +1,8 @@
-import { createSelector } from 'reselect';
-import memoizeOne from 'memoize-one';
-import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import Fuse from 'fuse.js';
+import memoizeOne from 'memoize-one';
+import { createSelector } from 'reselect';
+
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
 
 export const stakingReducer = (state: any) => state.staking;
 

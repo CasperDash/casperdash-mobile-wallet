@@ -1,4 +1,5 @@
 import { NFTScreen } from 'screens';
+
 import NFTRouter from './NFTRouter';
 
 const { NFT_SCREEN } = NFTRouter;

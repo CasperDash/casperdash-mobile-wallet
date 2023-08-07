@@ -1,12 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
-import { Row, Col } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import { toCSPR } from 'utils/helpers/currency';
-import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
+
 import moment from 'moment';
+
+import { colors, textStyles } from 'assets';
+import { Row, Col } from 'components';
+import { scale } from 'device';
+import { IStakingRewardItem } from 'services/StakingRewards/stakingRewardsType';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
+import { toCSPR } from 'utils/helpers/currency';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 
 interface Props {

@@ -1,6 +1,7 @@
-import Big from 'big.js';
-import { toMotes, toCSPR } from './currency';
 import { BigNumber } from '@ethersproject/bignumber';
+import Big from 'big.js';
+
+import { toMotes, toCSPR } from './currency';
 
 describe('toMotes', () => {
   test('can convert cspr to mote with valid string number', () => {

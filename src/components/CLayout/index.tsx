@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, StatusBar, StatusBarStyle } from 'react-native';
-import { colors } from 'assets';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { colors } from 'assets';
 
 type LProps = {
   children: React.ReactNode;

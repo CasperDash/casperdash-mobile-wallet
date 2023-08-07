@@ -1,5 +1,5 @@
-import { getTransferTokenDeploy } from './tokenServices';
 import { buildTransferTokenDeploy } from './casperServices';
+import { getTransferTokenDeploy } from './tokenServices';
 jest.mock('./casperServices', () => {
   return {
     buildTransferTokenDeploy: jest.fn(),

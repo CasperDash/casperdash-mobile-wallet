@@ -1,8 +1,10 @@
-import { Image } from '@rneui/base';
-import { colors } from 'assets';
-import { scale } from 'device';
 import React from 'react';
 import { View, Text, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle, TextStyle } from 'react-native';
+
+import { Image } from '@rneui/base';
+
+import { colors } from 'assets';
+import { scale } from 'device';
 
 type Props = {
   logo: ImageSourcePropType;

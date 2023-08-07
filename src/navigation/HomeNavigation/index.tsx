@@ -1,11 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 import { AppState } from 'react-native';
+
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeScreens } from './HomeScreens';
-import HomeRouter from './HomeRouter';
+
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
+import { useRestack } from 'utils/hooks/useRestack';
+
+import HomeRouter from './HomeRouter';
+import { HomeScreens } from './HomeScreens';
 
 const Stack = createStackNavigator();
 

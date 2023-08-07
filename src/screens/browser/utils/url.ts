@@ -1,5 +1,6 @@
 import isUrl from 'is-url';
 import URL from 'url-parse';
+
 import { SearchEngines } from '../enums/searchEngines';
 
 export const prefixUrlWithProtocol = (url: string, defaultProtocol = 'https://') => {

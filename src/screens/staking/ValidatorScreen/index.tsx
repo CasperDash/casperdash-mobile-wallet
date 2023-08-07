@@ -1,12 +1,14 @@
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { colors, images, textStyles } from 'assets';
 import { CHeader, CInput, CLayout, Col } from 'components';
 import { scale } from 'device';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
-import { useNavigation } from '@react-navigation/native';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
+import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
 import { IValidator, useValidators, useValidatorsDetail } from 'utils/hooks/useValidators';
 
 // @ts-ignore

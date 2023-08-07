@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { getDeploysTransfer, updateTransferDeployStatus } from 'utils/selectors/transfer';
+
 import { allActions } from 'redux_manager';
+import { getDeploysTransfer, updateTransferDeployStatus } from 'utils/selectors/transfer';
+
 import { useDeployStatus } from './useDeployStatus';
 
 /**

@@ -1,7 +1,10 @@
 import React from 'react';
-import { ChoosePinScreens } from './ChoosePinScreens';
+
 import { createStackNavigator } from '@react-navigation/stack';
+
 import { ScreenParams } from 'navigation/ScreenProps';
+
+import { ChoosePinScreens } from './ChoosePinScreens';
 
 const Stack = createStackNavigator<ScreenParams>();
 

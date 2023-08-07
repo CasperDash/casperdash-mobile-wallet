@@ -1,9 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { Row, Col, CButton } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
+
 import _ from 'lodash';
+
+import { colors, textStyles } from 'assets';
+import { Row, Col, CButton } from 'components';
+import { scale } from 'device';
 import { STATUS_MAPPING } from 'screens/home/HistoriesScreen';
 import { toFormattedDate } from 'utils/date';
 

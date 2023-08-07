@@ -1,14 +1,18 @@
 import { useCallback, useContext } from 'react';
+
 import { WalletInfo } from 'react-native-casper-storage';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { allActions } from 'redux_manager';
+import { RequestTypes } from 'redux_manager/browser/browser_reducer';
 import { getPublicKeyCache, isLedgerMode } from 'utils/helpers/account';
 import { getConnectedSites } from 'utils/selectors/browser';
-import { buildRawSender } from '../utils/jsInjector';
-import BrowserContext from '../context';
-import { RequestTypes } from 'redux_manager/browser/browser_reducer';
-import { useSendDAppEvent } from './useSendDAppEvent';
 import { getLedgerPublicKey, initLedgerApp } from 'utils/services/ledgerServices';
+
+import BrowserContext from '../context';
+import { buildRawSender } from '../utils/jsInjector';
+
+import { useSendDAppEvent } from './useSendDAppEvent';
 
 export const useConnectWithAccount = () => {
   const dispatch = useDispatch();

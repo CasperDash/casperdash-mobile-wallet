@@ -1,10 +1,11 @@
 // Create sample react native template component
-import { scale } from 'device';
 import React from 'react';
-
 import { View, StyleSheet, ActivityIndicator, ScrollView, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
+
+import { scale } from 'device';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { AccountInfo, useMyAccounts } from 'utils/hooks/useAccountInfo';
+
 import AccountItem from '../../ModalAccount/AccountItem';
 
 type Props = {

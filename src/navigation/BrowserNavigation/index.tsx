@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserScreens } from './BrowserScreens';
-import BrowserRouter from './BrowserRouter';
 
 import { createStackNavigator } from '@react-navigation/stack';
+
+import BrowserRouter from './BrowserRouter';
+import { BrowserScreens } from './BrowserScreens';
 
 const Stack = createStackNavigator();
 

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { ScreenProps } from 'navigation/ScreenProps';
-import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
-import _ from 'lodash';
-import { CLayout, CHeader } from 'components';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
+
 import { useNavigation } from '@react-navigation/native';
-import { CheckItem } from 'screens/authentication/create_new_wallet/components';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getArrayNotInArray } from 'utils/collections';
-import { allActions } from 'redux_manager';
+import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
+
+import { CLayout, CHeader } from 'components';
 import { MessageType } from 'components/CMessge/types';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
+import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
+import { ScreenProps } from 'navigation/ScreenProps';
+import { allActions } from 'redux_manager';
+import { CheckItem } from 'screens/authentication/create_new_wallet/components';
+import { getArrayNotInArray } from 'utils/collections';
 import { NUMBER_WORDS_PER_ROW } from 'utils/constants/key';
 
 const DoubleCheckItScreen: React.FC<

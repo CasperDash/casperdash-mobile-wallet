@@ -1,18 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { colors, textStyles, IconSetting, IconLogo } from 'assets';
 import { CButton, CLayout, Col, Row } from 'components';
-import { scale } from 'device';
-import { useNavigation } from '@react-navigation/native';
-import MainRouter from 'navigation/stack/MainRouter';
 import { MessageType } from 'components/CMessge/types';
+import { scale } from 'device';
+import MainRouter from 'navigation/stack/MainRouter';
 import { allActions } from 'redux_manager';
-import { useDispatch, useSelector } from 'react-redux';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
-import { getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
+import TokenComponent from 'screens/home/HomeScreen/components/TokenComponent';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { getPublicKey } from 'utils/selectors/user';
+
 import { News } from './components/News';
 
 function HomeScreen() {

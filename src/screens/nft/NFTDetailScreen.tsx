@@ -1,12 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, Modal, View, ScrollView } from 'react-native';
+
 import { BigNumber } from '@ethersproject/bignumber';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { colors, IconAttributes, IconCopy, images, textStyles } from 'assets';
 import { CButton, CFastImage, CHeader, CLayout, Row } from 'components';
 import { device, scale } from 'device';
-
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Modal, View, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { INFTInfo } from 'services/NFT/nftApis';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 

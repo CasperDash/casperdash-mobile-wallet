@@ -1,5 +1,6 @@
-import ChoosePinRouter from './ChoosePinRouter';
 import { ChoosePinScreen } from 'screens';
+
+import ChoosePinRouter from './ChoosePinRouter';
 
 const { CHOOSE_PIN_SCREEN } = ChoosePinRouter;
 

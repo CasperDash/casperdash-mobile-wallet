@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput } from 'react-native';
+
 import { scale } from 'device';
 
 export default class CInputAutoHeight extends React.PureComponent {

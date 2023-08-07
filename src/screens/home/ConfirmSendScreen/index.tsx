@@ -1,22 +1,24 @@
 import React from 'react';
-import { CLayout, Col, CHeader } from 'components';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import CTextButton from 'components/CTextButton';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenProps } from 'navigation/ScreenProps';
-import MainRouter from 'navigation/stack/MainRouter';
-import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors/user';
-import { getTransferDeploy } from 'utils/services/userServices';
-import { getTransferTokenDeploy } from 'utils/services/tokenServices';
-import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
+
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { colors, textStyles } from 'assets';
+import { CLayout, Col, CHeader } from 'components';
+import { MessageType } from 'components/CMessge/types';
+import CTextButton from 'components/CTextButton';
+import { scale } from 'device';
+import { ScreenProps } from 'navigation/ScreenProps';
+import MainRouter from 'navigation/stack/MainRouter';
+import { allActions } from 'redux_manager';
+import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
+import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
+import { getPublicKey } from 'utils/selectors/user';
+import { getTransferTokenDeploy } from 'utils/services/tokenServices';
+import { getTransferDeploy } from 'utils/services/userServices';
 
 const ConfirmSendScreen: React.FC<
   // @ts-ignore

@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Text, ScrollView, StyleSheet } from 'react-native';
-import { CButton, Col, Row } from 'components';
-import { colors, textStyles } from 'assets';
-import { scale } from 'device';
-import { enrichTransactionWithIcon } from 'utils/helpers/transaction';
-import NoDataComponent from 'screens/home/HistoriesScreen/components/NoDataComponent';
-import { STATUS_MAPPING } from 'screens/home/HistoriesScreen';
-import { useSelector } from 'react-redux';
-import { getPublicKey } from 'utils/selectors';
-import { useDeploysWithStatus } from 'utils/hooks/useTransferDeploys';
-import TransactionItem from 'screens/home/HistoriesScreen/components/TransactionItem';
-import MainRouter from 'navigation/stack/MainRouter';
+
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+
+import { colors, textStyles } from 'assets';
+import { CButton, Col, Row } from 'components';
+import { scale } from 'device';
+import MainRouter from 'navigation/stack/MainRouter';
+import { STATUS_MAPPING } from 'screens/home/HistoriesScreen';
+import NoDataComponent from 'screens/home/HistoriesScreen/components/NoDataComponent';
+import TransactionItem from 'screens/home/HistoriesScreen/components/TransactionItem';
+import { enrichTransactionWithIcon } from 'utils/helpers/transaction';
+import { useDeploysWithStatus } from 'utils/hooks/useTransferDeploys';
+import { getPublicKey } from 'utils/selectors';
 
 const TransactionComponent = () => {
   const { navigate } = useNavigation();
