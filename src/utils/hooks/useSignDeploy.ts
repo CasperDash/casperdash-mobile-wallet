@@ -25,7 +25,7 @@ export const useSignDeploy = (wallet?: WalletInfo, options?: UseMutationOptions<
         if (loginOptions.connectionType === CONNECTION_TYPES.ledger) {
           return await signDeployByLedger(deploy, {
             publicKey: mainAccountHex,
-            keyIndex: loginOptions.keyIndex,
+            keyIndex: wallet?.uid,
           });
         } else {
           if (!wallet) {
