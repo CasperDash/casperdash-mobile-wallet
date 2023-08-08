@@ -13,6 +13,7 @@ import { toastError } from './src/utils/helpers/errorHandler';
 import * as Sentry from '@sentry/react-native';
 import APP_CONFIGS from './src/utils/config/index';
 import DeviceInfo from 'react-native-device-info';
+import { CustomError } from './src/utils/constants/requestKeys';
 
 Sentry.init({
   dsn: APP_CONFIGS.SENTRY_DSN,
@@ -25,8 +26,10 @@ Sentry.init({
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (err: any) => {
-      toastError(err);
-      Sentry.captureMessage('API Error!!!');
+      toastError(err?.message || err);
+      if (!Object.values(CustomError).includes(err?.name)) {
+        Sentry.captureMessage('API Error!!!');
+      }
     },
   }),
 });

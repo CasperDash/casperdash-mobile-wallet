@@ -13,16 +13,20 @@ import { WalletDescriptor, User } from 'react-native-casper-storage';
 import { allActions } from 'redux_manager';
 import {
   getWalletInfoWithPublicKey,
-  WalletInfoDetails,
   cachePublicKey,
   serializeAndStoreUser,
   setSelectedWallet,
 } from 'utils/helpers/account';
 import ViewPrivateKeyButton from './ViewPrivateKeyButton';
-import { IAccountInfo, useListAccountInfo } from 'utils/hooks/useAccountInfo';
+import { IAccountInfo, useLedgerAccounts, useListAccountInfo } from 'utils/hooks/useAccountInfo';
 import ViewAccountOnExplorer from './ViewAccountOnExplorer';
+import { CONNECTION_TYPES } from 'utils/constants/settings';
 
-const SelectAccountModal = forwardRef((props: any, ref) => {
+interface SelectAccountModalProps {
+  connectionType: CONNECTION_TYPES;
+}
+
+const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalProps, ref) => {
   const publicKey = useSelector(getPublicKey);
   const [isVisible, setVisible] = useState<boolean>(false);
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(false);
@@ -31,17 +35,20 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
   const listWallets = useSelector(getListWallets);
   const user = useSelector(getUser);
   const dispatch = useDispatch();
-  const selectedWallet = useSelector<any, WalletInfoDetails>((state: any) => state.user.selectedWallet);
+  const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet);
   const currentAccount = useSelector<any, User>((state: any) => state.user.currentAccount);
 
-  const [listWalletsDetails, setListWalletsDetails] = useState<WalletInfoDetails[]>(listWallets);
+  const [listWalletsDetails, setListWalletsDetails] = useState<IAccountInfo[]>(listWallets);
+
+  const isLedgerMode = connectionType === CONNECTION_TYPES.ledger;
+  const isPassPhaseMode = connectionType === CONNECTION_TYPES.passPhase;
 
   const { massagedData, isLoading } = useListAccountInfo(
     listWalletsDetails.filter((item) => item.publicKey).map((item) => item.publicKey!),
     { enabled: isVisible, staleTime: 1000 * 60 },
   );
 
-  const walletsWithBalance = useMemo<(WalletInfoDetails & IAccountInfo)[]>(() => {
+  const walletsWithBalance = useMemo<IAccountInfo[]>(() => {
     return listWalletsDetails.map((wallet) => {
       const found = massagedData.find((item: { publicKey: string }) => item.publicKey === wallet.publicKey);
       return {
@@ -51,14 +58,30 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     });
   }, [massagedData, listWalletsDetails]);
 
+  const {
+    mergedData: ledgerAccounts,
+    isLoading: isLoadingLedger,
+    fetchNextPage,
+  } = useLedgerAccounts(
+    { startIndex: 0, numberOfKeys: 5 },
+    {
+      enabled: isVisible && isLedgerMode,
+      onError: () => {
+        hide();
+      },
+      retry: false,
+    },
+  );
+
+  // load wallet public key if pass phrase connection type
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && isPassPhaseMode) {
       getWalletInfoWithPublicKey(user, listWallets).then((walletInfoWithPublicKey) => {
         setListWalletsDetails(walletInfoWithPublicKey);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(listWallets), dispatch, user, isVisible]);
+  }, [JSON.stringify(listWallets), user, isVisible]);
 
   useImperativeHandle(ref, () => ({
     show: show,
@@ -97,9 +120,11 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
 
   useEffect(() => {
     if (isCreatingNewAccount) {
-      createAccount();
+      (isLedgerMode ? fetchNextPage() : createAccount()).finally(() => {
+        setIsCreatingNewAccount(false);
+      });
     }
-  }, [createAccount, isCreatingNewAccount]);
+  }, [createAccount, isCreatingNewAccount, isLedgerMode, fetchNextPage]);
 
   const handleOnCreateAccount = async () => {
     setIsCreatingNewAccount(true);
@@ -110,21 +135,17 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
     dispatch(allActions.main.loadLocalStorage());
   };
 
-  const onSelectWallet = async (walletInfoDetails: WalletInfoDetails) => {
-    await setSelectedWallet(walletInfoDetails.walletInfo, walletInfoDetails.publicKey!!);
+  const onSelectWallet = async (walletInfoDetails: IAccountInfo) => {
+    await setSelectedWallet(walletInfoDetails);
     reloadWallets();
     hide();
   };
 
-  const onUpdateWalletName = async (
-    walletInfoDetails: WalletInfoDetails,
-    newName: string,
-    isCurrentWallet: boolean,
-  ) => {
+  const onUpdateWalletName = async (walletInfoDetails: IAccountInfo, newName: string, isCurrentWallet: boolean) => {
     currentAccount.setWalletInfo(walletInfoDetails.walletInfo.uid, newName);
     if (isCurrentWallet) {
       const newInfo = currentAccount.getWalletInfo(walletInfoDetails.walletInfo.uid);
-      await setSelectedWallet(newInfo, walletInfoDetails.publicKey!!);
+      await setSelectedWallet({ walletInfo: newInfo, publicKey: walletInfoDetails.publicKey!! });
     }
     await serializeAndStoreUser(currentAccount);
     reloadWallets();
@@ -149,25 +170,24 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
           </CButton>
         </Row.R>
         <Col mb={12} style={styles.accountContainer}>
+          {isLoadingLedger && <ActivityIndicator />}
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{ maxHeight: scale(220) }}
             contentContainerStyle={{ paddingVertical: scale(10) }}
           >
-            {walletsWithBalance &&
-              walletsWithBalance.length > 0 &&
-              walletsWithBalance.map((walletDetails: WalletInfoDetails & IAccountInfo) => {
-                return (
-                  <AccountItem
-                    isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails.walletInfo.uid}
-                    data={walletDetails}
-                    key={walletDetails.walletInfo.uid}
-                    onSelectWallet={onSelectWallet}
-                    isLoadingBalance={isLoading}
-                    onUpdateWalletName={onUpdateWalletName}
-                  />
-                );
-              })}
+            {walletsWithBalance?.concat(ledgerAccounts).map((walletDetails: IAccountInfo) => {
+              return (
+                <AccountItem
+                  isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails.walletInfo?.uid}
+                  data={walletDetails}
+                  key={walletDetails.walletInfo?.uid}
+                  onSelectWallet={onSelectWallet}
+                  isLoadingBalance={isLoading}
+                  onUpdateWalletName={onUpdateWalletName}
+                />
+              );
+            })}
           </ScrollView>
         </Col>
         <CButton onPress={handleOnCreateAccount} disabled={isCreatingNewAccount}>
@@ -179,16 +199,22 @@ const SelectAccountModal = forwardRef((props: any, ref) => {
                 <ActivityIndicator size="small" color={colors.N2} />
               </View>
             )}
-            <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>Create New Account</Text>
+            <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>
+              {isLedgerMode ? 'Load More Account' : 'Create New Account'}
+            </Text>
           </Row>
         </CButton>
-        <CButton onPress={openImportAccount}>
-          <Row style={styles.rowItem}>
-            <IconImportAccount width={scale(17)} height={scale(17)} />
-            <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>Import Account</Text>
-          </Row>
-        </CButton>
-        <ViewPrivateKeyButton onConfirm={hide} />
+        {isPassPhaseMode && (
+          <>
+            <CButton onPress={openImportAccount}>
+              <Row style={styles.rowItem}>
+                <IconImportAccount width={scale(17)} height={scale(17)} />
+                <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>Import Account</Text>
+              </Row>
+            </CButton>
+            <ViewPrivateKeyButton onConfirm={hide} />
+          </>
+        )}
         <ViewAccountOnExplorer publicKey={publicKey} onPress={hide} />
       </Col>
     </Modal>

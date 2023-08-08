@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { EncryptionType, WalletInfo } from 'react-native-casper-storage';
+import { EncryptionType, WalletDescriptor, WalletInfo } from 'react-native-casper-storage';
 import { UseInfiniteQueryOptions, UseQueryOptions, useInfiniteQuery, useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
-import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
+import { IAccountResponse } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { getWalletInfoWithPublicKey, isLedgerMode } from 'utils/helpers/account';
 import { toCSPRFromHex } from 'utils/helpers/currency';
@@ -15,7 +15,7 @@ type LedgerAccount = {
   keyIndex: number;
 };
 
-export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo => {
+export const massageUserDetails = (userDetails: IAccountResponse): IAccountResponse => {
   const hexBalance = userDetails?.balance?.hex ?? 0;
   return {
     ...userDetails,
@@ -27,7 +27,9 @@ export const massageUserDetails = (userDetails: IAccountResponse): IAccountInfo 
 };
 
 export interface IAccountInfo extends IAccountResponse {
-  balance?: IDisplayCSPRBalance;
+  walletInfo: WalletInfo;
+  isLedger?: boolean;
+  ledgerKeyIndex?: number;
 }
 
 export type AccountInfo = {
@@ -128,7 +130,7 @@ export interface LedgerAccountInfo extends IAccountInfo {
 export const useLedgerAccounts = (
   { startIndex = 0, numberOfKeys = 10 },
   options?: Omit<
-    UseInfiniteQueryOptions<LedgerAccountInfo[], any, LedgerAccountInfo[], LedgerAccountInfo[], any>,
+    UseInfiniteQueryOptions<IAccountInfo[], any, IAccountInfo[], IAccountInfo[], any>,
     'queryKey' | 'queryFn'
   >,
 ) => {
@@ -144,13 +146,17 @@ export const useLedgerAccounts = (
       return accounts.map((account: LedgerAccount) => {
         const accountResponse = accountsResponse.find((item) => item.publicKey === account.publicKey);
         const massagedDetails = massageUserDetails(accountResponse!);
+        const descriptor = new WalletDescriptor(`Ledger ${account.keyIndex + 1}`);
+        const walletInfo = new WalletInfo(account.publicKey, EncryptionType.Secp256k1, descriptor);
         return {
           ...massagedDetails,
-          ...account,
+          isLedger: true,
+          ledgerKeyIndex: account.keyIndex,
+          walletInfo,
         };
       });
     },
-    getNextPageParam: (lastPage) => lastPage[lastPage.length - 1].keyIndex + 1,
+    getNextPageParam: (lastPage) => lastPage[lastPage.length - 1].ledgerKeyIndex! + 1,
     ...options,
   });
 

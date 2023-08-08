@@ -19,3 +19,7 @@ export enum ERequestKeys {
   dapps = 'dapps',
   ledgerAccounts = 'ledgerAccounts',
 }
+
+export enum CustomError {
+  LedgerError = 'LedgerError',
+}

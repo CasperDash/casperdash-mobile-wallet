@@ -11,6 +11,7 @@ import { Keys } from 'casperdash-js-sdk';
 
 import { Config, Keys as StorageKeys } from 'utils';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 export interface WalletInfoDetails {
   walletInfo: WalletInfo;
@@ -124,22 +125,11 @@ export const serializeAndStoreUser = async (user: User, options?: Partial<Casper
   });
 };
 
-/**
- * It takes a user and a list of wallet info, and returns a list of wallet info with the public key
- * added to each wallet info
- * @param {User} user - User - this is the user object that you get from the login function
- * @param {WalletInfoDetails[]} WalletList - This is the list of wallets that you want to get the
- * public key for.
- * @returns An array of objects with the following properties:
- *   - walletInfo
- *   - walletInfoDetails
- *   - publicKey
- */
-export const getWalletInfoWithPublicKey = async (user: User, walletList: WalletInfoDetails[]) => {
+export const getWalletInfoWithPublicKey = async (user: User, walletList: IAccountInfo[]): Promise<IAccountInfo[]> => {
   return await Promise.all(
-    walletList.map(async (walletInfo) => {
+    walletList.map(async (accountInfo) => {
       let publicKey;
-      const { uid } = walletInfo.walletInfo;
+      const { uid } = accountInfo.walletInfo;
       publicKey = await getPublicKeyCache(uid);
       if (!publicKey) {
         const walletDetails = await getWalletDetails(user, uid);
@@ -148,7 +138,10 @@ export const getWalletInfoWithPublicKey = async (user: User, walletList: WalletI
           await cachePublicKey(uid, publicKey);
         }
       }
-      return { ...walletInfo, publicKey };
+      if (!publicKey) {
+        throw Error('Error on get public key');
+      }
+      return { ...accountInfo, publicKey: publicKey! };
     }),
   );
 };
@@ -258,21 +251,21 @@ export const validatePin = async (pin: string, isBiometry?: boolean) => {
  * @param {string} publicKey - The public key of the wallet you want to set as the selected wallet.
  * @returns The selected wallet
  */
-export const setSelectedWallet = async (walletInfo: WalletInfo, publicKey: string) => {
+export const setSelectedWallet = async (accountInfo: IAccountInfo): Promise<void> => {
   const casperDashInfo = await Config.getItem(StorageKeys.casperdash);
-  casperDashInfo.publicKey = publicKey;
+  casperDashInfo.publicKey = accountInfo.publicKey;
   await Config.saveItem(StorageKeys.casperdash, casperDashInfo);
 
   const selectedWallet = {
-    publicKey,
+    ...accountInfo,
+    // prevent store sensitive data
     walletInfo: {
-      descriptor: walletInfo.descriptor,
-      encryptionType: walletInfo.encryptionType,
-      uid: walletInfo.uid,
+      descriptor: accountInfo.walletInfo.descriptor,
+      encryptionType: accountInfo.walletInfo.encryptionType,
+      uid: accountInfo.walletInfo.uid,
     },
   };
   await Config.saveItem(StorageKeys.selectedWallet, selectedWallet);
-  return selectedWallet;
 };
 
 export const isLedgerMode = async () => {

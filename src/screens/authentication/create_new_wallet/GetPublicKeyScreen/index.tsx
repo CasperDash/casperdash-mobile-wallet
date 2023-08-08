@@ -14,9 +14,9 @@ import KeyComponent from '../components/KeyComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CLoading from 'components/CLoading';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
-import { LedgerAccountInfo, useLedgerAccounts } from 'utils/hooks/useAccountInfo';
+import { IAccountInfo, useLedgerAccounts } from 'utils/hooks/useAccountInfo';
 import CTextButton from 'components/CTextButton';
-import Toast from 'react-native-toast-message';
+import { setSelectedWallet } from 'utils/helpers/account';
 
 const GetPublicKeyScreen = () => {
   const [error, setError] = useState<any>();
@@ -24,14 +24,9 @@ const GetPublicKeyScreen = () => {
   const { mergedData, isLoading, fetchNextPage, isFetching } = useLedgerAccounts(
     { startIndex: 0, numberOfKeys: 5 },
     {
-      onError: (err) =>
-        mergedData.length
-          ? Toast.show({
-              type: 'error',
-              text1: 'Oops!',
-              text2: 'A problem occurred, make sure to open the Casper application on your Ledger Nano X.',
-            })
-          : setError(err),
+      onError: (err) => {
+        if (!mergedData.length) setError(err);
+      },
       retry: 1,
     },
   );
@@ -39,15 +34,16 @@ const GetPublicKeyScreen = () => {
   const { replace } = useNavigation<StackNavigationProp<any>>();
   const insets = useSafeAreaInsets();
 
-  const onSelectKey = async (key: LedgerAccountInfo): Promise<void> => {
+  const onSelectKey = async (wallet: IAccountInfo): Promise<void> => {
     const info = {
-      publicKey: key.publicKey,
+      publicKey: wallet.publicKey,
       loginOptions: {
         connectionType: CONNECTION_TYPES.ledger,
-        keyIndex: key.keyIndex,
+        keyIndex: wallet.ledgerKeyIndex,
       },
     };
     await Config.saveItem(Keys.casperdash, info);
+    await setSelectedWallet(wallet);
 
     replace(AuthenticationRouter.CHOOSE_PIN, {
       screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,

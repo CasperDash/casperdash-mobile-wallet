@@ -17,6 +17,7 @@ export const useValidatorsDetail = () => {
   const query = useQuery({
     queryKey: [ERequestKeys.validatorsDetail],
     queryFn: () => getValidatorsDetail(),
+    staleTime: Infinity,
   });
   return query;
 };

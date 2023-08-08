@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSheet, Switch, Image, Text } from 'react-native';
-import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images, IconSupport } from 'assets';
+import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import DeviceInfo from 'react-native-device-info';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { CASPERDASH_URL } from 'utils/constants/key';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
@@ -16,25 +15,16 @@ import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
 import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
-import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 
 function SettingsScreen() {
   const { navigate } = useNavigation();
-  const { navigateToWebView } = useNavigateSimpleWebView();
   const reStack = useRestack();
   const loginOptions = useSelector(getLoginOptions);
 
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
-
-  const navigateTo = (url: string, title: string) => {
-    navigateToWebView({
-      url,
-      title,
-    });
-  };
 
   const lockScreen = () => {
     resetStack(AuthenticationRouter.ENTER_PIN);

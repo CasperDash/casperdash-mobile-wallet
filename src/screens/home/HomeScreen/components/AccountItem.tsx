@@ -3,16 +3,15 @@ import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity } from 'rea
 import { Row, Col, CButton, CInput } from 'components';
 import { scale } from 'device';
 import { colors, textStyles, IconPencilFilled, IconCheck, IconCloseAlt } from 'assets';
-import { WalletInfoDetails } from 'utils/helpers/account';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 interface IAccountItemProps {
-  data: WalletInfoDetails & IAccountInfo;
+  data: IAccountInfo;
   isCurrentAccount: boolean;
-  onSelectWallet: (data: WalletInfoDetails) => void;
+  onSelectWallet: (data: IAccountInfo) => void;
   isLoadingBalance?: boolean;
-  onUpdateWalletName: (walletInfoDetails: WalletInfoDetails, newName: string, isCurrentAccount: boolean) => void;
+  onUpdateWalletName: (walletInfoDetails: IAccountInfo, newName: string, isCurrentAccount: boolean) => void;
 }
 
 const AccountItem = ({
@@ -23,7 +22,7 @@ const AccountItem = ({
   onUpdateWalletName,
 }: IAccountItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(data.walletInfo.descriptor.name);
+  const [name, setName] = useState(data.walletInfo?.descriptor.name);
 
   const onUpdateName = () => {
     if (!name) {
@@ -39,14 +38,14 @@ const AccountItem = ({
         {!isEditing ? (
           <>
             <Col style={styles.leftContent}>
-              <TouchableOpacity onPress={() => setIsEditing(true)}>
-                <IconPencilFilled width={scale(16)} height={scale(16)} />
-              </TouchableOpacity>
+              {!data.isLedger && (
+                <TouchableOpacity onPress={() => setIsEditing(true)}>
+                  <IconPencilFilled width={scale(16)} height={scale(16)} />
+                </TouchableOpacity>
+              )}
               <CButton onPress={() => onSelectWallet(data)} style={{ marginLeft: scale(16) }}>
                 <Text style={[styles.sub, isCurrentAccount && { color: colors.B1 }]}>
-                  {data && data.walletInfo.descriptor && data.walletInfo.descriptor.name
-                    ? data.walletInfo.descriptor.name
-                    : ''}
+                  {data?.walletInfo?.descriptor?.name || ''}
                 </Text>
               </CButton>
             </Col>
