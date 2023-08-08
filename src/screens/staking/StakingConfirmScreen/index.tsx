@@ -111,7 +111,7 @@ const StakingConfirmScreen: React.FC<
           amount: amountDeploy,
           entryPoint,
         });
-      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, publicKey, showMessage);
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, showMessage);
       if (deployHash) {
         dispatch(
           allActions.staking.pushStakeToLocalStorage(publicKey, {

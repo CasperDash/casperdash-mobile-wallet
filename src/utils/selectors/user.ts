@@ -32,7 +32,7 @@ export const getListWallets = createSelector<any, IAccountInfo[]>(
 
 export const getSelectedWallet = createSelector(
   (state: any) => state.user,
-  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet,
+  ({ selectedWallet }: { selectedWallet: IAccountInfo }) => selectedWallet,
 );
 
 export const getUser = createSelector(
