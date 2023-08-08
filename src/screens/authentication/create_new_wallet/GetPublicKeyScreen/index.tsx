@@ -3,8 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import { scale } from 'device';
 import { textStyles } from 'assets';
 import { Config } from 'utils';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import Keys from 'utils/keys';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
@@ -17,6 +15,7 @@ import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { IAccountInfo, useLedgerAccounts } from 'utils/hooks/useAccountInfo';
 import CTextButton from 'components/CTextButton';
 import { setSelectedWallet } from 'utils/helpers/account';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const GetPublicKeyScreen = () => {
   const [error, setError] = useState<any>();
@@ -31,7 +30,7 @@ const GetPublicKeyScreen = () => {
     },
   );
 
-  const { replace } = useNavigation<StackNavigationProp<any>>();
+  const { replace } = useStackNavigation();
   const insets = useSafeAreaInsets();
 
   const onSelectKey = async (wallet: IAccountInfo): Promise<void> => {

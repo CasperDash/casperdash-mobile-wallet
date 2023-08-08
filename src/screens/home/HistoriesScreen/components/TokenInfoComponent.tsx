@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Platform, UIManager, StyleSheet, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Col, Row } from 'components';
 import { scale } from 'device';
 import { colors, textStyles } from 'assets';
@@ -8,6 +7,7 @@ import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { ITokenInfo } from 'utils/hooks/useTokenInfo';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 interface Props {
   tokenInfo?: ITokenInfo;
@@ -18,7 +18,7 @@ const TokenInfoComponent = ({ tokenInfo }: Props) => {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
 
   const navigateSendReceive = (screen: string) => {
     const params = {

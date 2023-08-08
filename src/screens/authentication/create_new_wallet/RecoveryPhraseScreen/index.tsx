@@ -6,9 +6,7 @@ import { scale } from 'device';
 import { PhraseItem, SelectDropdownComponent, DropdownItem } from '../components';
 import { Row } from 'components';
 import CTextButton from 'components/CTextButton';
-import { useNavigation } from '@react-navigation/native';
 import CreateNewWalletRouter from 'navigation/CreateNewWalletNavigation/CreateNewWalletRouter';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Phrase } from '../../data/data';
 import { Config } from 'utils';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -18,9 +16,10 @@ import { getRecoveryPhase } from '../../../../utils/helpers/account';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { ListItem } from '@rneui/themed';
 import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const RecoveryPhraseScreen = () => {
-  const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const { navigate } = useStackNavigation();
   const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
   const [derivationPath, setDerivationPath] = useState(DERIVATION_PATH[0]);
   const [isExpandedAdvanced, setIsExpandedAdvanced] = useState<boolean>(false);

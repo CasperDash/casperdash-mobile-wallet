@@ -5,7 +5,6 @@ import { scale } from 'device';
 import { colors, IconCircleClose, textStyles, IconPlusCircle, IconImportAccount } from 'assets';
 import { CButton, Col, Row } from 'components';
 import AccountItem from 'screens/home/HomeScreen/components/AccountItem';
-import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +20,7 @@ import ViewPrivateKeyButton from './ViewPrivateKeyButton';
 import { IAccountInfo, useLedgerAccounts, useListAccountInfo } from 'utils/hooks/useAccountInfo';
 import ViewAccountOnExplorer from './ViewAccountOnExplorer';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 interface SelectAccountModalProps {
   connectionType: CONNECTION_TYPES;
@@ -31,7 +31,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
   const [isVisible, setVisible] = useState<boolean>(false);
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(false);
 
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const listWallets = useSelector(getListWallets);
   const user = useSelector(getUser);
   const dispatch = useDispatch();

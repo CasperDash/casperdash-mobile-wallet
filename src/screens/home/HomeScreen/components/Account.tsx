@@ -8,12 +8,12 @@ import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { useSelector } from 'react-redux';
 import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
-import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { IAccountInfo } from 'utils/hooks/useAccountInfo';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -24,7 +24,7 @@ function Account() {
   const loginOptions = useSelector(getLoginOptions);
 
   const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfoByPublicKey(publicKey);
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const selectAccountModalRef = useRef<any>();
   const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
 

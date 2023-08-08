@@ -11,8 +11,6 @@ import { PhraseInputItem } from 'screens/authentication/import_wallet/components
 import ClipboardManager from 'utils/helpers/clipboard';
 import { useDispatch } from 'react-redux';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import { DERIVATION_PATH, NUMBER_OF_RECOVERY_WORDS } from '../../../../utils/constants/key';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -21,6 +19,7 @@ import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
 import { ListItem } from '@rneui/themed';
 import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const ImportPhraseScreen = () => {
   const dispatch = useDispatch();
@@ -29,7 +28,7 @@ const ImportPhraseScreen = () => {
 
   const [algorithm, setAlgorithm] = useState<EncryptionType>(EncryptionType.Ed25519);
   const [derivationPath, setDerivationPath] = useState(DERIVATION_PATH[0]);
-  const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const { navigate } = useStackNavigation();
   const [isWrongPhrase, setWrongPhrase] = useState<boolean>(false);
   const [numberOfWord, setNumberOfWords] = useState<number>(NUMBER_OF_RECOVERY_WORDS[0]);
   const [isExpandedAdvanced, setIsExpandedAdvanced] = useState<boolean>(false);

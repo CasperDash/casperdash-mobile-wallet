@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { colors, IconBack, textStyles } from 'assets';
 import { scale } from 'device';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 type Props = {
   title: any;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CHeader = ({ title, showBack = true, onBack, renderRight, onPressRight, titleStyle, style }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useStackNavigation();
   const goBack = () => {
     if (onBack) {
       onBack();

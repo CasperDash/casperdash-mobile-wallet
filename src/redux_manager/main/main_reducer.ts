@@ -14,7 +14,7 @@ const initialState = {
   deploysStakes: null,
 };
 
-export default function (state = initialState, action = { type: '', payload: {} }) {
+export default function (state = initialState, action = { type: '', payload: {} as any }) {
   const { loader } = state;
   const { actions, refreshing } = loader;
 

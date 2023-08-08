@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import WebView from 'react-native-webview';
-import { useNavigation } from '@react-navigation/native';
 import { IconCloseAlt, IconShare, colors } from 'assets';
 import { CLayout } from 'components';
 import { scale } from 'device';
 import { ScreenProps } from 'navigation/ScreenProps';
 import share from 'react-native-share';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 type Props = ScreenProps<'SIMPLE_WEB_VIEW'>;
 
 const SimpleWebViewScreen = ({ route }: Props) => {
-  const { goBack } = useNavigation();
+  const { goBack } = useStackNavigation();
   const { url, title } = route.params;
 
   const handleOnClosePress = () => {

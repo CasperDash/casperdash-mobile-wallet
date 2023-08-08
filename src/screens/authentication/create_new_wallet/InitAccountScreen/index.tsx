@@ -6,8 +6,7 @@ import { CLayout, Col } from 'components';
 import { colors, fonts, textStyles, images } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
 import { Config, Keys } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
@@ -21,6 +20,7 @@ import {
   setSelectedWallet,
 } from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const InitAccountScreen: React.FC<
   // @ts-ignore
@@ -28,7 +28,7 @@ const InitAccountScreen: React.FC<
 > = ({ route }) => {
   const { phrases, algorithm, isLoadUser, derivationPath } = route.params;
 
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigation = useStackNavigation();
   const dispatch = useDispatch();
   const currentUser = useSelector(getUser);
 

@@ -6,18 +6,17 @@ import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
 import { Config, Keys } from 'utils';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { useTokenInfo, useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { getPublicKey } from 'utils/selectors';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 // TODO: recheck add custom token
 function AddCustomTokenScreen() {
   const publicKey = useSelector(getPublicKey);
   const inputTokenAddress = useRef<string>('');
   const [tokenAddress, setTokenAddress] = useState('');
-  const { goBack } = useNavigation<StackNavigationProp<any>>();
+  const { goBack } = useStackNavigation();
   const { refetch, error, isLoading, remove } = useTokenInfo(tokenAddress, { enabled: false });
   const { refreshTokenInfo } = useTokenInfoByPublicKey(publicKey);
 

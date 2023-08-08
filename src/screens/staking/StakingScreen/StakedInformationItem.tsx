@@ -6,12 +6,12 @@ import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
 import { toFormattedNumber } from 'utils/helpers/format';
 import MainRouter from 'navigation/stack/MainRouter';
-import { useNavigation } from '@react-navigation/native';
 import { StakingMode } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { IStakedInfo } from 'utils/hooks/useStakeDeploys';
 import { toCSPR } from 'utils/helpers/currency';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 interface Props {
   value: IStakedInfo;
@@ -19,7 +19,7 @@ interface Props {
 }
 
 function StakedInformationItem({ value, validatorsDetail }: Props) {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const validatorDetail = validatorsDetail?.[value.validatorPublicKey];
 
   const undelegate = () => {

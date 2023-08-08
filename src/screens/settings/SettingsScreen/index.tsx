@@ -15,11 +15,11 @@ import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
 import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
-import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function SettingsScreen() {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const reStack = useRestack();
   const loginOptions = useSelector(getLoginOptions);
 
