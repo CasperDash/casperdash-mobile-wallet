@@ -91,7 +91,7 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
             price: tokenPrice,
             totalValue: (datum?.balance?.displayValue || 0) * tokenPrice,
             transferFee: tokenTransferFee,
-            icon: getBase64IdentIcon(datum.address),
+            icon: datum.icon || getBase64IdentIcon(datum.address),
           };
         })
       : [];

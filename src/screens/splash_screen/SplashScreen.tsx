@@ -48,7 +48,10 @@ const SplashScreen = () => {
 
   const onFinishReleaseNotes = useCallback(() => {
     setIsCheckVersionFinished(true);
-  }, []);
+    if (__DEV__) {
+      setupNavigation();
+    }
+  }, [setupNavigation]);
 
   return (
     <CLayout>
@@ -61,7 +64,7 @@ const SplashScreen = () => {
         ) : (
           <>
             <ReleaseNotes onFinish={onFinishReleaseNotes} />
-            {isCheckVersionFinished && <JailbreakAlert onFinish={onFinishJailBreakCheck} />}
+            {isCheckVersionFinished && !__DEV__ && <JailbreakAlert onFinish={onFinishJailBreakCheck} />}
           </>
         )}
       </Col>

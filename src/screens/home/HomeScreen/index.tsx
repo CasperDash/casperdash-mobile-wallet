@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
-import { colors, textStyles, IconSetting, IconPlusCircle, IconLogo } from 'assets';
+import { colors, textStyles, IconSetting, IconLogo } from 'assets';
 import { CButton, CLayout, Col, Row } from 'components';
 import { scale } from 'device';
 import { useNavigation } from '@react-navigation/native';
@@ -60,12 +60,13 @@ function HomeScreen() {
               allTokenInfo.map((value, i) => {
                 return <TokenComponent value={value} key={i} onPress={openHistories} />;
               })}
-            <CButton onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)} style={{ marginTop: scale(16) }}>
+            {/* TODO: support add custom token later
+             <CButton onPress={() => navigate(MainRouter.ADD_CUSTOM_TOKEN_SCREEN)} style={{ marginTop: scale(16) }}>
               <Row mx={16} style={styles.alignCenter}>
                 <IconPlusCircle width={scale(14)} height={scale(14)} />
                 <Text style={[textStyles.Body1, { marginLeft: scale(8) }]}>Add Custom Token</Text>
               </Row>
-            </CButton>
+            </CButton>  */}
           </ScrollView>
         )}
       </Col>

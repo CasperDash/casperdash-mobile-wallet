@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useQuery } from 'react-query';
+import { UseQueryOptions, useQuery } from 'react-query';
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse, IDisplayCSPRBalance } from 'services/User/userTypes';
 import { ERequestKeys } from 'utils/constants/requestKeys';
@@ -41,15 +41,18 @@ export const useAccountInfo = (publicKey: string) => {
   return { ...query, massagedData };
 };
 
-export const useListAccountInfo = (publicKeys: string[], keepPreviousData?: boolean) => {
+export const useListAccountInfo = (
+  publicKeys: string[],
+  options?: Omit<UseQueryOptions<unknown, any, IAccountResponse[], any>, 'queryKey' | 'queryFn'>,
+) => {
   const query = useQuery({
     queryKey: [ERequestKeys.listAccountInfo, publicKeys],
     queryFn: () => getListAccountInfo(publicKeys),
-    enabled: !!publicKeys && publicKeys.length > 0,
-    keepPreviousData: keepPreviousData,
+    enabled: !!publicKeys && publicKeys.length > 0 && options?.enabled,
     onError: (error: any) => {
       toastError(error?.response?.data?.message);
     },
+    ...options,
   });
 
   const massagedData = useMemo(() => {
