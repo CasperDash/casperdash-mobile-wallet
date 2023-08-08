@@ -123,9 +123,16 @@ export const useMyAccounts = (
   });
 };
 
-export interface LedgerAccountInfo extends IAccountInfo {
-  keyIndex: number;
-}
+export const getLedgerAccountInfo = (index: number, publicKey: string): IAccountInfo => {
+  const descriptor = new WalletDescriptor(`Ledger ${index + 1}`);
+  const walletInfo = new WalletInfo(publicKey, EncryptionType.Secp256k1, descriptor);
+  return {
+    isLedger: true,
+    ledgerKeyIndex: index,
+    walletInfo,
+    publicKey,
+  };
+};
 
 export const useLedgerAccounts = (
   { startIndex = 0, numberOfKeys = 10 },
@@ -146,13 +153,10 @@ export const useLedgerAccounts = (
       return accounts.map((account: LedgerAccount) => {
         const accountResponse = accountsResponse.find((item) => item.publicKey === account.publicKey);
         const massagedDetails = massageUserDetails(accountResponse!);
-        const descriptor = new WalletDescriptor(`Ledger ${account.keyIndex + 1}`);
-        const walletInfo = new WalletInfo(account.publicKey, EncryptionType.Secp256k1, descriptor);
+        const ledgerAccountInfo = getLedgerAccountInfo(account.keyIndex, account.publicKey);
         return {
           ...massagedDetails,
-          isLedger: true,
-          ledgerKeyIndex: account.keyIndex,
-          walletInfo,
+          ...ledgerAccountInfo,
         };
       });
     },

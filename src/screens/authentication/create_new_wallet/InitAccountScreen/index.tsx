@@ -11,7 +11,7 @@ import { Config, Keys } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
-import { EncryptionType, IHDKey, IWallet, WalletDescriptor, WalletInfo } from 'react-native-casper-storage';
+import { IHDKey, IWallet, WalletDescriptor } from 'react-native-casper-storage';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import {
   createNewUserWithHdWallet,
@@ -21,6 +21,7 @@ import {
 } from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
+import { getLedgerAccountInfo } from 'utils/hooks/useAccountInfo';
 
 const InitAccountScreen: React.FC<
   // @ts-ignore
@@ -113,15 +114,11 @@ const InitAccountScreen: React.FC<
   const migrateLedgerWallet = useCallback(async (info: any) => {
     let selectedWallet = await Config.getItem(Keys.selectedWallet);
     if (!selectedWallet) {
-      const descriptor = new WalletDescriptor(`Ledger ${info?.loginOptions?.keyIndex + 1}`);
-      const walletInfo = new WalletInfo(info.publicKey, EncryptionType.Secp256k1, descriptor);
+      if (info?.loginOptions?.keyIndex !== undefined) {
+        const ledgerAccountInfo = getLedgerAccountInfo(info?.loginOptions?.keyIndex, info.publicKey);
 
-      await setSelectedWallet({
-        isLedger: true,
-        ledgerKeyIndex: info?.loginOptions?.keyIndex,
-        walletInfo,
-        publicKey: info.publicKey,
-      });
+        await setSelectedWallet(ledgerAccountInfo);
+      }
     }
   }, []);
 
