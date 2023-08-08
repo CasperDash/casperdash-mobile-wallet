@@ -6,15 +6,14 @@ import { colors, textStyles } from 'assets';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { CASPER_SYMBOL } from 'utils/constants/key';
-import { IAccountInfo } from 'utils/hooks/useAccountInfo';
+import { LedgerAccountInfo } from 'utils/hooks/useAccountInfo';
 
 interface Props {
-  value: IAccountInfo;
-  index: number;
+  value: LedgerAccountInfo;
   onPress: (token: any) => void | Promise<void>;
 }
 
-const KeyComponent = ({ value, onPress, index }: Props) => {
+const KeyComponent = ({ value, onPress }: Props) => {
   return (
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
@@ -24,7 +23,7 @@ const KeyComponent = ({ value, onPress, index }: Props) => {
             <Text numberOfLines={1} ellipsizeMode={'middle'} style={[styles.titleAccount, { maxWidth: scale(100) }]}>
               {value.publicKey}
             </Text>
-            <Text style={styles.body2}>Key #{index}</Text>
+            <Text style={styles.body2}>Key #{value.keyIndex}</Text>
           </Col>
         </Row>
         <Col.R mx={12}>

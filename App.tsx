@@ -16,7 +16,6 @@ import DeviceInfo from 'react-native-device-info';
 
 Sentry.init({
   dsn: APP_CONFIGS.SENTRY_DSN,
-  debug: __DEV__,
   environment: __DEV__ ? 'development' : 'production',
   release: `io.casperdash.casperwallet@${DeviceInfo.getVersion()}`,
   dist: DeviceInfo.getBuildNumber(),
