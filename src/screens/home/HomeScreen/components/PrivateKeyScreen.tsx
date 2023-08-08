@@ -19,7 +19,7 @@ const PrivateKeyScreen = () => {
   const [privateKey, setPrivateKey] = useState<string>();
 
   useEffect(() => {
-    getWalletDetails(user, selectedWallet).then((details) => {
+    getWalletDetails(user, selectedWallet.walletInfo.uid).then((details) => {
       setPrivateKey(details?.getPrivateKeyInPEM());
     });
   }, [user, selectedWallet]);
