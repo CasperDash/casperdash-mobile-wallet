@@ -2,23 +2,24 @@ import * as React from 'react';
 import { Row, CInputFormik, Col, CButton } from 'components';
 import { Text, View, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
-import { useSelector } from 'react-redux';
-import { getConfigKey } from 'utils/selectors/configurations';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
 import { StakingMode } from 'utils/constants/key';
 import * as yup from 'yup';
 import { scale } from 'device';
-import { getMassagedUserDetails } from 'utils/selectors';
 import { toFormattedNumber } from 'utils/helpers/format';
 import CTextButton from 'components/CTextButton';
 import { EViews } from '../../utils';
+import { useAccountInfo } from 'utils/hooks/useAccountInfo';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { IValidator } from 'utils/hooks/useValidators';
+import { useStakedInfo } from 'utils/hooks/useStakeDeploys';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
   publicKey: string;
-  selectedValidator?: any;
+  selectedValidator?: IValidator;
   setView: React.Dispatch<React.SetStateAction<EViews>>;
   view: EViews;
 }
@@ -37,15 +38,17 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
 }) => {
   const navigation = useNavigation();
 
-  const userDetails = useSelector(getMassagedUserDetails);
-  const balance = userDetails && userDetails.balance && userDetails.balance.displayBalance;
-  const fee = useSelector(getConfigKey('CSPR_AUCTION_DELEGATE_FEE'));
-  const minCSPRDelegateToNewValidator = useSelector(getConfigKey('MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR'));
-  const maxDelegatorPerValidator = useSelector(getConfigKey('MAX_DELEGATOR_PER_VALIDATOR'));
+  const { massagedData: userDetails } = useAccountInfo(publicKey);
+  const balance = userDetails?.balance?.displayBalance ?? 0;
+  const { data: configurations } = useConfigurations();
+  const fee = configurations?.CSPR_AUCTION_DELEGATE_FEE ?? 0;
+  const minCSPRDelegateToNewValidator = configurations?.MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR || 0;
+
+  const { data: stakedInfo } = useStakedInfo(publicKey);
 
   const hasDelegated = React.useMemo(() => {
-    return selectedValidator?.bidInfo?.bid?.delegators?.find((delegator: any) => delegator.public_key === publicKey);
-  }, [publicKey, selectedValidator]);
+    return !!stakedInfo?.find((item) => item.validatorPublicKey === selectedValidator?.validatorPublicKey);
+  }, [stakedInfo, selectedValidator]);
 
   const selectValidator = () => {
     navigation.navigate(MainRouter.VALIDATOR_SCREEN);
@@ -68,7 +71,9 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         }
         return +value.replace(/,/, '.');
       })
-      .required('Amount must be more than 0 CSPR')
+      .required(
+        'The entered amount is below the minimum required. Please input an amount greater than or equal to 2.5 CSPR',
+      )
       .test(
         'max',
         'Insufficient balance to complete the transaction. Please add funds to your account and try again',
@@ -97,13 +102,13 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
         'maxDelegator',
         'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',
         () => {
-          return hasDelegated || selectedValidator?.bidInfo.bid?.delegators?.length <= maxDelegatorPerValidator;
+          return hasDelegated || !selectedValidator?.isFullDelegator;
         },
       ),
   });
 
   const setBalance = () => {
-    setFieldValue('amount', `${balance - fee > 0 ? balance - fee : 0}`);
+    setFieldValue('amount', `${balance - fee > 0 ? (balance - fee).toFixed(2) : 0}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -136,7 +141,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
 
   React.useEffect(() => {
     if (selectedValidator) {
-      setFieldValue('validator', selectedValidator && selectedValidator.public_key);
+      setFieldValue('validator', selectedValidator.validatorPublicKey);
       setFieldValue('amount', '0');
       setErrors({ ...errors, validator: '' });
       setTouched({ ...touched, validator: false });

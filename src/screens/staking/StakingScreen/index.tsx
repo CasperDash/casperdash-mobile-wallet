@@ -1,87 +1,46 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { colors, IconLogo, textStyles } from 'assets';
 import { Row, CLayout, Col } from 'components';
 import { scale } from 'device';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { checkIfLoadingSelector, checkIfRefreshingSelector, getPublicKey } from 'utils/selectors';
+import { useSelector } from 'react-redux';
+import { getPublicKey } from 'utils/selectors';
 import { useScrollToTop } from '@react-navigation/native';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
 import { ScreenProps } from 'navigation/ScreenProps';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
-import { types as stakingTypes } from 'redux_manager/staking/staking_action';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStakeFromValidators, useStakedHistory } from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
+import { IValidator, useValidatorsDetail } from 'utils/hooks/useValidators';
 import StakedHistoryItem from './StakedHistoryItem';
 import { StakingRewards } from './StakingRewards';
 import { NoData } from './NoData';
 import StakingForm from './StakingForm';
 import { EViews } from '../utils';
-import { getValidatorsDetail } from 'services/Validators/validatorsApis';
-import { useQuery } from 'react-query';
-import { ERequestKeys } from 'utils/constants/requestKeys';
 
 // @ts-ignore
-const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ route }) => {
+const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
+  route,
+}: {
+  route: { params: { selectedValidator: IValidator } };
+}) => {
   const { selectedValidator } = route?.params || {};
   const { bottom } = useSafeAreaInsets();
-  const dispatch = useDispatch();
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
 
-  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useQuery({
-    queryKey: [ERequestKeys.validatorsDetail],
-    queryFn: () => getValidatorsDetail(),
-  });
+  const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail } = useValidatorsDetail();
 
   //State
   const [view, setView] = useState<EViews>(EViews.info);
 
   // Selector
   const publicKey = useSelector(getPublicKey);
-  const stackingList = useStakeFromValidators(publicKey);
+  const { stakedValidators, isLoading, isRefetching, refetchInfo } = useStakeFromValidators(publicKey);
   const stakedHistory = useStakedHistory(publicKey);
 
-  const isLoading = useSelector((state: any) =>
-    // @ts-ignore
-    checkIfLoadingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
-  );
-
-  const isRefreshing = useSelector((state: any) =>
-    // @ts-ignore
-    checkIfRefreshingSelector(state, [stakingTypes.GET_VALIDATORS_INFORMATION]),
-  );
-
-  const getData = useCallback(
-    (refreshing: boolean) => {
-      if (isLoading && !refreshing) {
-        return;
-      }
-      dispatch(
-        allActions.staking.getValidatorsInformation({ refreshing, publicKey }, (error: any, _: any) => {
-          if (error) {
-            dispatch(
-              allActions.main.showMessage({
-                message: error.message,
-                type: MessageType.error,
-              }),
-            );
-          }
-        }),
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dispatch, publicKey],
-  );
-
-  useEffect(() => {
-    getData(false);
-  }, [getData]);
-
   const renderItems = () => {
-    const listItems = view === EViews.history ? stakedHistory : stackingList;
+    const listItems = view === EViews.history ? stakedHistory : stakedValidators;
     const Comp = view === EViews.history ? StakedHistoryItem : StakedInformationItem;
     return listItems && listItems.length > 0 ? (
       listItems.map((item: any, index: any) => {
@@ -98,7 +57,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
       setView={setView}
       view={view}
       selectedValidator={selectedValidator}
-      isRefreshing={isRefreshing}
+      isRefreshing={isRefetching}
     />
   );
 
@@ -120,7 +79,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({ ro
             showsVerticalScrollIndicator={false}
             style={{ marginTop: scale(22) }}
             contentContainerStyle={styles.contentContainerStyle}
-            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={() => getData(true)} />}
+            refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetchInfo} />}
           >
             {renderStakingForm()}
             {renderItems()}

@@ -1,17 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
 import { CLayout, Row, Col } from 'components';
 import { scale } from 'device';
 import TransactionComponent from 'screens/market/components/TransactionComponent';
 import ChartComponent from 'screens/market/components/ChartComponent';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentPrice } from 'utils/selectors';
-import { getPriceHistory } from 'utils/selectors/price';
-import { allActions } from 'redux_manager';
-import { MessageType } from 'components/CMessge/types';
 import { useScrollToTop } from '@react-navigation/native';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
+import { usePrice, usePriceHistory } from 'utils/hooks/usePrice';
 
 const getIcon = (type: string) => {
   return type === 'up' ? (
@@ -22,59 +18,40 @@ const getIcon = (type: string) => {
 };
 
 function MarketScreen() {
-  const dispatch = useDispatch();
   const scrollViewRef = useRef<any>();
   useScrollToTop(scrollViewRef);
 
-  const priceHistory = useSelector(getPriceHistory);
-  const currentPrice = useSelector(getCurrentPrice);
-  const data = useSelector((state: any) => state.home.CSPRMarketInfo);
-  const csprMarketInfo = data || {};
+  const { data: csprMarketInfo, currentPrice, refetch: refetchPrice, isRefetching: isRefetchingPrice } = usePrice();
+  const {
+    massagedData: priceHistory,
+    refetch: refetchPriceHistory,
+    isRefetching: isRefetchingPriceHistory,
+  } = usePriceHistory();
 
   const [isScrollable, setScrollable] = useState<boolean>(true);
-  const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
   const rowInfo = [
     {
       title: 'MarketCap',
-      value: toFormattedCurrency(csprMarketInfo.market_cap),
+      value: toFormattedCurrency(csprMarketInfo?.market_cap),
     },
     {
       title: '24h Volume',
-      value: toFormattedCurrency(csprMarketInfo.volume_24h),
+      value: toFormattedCurrency(csprMarketInfo?.volume_24h),
     },
     {
       title: 'Total Supply',
-      value: toFormattedNumber(csprMarketInfo.total_supply),
+      value: toFormattedNumber(csprMarketInfo?.total_supply),
     },
     {
       title: 'Circulating supply',
-      value: toFormattedNumber(csprMarketInfo.circulating_supply),
+      value: toFormattedNumber(csprMarketInfo?.circulating_supply),
     },
   ];
 
-  useEffect(() => {
-    getPriceHistoryInfo();
-  }, []);
-
-  const getPriceHistoryInfo = () => {
-    dispatch(
-      allActions.market.getPriceHistory((error: any) => {
-        setRefreshing(false);
-        if (error) {
-          const message = {
-            message: error && error.message ? error.message : 'Error',
-            type: MessageType.error,
-          };
-          dispatch(allActions.main.showMessage(message));
-        }
-      }),
-    );
-  };
-
   const onRefresh = () => {
-    setRefreshing(true);
-    getPriceHistoryInfo();
+    refetchPrice();
+    refetchPriceHistory();
   };
 
   const onActivated = () => {
@@ -118,7 +95,7 @@ function MarketScreen() {
           scrollEnabled={isScrollable}
           refreshControl={
             <RefreshControl
-              refreshing={isRefreshing}
+              refreshing={isRefetchingPrice || isRefetchingPriceHistory}
               onRefresh={onRefresh}
               style={{ backgroundColor: colors.cF8F8F8 }}
             />
@@ -133,16 +110,21 @@ function MarketScreen() {
                   maximumSignificantDigits: 4,
                 })}
               </Text>
-              {csprMarketInfo.price_change_percentage_24h < 0 ? getIcon('down') : getIcon('up')}
+              {csprMarketInfo?.price_change_percentage_24h && csprMarketInfo?.price_change_percentage_24h < 0
+                ? getIcon('down')
+                : getIcon('up')}
               <Text
                 style={[
                   styles.label,
                   {
-                    color: csprMarketInfo.price_change_percentage_24h >= 0 ? colors.c5FC88F : colors.cFA2852,
+                    color:
+                      csprMarketInfo?.price_change_percentage_24h && csprMarketInfo?.price_change_percentage_24h >= 0
+                        ? colors.c5FC88F
+                        : colors.cFA2852,
                   },
                 ]}
               >
-                {toFormattedNumber(csprMarketInfo.price_change_percentage_24h, {
+                {toFormattedNumber(csprMarketInfo?.price_change_percentage_24h, {
                   maximumSignificantDigits: 3,
                 })}
                 %

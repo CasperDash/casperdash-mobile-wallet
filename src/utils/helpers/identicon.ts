@@ -6,7 +6,7 @@ import IdentIcon from 'identicon.js';
  * @param [options] - {
  * @returns A base64 encoded image of an identicon.
  */
-export const getBase64IdentIcon = (value: any, options = {}) => {
+export const getBase64IdentIcon = (value: any, options = {}): string => {
   try {
     return `data:image/png;base64,${new IdentIcon(value, {
       background: [255, 0, 0, 0],

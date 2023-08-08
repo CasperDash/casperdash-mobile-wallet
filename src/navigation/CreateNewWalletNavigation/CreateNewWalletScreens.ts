@@ -7,7 +7,6 @@ import {
 } from 'screens';
 
 import CreateNewWalletRouter from './CreateNewWalletRouter';
-import AddKeyScreen from 'screens/authentication/create_new_wallet/AddKeyScreen';
 
 const {
   CREATE_NEW_WALLET_SCREEN,
@@ -15,7 +14,6 @@ const {
   DOUBLE_CHECK_IT_SCREEN,
   IMPORT_PHRASE_SCREEN,
   CONNECT_LEDGER_SCREEN,
-  ADD_KEY_SCREEN,
 } = CreateNewWalletRouter;
 
 export const CreateNewWalletScreens: any = {
@@ -38,9 +36,5 @@ export const CreateNewWalletScreens: any = {
   [CONNECT_LEDGER_SCREEN]: {
     screen: ConnectLedgerScreen,
     title: 'ConnectLedgerScreen',
-  },
-  [ADD_KEY_SCREEN]: {
-    screen: AddKeyScreen,
-    title: 'AddKeyScreen',
   },
 };

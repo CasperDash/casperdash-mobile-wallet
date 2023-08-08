@@ -7,9 +7,10 @@ import { colors, textStyles } from 'assets';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
+import { ITokenInfo } from 'utils/hooks/useTokenInfo';
 
 interface Props {
-  tokenInfo: any;
+  tokenInfo?: ITokenInfo;
 }
 
 const TokenInfoComponent = ({ tokenInfo }: Props) => {
@@ -30,16 +31,11 @@ const TokenInfoComponent = ({ tokenInfo }: Props) => {
     <View style={styles.container}>
       <Col px={16} pt={24} pb={16} style={styles.accountContainer}>
         <Col.C>
-          {tokenInfo.symbol && (
-            <Image
-              source={tokenInfo.symbol === 'CSPR' ? tokenInfo.icon : { uri: tokenInfo.icon }}
-              style={styles.symbol}
-            />
-          )}
-          <Text style={styles.amount}>{`${tokenInfo.balance && toFormattedNumber(tokenInfo.balance.displayValue)} ${
-            tokenInfo.symbol
+          {tokenInfo?.symbol && <Image source={{ uri: tokenInfo?.icon }} style={styles.symbol} />}
+          <Text style={styles.amount}>{`${tokenInfo?.balance && toFormattedNumber(tokenInfo.balance.displayValue)} ${
+            tokenInfo?.symbol
           }`}</Text>
-          <Text style={styles.amount2}>~ {toFormattedCurrency(tokenInfo.totalPrice)}</Text>
+          <Text style={styles.amount2}>~ {toFormattedCurrency(tokenInfo?.totalValue)}</Text>
         </Col.C>
         <Row.C>
           {AccountActions.map((action, index) => {

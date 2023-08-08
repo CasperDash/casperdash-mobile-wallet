@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDeploysTransfer, updateTransferDeployStatus } from 'utils/selectors/transfer';
-import { apis } from 'services';
 import { allActions } from 'redux_manager';
+import { useDeployStatus } from './useDeployStatus';
 
 /**
  * Sort the array by the timestamp property in descending order.
@@ -28,19 +28,16 @@ export const useDeploysWithStatus = ({ symbol, publicKey, status }: any = {}) =>
     .filter((deploy: any) => deploy.status === 'pending')
     .map((deploy: any) => deploy.deployHash);
 
+  const { data } = useDeployStatus(pendingTransferDeployHash);
+
   useEffect(() => {
-    if (pendingTransferDeployHash && pendingTransferDeployHash.length) {
+    if (data?.length) {
       (async () => {
-        const data: any = await apis.getTransferDeploysStatusAPI({
-          deployHash: pendingTransferDeployHash,
-        });
         await updateTransferDeployStatus(publicKey, data);
         dispatch(allActions.main.loadLocalStorage());
       })();
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(pendingTransferDeployHash), dispatch, publicKey]);
+  }, [data, dispatch, publicKey]);
 
   return transfersDeployList
     .filter(

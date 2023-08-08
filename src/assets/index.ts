@@ -80,6 +80,7 @@ const images = {
   version: require('./images/ic-version.png'),
   backup: require('./images/ic-backup.png'),
   showPassword: require('./images/icon-show-password.png'),
+  frame: require('./images/frame.png'),
 };
 
 const colors = {

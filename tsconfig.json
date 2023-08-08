@@ -11,9 +11,7 @@
     "strict": true,
     "target": "esnext",
     "baseUrl": ".",
-    "typeRoots": [
-      "./src/types"
-   ],
+    "typeRoots": ["./src/types"],
     "paths": {
       "*": ["src/*"],
       "utils": ["src/utils"],
@@ -26,13 +24,9 @@
       // "types": ["src/types"],
       "device": ["src/device"],
       // "provider": ["src/provider"]
+      "react": ["./node_modules/@types/react"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
-  ],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
   "include": ["svg.d.ts", "src", "global.d.ts", "react-native-col.d.ts"]
 }

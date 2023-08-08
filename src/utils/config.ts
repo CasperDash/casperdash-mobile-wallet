@@ -70,30 +70,21 @@ const requestPermission = (permissions: any, data?: any, callback?: () => void) 
 };
 
 const saveItem = async (key: string, value: any, options?: any) => {
-  await SInfo.setItem(
-    key,
-    JSON.stringify(value),
-    Object.assign(
-      {
-        sharedPreferencesName: 'casperdashSharedPrefs',
-        keychainService: 'casperdashKeychain',
-      },
-      options,
-    ),
-  );
+  await SInfo.setItem(key, JSON.stringify(value), {
+    ...options,
+    sharedPreferencesName: 'casperdashSharedPrefs',
+    keychainService: 'casperdashKeychain',
+    kSecAccessControl: 'kSecAccessControlBiometryAny',
+  });
 };
 
 const getItem = async (key: string, options?: any) => {
-  let data = await SInfo.getItem(
-    key,
-    Object.assign(
-      {
-        sharedPreferencesName: 'casperdashSharedPrefs',
-        keychainService: 'casperdashKeychain',
-      },
-      options,
-    ),
-  );
+  let data = await SInfo.getItem(key, {
+    ...options,
+    sharedPreferencesName: 'casperdashSharedPrefs',
+    keychainService: 'casperdashKeychain',
+    kSecAccessControl: 'kSecAccessControlBiometryAny',
+  });
   return data ? JSON.parse(data) : null;
 };
 

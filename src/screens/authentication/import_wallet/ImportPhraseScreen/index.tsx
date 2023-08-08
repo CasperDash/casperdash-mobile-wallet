@@ -8,7 +8,7 @@ import CTextButton from 'components/CTextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Phrase } from 'screens/authentication/data/data';
 import { PhraseInputItem } from 'screens/authentication/import_wallet/components';
-import Clipboard from '@react-native-community/clipboard';
+import ClipboardManager from 'utils/helpers/clipboard';
 import { useDispatch } from 'react-redux';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +20,7 @@ import { EncryptionType, KeyFactory } from 'react-native-casper-storage';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
 import { ListItem } from '@rneui/themed';
+import { SensitiveInfoWrapper } from 'components/SensitiveInfoWrapper';
 
 const ImportPhraseScreen = () => {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ const ImportPhraseScreen = () => {
   const onPress = async () => {
     if (listLeft.find((i) => i.word === '') || listRight.find((i) => i.word === '')) {
       //paste phrase
-      const phraseString = await Clipboard.getString();
+      const phraseString = await ClipboardManager.getString();
       if (phraseString && phraseString.length > 0) {
         let listWords: Array<Phrase> = phraseString.split(/\s+/).map((word, index) => ({
           id: index,
@@ -252,30 +253,31 @@ const ImportPhraseScreen = () => {
               );
             })}
           </Row.LR>
-
           <Row.LR py={16} px={16} mt={16} style={styles.body}>
-            <View style={styles.flex}>
-              {listLeft.map((item, index) => {
-                return (
-                  <PhraseInputItem
-                    data={item}
-                    onChangeText={(text: string) => onChangeText(text, index, 1)}
-                    key={index}
-                  />
-                );
-              })}
-            </View>
-            <View style={styles.flex}>
-              {listRight.map((item, index) => {
-                return (
-                  <PhraseInputItem
-                    data={item}
-                    onChangeText={(text: string) => onChangeText(text, index, 2)}
-                    key={index}
-                  />
-                );
-              })}
-            </View>
+            <SensitiveInfoWrapper>
+              <View style={styles.flex}>
+                {listLeft.map((item, index) => {
+                  return (
+                    <PhraseInputItem
+                      data={item}
+                      onChangeText={(text: string) => onChangeText(text, index, 1)}
+                      key={index}
+                    />
+                  );
+                })}
+              </View>
+              <View style={styles.flex}>
+                {listRight.map((item, index) => {
+                  return (
+                    <PhraseInputItem
+                      data={item}
+                      onChangeText={(text: string) => onChangeText(text, index, 2)}
+                      key={index}
+                    />
+                  );
+                })}
+              </View>
+            </SensitiveInfoWrapper>
           </Row.LR>
           {isWrongPhrase && <Text style={styles.txtError}>Wrong Phrase</Text>}
         </KeyboardAwareScrollView>

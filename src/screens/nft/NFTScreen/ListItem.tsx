@@ -6,29 +6,14 @@ import MainRouter from 'navigation/stack/MainRouter';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { CFastImage } from 'components';
+import { INFTInfo } from 'services/NFT/nftApis';
 
-export const getMetadataByKey = (metadata: any[], key: any) => {
-  const data = metadata.find((item) => item.key === key) || {};
-  return data.value;
-};
-
-function NFTItem({ data, index }: any) {
-  console.log('🚀 ~ file: ListItem.tsx:16 ~ NFTItem ~ data:', data);
-  const nftBackground = getMetadataByKey(data.metadata, 'background');
-  const metadata = data.metadata.filter(
-    (item: any) => item.key !== 'name' && item.key !== 'image' && item.key !== 'background',
-  );
+function NFTItem({ data, index }: { data: INFTInfo; index: number }) {
+  const { image, nftName, contractName, tokenId } = data;
 
   const onNavigationDetail = () => {
-    navigate(MainRouter.NFTDETAIL_SCREEN, {
-      ...data,
-      metadata: metadata,
-      background: nftBackground,
-      totalSupply: parseInt(data.totalSupply.hex, 16),
-    });
+    navigate(MainRouter.NFTDETAIL_SCREEN, data);
   };
-
-  const { nftImage, nftName, nftContractName } = data;
 
   return (
     <View style={[styles.nftItemWrapper, index % 2 === 0 && { marginRight: scale(15) }]}>
@@ -36,7 +21,7 @@ function NFTItem({ data, index }: any) {
         <View style={styles.imageWrapper}>
           <CFastImage
             colorDef={'transparent'}
-            source={nftImage}
+            source={image}
             resizeMode={'contain'}
             sourceDef={images.imgnft}
             style={styles.nftImage}
@@ -46,9 +31,9 @@ function NFTItem({ data, index }: any) {
         </View>
         <View style={styles.nftItemContent}>
           <Text style={styles.nftName} numberOfLines={1}>
-            {nftName || data.contractName}
+            {nftName ?? tokenId ?? contractName}
           </Text>
-          <Text style={styles.contractNameNFT}>{nftContractName}</Text>
+          <Text style={styles.contractNameNFT}>{contractName}</Text>
         </View>
       </TouchableOpacity>
     </View>

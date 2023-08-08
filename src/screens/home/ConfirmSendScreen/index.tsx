@@ -75,6 +75,7 @@ const ConfirmSendScreen: React.FC<
             ...transferDetails,
             deployHash: deployHash,
             status: 'pending',
+            // @ts-ignore no need to check type here
             timestamp: signedDeploy?.deploy?.header?.timestamp,
             transferId: transferId,
             address: token.address,
