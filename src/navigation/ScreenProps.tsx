@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { IValidator } from 'utils/hooks/useValidators';
 
 export type ScreenParams = {
   AuthenticationRouter: undefined;
@@ -44,6 +45,12 @@ export type ScreenParams = {
   SIMPLE_WEB_VIEW: {
     url: string;
     title: string;
+  };
+  VALIDATOR_SCREEN: {
+    callbackScreen: string;
+  };
+  UNDELEGATE_FORM_SCREEN: {
+    selectedValidator?: IValidator;
   };
 };
 
