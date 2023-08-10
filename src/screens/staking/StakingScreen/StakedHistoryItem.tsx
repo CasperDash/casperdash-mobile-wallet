@@ -5,7 +5,7 @@ import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { StatusColorMapping } from 'utils/helpers/transaction';
-import { DeployStatus } from 'utils/constants/key';
+import { DeployStatus, ENTRY_POINT_REDELEGATE } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { IHistoryInfo } from 'utils/hooks/useStakeDeploys';
@@ -30,7 +30,7 @@ const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
           </Text>
           <Text style={styles.description} numberOfLines={1} ellipsizeMode={'tail'}>
             {value.type}
-            {value.newValidatorName ? ` to ${value.newValidatorName} asdasdasdasd` : ''}
+            {value.type === ENTRY_POINT_REDELEGATE && value.newValidatorName ? ` to ${value.newValidatorName}` : ''}
           </Text>
         </Col.TL>
         <Col.TR style={styles.rowFooter}>

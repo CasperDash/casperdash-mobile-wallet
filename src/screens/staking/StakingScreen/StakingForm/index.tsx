@@ -110,7 +110,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
       )
       .test(
         'minByNewValidator',
-        `Please note that the minimum amount for your first staking is ${minCSPRDelegateToNewValidator} CSPR or more. Please adjust your amount and try again.`,
+        `Please note that the minimum amount for your staking is ${minCSPRDelegateToNewValidator} CSPR or more. Please adjust your amount and try again.`,
         function (value: any) {
           return (!configurations?.DISABLE_INCREASE_STAKE && hasDelegated) || value >= minCSPRDelegateToNewValidator;
         },

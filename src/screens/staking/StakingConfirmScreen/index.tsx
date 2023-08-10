@@ -8,7 +8,7 @@ import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
 import InfoComponent from 'screens/staking/InfoComponent';
-import { StakingMode } from 'utils/constants/key';
+import { ENTRY_POINT_REDELEGATE, StakingMode } from 'utils/constants/key';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
