@@ -31,6 +31,7 @@ export interface IConfigurationResponse {
   DOCS_URL?: string;
   PRIVACY_URL?: string;
   UNDELEGATE_TIME_NOTICE?: string;
+  DAPP_SUBMIT_URL?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
