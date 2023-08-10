@@ -8,6 +8,7 @@ import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { IValidator } from 'utils/hooks/useValidators';
 import { useGetFeeByEntryPoint } from 'utils/hooks/useGetFeeByEntryPoint';
 import { ENTRY_POINT_REDELEGATE, ENTRY_POINT_UNDELEGATE } from 'utils/constants/key';
+import { VALIDATOR_REACHED_MAXIMUM } from 'utils/constants/staking';
 
 type Props = {
   validatorPublicKey?: string;
@@ -69,16 +70,12 @@ export const useYupUndelegateFormSchema = ({ validatorPublicKey, selectedValidat
     validator: yup.string(),
     newValidator: yup
       .string()
-      .test(
-        'maxDelegator',
-        'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',
-        (_value, context: yup.TestContext<any>) => {
-          if (!context.parent.isRedelegate) {
-            return true;
-          }
+      .test('maxDelegator', VALIDATOR_REACHED_MAXIMUM, (_value, context: yup.TestContext<any>) => {
+        if (!context.parent.isRedelegate) {
+          return true;
+        }
 
-          return hasDelegated || !selectedValidator?.isFullDelegator;
-        },
-      ),
+        return hasDelegated || !selectedValidator?.isFullDelegator;
+      }),
   });
 };

@@ -1,16 +1,18 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { Col } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import { ENTRY_POINT_REDELEGATE } from 'utils/constants/key';
+import { Validator } from 'redux_manager/staking/staking_reducer';
+import ValidatorItem from 'screens/staking/components/ValidatorItem';
 
 interface Props {
-  validator: string;
+  validator: Validator;
   amount: number;
   fee: number;
-  newValidator?: string;
+  newValidator?: Validator;
   entryPoint?: string;
 }
 
@@ -18,11 +20,15 @@ const InfoComponent = ({ validator, amount, fee, newValidator, entryPoint }: Pro
   return (
     <Col pt={24}>
       <Text style={styles.caption}>Validator</Text>
-      <Text style={styles.value}>{validator}</Text>
+      <View style={styles.value}>
+        <ValidatorItem publicKey={validator.publicKey} logo={validator.logo} name={validator.name} />
+      </View>
       {entryPoint === ENTRY_POINT_REDELEGATE && (
         <>
           <Text style={styles.caption}>New Validator</Text>
-          <Text style={styles.value}>{newValidator}</Text>
+          <View style={styles.value}>
+            <ValidatorItem publicKey={newValidator?.publicKey} logo={newValidator?.logo} name={newValidator?.name} />
+          </View>
         </>
       )}
       <Text style={styles.caption}>Amount</Text>

@@ -5,7 +5,7 @@ import { colors, fonts, textStyles, IconHistory } from 'assets';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
-import { ENTRY_POINT_DELEGATE, StakingMode } from "utils/constants/key";
+import { ENTRY_POINT_DELEGATE, StakingMode } from 'utils/constants/key';
 import * as yup from 'yup';
 import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
@@ -20,6 +20,7 @@ import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { VALIDATOR_REACHED_MAXIMUM } from 'utils/constants/staking';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
@@ -117,13 +118,9 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
     validator: yup
       .string()
       .required('Please choose a validator')
-      .test(
-        'maxDelegator',
-        'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',
-        () => {
-          return hasDelegated || !selectedValidator?.isFullDelegator;
-        },
-      ),
+      .test('maxDelegator', VALIDATOR_REACHED_MAXIMUM, () => {
+        return hasDelegated || !selectedValidator?.isFullDelegator;
+      }),
   });
 
   const setBalance = () => {

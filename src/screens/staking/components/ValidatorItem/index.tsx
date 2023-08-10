@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { colors, IconArrowDown, textStyles } from 'assets';
-import { CButton } from 'components';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import * as React from 'react';
 import { scale } from 'device';
-import ValidatorItem from 'screens/staking/components/ValidatorItem';
+import { colors, textStyles } from 'assets';
 
 type Props = {
   onPress?: () => void;
@@ -12,25 +11,22 @@ type Props = {
   logo?: string;
   isShowArrow?: boolean;
 };
-// Test
 
-const SelectValidatorButton = ({ onPress, publicKey, logo, name, isShowArrow = true }: Props) => {
+const ValidatorItem = ({ logo, publicKey, name }: Props) => {
   return (
-    <CButton onPress={onPress}>
-      <View style={styles.selectValidator}>
-        {publicKey ? (
-          <>
-            <ValidatorItem logo={logo} publicKey={publicKey} name={name} />
-            {isShowArrow && <IconArrowDown />}
-          </>
-        ) : (
-          <>
-            <Text style={styles.placeholder}>Select a validator</Text>
-            {isShowArrow && <IconArrowDown />}
-          </>
-        )}
+    <View style={styles.selectContent}>
+      <View style={styles.iconWrapper}>
+        <Image source={{ uri: logo ?? getBase64IdentIcon(publicKey) }} style={styles.icon} />
       </View>
-    </CButton>
+      <View>
+        <Text style={styles.nameValidator} numberOfLines={1} ellipsizeMode={'middle'}>
+          {name ?? publicKey}
+        </Text>
+        <Text numberOfLines={1} ellipsizeMode={'middle'} style={[styles.publicKeyValidator]}>
+          {publicKey}
+        </Text>
+      </View>
+    </View>
   );
 };
 
@@ -56,10 +52,6 @@ const styles = StyleSheet.create({
     lineHeight: scale(30),
     width: scale(200),
   },
-  placeholder: {
-    ...textStyles.Body1,
-    color: colors.N3,
-  },
   publicKeyValidator: {
     ...textStyles.Body1,
     color: colors.N3,
@@ -76,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectValidatorButton;
+export default ValidatorItem;

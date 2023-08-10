@@ -62,7 +62,7 @@ const StakingConfirmScreen = () => {
           entryPoint,
           newValidator: newValidator.publicKey,
         });
-      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, publicKey, showMessage);
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, showMessage);
       if (deployHash) {
         dispatch(
           allActions.staking.pushStakeToLocalStorage(publicKey, {
@@ -100,10 +100,10 @@ const StakingConfirmScreen = () => {
           contentContainerStyle={styles.contentContainerStyle}
         >
           <InfoComponent
-            validator={stakedValidator.publicKey}
+            validator={stakedValidator}
             amount={amount}
             fee={fee}
-            newValidator={newValidator.publicKey}
+            newValidator={newValidator}
             entryPoint={entryPoint}
           />
           {name === StakingMode.Undelegate && (
