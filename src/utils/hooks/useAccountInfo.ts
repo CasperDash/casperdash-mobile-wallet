@@ -42,6 +42,7 @@ export const useAccountInfo = (publicKey: string) => {
     queryKey: [ERequestKeys.accountInfo, publicKey],
     queryFn: () => getAccountInfo(publicKey),
     enabled: !!publicKey,
+    staleTime: 1000 * 60 * 5,
   });
 
   const massagedData = useMemo(() => {

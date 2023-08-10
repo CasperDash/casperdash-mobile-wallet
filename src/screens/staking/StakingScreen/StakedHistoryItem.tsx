@@ -23,14 +23,17 @@ const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
         source={{ uri: validatorDetail?.logo || getBase64IdentIcon(value.validatorPublicKey) }}
         style={styles.validatorLogo}
       />
-      <Row.LR style={{ flex: 1 }}>
-        <Col.TL>
+      <Row.LR style={styles.row}>
+        <Col.TL style={styles.rowContent}>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
             {validatorDetail?.name || value.validatorPublicKey || ''}
           </Text>
-          <Text style={[textStyles.Body2]}>{value.type}</Text>
+          <Text style={styles.description} numberOfLines={1} ellipsizeMode={'tail'}>
+            {value.type}
+            {value.newValidatorName ? ` to ${value.newValidatorName} asdasdasdasd` : ''}
+          </Text>
         </Col.TL>
-        <Col.TR>
+        <Col.TR style={styles.rowFooter}>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
             <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount)} CSPR`}</Text>
           )}
@@ -57,6 +60,13 @@ const styles = StyleSheet.create({
     ...textStyles.Sub1,
     width: scale(130),
   },
+  row: {
+    flex: 1,
+  },
+  description: {
+    ...textStyles.Body2,
+    flex: 1,
+  },
   type: {
     ...textStyles.Body1,
     width: scale(130),
@@ -68,6 +78,12 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     ...textStyles.Body2,
+  },
+  rowContent: {
+    flex: 1,
+  },
+  rowFooter: {
+    flexBasis: scale(100),
   },
   circle: {
     width: scale(10),

@@ -1,5 +1,5 @@
 import { DeployUtil, RuntimeArgs, CLPublicKey, CLValueBuilder } from 'casperdash-js-sdk';
-import { NETWORK_NAME, ENTRY_POINT_DELEGATE } from '../constants/key';
+import { NETWORK_NAME, ENTRY_POINT_DELEGATE, ENTRY_POINT_REDELEGATE } from '../constants/key';
 import { contractHashes } from '../constants/stack';
 import { toMotes } from '../helpers/currency';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -33,6 +33,7 @@ export const getStakeDeploy = ({
   validator,
   fee,
   amount,
+  newValidator,
   entryPoint = ENTRY_POINT_DELEGATE,
 }: {
   fromAddress: string;
@@ -40,21 +41,27 @@ export const getStakeDeploy = ({
   fee: number;
   amount: number;
   entryPoint: string;
+  newValidator?: string;
 }) => {
   try {
     const fromAccPk = CLPublicKey.fromHex(fromAddress);
     const validatorPk = CLPublicKey.fromHex(validator);
-    return buildStakeDeploy(
-      fromAccPk,
-      entryPoint,
-      {
-        delegator: fromAccPk,
-        validator: validatorPk,
-        amount: CLValueBuilder.u512(toMotes(amount)),
-      },
-      toMotes(fee),
-    );
+    let args: any = {
+      delegator: fromAccPk,
+      validator: validatorPk,
+      amount: CLValueBuilder.u512(toMotes(amount)),
+    };
+    if (entryPoint === ENTRY_POINT_REDELEGATE) {
+      args = {
+        ...args,
+        new_validator: CLPublicKey.fromHex(newValidator!),
+      };
+    }
+
+    return buildStakeDeploy(fromAccPk, entryPoint, args, toMotes(fee));
   } catch (error) {
+    console.log('err: ', error);
+
     throw new Error('Failed to get stake deploy.');
   }
 };

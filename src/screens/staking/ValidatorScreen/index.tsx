@@ -5,26 +5,27 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
-import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
+import { useNavigation } from '@react-navigation/native';
 import { IValidator, useValidators, useValidatorsDetail } from 'utils/hooks/useValidators';
-import { useStackNavigation } from 'utils/hooks/useNavigation';
+import { ScreenProps } from 'navigation/ScreenProps';
 
-// @ts-ignore
-function ValidatorScreen() {
+function ValidatorScreen({ route }: ScreenProps<'VALIDATOR_SCREEN'>) {
   const insets = useSafeAreaInsets();
-  const { navigate } = useStackNavigation();
+  const { callbackScreen } = route.params;
+  const { navigate } = useNavigation<any>();
 
   const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail, isFetching } = useValidatorsDetail();
 
   const [search, setSearch] = useState('');
   const { filteredData: listValidators, refetch, isLoading } = useValidators(search);
 
-  const onSelectValidator = (validator: any) => {
+  const onSelectValidator = (validator: IValidator) => {
     navigate('Staking', {
-      screen: StakingRouter.STAKING_SCREEN,
+      screen: callbackScreen,
       params: {
         selectedValidator: validator,
       },
+      merge: true,
     });
   };
 

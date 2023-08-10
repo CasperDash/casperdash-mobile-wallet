@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
 import { useScrollToTop } from '@react-navigation/native';
 import { ScreenProps } from 'navigation/ScreenProps';
-import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStakeFromValidators, useStakedHistory } from 'utils/hooks/useStakeDeploys';
 import StakedInformationItem from 'screens/staking/StakingScreen/StakedInformationItem';
@@ -42,6 +41,7 @@ const StakingScreen: React.FC<ScreenProps<StakingRouter.STAKING_SCREEN>> = ({
   const renderItems = () => {
     const listItems = view === EViews.history ? stakedHistory : stakedValidators;
     const Comp = view === EViews.history ? StakedHistoryItem : StakedInformationItem;
+
     return listItems && listItems.length > 0 ? (
       listItems.map((item: any, index: any) => {
         return <Comp value={item} key={index} validatorsDetail={validatorsDetail} />;
