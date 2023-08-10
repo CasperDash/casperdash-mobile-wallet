@@ -8,12 +8,12 @@ import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { useSelector } from 'react-redux';
 import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
-import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
-import { WalletInfoDetails } from 'utils/helpers/account';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -24,9 +24,9 @@ function Account() {
   const loginOptions = useSelector(getLoginOptions);
 
   const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfoByPublicKey(publicKey);
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const selectAccountModalRef = useRef<any>();
-  const selectedWallet = useSelector<any, WalletInfoDetails>((state: any) => state.user.selectedWallet || {});
+  const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
 
   /*TODO: follow the figma's design*/
   // const onToggleAmount = () => {
@@ -34,10 +34,7 @@ function Account() {
   //   setIsShowAmount(i => !i);
   // };
   const canEditAccount = useMemo(() => {
-    return (
-      loginOptions?.connectionType === CONNECTION_TYPES.ledger ||
-      loginOptions?.connectionType === CONNECTION_TYPES.viewMode
-    );
+    return loginOptions?.connectionType === CONNECTION_TYPES.viewMode;
   }, [loginOptions]);
 
   const saveKey = async () => {
@@ -64,9 +61,7 @@ function Account() {
           <CButton onPress={onShowSelectAccountModal} style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                {loginOptions?.connectionType === CONNECTION_TYPES.ledger
-                  ? 'Ledger'
-                  : loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+                {loginOptions?.connectionType === CONNECTION_TYPES.viewMode
                   ? 'View mode'
                   : selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
@@ -99,7 +94,7 @@ function Account() {
           })}
         </Row.C>
       </Col>
-      <SelectAccountModal ref={selectAccountModalRef} />
+      <SelectAccountModal ref={selectAccountModalRef} connectionType={loginOptions.connectionType} />
     </View>
   );
 }

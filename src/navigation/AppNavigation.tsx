@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 export default function AppNavigation() {
   useEffect(() => {
     return () => {
+      // @ts-ignore
       isReadyRef.current = false;
     };
   }, []);
@@ -27,6 +28,7 @@ export default function AppNavigation() {
     <>
       <NavigationContainer
         onReady={() => {
+          // @ts-ignore
           isReadyRef.current = true;
         }}
         ref={navigationRef}

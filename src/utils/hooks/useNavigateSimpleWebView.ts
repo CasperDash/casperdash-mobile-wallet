@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useCallback } from 'react';
 import { toastError } from 'utils/helpers/errorHandler';
+import { useStackNavigation } from './useNavigation';
 
 type Params = {
   url?: string;
@@ -9,7 +9,7 @@ type Params = {
 };
 
 export const useNavigateSimpleWebView = () => {
-  const navigation = useNavigation();
+  const navigation = useStackNavigation();
   const navigateToWebView = useCallback(
     ({ url, title = '' }: Params) => {
       if (!url) {

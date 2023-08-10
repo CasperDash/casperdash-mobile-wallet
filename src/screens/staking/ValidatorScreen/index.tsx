@@ -5,14 +5,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
-import { useNavigation } from '@react-navigation/native';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { IValidator, useValidators, useValidatorsDetail } from 'utils/hooks/useValidators';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 // @ts-ignore
 function ValidatorScreen() {
   const insets = useSafeAreaInsets();
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
 
   const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail, isFetching } = useValidatorsDetail();
 

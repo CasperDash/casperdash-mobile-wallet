@@ -6,5 +6,6 @@ export const useConfigurations = () => {
   return useQuery({
     queryKey: [ERequestKeys.configurations],
     queryFn: () => getConfigurations(),
+    staleTime: 2 * 60 * 1000,
   });
 };

@@ -6,8 +6,7 @@ import { CLayout, Col } from 'components';
 import { colors, fonts, textStyles, images } from 'assets';
 import { scale } from 'device';
 // @ts-ignore
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
 import { Config, Keys } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
@@ -21,6 +20,8 @@ import {
   setSelectedWallet,
 } from 'utils/helpers/account';
 import { getUser } from 'utils/selectors/user';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
+import { getLedgerAccountInfo } from 'utils/hooks/useAccountInfo';
 
 const InitAccountScreen: React.FC<
   // @ts-ignore
@@ -28,10 +29,11 @@ const InitAccountScreen: React.FC<
 > = ({ route }) => {
   const { phrases, algorithm, isLoadUser, derivationPath } = route.params;
 
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigation = useStackNavigation();
   const dispatch = useDispatch();
   const currentUser = useSelector(getUser);
 
+  // this is for new user flow
   const setupUser = useCallback(async () => {
     if (!phrases || !algorithm || currentUser) {
       return;
@@ -53,10 +55,9 @@ const InitAccountScreen: React.FC<
 
       const wallets = user.getHDWallet()?.derivedWallets || [];
       const selectedWallet = wallets[0];
-      const selectedWalletDetails = await setSelectedWallet(selectedWallet, publicKey);
+      await setSelectedWallet({ walletInfo: selectedWallet, publicKey });
 
       dispatch(allActions.user.getUserSuccess(user));
-      dispatch(allActions.user.getSelectedWalletSuccess(selectedWalletDetails));
     } catch (e: any) {
       const message = {
         message: e && e.message ? e.message : 'Error',
@@ -66,6 +67,7 @@ const InitAccountScreen: React.FC<
     }
   }, [algorithm, dispatch, phrases, currentUser, derivationPath]);
 
+  // this is for existing user flow
   const loadUser = useCallback(async () => {
     if (!currentUser) {
       const masterPassword = await Config.getItem(Keys.masterPassword);
@@ -77,15 +79,14 @@ const InitAccountScreen: React.FC<
           const defaultWallet = loadedUser.getHDWallet().derivedWallets?.[0];
           const wallet = await loadedUser.getWalletAccount(defaultWallet.index);
           const publicKey = await wallet.getPublicKey();
-          selectedWallet = await setSelectedWallet(defaultWallet, publicKey);
+          await setSelectedWallet({ walletInfo: defaultWallet, publicKey });
         }
-        dispatch(allActions.user.getSelectedWalletSuccess(selectedWallet));
         dispatch(allActions.user.getUserSuccess(loadedUser));
-        dispatch(allActions.main.initState());
       }
     }
   }, [dispatch, currentUser]);
 
+  // after load user or setup user success
   const onInitSuccess = useCallback(
     (isLedger?: boolean) => {
       if (currentUser || isLedger) {
@@ -98,7 +99,7 @@ const InitAccountScreen: React.FC<
             ],
           }),
         );
-        dispatch(allActions.main.loadLocalStorage());
+        dispatch(allActions.main.initState());
         const message = {
           message: 'Logged in successfully',
           type: MessageType.success,
@@ -109,24 +110,46 @@ const InitAccountScreen: React.FC<
     [dispatch, navigation, currentUser],
   );
 
+  // migrate old ledger wallet
+  const migrateLedgerWallet = useCallback(async (info: any) => {
+    let selectedWallet = await Config.getItem(Keys.selectedWallet);
+    if (!selectedWallet) {
+      if (info?.loginOptions?.keyIndex !== undefined) {
+        const ledgerAccountInfo = getLedgerAccountInfo(info?.loginOptions?.keyIndex, info.publicKey);
+
+        await setSelectedWallet(ledgerAccountInfo);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     Config.getItem(Keys.casperdash).then((info: any) => {
+      // ledger or view mode no need to load user
       if (
         info?.loginOptions?.connectionType === CONNECTION_TYPES.ledger ||
         info?.loginOptions?.connectionType === CONNECTION_TYPES.viewMode
       ) {
-        onInitSuccess(true);
+        // migrate old ledger wallet
+        if (info?.loginOptions?.connectionType === CONNECTION_TYPES.ledger) {
+          migrateLedgerWallet(info).then(() => {
+            onInitSuccess(true);
+          });
+        } else {
+          onInitSuccess(true);
+        }
+        // if already have user
       } else if (isLoadUser) {
         loadUser().then(() => {
           onInitSuccess();
         });
+        // if no user
       } else {
         setupUser().then(() => {
           onInitSuccess();
         });
       }
     });
-  }, [loadUser, setupUser, onInitSuccess, isLoadUser]);
+  }, [loadUser, setupUser, onInitSuccess, isLoadUser, migrateLedgerWallet]);
 
   return (
     <CLayout>

@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl }
 import { colors, textStyles, IconSetting, IconLogo } from 'assets';
 import { CButton, CLayout, Col, Row } from 'components';
 import { scale } from 'device';
-import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
@@ -14,9 +13,10 @@ import { getPublicKey } from 'utils/selectors/user';
 import Account from 'screens/home/HomeScreen/components/Account';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { News } from './components/News';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function HomeScreen() {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const publicKey = useSelector(getPublicKey);

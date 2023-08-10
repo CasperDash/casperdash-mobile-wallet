@@ -1,9 +1,10 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import { StackName } from 'navigation/ScreenProps';
 import { useCallback } from 'react';
+import { useStackNavigation } from './useNavigation';
 
 export const useRestack = () => {
-  const navigation = useNavigation();
+  const navigation = useStackNavigation();
 
   const resetStack = useCallback(
     (stake: StackName, name: string) => {

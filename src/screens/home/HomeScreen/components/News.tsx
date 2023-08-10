@@ -6,11 +6,11 @@ import { useNews } from 'utils/hooks/useNews';
 import Carousel from 'react-native-reanimated-carousel';
 import MarketRouter from 'navigation/MarketNavigation/MarketRouter';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
-import { useNavigation } from '@react-navigation/native';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 export const News = () => {
   const { data } = useNews();
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const { navigateToWebView } = useNavigateSimpleWebView();
 
   const onPress = async (url?: string, title?: string) => {

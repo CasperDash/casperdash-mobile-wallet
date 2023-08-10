@@ -17,12 +17,12 @@ import { ENTRY_POINT_DELEGATE, ENTRY_POINT_UNDELEGATE, StakingMode } from 'utils
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
-import { useNavigation } from '@react-navigation/native';
 import { getStakeDeploy } from 'utils/services/stakeServices';
 import { MessageType } from 'components/CMessge/types';
 import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { toCSPR } from 'utils/helpers/currency';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const StakingConfirmScreen: React.FC<
   // @ts-ignore
@@ -40,7 +40,7 @@ const StakingConfirmScreen: React.FC<
       ? configurations?.CSPR_AUCTION_DELEGATE_FEE
       : configurations?.CSPR_AUCTION_UNDELEGATE_FEE) || 0;
   const publicKey = useSelector(getPublicKey)!;
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const dispatch = useDispatch();
   const isDelegate = useMemo(() => name === StakingMode.Delegate, [name]);
   const { massagedData: userDetails } = useAccountInfo(publicKey);
@@ -111,7 +111,7 @@ const StakingConfirmScreen: React.FC<
           amount: amountDeploy,
           entryPoint,
         });
-      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, publicKey, showMessage);
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, showMessage);
       if (deployHash) {
         dispatch(
           allActions.staking.pushStakeToLocalStorage(publicKey, {

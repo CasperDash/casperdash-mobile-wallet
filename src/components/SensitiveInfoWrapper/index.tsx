@@ -54,6 +54,7 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
       } else {
         RNScreenshotPrevent.enabled(false);
       }
+      // @ts-ignore
       subscription.remove();
     };
   }, []);

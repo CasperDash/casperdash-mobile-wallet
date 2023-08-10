@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Row, CInputFormik, Col, CButton } from 'components';
 import { Text, View, TouchableOpacity, Platform, StyleSheet, Image } from 'react-native';
 import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
-import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
 import { StakingMode } from 'utils/constants/key';
@@ -15,6 +14,7 @@ import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { IValidator } from 'utils/hooks/useValidators';
 import { useStakedInfo } from 'utils/hooks/useStakeDeploys';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
@@ -36,7 +36,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   setView,
   view,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useStackNavigation();
 
   const { massagedData: userDetails } = useAccountInfo(publicKey);
   const balance = userDetails?.balance?.displayBalance ?? 0;

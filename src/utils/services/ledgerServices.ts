@@ -5,6 +5,8 @@ import { CASPER_KEY_PATH } from '../constants/key';
 import { Config, Keys } from 'utils';
 import TransportBLE from '@ledgerhq/react-native-hw-transport-ble';
 import { DeployTypes, getDeployType } from 'utils/helpers/parser';
+import { CustomError } from 'utils/constants/requestKeys';
+import { rejectAfterTimeout } from 'utils/helpers/async';
 
 let cacheKey: Record<number | string, string> = {};
 
@@ -16,9 +18,20 @@ type LedgerOption = {
  * Initial ledger app
  */
 export const initLedgerApp = async () => {
-  const device = await Config.getItem(Keys.ledger);
-  const transport = await TransportBLE.open(device && device.id);
-  return { casperApp: new CasperApp(transport), transport };
+  try {
+    const device = await Config.getItem(Keys.ledger);
+
+    const transport = await rejectAfterTimeout(
+      TransportBLE.open(device && device.id),
+      4000,
+      Error(CONNECT_ERROR_MESSAGE),
+    );
+
+    return { casperApp: new CasperApp(transport), transport };
+  } catch (error: any) {
+    error.name = CustomError.LedgerError;
+    throw error;
+  }
 };
 
 /**
@@ -117,15 +130,20 @@ export const getLedgerPublicKey = async (app: any, keyIndex: string | number = 0
  * @param {number} numberOfKey number of keys that want to get
  */
 export const getListKeys = async (app: any, startPath = 0, numberOfKey = 1) => {
-  let publicKeys = [];
-  for (let index = 0; index < numberOfKey; index++) {
-    const keyIndex = startPath + index;
-    publicKeys.push({
-      publicKey: await getLedgerPublicKey(app, keyIndex),
-      keyIndex,
-    });
+  try {
+    let publicKeys = [];
+    for (let index = 0; index < numberOfKey; index++) {
+      const keyIndex = startPath + index;
+      publicKeys.push({
+        publicKey: await getLedgerPublicKey(app, keyIndex),
+        keyIndex,
+      });
+    }
+    return publicKeys;
+  } catch (error: any) {
+    error.name = CustomError.LedgerError;
+    throw error;
   }
-  return publicKeys;
 };
 
 /**

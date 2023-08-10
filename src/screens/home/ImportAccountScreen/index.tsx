@@ -4,19 +4,18 @@ import { CHeader, Col, Row, CInput, CLayout } from 'components';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { allActions } from 'redux_manager';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MessageType } from 'components/CMessge/types';
 import { KeyParser, CasperLegacyWallet, User, WalletDescriptor } from 'react-native-casper-storage';
 import { Config, Keys } from 'utils';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function ImportAccountScreen() {
   const [secretKey, setSecretKey] = useState('');
   const [name, setName] = useState('');
-  const { goBack } = useNavigation<StackNavigationProp<any>>();
+  const { goBack } = useStackNavigation();
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
