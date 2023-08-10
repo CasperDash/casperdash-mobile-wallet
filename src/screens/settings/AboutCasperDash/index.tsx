@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, Image, View, Text } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import { colors, textStyles, images, IconLogo, IconAbout } from 'assets';
+import { colors, textStyles, images, IconLogo, IconAbout, IconHandShake } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
-import { CASPERDASH_URL, DOCS_URL, PRIVACY_URL, SUPPORT_URL } from 'utils/constants/key';
+import { CASPERDASH_URL, DOCS_URL, PRIVACY_URL, SUPPORT_URL, TERMS_URL } from 'utils/constants/key';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 
@@ -37,12 +37,18 @@ const AboutCasperDash = () => {
     },
     {
       id: 3,
+      title: 'Terms of Use',
+      icon: () => <IconHandShake style={{ width: scale(32), height: scale(32) }} />,
+      onPress: () => navigateTo(configurations?.TERMS_URL || TERMS_URL, 'Terms of Use'),
+    },
+    {
+      id: 4,
       title: 'Privacy Policy',
       icon: () => <Image source={images.privacy} style={{ width: scale(32), height: scale(32) }} />,
       onPress: () => navigateTo(configurations?.PRIVACY_URL || PRIVACY_URL, 'Privacy Policy'),
     },
     {
-      id: 4,
+      id: 5,
       title: 'About Us',
       icon: () => <IconAbout width={scale(32)} height={scale(32)} />,
       onPress: () => navigateTo(CASPERDASH_URL, 'About Us'),

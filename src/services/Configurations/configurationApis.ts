@@ -13,6 +13,7 @@ import {
   MIN_CSPR_TRANSFER,
   SUPPORT_URL,
   DOCS_URL,
+  TERMS_URL,
 } from 'utils/constants/key';
 
 export interface IConfigurationResponse {
@@ -36,6 +37,7 @@ export interface IConfigurationResponse {
   ENABLE_REDELEGATE?: boolean;
   DISABLE_INCREASE_STAKE?: boolean;
   DAPP_SUBMIT_URL?: string;
+  TERMS_URL?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
@@ -58,6 +60,7 @@ export const getConfigurations = async (): Promise<IConfigurationResponse> => {
       DOCS_URL,
       ENABLE_REDELEGATE: false,
       DISABLE_INCREASE_STAKE: false,
+      TERMS_URL,
     }
   );
 };

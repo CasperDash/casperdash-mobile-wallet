@@ -68,6 +68,7 @@ import IconUser from './images/ic_user.svg';
 import IconShare from './images/ic_share.svg';
 import IconBlock from './images/ic_block.svg';
 import IconAbout from './images/ic_about.svg';
+import IconHandShake from './images/ic_handshake.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -291,4 +292,5 @@ export {
   IconShare,
   IconBlock,
   IconAbout,
+  IconHandShake,
 };

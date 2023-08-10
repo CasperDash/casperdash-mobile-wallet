@@ -21,6 +21,7 @@ import { IAccountInfo, useLedgerAccounts, useListAccountInfo } from 'utils/hooks
 import ViewAccountOnExplorer from './ViewAccountOnExplorer';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
+import _uniqBy from 'lodash/uniqBy';
 
 interface SelectAccountModalProps {
   connectionType: CONNECTION_TYPES;
@@ -155,6 +156,10 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
     reloadWallets();
   };
 
+  const allAccount = useMemo(() => {
+    return _uniqBy(walletsWithBalance?.concat(ledgerAccounts).concat(selectedWallet), 'walletInfo.uid').filter(Boolean);
+  }, [walletsWithBalance, ledgerAccounts, selectedWallet]);
+
   return (
     <Modal
       style={styles.container}
@@ -180,7 +185,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
             style={{ maxHeight: scale(220) }}
             contentContainerStyle={{ paddingVertical: scale(10) }}
           >
-            {walletsWithBalance?.concat(ledgerAccounts).map((walletDetails: IAccountInfo) => {
+            {allAccount.map((walletDetails: IAccountInfo) => {
               return (
                 <AccountItem
                   isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails.walletInfo?.uid}
