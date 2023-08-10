@@ -11,7 +11,9 @@ interface IAccountItemProps {
   isCurrentAccount: boolean;
   onSelectWallet: (data: IAccountInfo) => void;
   isLoadingBalance?: boolean;
-  onUpdateWalletName: (walletInfoDetails: IAccountInfo, newName: string, isCurrentAccount: boolean) => void;
+  isEditing?: boolean;
+  setEditingAccountUid: React.Dispatch<React.SetStateAction<string>>;
+  onUpdateWalletName: (walletInfoDetails: IAccountInfo, newName: string, isCurrentWallet: boolean) => void;
 }
 
 const AccountItem = ({
@@ -19,17 +21,22 @@ const AccountItem = ({
   isCurrentAccount,
   onSelectWallet,
   isLoadingBalance,
+  setEditingAccountUid,
+  isEditing,
   onUpdateWalletName,
 }: IAccountItemProps) => {
-  const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(data.walletInfo?.descriptor.name);
+
+  const resetEditingState = () => {
+    setEditingAccountUid('');
+  };
 
   const onUpdateName = () => {
     if (!name) {
       return;
     }
     onUpdateWalletName(data, name, isCurrentAccount);
-    setIsEditing(false);
+    resetEditingState();
   };
 
   return (
@@ -39,7 +46,7 @@ const AccountItem = ({
           <>
             <Col style={styles.leftContent}>
               {!data.isLedger && (
-                <TouchableOpacity onPress={() => setIsEditing(true)}>
+                <TouchableOpacity onPress={() => setEditingAccountUid(data.walletInfo.uid)}>
                   <IconPencilFilled width={scale(16)} height={scale(16)} />
                 </TouchableOpacity>
               )}
@@ -74,7 +81,7 @@ const AccountItem = ({
               <TouchableOpacity onPress={onUpdateName}>
                 <IconCheck width={scale(26)} height={scale(26)} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setIsEditing(false)}>
+              <TouchableOpacity onPress={() => resetEditingState()}>
                 <IconCloseAlt width={scale(22)} height={scale(22)} />
               </TouchableOpacity>
             </Col>

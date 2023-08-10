@@ -37,6 +37,9 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
   const dispatch = useDispatch();
   const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet);
   const currentAccount = useSelector<any, User>((state: any) => state.user.currentAccount);
+  // This for the https://github.com/CasperDash/casperdash-mobile-wallet/issues/181
+  // If close modal if focusing on a field, the app will stop responding
+  const [editingAccountUid, setEditingAccountUid] = useState('');
 
   const [listWalletsDetails, setListWalletsDetails] = useState<IAccountInfo[]>(listWallets);
 
@@ -92,6 +95,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
   };
 
   const hide = () => {
+    setEditingAccountUid('');
     setVisible(false);
   };
 
@@ -184,6 +188,8 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
                   key={walletDetails.walletInfo?.uid}
                   onSelectWallet={onSelectWallet}
                   isLoadingBalance={isLoading}
+                  isEditing={editingAccountUid === walletDetails.walletInfo?.uid}
+                  setEditingAccountUid={setEditingAccountUid}
                   onUpdateWalletName={onUpdateWalletName}
                 />
               );
