@@ -3,7 +3,6 @@ import React from 'react';
 import { AppNavigation } from './src/navigation';
 import { Provider } from 'react-redux';
 import { store } from './src/redux_manager';
-import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import 'react-native-console-time-polyfill';
@@ -14,6 +13,7 @@ import * as Sentry from '@sentry/react-native';
 import APP_CONFIGS from './src/utils/config/index';
 import DeviceInfo from 'react-native-device-info';
 import { CustomError } from './src/utils/constants/requestKeys';
+import { ToastMessage } from './src/components/Toast';
 
 Sentry.init({
   dsn: APP_CONFIGS.SENTRY_DSN,
@@ -46,7 +46,7 @@ const App = () => {
         <SafeAreaProvider>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AppNavigation />
-            <Toast />
+            <ToastMessage />
           </ErrorBoundary>
         </SafeAreaProvider>
       </QueryClientProvider>
