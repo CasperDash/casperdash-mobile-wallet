@@ -103,6 +103,7 @@ export default Account;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: scale(375),
     backgroundColor: colors.cF8F8F8,
     paddingBottom: scale(16),
