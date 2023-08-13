@@ -43,7 +43,7 @@ const TabItem = ({ focused, children }: TProps) => {
   );
 };
 
-const tabBarHeight = scale(40);
+const tabBarHeight = isIos() ? scale(40) : scale(52);
 
 const tabIcon18 = {
   width: scale(18),
