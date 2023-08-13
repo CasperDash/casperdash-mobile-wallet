@@ -1,5 +1,6 @@
 import { WalletInfo } from 'react-native-casper-storage';
 import { types } from './browser_action';
+import { types as mainTypes } from 'redux_manager/main/main_action';
 
 export enum RequestTypes {
   CONNECT = 'popupManager.openRequestConnect',
@@ -63,6 +64,11 @@ const initialState = {
 
 export default function (state: InitialState = initialState, action = { type: '', payload: {} }) {
   switch (action.type) {
+    case mainTypes.CLEAR_ALL_DATA: {
+      return {
+        ...initialState,
+      };
+    }
     case types.UPDATE_WEB_URL: {
       return {
         ...state,
