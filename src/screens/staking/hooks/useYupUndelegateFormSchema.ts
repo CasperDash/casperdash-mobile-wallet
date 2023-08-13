@@ -40,7 +40,7 @@ export const useYupUndelegateFormSchema = ({ validatorPublicKey, selectedValidat
       .required('Amount must be more than 0 CSPR')
       .test('max', `You don't have enough CSPR to pay the fee`, function (value: any, context: yup.TestContext<any>) {
         let fee = getFeeByEntryPoint(ENTRY_POINT_UNDELEGATE);
-        if (!context.parent.isRedelegate) {
+        if (context.parent.isRedelegate) {
           fee = getFeeByEntryPoint(ENTRY_POINT_REDELEGATE);
         }
 

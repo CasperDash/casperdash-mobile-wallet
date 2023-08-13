@@ -87,7 +87,7 @@ function StakedInformationItem({ value, validatorsDetail }: Props) {
                 <Text style={[textStyles.Body2]}>{`${
                   value.pendingDelegatedAmount
                     ? toFormattedNumber(value.pendingDelegatedAmount)
-                    : -toFormattedNumber(value.pendingUndelegatedAmount)
+                    : `-${toFormattedNumber(value.pendingUndelegatedAmount)}`
                 } CSPR`}</Text>
               </View>
             )}
