@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, Image } from 'react-native';
 import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
-import { colors, textStyles, images } from 'assets';
+import { colors, textStyles, IconVerified } from 'assets';
 import { getValueByFormat } from 'utils/helpers/format';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { IValidator } from 'utils/hooks/useValidators';
@@ -19,7 +19,7 @@ function ValidatorItem({ data, onSelectValidator, validatorsDetail }: ValidatorI
     <CButton onPress={() => onSelectValidator(data)}>
       <Row px={16} py={16} style={styles.container}>
         <Col.L pr={1} style={styles.verifiedIconCol}>
-          {data.priority && <Image style={styles.verifiedIcon} source={images.verifiedValidator} />}
+          {data.priority && <IconVerified />}
         </Col.L>
         <Image source={{ uri: validatorDetail?.logo || data.logo || data.icon }} style={styles.icon} />
         <Row.LR pl={4} style={styles.rightContainer}>

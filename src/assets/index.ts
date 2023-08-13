@@ -69,6 +69,7 @@ import IconShare from './images/ic_share.svg';
 import IconBlock from './images/ic_block.svg';
 import IconAbout from './images/ic_about.svg';
 import IconHandShake from './images/ic_handshake.svg';
+import IconVerified from './images/ic_verified.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -85,7 +86,6 @@ const images = {
   imgnft: require('./images/img_nft.png'),
   symbol_cspr: require('./images/ic_symbol_CSPR.png'),
   nodata: require('./images/ic_no_data.png'),
-  verifiedValidator: require('./images/red-casper.png'),
   touchId: require('./images/touchId.png'),
   faceId: require('./images/faceId.png'),
   build: require('./images/ic-build.png'),
@@ -293,4 +293,5 @@ export {
   IconBlock,
   IconAbout,
   IconHandShake,
+  IconVerified,
 };

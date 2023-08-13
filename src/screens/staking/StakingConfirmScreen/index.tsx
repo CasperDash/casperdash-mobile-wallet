@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { colors, textStyles } from 'assets';
 import { CLayout, Col, CHeader } from 'components';
 import { scale } from 'device';
