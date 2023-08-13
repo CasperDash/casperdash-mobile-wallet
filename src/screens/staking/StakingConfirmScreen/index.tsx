@@ -8,7 +8,7 @@ import CTextButton from 'components/CTextButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPublicKey } from 'utils/selectors';
 import InfoComponent from 'screens/staking/InfoComponent';
-import { ENTRY_POINT_REDELEGATE, StakingMode } from 'utils/constants/key';
+import { StakingMode } from 'utils/constants/key';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
 import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
@@ -17,7 +17,7 @@ import { getStakeDeploy } from 'utils/services/stakeServices';
 import { MessageType } from 'components/CMessge/types';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { getStakingForm } from 'utils/selectors/staking';
-import { STAKING_NOTE_MESSAGE } from 'utils/constants/staking';
+import { STAKING_NOTE_MESSAGE, DELEGATE_TIME_NOTICE } from 'utils/constants/staking';
 import { useGetFeeByEntryPoint } from 'utils/hooks/useGetFeeByEntryPoint';
 
 const StakingConfirmScreen = () => {
@@ -108,6 +108,9 @@ const StakingConfirmScreen = () => {
           />
           {name === StakingMode.Undelegate && (
             <Text style={styles.notes}>{configurations?.UNDELEGATE_TIME_NOTICE || STAKING_NOTE_MESSAGE}</Text>
+          )}
+          {name === StakingMode.Delegate && (
+            <Text style={styles.notes}>{configurations?.DELEGATE_TIME_NOTICE || DELEGATE_TIME_NOTICE}</Text>
           )}
           <CTextButton onPress={onConfirm} text={'Confirm'} style={[styles.btnStaking]} />
         </KeyboardAwareScrollView>

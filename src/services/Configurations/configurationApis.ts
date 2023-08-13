@@ -38,6 +38,7 @@ export interface IConfigurationResponse {
   DISABLE_INCREASE_STAKE?: boolean;
   DAPP_SUBMIT_URL?: string;
   TERMS_URL?: string;
+  DELEGATE_TIME_NOTICE?: string;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
