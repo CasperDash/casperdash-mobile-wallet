@@ -70,6 +70,9 @@ import IconBlock from './images/ic_block.svg';
 import IconAbout from './images/ic_about.svg';
 import IconHandShake from './images/ic_handshake.svg';
 import IconVerified from './images/ic_verified.svg';
+import IconSupport from './images/ic_support.svg';
+import IconDocument from './images/ic_document.svg';
+import IconProtection from './images/ic_protection.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -294,4 +297,7 @@ export {
   IconAbout,
   IconHandShake,
   IconVerified,
+  IconSupport,
+  IconDocument,
+  IconProtection,
 };

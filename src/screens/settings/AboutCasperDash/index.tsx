@@ -1,8 +1,17 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Linking } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import { colors, textStyles, images, IconLogo, IconAbout, IconHandShake } from 'assets';
+import {
+  colors,
+  textStyles,
+  IconLogo,
+  IconAbout,
+  IconHandShake,
+  IconSupport,
+  IconDocument,
+  IconProtection,
+} from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
@@ -26,14 +35,18 @@ const AboutCasperDash = () => {
     {
       id: 1,
       title: 'Documentation',
-      icon: () => <Image source={images.docs} style={{ width: scale(32), height: scale(32) }} />,
+      icon: () => <IconDocument />,
       onPress: () => navigateTo(configurations?.DOCS_URL || DOCS_URL, 'Documentation'),
     },
     {
       id: 2,
       title: 'Support',
-      icon: () => <Image source={images.support} style={{ width: scale(32), height: scale(32) }} />,
-      onPress: () => navigateTo(configurations?.SUPPORT_URL || SUPPORT_URL, 'Support'),
+      icon: () => <IconSupport />,
+      onPress: () => {
+        if (configurations?.SUPPORT_URL || SUPPORT_URL) {
+          Linking.openURL(configurations?.SUPPORT_URL || SUPPORT_URL);
+        }
+      },
     },
     {
       id: 3,
@@ -44,7 +57,7 @@ const AboutCasperDash = () => {
     {
       id: 4,
       title: 'Privacy Policy',
-      icon: () => <Image source={images.privacy} style={{ width: scale(32), height: scale(32) }} />,
+      icon: () => <IconProtection />,
       onPress: () => navigateTo(configurations?.PRIVACY_URL || PRIVACY_URL, 'Privacy Policy'),
     },
     {
