@@ -54,7 +54,7 @@ const UndelegateFormScreen: React.FC<ScreenProps<'UNDELEGATE_FORM_SCREEN'>> = ({
   });
 
   const setBalance = () => {
-    setFieldValue('amount', toCSPR(stakedAmount).toNumber());
+    setFieldValue('amount', `${toCSPR(stakedAmount)}`);
     setErrors({ ...errors, amount: '' });
   };
 
