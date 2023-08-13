@@ -54,7 +54,9 @@ function HomeScreen() {
         <ScrollView
           nestedScrollEnabled
           stickyHeaderIndices={[0]}
-          refreshControl={<RefreshControl refreshing={isFetching} onRefresh={onRefresh} />}
+          refreshControl={
+            <RefreshControl refreshing={isFetching} onRefresh={onRefresh} style={{ backgroundColor: colors.cF8F8F8 }} />
+          }
           showsVerticalScrollIndicator={false}
           style={styles.listTokensWrapper}
         >
