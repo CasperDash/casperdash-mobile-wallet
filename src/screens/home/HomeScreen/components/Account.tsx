@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
@@ -20,12 +20,13 @@ function Account() {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
+
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
 
   const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfoByPublicKey(publicKey);
   const { navigate } = useStackNavigation();
-  const selectAccountModalRef = useRef<any>();
   const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
 
   /*TODO: follow the figma's design*/
@@ -50,7 +51,7 @@ function Account() {
 
   const onShowSelectAccountModal = () => {
     if (!canEditAccount) {
-      selectAccountModalRef.current.show();
+      setShowAccountModal(true);
     }
   };
 
@@ -94,7 +95,13 @@ function Account() {
           })}
         </Row.C>
       </Col>
-      <SelectAccountModal ref={selectAccountModalRef} connectionType={loginOptions.connectionType} />
+      {showAccountModal && (
+        <SelectAccountModal
+          setShowAccountModal={setShowAccountModal}
+          connectionType={loginOptions.connectionType}
+          showAccountModal={showAccountModal}
+        />
+      )}
     </View>
   );
 }

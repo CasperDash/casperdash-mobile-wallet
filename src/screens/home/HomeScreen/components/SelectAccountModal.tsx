@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, StyleSheet, Platform, ScrollView, ActivityIndicator, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { scale } from 'device';
@@ -25,11 +25,12 @@ import _uniqBy from 'lodash/uniqBy';
 
 interface SelectAccountModalProps {
   connectionType: CONNECTION_TYPES;
+  setShowAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showAccountModal: boolean;
 }
 
-const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalProps, ref) => {
+const SelectAccountModal = ({ connectionType, setShowAccountModal, showAccountModal }: SelectAccountModalProps) => {
   const publicKey = useSelector(getPublicKey);
-  const [isVisible, setVisible] = useState<boolean>(false);
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(false);
 
   const { navigate } = useStackNavigation();
@@ -49,7 +50,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
 
   const { massagedData, isLoading } = useListAccountInfo(
     listWalletsDetails.filter((item) => item.publicKey).map((item) => item.publicKey!),
-    { enabled: isVisible, staleTime: 1000 * 60 },
+    { staleTime: 1000 * 60 },
   );
 
   const walletsWithBalance = useMemo<IAccountInfo[]>(() => {
@@ -69,7 +70,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
   } = useLedgerAccounts(
     { startIndex: 0, numberOfKeys: 5 },
     {
-      enabled: isVisible && isLedgerMode,
+      enabled: isLedgerMode,
       onError: () => {
         hide();
       },
@@ -79,25 +80,17 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
 
   // load wallet public key if pass phrase connection type
   useEffect(() => {
-    if (isVisible && isPassPhaseMode) {
+    if (isPassPhaseMode) {
       getWalletInfoWithPublicKey(user, listWallets).then((walletInfoWithPublicKey) => {
         setListWalletsDetails(walletInfoWithPublicKey);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(listWallets), user, isVisible]);
-
-  useImperativeHandle(ref, () => ({
-    show: show,
-  }));
-
-  const show = () => {
-    setVisible(true);
-  };
+  }, [JSON.stringify(listWallets), user]);
 
   const hide = () => {
     setEditingAccountUid('');
-    setVisible(false);
+    setShowAccountModal(false);
   };
 
   const openImportAccount = () => {
@@ -168,7 +161,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
       coverScreen={true}
       onBackdropPress={hide}
       backdropColor={'rgba(252, 252, 253, 1)'}
-      isVisible={isVisible}
+      isVisible={showAccountModal}
       animationIn={'fadeIn'}
       animationOut={'fadeOut'}
     >
@@ -230,7 +223,7 @@ const SelectAccountModal = forwardRef(({ connectionType }: SelectAccountModalPro
       </Col>
     </Modal>
   );
-});
+};
 
 export default SelectAccountModal;
 
