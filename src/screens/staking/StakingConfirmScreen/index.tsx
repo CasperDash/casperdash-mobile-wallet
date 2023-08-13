@@ -27,8 +27,6 @@ const StakingConfirmScreen = () => {
   const { navigate } = useNavigation<any>();
   const dispatch = useDispatch();
 
-  const [isForm, setIsForm] = useState<boolean>(name === StakingMode.Undelegate);
-
   const { executeDeploy, isDeploying } = useConfirmDeploy();
 
   const { fee } = useGetFeeByEntryPoint(entryPoint);
@@ -42,10 +40,6 @@ const StakingConfirmScreen = () => {
   };
 
   const onConfirm = async () => {
-    if (isForm) {
-      setIsForm(false);
-      return;
-    }
     if (isDeploying) {
       return;
     }
