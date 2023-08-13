@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, Image } from 'react-native';
+import { Text, StyleSheet, Image, View } from 'react-native';
 import { Row, Col, CButton } from 'components';
 import { scale } from 'device';
-import { colors, textStyles, IconVerified } from 'assets';
+import { colors, textStyles, IconVerified, IconMaxDelegators } from 'assets';
 import { getValueByFormat } from 'utils/helpers/format';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { IValidator } from 'utils/hooks/useValidators';
@@ -32,12 +32,15 @@ function ValidatorItem({ data, onSelectValidator, validatorsDetail }: ValidatorI
             </Text>
           </Col.L>
           <Col.R>
-            <Text style={textStyles.Body1}>
-              {getValueByFormat(data.delegationRate || 0, {
-                format: 'percentage',
-              })}{' '}
-              Fee
-            </Text>
+            <View style={styles.feeContainer}>
+              <Text style={[textStyles.Body1, { marginRight: scale(8) }]}>
+                {getValueByFormat(data.delegationRate || 0, {
+                  format: 'percentage',
+                })}{' '}
+                Fee
+              </Text>
+              {data.isFullDelegator && <IconMaxDelegators width={scale(28)} height={scale(28)} />}
+            </View>
             <Text style={textStyles.Body1}>
               {getValueByFormat(data.weight || 0, {
                 format: 'mote',
@@ -77,5 +80,10 @@ const styles = StyleSheet.create({
   },
   verifiedIconCol: {
     minWidth: 25,
+  },
+  feeContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

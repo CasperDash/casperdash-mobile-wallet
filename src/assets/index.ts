@@ -73,6 +73,7 @@ import IconVerified from './images/ic_verified.svg';
 import IconSupport from './images/ic_support.svg';
 import IconDocument from './images/ic_document.svg';
 import IconProtection from './images/ic_protection.svg';
+import IconMaxDelegators from './images/ic_max_delegators.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -300,4 +301,5 @@ export {
   IconSupport,
   IconDocument,
   IconProtection,
+  IconMaxDelegators,
 };
