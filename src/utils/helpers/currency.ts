@@ -43,7 +43,19 @@ export const toCSPRFromHex = (amountHex: string | number): Big => {
   try {
     const bigAmount = BigNumber.from(amountHex);
 
-    return toCSPR(bigAmount.toNumber());
+    return toCSPR(bigAmount.toString());
+  } catch (error) {
+    return new Big(0);
+  }
+};
+
+export const toBigFromDecimalHex = (amount: string | number, decimalHex: number | string): Big => {
+  try {
+    return new Big(
+      BigNumber.from(amount)
+        .pow(decimalHex ?? 0)
+        .toString(),
+    );
   } catch (error) {
     return new Big(0);
   }
