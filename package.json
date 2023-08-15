@@ -32,7 +32,7 @@
     "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && bundle exec fastlane internal --verbose",
     "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package && react-native setup-ios-permissions && pod-install",
     "sourcemaps:android": "node_modules/.bin/react-native bundle --platform android --entry-file index.js --dev false --reset-cache --bundle-output /tmp/bundle.android.js --assets-dest /tmp/ --sourcemap-output sourcemaps/android/index.js.map",
-    "sourcemaps:ios": "node_modules/.bin/react-native bundle --platform ios --entry-file index.js --dev false --reset-cache --bundle-output /tmp/bundle.ios.js --assets-dest /tmp/ --sourcemap-output sourcemaps/ios/index.js.map"
+    "sourcemaps:ios": "node_modules/.bin/react-native bundle --platform ios --entry-file index.js --dev false --reset-cache --bundle-output sourcemaps/ios/main.jsbundle  --sourcemap-output sourcemaps/ios/main.jsbundle.map"
   },
   "reactNativePermissionsIOS": [
     "Camera",
