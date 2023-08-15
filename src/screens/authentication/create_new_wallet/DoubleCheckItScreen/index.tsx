@@ -6,9 +6,7 @@ import _ from 'lodash';
 import { CLayout, CHeader } from 'components';
 import { scale } from 'device';
 import CTextButton from 'components/CTextButton';
-import { useNavigation } from '@react-navigation/native';
 import { CheckItem } from 'screens/authentication/create_new_wallet/components';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { getArrayNotInArray } from 'utils/collections';
 import { allActions } from 'redux_manager';
 import { useDispatch } from 'react-redux';
@@ -16,6 +14,7 @@ import AuthenticationRouter from 'navigation/AuthenticationNavigation/Authentica
 import { MessageType } from 'components/CMessge/types';
 import ChoosePinRouter from 'navigation/ChoosePinNavigation/ChoosePinRouter';
 import { NUMBER_WORDS_PER_ROW } from 'utils/constants/key';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const DoubleCheckItScreen: React.FC<
   // @ts-ignore
@@ -26,7 +25,7 @@ const DoubleCheckItScreen: React.FC<
   const { wordArray, algorithm, recoveryPhase, derivationPath } = route.params;
   const numberOfWords = Math.floor(wordArray?.length / NUMBER_WORDS_PER_ROW);
 
-  const { navigate } = useNavigation<StackNavigationProp<any>>();
+  const { navigate } = useStackNavigation();
   const dispatch = useDispatch();
 
   const isCheckingSuccess = __DEV__ ? true : listDataSelected.filter((i: any) => !!i).length === numberOfWords;

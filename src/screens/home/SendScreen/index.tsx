@@ -7,7 +7,6 @@ import CTextButton from 'components/CTextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useSelector } from 'react-redux';
@@ -16,13 +15,13 @@ import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
 import { getPublicKey } from 'utils/selectors';
 import QRScanner from 'components/QRScanner/QRScanner';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const initialValues = {
   transferAmount: '0',
@@ -33,7 +32,7 @@ const initialValues = {
 // @ts-ignore
 const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) => {
   const { bottom } = useSafeAreaInsets();
-  const { replace } = useNavigation<StackNavigationProp<any>>();
+  const { replace } = useStackNavigation();
   const { token } = route.params;
   const publicKey = useSelector(getPublicKey);
   const [showQR, setShowQR] = useState<boolean>(false);

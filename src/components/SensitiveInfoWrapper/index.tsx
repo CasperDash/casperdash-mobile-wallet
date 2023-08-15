@@ -43,7 +43,7 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
     }
     const subscription = addListener(() => {
       Toast.show({
-        type: 'info',
+        type: 'warning',
         text1: 'Screenshots cannot be taken due to security reasons.',
       });
     });
@@ -54,6 +54,7 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
       } else {
         RNScreenshotPrevent.enabled(false);
       }
+      // @ts-ignore
       subscription.remove();
     };
   }, []);

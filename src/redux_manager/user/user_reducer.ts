@@ -8,7 +8,7 @@ const initialState = {
   currentAccount: null,
 };
 
-export default function (state = initialState, action = { type: '', payload: {} }) {
+export default function (state = initialState, action = { type: '', payload: {} as any }) {
   switch (action.type) {
     case typesMain.LOAD_LOCAL_STORAGE_SUCCESS: {
       return {

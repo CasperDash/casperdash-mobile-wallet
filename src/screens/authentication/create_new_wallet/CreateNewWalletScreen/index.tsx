@@ -4,11 +4,11 @@ import { CLayout, Col } from 'components';
 import { images } from 'assets';
 import { scale } from 'device';
 import { ListCreateNewWalletMenu } from 'screens/authentication/data/data';
-import { useNavigation } from '@react-navigation/native';
 import { ListItem } from 'screens/authentication/create_new_wallet/components';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function CreateNewWalletScreen() {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
 
   return (
     <CLayout>

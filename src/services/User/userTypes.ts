@@ -1,6 +1,7 @@
 export interface IBalance {
   hex?: string;
   type?: string;
+  displayBalance?: number;
 }
 
 export interface ITokenInfoResponse {

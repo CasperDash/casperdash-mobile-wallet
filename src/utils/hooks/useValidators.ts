@@ -4,7 +4,6 @@ import { ERequestKeys } from 'utils/constants/requestKeys';
 import { IValidatorResponse, getValidators, getValidatorsDetail } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { useMemo } from 'react';
-import { toastError } from 'utils/helpers/errorHandler';
 
 export interface IValidator extends IValidatorResponse {
   name?: string;
@@ -18,9 +17,7 @@ export const useValidatorsDetail = () => {
   const query = useQuery({
     queryKey: [ERequestKeys.validatorsDetail],
     queryFn: () => getValidatorsDetail(),
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
+    staleTime: Infinity,
   });
   return query;
 };
@@ -31,9 +28,6 @@ export const useValidators = (searchTerm: string) => {
   const query = useQuery({
     queryKey: [ERequestKeys.validators],
     queryFn: () => getValidators(),
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
   });
 
   const massagedData = useMemo<IValidator[]>(
@@ -59,7 +53,8 @@ export const useValidators = (searchTerm: string) => {
     if (!massagedData) {
       return [];
     }
-    const fuse = new Fuse(massagedData, { keys: ['public_key', 'name'], threshold: 0.1 });
+
+    const fuse = new Fuse(massagedData, { keys: ['validatorPublicKey', 'name'], threshold: 0.1 });
     return fuse.search(searchTerm).map((result) => result.item);
   }, [massagedData, searchTerm]);
 

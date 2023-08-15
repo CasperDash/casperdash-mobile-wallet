@@ -10,7 +10,6 @@ import { getTokenInfoWithBalance } from 'services/User/userApis';
 import { useAccountInfo } from './useAccountInfo';
 import { useConfigurations } from './useConfigurations';
 import { getTokenInfo } from 'services/Token/tokenApis';
-import { toastError } from 'utils/helpers/errorHandler';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;
@@ -32,9 +31,6 @@ export const useTokenInfoWithBalance = (publicKey: string) => {
     queryKey: [ERequestKeys.tokenInfoWithBalance, publicKey],
     queryFn: () => getTokenInfoWithBalance(publicKey),
     enabled: !!publicKey,
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
   });
 
   const massagedData = useMemo<ITokenInfoResponse[]>(() => {
@@ -143,9 +139,6 @@ export const useTokenInfo = (
   const query = useQuery({
     queryKey: [ERequestKeys.tokenInfo, tokenAddress],
     queryFn: () => getTokenInfo(tokenAddress),
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
     ...options,
   });
   return query;

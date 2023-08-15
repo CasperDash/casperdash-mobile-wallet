@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { CButton } from 'components';
-import { useNavigation } from '@react-navigation/native';
 import CConfirmPinModal from 'components/CConfirmPinModal';
 import MainRouter from 'navigation/stack/MainRouter';
 import { IconEye } from 'assets';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const ShowRecoveryPhrase = () => {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
 
   const onShowRecoveryPhrase = () => {

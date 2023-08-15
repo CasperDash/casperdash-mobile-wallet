@@ -3,16 +3,16 @@ import { Text, StyleSheet } from 'react-native';
 import { CButton, Row } from 'components';
 import { scale } from 'device';
 import { textStyles, IconKey } from 'assets';
-import { useNavigation } from '@react-navigation/native';
 import CConfirmPinModal from 'components/CConfirmPinModal';
 import MainRouter from 'navigation/stack/MainRouter';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 interface IProps {
   onConfirm: () => void;
 }
 
 const ViewPrivateKeyButton = ({ onConfirm }: IProps) => {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
 
   const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
 

@@ -10,11 +10,11 @@ import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import TransactionItem from 'screens/home/HistoriesScreen/components/TransactionItem';
 import NoDataComponent from 'screens/home/HistoriesScreen/components/NoDataComponent';
-import { useNavigation } from '@react-navigation/native';
 import { useDeploysWithStatus } from 'utils/hooks/useTransferDeploys';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TokenInfoComponent from 'screens/home/HistoriesScreen/components/TokenInfoComponent';
 import { enrichTransactionWithIcon } from 'utils/helpers/transaction';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 export const STATUS_MAPPING = [
   { value: '', label: 'All', color: colors.N2 },
@@ -26,7 +26,7 @@ export const STATUS_MAPPING = [
 // @ts-ignore
 const HistoriesScreen: React.FC<ScreenProps<MainRouter.HISTORIES_SCREEN>> = ({ route }) => {
   const { token } = route.params;
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const insets = useSafeAreaInsets();
 
   const { symbol } = token;

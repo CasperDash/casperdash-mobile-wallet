@@ -6,25 +6,26 @@ import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'reac
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ValidatorItem from 'screens/staking/ValidatorScreen/ValidatorItem';
 import { useNavigation } from '@react-navigation/native';
-import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
 import { IValidator, useValidators, useValidatorsDetail } from 'utils/hooks/useValidators';
+import { ScreenProps } from 'navigation/ScreenProps';
 
-// @ts-ignore
-function ValidatorScreen() {
+function ValidatorScreen({ route }: ScreenProps<'VALIDATOR_SCREEN'>) {
   const insets = useSafeAreaInsets();
-  const { navigate } = useNavigation();
+  const { callbackScreen } = route.params;
+  const { navigate } = useNavigation<any>();
 
   const { data: validatorsDetail, isLoading: isLoadingValidatorsDetail, isFetching } = useValidatorsDetail();
 
   const [search, setSearch] = useState('');
   const { filteredData: listValidators, refetch, isLoading } = useValidators(search);
 
-  const onSelectValidator = (validator: any) => {
+  const onSelectValidator = (validator: IValidator) => {
     navigate('Staking', {
-      screen: StakingRouter.STAKING_SCREEN,
+      screen: callbackScreen,
       params: {
         selectedValidator: validator,
       },
+      merge: true,
     });
   };
 
@@ -63,7 +64,7 @@ function ValidatorScreen() {
           <CInput
             onChangeText={setSearch}
             style={styles.input}
-            placeholder={'Enter Validator'}
+            placeholder={'Search by name or public key'}
             placeholderTextColor={colors.N3}
           />
         </View>
