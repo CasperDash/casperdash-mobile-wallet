@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
@@ -8,25 +8,26 @@ import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { useSelector } from 'react-redux';
 import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
-import { useNavigation } from '@react-navigation/native';
 import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
-import { WalletInfoDetails } from 'utils/helpers/account';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function Account() {
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
+
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
 
   const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfoByPublicKey(publicKey);
-  const { navigate } = useNavigation();
-  const selectAccountModalRef = useRef<any>();
-  const selectedWallet = useSelector<any, WalletInfoDetails>((state: any) => state.user.selectedWallet || {});
+  const { navigate } = useStackNavigation();
+  const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
 
   /*TODO: follow the figma's design*/
   // const onToggleAmount = () => {
@@ -34,10 +35,7 @@ function Account() {
   //   setIsShowAmount(i => !i);
   // };
   const canEditAccount = useMemo(() => {
-    return (
-      loginOptions?.connectionType === CONNECTION_TYPES.ledger ||
-      loginOptions?.connectionType === CONNECTION_TYPES.viewMode
-    );
+    return loginOptions?.connectionType === CONNECTION_TYPES.viewMode;
   }, [loginOptions]);
 
   const saveKey = async () => {
@@ -53,7 +51,7 @@ function Account() {
 
   const onShowSelectAccountModal = () => {
     if (!canEditAccount) {
-      selectAccountModalRef.current.show();
+      setShowAccountModal(true);
     }
   };
 
@@ -64,9 +62,7 @@ function Account() {
           <CButton onPress={onShowSelectAccountModal} style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
-                {loginOptions?.connectionType === CONNECTION_TYPES.ledger
-                  ? 'Ledger'
-                  : loginOptions?.connectionType === CONNECTION_TYPES.viewMode
+                {loginOptions?.connectionType === CONNECTION_TYPES.viewMode
                   ? 'View mode'
                   : selectedWallet?.walletInfo?.descriptor?.name || ''}
               </Text>
@@ -99,7 +95,13 @@ function Account() {
           })}
         </Row.C>
       </Col>
-      <SelectAccountModal ref={selectAccountModalRef} />
+      {showAccountModal && (
+        <SelectAccountModal
+          setShowAccountModal={setShowAccountModal}
+          connectionType={loginOptions.connectionType}
+          showAccountModal={showAccountModal}
+        />
+      )}
     </View>
   );
 }
@@ -108,6 +110,7 @@ export default Account;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: scale(375),
     backgroundColor: colors.cF8F8F8,
     paddingBottom: scale(16),

@@ -1,17 +1,14 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, Linking } from 'react-native';
+import { Text, StyleSheet, ScrollView } from 'react-native';
 import { colors, IconViewExplorer, textStyles } from 'assets';
 import { CButton, CHeader, CLayout, Col, Row } from 'components';
 import { ScreenProps } from 'navigation/ScreenProps';
-import MainRouter from 'navigation/stack/MainRouter';
 import { scale } from 'device';
 import TransferDetailComponent from 'screens/home/TransferHistoryScreen/TransferDetailComponent';
 import { STATUS_MAPPING } from 'screens/home/HistoriesScreen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Config } from 'utils';
-import { useDispatch } from 'react-redux';
-import { MessageType } from 'components/CMessge/types';
-import { allActions } from 'redux_manager';
+import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 
 const DETAILS_MAPPING = [
   { label: 'Sending address', value: 'fromAddress', copy: true },
@@ -27,22 +24,18 @@ const TransferHistoryScreen: React.FC<
   // @ts-ignore
   ScreenProps<MainRouter.TRANSFER_HISTORY_SCREEN>
 > = ({ route }) => {
+  const { navigateToWebView } = useNavigateSimpleWebView();
+
   const { deploy } = route.params;
   const { bottom } = useSafeAreaInsets();
   const mappingStatus = STATUS_MAPPING.find((i) => i.value === (deploy.status || true));
-  const dispatch = useDispatch();
   const onViewExplorer = async () => {
     const url = Config.getViewExplorerURL('deploy', deploy.deployHash);
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      const message = {
-        message: 'Can not view in explorer',
-        type: MessageType.error,
-      };
-      dispatch(allActions.main.showMessage(message));
-    }
+
+    navigateToWebView({
+      url,
+      title: 'View in explorer',
+    });
   };
 
   return (

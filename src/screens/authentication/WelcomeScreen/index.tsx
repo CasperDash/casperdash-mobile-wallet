@@ -6,10 +6,9 @@ import { ListIntro } from 'screens/authentication/data/data';
 import { colors, fonts, IconArrowLeft2, IconArrowRight, textStyles } from 'assets';
 import { scale } from 'device';
 import IntroItem from 'screens/authentication/WelcomeScreen/IntroItem';
-import { useNavigation } from '@react-navigation/native';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Config, Keys } from 'utils';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const translatePreset = {
   duration: 300,
@@ -28,7 +27,7 @@ function WelcomeScreen() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const arrayImgSlider = Array.from({ length: ListIntro.length }, (_, i) => i * scale(375));
   const flatListRef = useRef<any>(null);
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigation = useStackNavigation();
 
   const navigate = (n: number) => {
     if ((currentIndex === 0 && n === -1) || (currentIndex === 2 && n === 1)) {

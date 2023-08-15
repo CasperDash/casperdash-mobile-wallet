@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts, IconBack } from 'assets';
@@ -10,7 +10,7 @@ const stylesWebView = `<style>
     img { display: block; max-width: ${device.w - 20}px; height: auto;}
 </style>`;
 
-export const Index: React.FC<ScreenProps<'CWebView'>> = ({ route, navigation }) => {
+export const Index: React.FC<ScreenProps<'CWebView'>> = ({ route, navigation }, ref) => {
   const insets = useSafeAreaInsets();
   const { url, title, script, content, onMessage } = route.params;
   const [loading, setLoading] = useState(true);
@@ -56,6 +56,7 @@ export const Index: React.FC<ScreenProps<'CWebView'>> = ({ route, navigation }) 
           }}
         >
           <AutoHeightWebView
+            ref={ref}
             onLoadEnd={onLoadEnd}
             injectedJavaScript={script}
             onMessage={onMessage}
@@ -71,7 +72,7 @@ export const Index: React.FC<ScreenProps<'CWebView'>> = ({ route, navigation }) 
   );
 };
 
-export default Index;
+export default forwardRef(Index);
 
 const styles = StyleSheet.create({
   container: {

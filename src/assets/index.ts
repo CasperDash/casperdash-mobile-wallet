@@ -57,6 +57,23 @@ import IconKey from './images/ic_key.svg';
 import IconHistory from './images/ic_history.svg';
 import IconCheck from './images/ic_check.svg';
 import IconCloseAlt from './images/ic_close_alt.svg';
+import IconList from './images/ic_list.svg';
+import IconBrowser from './images/ic_browser.svg';
+import IconBrowserActive from './images/ic_browser_active.svg';
+import IconTabs from './images/ic_tabs.svg';
+import IconArrowBack from './images/ic_arrow_back.svg';
+import IconArrowForward from './images/ic_arrow_forward.svg';
+import IconReload from './images/ic_reload.svg';
+import IconUser from './images/ic_user.svg';
+import IconShare from './images/ic_share.svg';
+import IconBlock from './images/ic_block.svg';
+import IconAbout from './images/ic_about.svg';
+import IconHandShake from './images/ic_handshake.svg';
+import IconVerified from './images/ic_verified.svg';
+import IconSupport from './images/ic_support.svg';
+import IconDocument from './images/ic_document.svg';
+import IconProtection from './images/ic_protection.svg';
+import IconMaxDelegators from './images/ic_max_delegators.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -73,7 +90,6 @@ const images = {
   imgnft: require('./images/img_nft.png'),
   symbol_cspr: require('./images/ic_symbol_CSPR.png'),
   nodata: require('./images/ic_no_data.png'),
-  verifiedValidator: require('./images/red-casper.png'),
   touchId: require('./images/touchId.png'),
   faceId: require('./images/faceId.png'),
   build: require('./images/ic-build.png'),
@@ -81,6 +97,9 @@ const images = {
   backup: require('./images/ic-backup.png'),
   showPassword: require('./images/icon-show-password.png'),
   frame: require('./images/frame.png'),
+  support: require('./images/ic_support.png'),
+  docs: require('./images/ic_docs.png'),
+  privacy: require('./images/ic_privacy.png'),
 };
 
 const colors = {
@@ -266,4 +285,21 @@ export {
   IconHistory,
   IconCheck,
   IconCloseAlt,
+  IconList,
+  IconBrowser,
+  IconBrowserActive,
+  IconTabs,
+  IconArrowBack,
+  IconArrowForward,
+  IconReload,
+  IconUser,
+  IconShare,
+  IconBlock,
+  IconAbout,
+  IconHandShake,
+  IconVerified,
+  IconSupport,
+  IconDocument,
+  IconProtection,
+  IconMaxDelegators,
 };

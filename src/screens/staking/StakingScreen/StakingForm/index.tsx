@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Row, CInputFormik, Col, CButton } from 'components';
 import { Text, View, TouchableOpacity, Platform, StyleSheet } from 'react-native';
-import { colors, fonts, IconArrowDown, textStyles, IconHistory } from 'assets';
+import { colors, fonts, textStyles, IconHistory } from 'assets';
 import { useNavigation } from '@react-navigation/native';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useFormik } from 'formik';
-import { StakingMode } from 'utils/constants/key';
+import { ENTRY_POINT_DELEGATE, StakingMode } from 'utils/constants/key';
 import * as yup from 'yup';
 import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
@@ -15,6 +15,12 @@ import { useAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { IValidator } from 'utils/hooks/useValidators';
 import { useStakedInfo } from 'utils/hooks/useStakeDeploys';
+import SelectValidatorButton from 'screens/staking/components/SelectValidatorButton';
+import StakingRouter from 'navigation/StakingNavigation/StakingRouter';
+import { useDispatch } from 'react-redux';
+import { allActions } from 'redux_manager';
+import { getBase64IdentIcon } from 'utils/helpers/identicon';
+import { VALIDATOR_REACHED_MAXIMUM } from 'utils/constants/staking';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
@@ -27,6 +33,7 @@ interface IStakingFormProps {
 const initialValues = {
   amount: '0',
   validator: '',
+  isRedelegate: true,
 };
 
 const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
@@ -36,7 +43,8 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   setView,
   view,
 }) => {
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const navigation = useNavigation<any>();
 
   const { massagedData: userDetails } = useAccountInfo(publicKey);
   const balance = userDetails?.balance?.displayBalance ?? 0;
@@ -51,14 +59,26 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   }, [stakedInfo, selectedValidator]);
 
   const selectValidator = () => {
-    navigation.navigate(MainRouter.VALIDATOR_SCREEN);
+    navigation.navigate(MainRouter.VALIDATOR_SCREEN, {
+      callbackScreen: StakingRouter.STAKING_SCREEN,
+    });
   };
 
   const onConfirm = () => {
-    navigation.navigate(MainRouter.STAKING_CONFIRM_SCREEN, {
-      name: StakingMode.Delegate,
-      validator: values.validator,
-      amount: values.amount.replace(/,/, '.'),
+    dispatch(
+      allActions.staking.setStakingForm({
+        entryPoint: ENTRY_POINT_DELEGATE,
+        name: StakingMode.Delegate,
+        amount: Number(values.amount.replace(/,/, '.')),
+        validator: {
+          publicKey: values.validator,
+          name: selectedValidator?.name || '',
+          logo: selectedValidator?.logo || getBase64IdentIcon(values.validator),
+        },
+      }),
+    );
+    navigation.navigate('Staking', {
+      screen: StakingRouter.STAKING_CONFIRM_SCREEN,
     });
   };
 
@@ -90,25 +110,21 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
       )
       .test(
         'minByNewValidator',
-        `Please note that the minimum amount for your first staking is ${minCSPRDelegateToNewValidator} CSPR or more. Please adjust your amount and try again.`,
+        `Please note that the minimum amount for your staking is ${minCSPRDelegateToNewValidator} CSPR or more. Please adjust your amount and try again.`,
         function (value: any) {
-          return hasDelegated || value >= minCSPRDelegateToNewValidator;
+          return (!configurations?.DISABLE_INCREASE_STAKE && hasDelegated) || value >= minCSPRDelegateToNewValidator;
         },
       ),
     validator: yup
       .string()
       .required('Please choose a validator')
-      .test(
-        'maxDelegator',
-        'The node has reached the maximum delegator capacity and cannot accept new delegations at this time',
-        () => {
-          return hasDelegated || !selectedValidator?.isFullDelegator;
-        },
-      ),
+      .test('maxDelegator', VALIDATOR_REACHED_MAXIMUM, () => {
+        return hasDelegated || !selectedValidator?.isFullDelegator;
+      }),
   });
 
   const setBalance = () => {
-    setFieldValue('amount', `${balance - fee > 0 ? (balance - fee).toFixed(2) : 0}`);
+    setFieldValue('amount', `${balance - fee > 0 ? (Math.floor((balance - fee) * 100) / 100).toFixed(2) : 0}`);
     setErrors({ ...errors, amount: '' });
   };
 
@@ -158,18 +174,12 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
           <Text style={styles.title}>Validator</Text>
           <Text style={textStyles.Body1}>Network Fee: {fee} CSPR</Text>
         </Row.LR>
-        <CButton onPress={selectValidator}>
-          <View style={styles.selectValidator}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode={'middle'}
-              style={[styles.nameValidator, !!values.validator && { color: colors.N2 }]}
-            >
-              {values.validator ? values.validator : 'Select Validator'}
-            </Text>
-            <IconArrowDown />
-          </View>
-        </CButton>
+        <SelectValidatorButton
+          name={selectedValidator?.name}
+          publicKey={values.validator}
+          logo={selectedValidator?.logo || selectedValidator?.icon}
+          onPress={selectValidator}
+        />
         {!!errors.validator && touched.validator && <Text style={styles.error}>{errors.validator}</Text>}
         <Row.LR mt={24} mb={16}>
           <Text style={styles.title}>Amount</Text>
@@ -245,24 +255,6 @@ const styles = StyleSheet.create({
     borderRadius: scale(16),
     borderWidth: 0,
   },
-  selectValidator: {
-    height: scale(48),
-    backgroundColor: colors.N5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: scale(16),
-    paddingVertical: scale(9),
-    borderRadius: scale(16),
-  },
-  nameValidator: {
-    ...textStyles.Body1,
-    color: colors.N3,
-    fontSize: scale(16),
-    lineHeight: scale(30),
-    width: scale(295),
-  },
-
   btnStaking: {
     marginTop: scale(22),
     marginBottom: scale(20),
@@ -284,5 +276,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: scale(16),
+  },
+  icon: {
+    width: scale(36),
+    height: scale(36),
+  },
+  iconWrapper: {
+    flexBasis: scale(50),
   },
 });

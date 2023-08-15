@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { CLayout, CButton } from 'components';
 import { Image, StyleSheet, Text, NativeModules } from 'react-native';
-// @ts-ignore
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
 import PinCodeWrapper from '../PinCodeWrapper';
 import { images, colors, textStyles } from 'assets';
@@ -11,11 +8,13 @@ import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import { scale } from 'device';
 import { validatePin } from 'utils/helpers/account';
 import { Keys, Config } from 'utils';
+import { resetCache } from 'utils/services/ledgerServices';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const MAX_ATTEMPT = 5;
 
 const EnterPinScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigation = useStackNavigation();
   const { isBiometryEnabled, biometryType } = useBiometry();
   const [pin, setPin] = useState<string>();
   const [storedPin, setStoredPin] = useState<string>();
@@ -46,6 +45,7 @@ const EnterPinScreen = () => {
     Object.entries(Keys).map((key) => {
       return Config.deleteItem(key[1]);
     });
+    resetCache();
     NativeModules.DevSettings.reload();
   };
 

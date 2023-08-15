@@ -10,11 +10,10 @@ import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 interface Props {
   value: IAccountInfo;
-  index: number;
-  onPress: (token: any) => void | Promise<void>;
+  onPress: (account: IAccountInfo) => void | Promise<void>;
 }
 
-const KeyComponent = ({ value, onPress, index }: Props) => {
+const KeyComponent = ({ value, onPress }: Props) => {
   return (
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
@@ -24,7 +23,7 @@ const KeyComponent = ({ value, onPress, index }: Props) => {
             <Text numberOfLines={1} ellipsizeMode={'middle'} style={[styles.titleAccount, { maxWidth: scale(100) }]}>
               {value.publicKey}
             </Text>
-            <Text style={styles.body2}>Key #{index}</Text>
+            <Text style={styles.body2}>Key #{value.ledgerKeyIndex}</Text>
           </Col>
         </Row>
         <Col.R mx={12}>

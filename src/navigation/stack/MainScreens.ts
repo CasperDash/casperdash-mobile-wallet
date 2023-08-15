@@ -15,6 +15,8 @@ import {
   ShowPrivateKeyScreen,
 } from 'screens';
 import NFTDetail from 'screens/nft/NFTDetailScreen';
+import SimpleWebViewScreen from 'screens/simple_web_view/SimpleWebViewScreen';
+import AboutCasperDash from 'screens/settings/AboutCasperDash';
 
 const {
   SETTINGS_SCREEN,
@@ -31,6 +33,8 @@ const {
   IMPORT_ACCOUNT_SCREEN,
   SHOW_RECOVERY_PHRASE_SCREEN,
   SHOW_PRIVATE_KEY_SCREEN,
+  SIMPLE_WEBVIEW_SCREEN,
+  ABOUT_CASPERDASH,
 } = MainRouter;
 
 export const MainScreens = {
@@ -40,6 +44,10 @@ export const MainScreens = {
   },
   [SETTINGS_SCREEN]: {
     screen: SettingsSceen,
+    title: '',
+  },
+  [ABOUT_CASPERDASH]: {
+    screen: AboutCasperDash,
     title: '',
   },
   [ADD_CUSTOM_TOKEN_SCREEN]: {
@@ -78,5 +86,8 @@ export const MainScreens = {
   },
   [SHOW_PRIVATE_KEY_SCREEN]: {
     screen: ShowPrivateKeyScreen,
+  },
+  [SIMPLE_WEBVIEW_SCREEN]: {
+    screen: SimpleWebViewScreen,
   },
 };

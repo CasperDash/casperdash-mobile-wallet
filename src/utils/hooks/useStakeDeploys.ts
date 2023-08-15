@@ -2,7 +2,7 @@ import _orderBy from 'lodash/orderBy';
 import { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDeployStakes, updateStakesDeployStatus } from '../selectors/stake';
-import { ENTRY_POINT_UNDELEGATE, ENTRY_POINT_DELEGATE, DeployStatus } from '../constants/key';
+import { ENTRY_POINT_UNDELEGATE, ENTRY_POINT_DELEGATE, DeployStatus, ENTRY_POINT_REDELEGATE } from '../constants/key';
 import { IconStatusReceive, IconStatusSend } from 'assets';
 import { allActions } from 'redux_manager';
 import { useDeployStatus } from './useDeployStatus';
@@ -10,16 +10,12 @@ import { useQuery } from 'react-query';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { getAccountDelegation } from 'services/User/userApis';
 import { IAccountDelegationResponse } from 'services/User/userTypes';
-import { toastError } from 'utils/helpers/errorHandler';
 
 export const useStakedInfo = (publicKey: string) => {
   const query = useQuery({
     queryKey: [ERequestKeys.accountDelegation, publicKey],
     queryFn: () => getAccountDelegation(publicKey),
     enabled: !!publicKey,
-    onError: (error: any) => {
-      toastError(error?.response?.data?.message);
-    },
   });
   return query;
 };
@@ -43,6 +39,8 @@ export interface IHistoryInfo {
   status: string;
   type: string;
   validatorPublicKey: string;
+  newValidatorPublicKey?: string;
+  newValidatorName?: string;
   delegatorPublicKey: string;
   stakedAmount: number;
   timestamp: string;
@@ -88,7 +86,9 @@ export const useStakeFromValidators = (publicKey: string) => {
           (stake: any) => stake.validator === item.validatorPublicKey && stake.entryPoint === ENTRY_POINT_DELEGATE,
         );
         const pendingUndelegated: any[] = pendingItems.filter(
-          (stake: any) => stake.validator === item.validatorPublicKey && stake.entryPoint === ENTRY_POINT_UNDELEGATE,
+          (stake: any) =>
+            stake.validator === item.validatorPublicKey &&
+            (stake.entryPoint === ENTRY_POINT_UNDELEGATE || stake.entryPoint === ENTRY_POINT_REDELEGATE),
         );
 
         return {
@@ -128,9 +128,14 @@ export const useStakedHistory = (publicKey: string): IHistoryInfo[] => {
     stakeDeployList.map<IHistoryInfo>((item: any) => {
       return {
         validatorPublicKey: item.validator,
+        newValidatorPublicKey: item.newValidator,
+        newValidatorName: item.newValidatorName,
         delegatorPublicKey: publicKey,
         stakedAmount: item.entryPoint === ENTRY_POINT_UNDELEGATE ? -item.amount : item.amount,
-        icon: item.entryPoint === ENTRY_POINT_UNDELEGATE ? IconStatusSend : IconStatusReceive,
+        icon:
+          item.entryPoint === ENTRY_POINT_UNDELEGATE || item.entryPoint === ENTRY_POINT_REDELEGATE
+            ? IconStatusSend
+            : IconStatusReceive,
         status: item.status,
         type: item.entryPoint,
         timestamp: item.timestamp,

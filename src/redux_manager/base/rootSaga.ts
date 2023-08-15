@@ -6,6 +6,7 @@ import { watchLoadLocalStorage, watchShowMessage } from '../main/main_saga';
 import { watchPushTransferToLocalStorage } from '../home/home_saga';
 
 import { watchPushStakeToLocalStorage } from 'redux_manager/staking/staking_saga';
+import { watchLoadConnectedSites, watchUpdateConnectedSites } from 'redux_manager/browser/browser_saga';
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +23,9 @@ export default function* rootSaga() {
 
     //Staking
     watchPushStakeToLocalStorage(),
+
+    //Connected Sites
+    watchUpdateConnectedSites(),
+    watchLoadConnectedSites(),
   ]);
 }

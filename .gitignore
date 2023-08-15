@@ -65,3 +65,6 @@ buck-out/
 coverage/
 *.env*
 release.json
+sentry.properties
+
+env.*.js
