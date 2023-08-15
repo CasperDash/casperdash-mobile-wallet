@@ -17,7 +17,7 @@ export const useDisconnectWithAccount = ({ onDisconnectSite }: Params = {}) => {
 
   const disconnectWithAccount = useCallback(
     async (urlWithProtocol: string, uid: string) => {
-      if (connectedSites[urlWithProtocol]) {
+      if (connectedSites?.[urlWithProtocol]) {
         const filteredConnectedUids = connectedSites[urlWithProtocol].connectedUids.filter(
           (item: string) => item !== uid,
         );
