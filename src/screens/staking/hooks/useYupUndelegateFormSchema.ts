@@ -13,9 +13,10 @@ import { VALIDATOR_REACHED_MAXIMUM } from 'utils/constants/staking';
 type Props = {
   validatorPublicKey?: string;
   selectedValidator?: IValidator;
+  stakedAmount?: number;
 };
 
-export const useYupUndelegateFormSchema = ({ validatorPublicKey, selectedValidator }: Props) => {
+export const useYupUndelegateFormSchema = ({ validatorPublicKey, selectedValidator, stakedAmount = 0 }: Props) => {
   const publicKey = useSelector(getPublicKey)!;
   const { data: stakedInfo } = useStakedInfo(publicKey);
   const { data: configurations } = useConfigurations();
@@ -65,6 +66,20 @@ export const useYupUndelegateFormSchema = ({ validatorPublicKey, selectedValidat
             return true;
           }
           return (!configurations?.DISABLE_INCREASE_STAKE && hasDelegated) || value >= minCSPRDelegateToNewValidator;
+        },
+      )
+      .test(
+        'maximumAmountBalanceInOldStake',
+        `You can only redelegate up to ${stakedAmount} CSPR.`,
+        function (value: any, context: yup.TestContext<any>) {
+          if (value <= stakedAmount) {
+            return true;
+          }
+          return context.createError({
+            message: `You can only ${
+              context?.parent.isRedelegate ? 'redelegate' : 'undelegate'
+            } up to ${stakedAmount} CSPR`,
+          });
         },
       ),
     validator: yup.string(),
