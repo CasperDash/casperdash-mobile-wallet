@@ -1,6 +1,6 @@
 import { scale } from 'device';
 import React from 'react';
-import { View, StyleSheet, ScrollView, ActivityIndicator, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator, Text } from 'react-native';
 import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';
 import CRowItemButton from 'components/CRowItemButton';
 import { useGetDApps } from 'utils/hooks/useGetDApps';
@@ -62,9 +62,7 @@ const HomePageContent = () => {
               <Text style={styles.questionTitle}>Are you a developer?</Text>
               <Text style={styles.questionDescription}>
                 If you have dApp want to add to list, please submit{' '}
-                <TouchableOpacity onPress={handleOnSubmitAppPress}>
-                  <Text style={[styles.questionDescription, styles.questionLink]}>here.</Text>
-                </TouchableOpacity>
+                <Text onPress={handleOnSubmitAppPress} style={[styles.questionDescription, styles.questionLink]}>here.</Text>
               </Text>
             </View>
           )}
@@ -96,6 +94,10 @@ const styles = StyleSheet.create({
   scrollView: {},
   questionTitle: {
     ...textStyles.Sub2,
+  },
+  questionDescriptionWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   questionDescription: {
     ...textStyles.Body2,
