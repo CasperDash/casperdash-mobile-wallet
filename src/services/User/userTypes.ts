@@ -1,6 +1,7 @@
 export interface IBalance {
   hex?: string;
   type?: string;
+  displayBalance?: number;
 }
 
 export interface ITokenInfoResponse {
@@ -10,6 +11,7 @@ export interface ITokenInfoResponse {
   symbol: string;
   total_supply?: { hex?: string; type?: string; displayValue?: number };
   decimals?: { hex?: string; type?: string; displayValue?: number };
+  icon?: string;
 }
 
 export interface INamedKey {

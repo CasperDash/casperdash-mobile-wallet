@@ -11,11 +11,11 @@ import { getPublicKey } from 'utils/selectors';
 import { useDeploysWithStatus } from 'utils/hooks/useTransferDeploys';
 import TransactionItem from 'screens/home/HistoriesScreen/components/TransactionItem';
 import MainRouter from 'navigation/stack/MainRouter';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const TransactionComponent = () => {
-  const { navigate } = useNavigation();
+  const { navigate } = useStackNavigation();
   const insets = useSafeAreaInsets();
 
   const [selectedStatus, setSelectedStatus] = useState(STATUS_MAPPING[0].value);

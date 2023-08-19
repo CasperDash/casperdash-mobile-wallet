@@ -5,7 +5,7 @@ import { colors, textStyles } from 'assets';
 import { scale } from 'device';
 import { toFormattedNumber } from 'utils/helpers/format';
 import { StatusColorMapping } from 'utils/helpers/transaction';
-import { DeployStatus } from 'utils/constants/key';
+import { DeployStatus, ENTRY_POINT_REDELEGATE } from 'utils/constants/key';
 import { IValidatorDetailsResponse } from 'services/Validators/validatorsApis';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { IHistoryInfo } from 'utils/hooks/useStakeDeploys';
@@ -23,14 +23,17 @@ const StakedHistoryItem = ({ value, validatorsDetail }: Props) => {
         source={{ uri: validatorDetail?.logo || getBase64IdentIcon(value.validatorPublicKey) }}
         style={styles.validatorLogo}
       />
-      <Row.LR style={{ flex: 1 }}>
-        <Col.TL>
+      <Row.LR style={styles.row}>
+        <Col.TL style={styles.rowContent}>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode={'middle'}>
             {validatorDetail?.name || value.validatorPublicKey || ''}
           </Text>
-          <Text style={[textStyles.Body2]}>{value.type}</Text>
+          <Text style={styles.description} numberOfLines={1} ellipsizeMode={'tail'}>
+            {value.type}
+            {value.type === ENTRY_POINT_REDELEGATE && value.newValidatorName ? ` to ${value.newValidatorName}` : ''}
+          </Text>
         </Col.TL>
-        <Col.TR>
+        <Col.TR style={styles.rowFooter}>
           {value.stakedAmount !== null && value.stakedAmount !== undefined && (
             <Text style={textStyles.Sub1}>{`${toFormattedNumber(value.stakedAmount)} CSPR`}</Text>
           )}
@@ -57,6 +60,13 @@ const styles = StyleSheet.create({
     ...textStyles.Sub1,
     width: scale(130),
   },
+  row: {
+    flex: 1,
+  },
+  description: {
+    ...textStyles.Body2,
+    flex: 1,
+  },
   type: {
     ...textStyles.Body1,
     width: scale(130),
@@ -68,6 +78,12 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     ...textStyles.Body2,
+  },
+  rowContent: {
+    flex: 1,
+  },
+  rowFooter: {
+    flexBasis: scale(100),
   },
   circle: {
     width: scale(10),

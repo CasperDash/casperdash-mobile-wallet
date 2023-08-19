@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { CButton, CHeader, CInputFormik, CLayout, Col, Row } from 'components';
 import { colors, IconScanQRCode, textStyles } from 'assets';
@@ -7,7 +7,6 @@ import CTextButton from 'components/CTextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useSelector } from 'react-redux';
@@ -16,12 +15,13 @@ import { ScreenProps } from 'navigation/ScreenProps';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownItem from 'screens/home/SendScreen/DropdownItem';
 import SelectDropdownComponent from 'screens/home/SendScreen/SelectDropdownComponent';
-import { StackNavigationProp } from '@react-navigation/stack';
-import ScanQrCodeModal from 'screens/home/SendScreen/ScanQRCodeModal';
 import { Config } from 'utils';
 import { PERMISSIONS } from 'react-native-permissions';
 import { isValidPublicKey } from 'utils/validator';
 import { getPublicKey } from 'utils/selectors';
+import QRScanner from 'components/QRScanner/QRScanner';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const initialValues = {
   transferAmount: '0',
@@ -32,10 +32,10 @@ const initialValues = {
 // @ts-ignore
 const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) => {
   const { bottom } = useSafeAreaInsets();
-  const { replace } = useNavigation<StackNavigationProp<any>>();
+  const { replace } = useStackNavigation();
   const { token } = route.params;
-  const scanQRCodeModalRef = useRef<any>();
   const publicKey = useSelector(getPublicKey);
+  const [showQR, setShowQR] = useState<boolean>(false);
 
   const [selectedTokenAddress, setSelectedTokenAddress] = useState<string>(token ? token.address : 'CSPR');
   const { allTokenInfo, getTokenInfoByAddress } = useTokenInfoByPublicKey(publicKey);
@@ -102,7 +102,7 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
         message: 'CasperDash need access to camera to scan QR Code',
       },
       () => {
-        scanQRCodeModalRef?.current?.open();
+        setShowQR(true);
       },
     );
   };
@@ -192,7 +192,12 @@ const SendScreen: React.FC<ScreenProps<MainRouter.SEND_SCREEN>> = ({ route }) =>
           text={'Confirm'}
         />
       </Col>
-      <ScanQrCodeModal ref={scanQRCodeModalRef} onScanSuccess={onScanSuccess} />
+      <QRScanner
+        visible={showQR}
+        onScanSuccess={onScanSuccess}
+        onScanError={(error: string) => Toast.show({ type: 'error', text1: 'Oops!', text2: error })}
+        hideModal={() => setShowQR(false)}
+      />
     </CLayout>
   );
 };

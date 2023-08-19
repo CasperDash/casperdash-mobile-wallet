@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Linking, Switch, Image, Text } from 'react-native';
+import { StyleSheet, Switch, Image, Text } from 'react-native';
 import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import DeviceInfo from 'react-native-device-info';
@@ -7,7 +7,6 @@ import { scale } from 'device';
 import { SettingMenu } from 'screens/settings/data';
 import SettingMenuComponent from '../components/SettingMenuComponent';
 import AuthenticationRouter from 'navigation/AuthenticationNavigation/AuthenticationRouter';
-import { CASPERDASH_URL } from 'utils/constants/key';
 import { useRestack } from 'utils/hooks/useRestack';
 import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
@@ -16,21 +15,32 @@ import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
 import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
+import MainRouter from 'navigation/stack/MainRouter';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 function SettingsScreen() {
+  const { navigate } = useStackNavigation();
   const reStack = useRestack();
   const loginOptions = useSelector(getLoginOptions);
 
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
 
+  const lockScreen = () => {
+    resetStack(AuthenticationRouter.ENTER_PIN);
+  };
+
+  const resetStack = (name: string) => {
+    reStack(StackName.AuthenticationStack, name);
+  };
+
   let listMenu: Array<SettingMenu> = [
     {
-      id: 0,
-      title: 'About Us',
+      id: 1,
+      title: 'About CasperDash',
       icon: () => <IconLogo width={scale(32)} height={scale(32)} />,
       subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)} />,
-      onPress: () => openUrl(),
+      onPress: () => navigate(MainRouter.ABOUT_CASPERDASH),
     },
     {
       id: 2,
@@ -72,21 +82,6 @@ function SettingsScreen() {
       actionComp: () => <Switch value={isBiometryEnabled} onValueChange={onUpdateBiometryStatus} />,
     });
   }
-
-  const openUrl = async () => {
-    const supported = await Linking.canOpenURL(CASPERDASH_URL);
-    if (supported) {
-      await Linking.openURL(CASPERDASH_URL);
-    }
-  };
-
-  const lockScreen = () => {
-    resetStack(AuthenticationRouter.ENTER_PIN);
-  };
-
-  const resetStack = (name: string) => {
-    reStack(StackName.AuthenticationStack, name);
-  };
 
   return (
     <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>

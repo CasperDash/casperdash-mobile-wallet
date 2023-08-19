@@ -9,6 +9,7 @@ import { DeviceItem } from 'screens/authentication/create_new_wallet/components'
 import { scale } from 'device';
 import { textStyles } from 'assets';
 import { GetPublicKeyScreen } from 'screens';
+import { Config, Keys } from 'utils';
 
 const deviceAddition = (device: any, devices: any) =>
   devices.some((i: any) => i.id === device.id) ? devices : devices.concat(device);
@@ -18,7 +19,7 @@ const ConnectLedgerScreen = () => {
   const [devices, setDevices] = useState<any>([]);
   const [error, setError] = useState<any>();
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [transport, setTransport] = useState<any>();
+  const [selectedDevice, setSelectedDevice] = useState<any>();
 
   useEffect(() => {
     let previousAvailable = false;
@@ -36,6 +37,7 @@ const ConnectLedgerScreen = () => {
     return () => {
       subscribe.current?.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startScan = () => {
@@ -70,11 +72,9 @@ const ConnectLedgerScreen = () => {
   const onSelect = async (device: any) => {
     try {
       const tp = await TransportBLE.open(device);
-      tp.on('disconnect', () => {
-        setTransport(null);
-        setError(null);
-      });
-      setTransport(tp);
+      setSelectedDevice(tp.device);
+      await Config.saveItem(Keys.ledger, tp.device);
+      await tp.close();
     } catch (err) {
       setError(err);
     }
@@ -103,8 +103,8 @@ const ConnectLedgerScreen = () => {
   return (
     <CLayout>
       <CHeader title={'Connect Ledger'} />
-      {transport ? (
-        <GetPublicKeyScreen transport={transport} setTransport={setTransport} />
+      {selectedDevice ? (
+        <GetPublicKeyScreen />
       ) : (
         <FlatList
           extraData={error}

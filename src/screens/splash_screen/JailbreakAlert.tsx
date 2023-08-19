@@ -20,12 +20,11 @@ export const JailbreakAlert: FC<JailbreakAlertProps> = ({ onFinish }) => {
   const onJailbrokenDetected = useCallback(() => {
     Splash.hide();
     const alert = {
-      buttonRight: 'Agree & Continue',
-      buttonLeft: 'Close',
-      onConfirm: onFinish,
+      showConfirm: false,
+      showCancel: false,
       alertMessage: (
         <>
-          <Text style={styles.title}>{`Device ${isIos() ? 'Jailbreak' : 'Root'}  Detected`}</Text>
+          <Text style={styles.title}>{`Device ${ios ? 'Jailbreak' : 'Root'}  Detected`}</Text>
           <Text style={styles.message}>
             Please note that your device appears to be{' '}
             <Text style={styles.importantMessage}>{ios ? 'jailbroken' : 'rooted'}</Text>. Using our application on a
@@ -34,12 +33,11 @@ export const JailbreakAlert: FC<JailbreakAlertProps> = ({ onFinish }) => {
             <Text style={styles.importantMessage}>{`${ios ? 'non-jailbroken' : 'non-rooted'} device`}</Text> for optimal
             security.
           </Text>
-          <Text style={styles.message}>Continue using the app at your own discretion.</Text>
         </>
       ),
     };
     alertRef.current.show(alert);
-  }, [ios, onFinish]);
+  }, [ios]);
 
   const onCloseApp = () => {
     BackHandler.exitApp();

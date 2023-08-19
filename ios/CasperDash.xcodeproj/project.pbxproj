@@ -16,7 +16,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		18AA35F675044112A743E8BA /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80E94E6C7524441280E92155 /* Lato-BlackItalic.ttf */; };
-		1C1189280A72F5D40F056A50 /* libPods-CasperDash-CasperDashTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E221053113A5A850D21B2786 /* libPods-CasperDash-CasperDashTests.a */; };
 		26B9D3323D3447F68BA998F5 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BA0618FBC044A5D987BEE61 /* DMSans-Medium.ttf */; };
 		2F82B67BD6E64E3A88CA054B /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 934231BF4816431296FE3A2A /* Lato-BoldItalic.ttf */; };
 		35A05A28193B4E4DBA7BCDCB /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 143A30A415144E94B506454F /* DMSans-Regular.ttf */; };
@@ -27,13 +26,14 @@
 		5A29B9C53FFE42A398C51935 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A12714EEB5614C9A95773669 /* Lato-Bold.ttf */; };
 		682D56DAFF6D4C81B25486A0 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA35CF5E01FC41DF923DC291 /* Lato-Black.ttf */; };
 		6A6D9E321B584675A78D5C18 /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9508EE8B27F84A808CD021B0 /* DMSans-Italic.ttf */; };
-		6B960D9C25B42FC6D37E9A28 /* libPods-CasperDash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 876DE54889C0530D27AA6273 /* libPods-CasperDash.a */; };
 		70F5506208634315945A3E29 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 15C625AF1BEB46598366DD9A /* Poppins-BoldItalic.ttf */; };
 		72A7FD75E98F4FFE97DDCB3D /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 188594A43CAF4A6DA17552C3 /* Poppins-ExtraBold.ttf */; };
 		78AD49892C6748CBB08F8BBC /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF425465B9E84FDA8005AC6B /* Poppins-Black.ttf */; };
+		7FE47235D8E7F6CC96281742 /* libPods-CasperDash-CasperDashTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3106E00C37CB1C206ECAB8 /* libPods-CasperDash-CasperDashTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8557EDE9A8CC44B2B8EF9C96 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0B2B3E3B50D4DA886848ACA /* Poppins-Thin.ttf */; };
 		9DAEAE269B754FD8BD0FE306 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA76C25BC4464348AD2DA9AB /* Poppins-SemiBoldItalic.ttf */; };
+		9FB99944614F654A9A329B76 /* libPods-CasperDash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB553DA1A631DA3EE0603A6 /* libPods-CasperDash.a */; };
 		A692DCBDE24E48648D4C59A4 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DC6172F9A249A8A46D7E75 /* Poppins-ExtraBoldItalic.ttf */; };
 		A955FCB41EF94339A69619A8 /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36A12152BCC84199AC52230E /* DMSans-BoldItalic.ttf */; };
 		B15F2753CA34460786B59D14 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A432E7EFFCF0471BBCECDD86 /* Lato-Italic.ttf */; };
@@ -75,24 +75,23 @@
 		143A30A415144E94B506454F /* DMSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-Regular.ttf"; path = "../src/assets/fonts/DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		15C625AF1BEB46598366DD9A /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		188594A43CAF4A6DA17552C3 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
+		1B3106E00C37CB1C206ECAB8 /* libPods-CasperDash-CasperDashTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CasperDash-CasperDashTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BA0618FBC044A5D987BEE61 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-Medium.ttf"; path = "../src/assets/fonts/DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		1DF07D6FB69E486998620FE6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		21E23CB1397A469E9A489828 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		230C57EB641FD8D0EAC1FA09 /* Pods-CasperDash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash.release.xcconfig"; path = "Target Support Files/Pods-CasperDash/Pods-CasperDash.release.xcconfig"; sourceTree = "<group>"; };
-		294EC6B833947F81C134B72F /* Pods-CasperDash-CasperDashTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash-CasperDashTests.release.xcconfig"; path = "Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests.release.xcconfig"; sourceTree = "<group>"; };
 		2973C12315094BCDACC4296C /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		2AF28CE3FFA44344B78CE2DA /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		2B29A315165D4471AB4E9E84 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		312B4E1127C0BE8B126E2BB8 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash-CasperDashTests.debug.xcconfig"; path = "Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2F4CB00DD88930BD8F4F385F /* Pods-CasperDash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash.debug.xcconfig"; path = "Target Support Files/Pods-CasperDash/Pods-CasperDash.debug.xcconfig"; sourceTree = "<group>"; };
 		342AA82392184744BFD69921 /* Lato-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Thin.ttf"; path = "../src/assets/fonts/Lato-Thin.ttf"; sourceTree = "<group>"; };
 		36A12152BCC84199AC52230E /* DMSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-BoldItalic.ttf"; path = "../src/assets/fonts/DMSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		39133BAF9CF7430EA09A9DB8 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		3E34FCB71E6A415CBBDEC622 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		4161E2C02386F196B910E400 /* Pods-CasperDash-CasperDashTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash-CasperDashTests.release.xcconfig"; path = "Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests.release.xcconfig"; sourceTree = "<group>"; };
 		42A12783D0F64FF2B827787D /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		42B1FB69DB5748CAB4EF5116 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		49D4F304BE9C45AB958559D2 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		4C976F3DDC9E47A991FB202E /* DMSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-Bold.ttf"; path = "../src/assets/fonts/DMSans-Bold.ttf"; sourceTree = "<group>"; };
-		4E57A5F87D96DE290CA18132 /* Pods-CasperDash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash.debug.xcconfig"; path = "Target Support Files/Pods-CasperDash/Pods-CasperDash.debug.xcconfig"; sourceTree = "<group>"; };
 		5135E8AD658D4426B8D98340 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		616C1CD56C334696B1F6E04E /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		6CF6E95538B8404CA4F470CC /* DMSans-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-MediumItalic.ttf"; path = "../src/assets/fonts/DMSans-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -103,16 +102,18 @@
 		7EB20576527A41F1A4CDD57C /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-LightItalic.ttf"; path = "../src/assets/fonts/Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		80E94E6C7524441280E92155 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BlackItalic.ttf"; path = "../src/assets/fonts/Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CasperDash/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		876DE54889C0530D27AA6273 /* libPods-CasperDash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CasperDash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		880AE01A6731444386C67174 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		934231BF4816431296FE3A2A /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BoldItalic.ttf"; path = "../src/assets/fonts/Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		9508EE8B27F84A808CD021B0 /* DMSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-Italic.ttf"; path = "../src/assets/fonts/DMSans-Italic.ttf"; sourceTree = "<group>"; };
+		9CB553DA1A631DA3EE0603A6 /* libPods-CasperDash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CasperDash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1A0BAE32D0A64AFAB0E791 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash-CasperDashTests.debug.xcconfig"; path = "Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A12714EEB5614C9A95773669 /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../src/assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
 		A2AAB3AD7D2D4A25B66451EE /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		A3EAFB938121470FAAA7C88F /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		A432E7EFFCF0471BBCECDD86 /* Lato-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Italic.ttf"; path = "../src/assets/fonts/Lato-Italic.ttf"; sourceTree = "<group>"; };
 		A4C366B665464A038C678574 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		A631623B5A9349BA89B2C213 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		A7AC0124A9DE5CB663A259FE /* Pods-CasperDash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperDash.release.xcconfig"; path = "Target Support Files/Pods-CasperDash/Pods-CasperDash.release.xcconfig"; sourceTree = "<group>"; };
 		ADEBE5B62D494861A4102850 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		B08216C9DF4148A086A7950A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		B6ED834CC9DA493E99692A94 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
@@ -124,7 +125,6 @@
 		D4ED6DA3485E4F55891F64FA /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		DA60F8B5E5D843BBA0AEC536 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		E0B2B3E3B50D4DA886848ACA /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
-		E221053113A5A850D21B2786 /* libPods-CasperDash-CasperDashTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CasperDash-CasperDashTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F7E1DE908B3C434EB2BE79B2 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		FA76C25BC4464348AD2DA9AB /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C1189280A72F5D40F056A50 /* libPods-CasperDash-CasperDashTests.a in Frameworks */,
+				7FE47235D8E7F6CC96281742 /* libPods-CasperDash-CasperDashTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B960D9C25B42FC6D37E9A28 /* libPods-CasperDash.a in Frameworks */,
+				9FB99944614F654A9A329B76 /* libPods-CasperDash.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,8 +187,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				876DE54889C0530D27AA6273 /* libPods-CasperDash.a */,
-				E221053113A5A850D21B2786 /* libPods-CasperDash-CasperDashTests.a */,
+				9CB553DA1A631DA3EE0603A6 /* libPods-CasperDash.a */,
+				1B3106E00C37CB1C206ECAB8 /* libPods-CasperDash-CasperDashTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -228,10 +228,10 @@
 		8D01F2A4DF548547792C3108 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4E57A5F87D96DE290CA18132 /* Pods-CasperDash.debug.xcconfig */,
-				230C57EB641FD8D0EAC1FA09 /* Pods-CasperDash.release.xcconfig */,
-				312B4E1127C0BE8B126E2BB8 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */,
-				294EC6B833947F81C134B72F /* Pods-CasperDash-CasperDashTests.release.xcconfig */,
+				2F4CB00DD88930BD8F4F385F /* Pods-CasperDash.debug.xcconfig */,
+				A7AC0124A9DE5CB663A259FE /* Pods-CasperDash.release.xcconfig */,
+				9D1A0BAE32D0A64AFAB0E791 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */,
+				4161E2C02386F196B910E400 /* Pods-CasperDash-CasperDashTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -300,12 +300,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CasperDashTests" */;
 			buildPhases = (
-				5847361E57E279A594B1CF50 /* [CP] Check Pods Manifest.lock */,
+				56BB33A5A28A35AA9A722948 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C929711E2A5E96E5D9CBB41F /* [CP] Embed Pods Frameworks */,
-				20A6ECCC823F99E7AA8A4B80 /* [CP] Copy Pods Resources */,
+				5AA1FD0CB4155A41985F3251 /* [CP] Embed Pods Frameworks */,
+				C78114B070471C52AB1E852F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -321,14 +321,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CasperDash" */;
 			buildPhases = (
-				1C2AEFD7983A6D86DF1C8034 /* [CP] Check Pods Manifest.lock */,
+				A59E9835CCC4AE6CBA348C5B /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				FBB05CA40E4DD45C4D4C9EED /* [CP] Embed Pods Frameworks */,
-				3ABE7F956503443371C29828 /* [CP] Copy Pods Resources */,
+				38FCCD4D8DD84AA1ACD5B1A2 /* Upload Debug Symbols to Sentry */,
+				721528D554A14E341753BDEE /* [CP] Embed Pods Frameworks */,
+				1E1B0CCA211A09D1A199DCB4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -442,48 +443,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n\n/bin/sh ../node_modules/@sentry/react-native/scripts/collect-modules.sh\n";
 		};
-		1C2AEFD7983A6D86DF1C8034 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CasperDash-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		20A6ECCC823F99E7AA8A4B80 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3ABE7F956503443371C29828 /* [CP] Copy Pods Resources */ = {
+		1E1B0CCA211A09D1A199DCB4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -500,7 +462,21 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasperDash/Pods-CasperDash-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5847361E57E279A594B1CF50 /* [CP] Check Pods Manifest.lock */ = {
+		38FCCD4D8DD84AA1ACD5B1A2 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\nexport SENTRY_PROPERTIES=sentry.properties\n[[ $SENTRY_INCLUDE_NATIVE_SOURCES == \"true\" ]] && INCLUDE_SOURCES_FLAG=\"--include-sources\" || INCLUDE_SOURCES_FLAG=\"\"\n../node_modules/@sentry/cli/bin/sentry-cli debug-files upload \"$INCLUDE_SOURCES_FLAG\" \"$DWARF_DSYM_FOLDER_PATH\"\n";
+		};
+		56BB33A5A28A35AA9A722948 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -522,7 +498,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C929711E2A5E96E5D9CBB41F /* [CP] Embed Pods Frameworks */ = {
+		5AA1FD0CB4155A41985F3251 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -539,7 +515,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FBB05CA40E4DD45C4D4C9EED /* [CP] Embed Pods Frameworks */ = {
+		721528D554A14E341753BDEE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -554,6 +530,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasperDash/Pods-CasperDash-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A59E9835CCC4AE6CBA348C5B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CasperDash-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C78114B070471C52AB1E852F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasperDash-CasperDashTests/Pods-CasperDash-CasperDashTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -608,7 +623,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 312B4E1127C0BE8B126E2BB8 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */;
+			baseConfigurationReference = 9D1A0BAE32D0A64AFAB0E791 /* Pods-CasperDash-CasperDashTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -636,7 +651,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 294EC6B833947F81C134B72F /* Pods-CasperDash-CasperDashTests.release.xcconfig */;
+			baseConfigurationReference = 4161E2C02386F196B910E400 /* Pods-CasperDash-CasperDashTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -661,14 +676,14 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E57A5F87D96DE290CA18132 /* Pods-CasperDash.debug.xcconfig */;
+			baseConfigurationReference = 2F4CB00DD88930BD8F4F385F /* Pods-CasperDash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 73;
 				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CasperDash/Info.plist;
@@ -676,7 +691,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -693,21 +708,21 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 230C57EB641FD8D0EAC1FA09 /* Pods-CasperDash.release.xcconfig */;
+			baseConfigurationReference = A7AC0124A9DE5CB663A259FE /* Pods-CasperDash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CasperDash/CasperDash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 73;
 				DEVELOPMENT_TEAM = 75YKDC6QCL;
 				INFOPLIST_FILE = CasperDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

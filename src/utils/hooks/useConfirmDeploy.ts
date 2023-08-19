@@ -30,20 +30,19 @@ export const useConfirmDeploy = () => {
   /**
    * It builds a deploy, signs it with the signer, and puts it on-chain
    * @param buildDeployFn - A function that returns a deploy.
-   * @param fromPublicKey - The public key of the account that is sending the deploy.
    * @param toPublicKey - The public key of the account that will receive the deploy.
    * @param showMessage - a function that takes a message and a message type and displays it to the
    * user.
    * @returns The deploy hash and the signed deploy.
    */
-  const executeDeploy = async (buildDeployFn: any, fromPublicKey: string, showMessage: any) => {
+  const executeDeploy = async (buildDeployFn: any, showMessage: any) => {
     setIsDeploying(true);
     showMessage('Preparing deploy');
     try {
       const deploy = await buildDeployFn();
       // Sign with signer
       showMessage('Please review the deploy');
-      const signedDeploy = await signer.sign(deploy, fromPublicKey);
+      const signedDeploy = await signer.sign(deploy);
       showMessage('Putting deploy');
 
       const deployHash = await putSignedDeploy(signedDeploy);

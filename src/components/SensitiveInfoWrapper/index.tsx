@@ -1,16 +1,26 @@
 import React, { FC, useEffect, useState, useRef } from 'react';
-import { View, Image, StyleSheet, AppState } from 'react-native';
+import { View, Image, StyleSheet, AppState, Platform, NativeEventSubscription } from 'react-native';
 import { images } from 'assets';
 // @ts-ignore
 import RNScreenshotPrevent, { addListener } from 'react-native-screenshot-prevent';
 import Toast from 'react-native-toast-message';
+import { isIos } from 'device';
 
 export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
   const appState = useRef(AppState.currentState);
   const [isOnBackground, setIsOnBackground] = useState(false);
 
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
+    let subscription: NativeEventSubscription;
+    if (Platform.OS === 'android') {
+      subscription = AppState.addEventListener('blur', () => {
+        setIsOnBackground(true);
+      });
+      subscription = AppState.addEventListener('focus', () => {
+        setIsOnBackground(false);
+      });
+    }
+    subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState.match(/inactive|background/)) {
         setIsOnBackground(true);
       }
@@ -26,16 +36,25 @@ export const SensitiveInfoWrapper: FC<{ children: any }> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    RNScreenshotPrevent.enableSecureView();
+    if (isIos()) {
+      RNScreenshotPrevent.enableSecureView();
+    } else {
+      RNScreenshotPrevent.enabled(true);
+    }
     const subscription = addListener(() => {
       Toast.show({
-        type: 'info',
+        type: 'warning',
         text1: 'Screenshots cannot be taken due to security reasons.',
       });
     });
 
     return () => {
-      RNScreenshotPrevent.disableSecureView();
+      if (isIos()) {
+        RNScreenshotPrevent.disableSecureView();
+      } else {
+        RNScreenshotPrevent.enabled(false);
+      }
+      // @ts-ignore
       subscription.remove();
     };
   }, []);

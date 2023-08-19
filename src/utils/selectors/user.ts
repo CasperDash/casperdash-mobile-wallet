@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
 import { WalletInfo, User } from 'react-native-casper-storage';
 import { WalletInfoDetails } from 'utils/helpers/account';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
-export const getListWallets = createSelector<any, any>(
+export const getListWallets = createSelector<any, IAccountInfo[]>(
   (state: any) => state.user,
   ({ currentAccount }: { currentAccount: User }) => {
     if (currentAccount) {
@@ -11,14 +12,16 @@ export const getListWallets = createSelector<any, any>(
 
       return hdWalletInfo
         .map(
-          (wl: WalletInfo): WalletInfoDetails => ({
+          (wl: WalletInfo): IAccountInfo => ({
             walletInfo: wl,
+            publicKey: '',
           }),
         )
         .concat(
           legacyWalletsInfo.map(
-            (wl: WalletInfo): WalletInfoDetails => ({
+            (wl: WalletInfo): IAccountInfo => ({
               walletInfo: wl,
+              publicKey: '',
             }),
           ),
         );
@@ -29,7 +32,7 @@ export const getListWallets = createSelector<any, any>(
 
 export const getSelectedWallet = createSelector(
   (state: any) => state.user,
-  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet,
+  ({ selectedWallet }: { selectedWallet: IAccountInfo }) => selectedWallet,
 );
 
 export const getUser = createSelector(
@@ -51,7 +54,8 @@ export const getLoginOptions = ({ user }: { user: any }) => {
  */
 export const getPublicKey = createSelector(
   (state: any) => state.user,
-  ({ selectedWallet }: { selectedWallet: WalletInfoDetails }) => selectedWallet?.publicKey ?? '',
+  ({ selectedWallet, casperdash }: { selectedWallet: WalletInfoDetails; casperdash: { publicKey: string } }) =>
+    selectedWallet?.publicKey ?? casperdash?.publicKey ?? '',
 );
 
 export const userDetailsSelector = (state: any) => state.user;

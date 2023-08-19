@@ -126,6 +126,7 @@ def enableHermes = project.ext.react.get("enableHermes", false);
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -135,8 +136,8 @@ android {
         applicationId "io.casperdash.casperwallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 50
-        versionName "2.0.0"
+        versionCode 66
+        versionName "2.2.0"
         setProperty("archivesBaseName", "CasperDash")
         vectorDrawables.useSupportLibrary = true
         missingDimensionStrategy 'react-native-camera', 'general'

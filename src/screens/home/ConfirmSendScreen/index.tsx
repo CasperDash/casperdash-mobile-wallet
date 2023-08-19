@@ -15,8 +15,7 @@ import { getTransferTokenDeploy } from 'utils/services/tokenServices';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { allActions } from 'redux_manager';
 import { MessageType } from 'components/CMessge/types';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useStackNavigation } from 'utils/hooks/useNavigation';
 
 const ConfirmSendScreen: React.FC<
   // @ts-ignore
@@ -25,7 +24,7 @@ const ConfirmSendScreen: React.FC<
   const publicKey = useSelector(getPublicKey);
   const { bottom } = useSafeAreaInsets();
   const dispatch = useDispatch();
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigation = useStackNavigation();
 
   const { token, transferAmount: amount, receivingAddress: toAddress, transferId, networkFee: fee } = route.params;
 
@@ -67,7 +66,7 @@ const ConfirmSendScreen: React.FC<
       };
 
       const buildDeployFn = () => buildTransferDeploy(transferDetails);
-      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, transferDetails.fromAddress, showMessage);
+      const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, showMessage);
 
       if (deployHash) {
         dispatch(
