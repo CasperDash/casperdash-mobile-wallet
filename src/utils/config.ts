@@ -78,14 +78,28 @@ const saveItem = async (key: string, value: any, options?: any) => {
   });
 };
 
-const getItem = async (key: string, options?: any) => {
-  let data = await SInfo.getItem(key, {
-    ...options,
-    sharedPreferencesName: 'casperdashSharedPrefs',
-    keychainService: 'casperdashKeychain',
-    kSecAccessControl: 'kSecAccessControlBiometryAny',
-  });
-  return data ? JSON.parse(data) : null;
+function timeout(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const getItem = async (key: string, options?: any, tryTime?: number) => {
+  try {
+    let data = await SInfo.getItem(key, {
+      ...options,
+      sharedPreferencesName: 'casperdashSharedPrefs',
+      keychainService: 'casperdashKeychain',
+      kSecAccessControl: 'kSecAccessControlBiometryAny',
+    });
+    return data ? JSON.parse(data) : null;
+  } catch (error: any) {
+    // retry 20 times
+    if ((!tryTime || tryTime < 20) && error.code === 'protected_data_unavailable') {
+      await timeout(200);
+      await getItem(key, options, tryTime ? tryTime + 1 : 1);
+    } else {
+      throw error;
+    }
+  }
 };
 
 const deleteItem = async (key: string, options?: any) => {

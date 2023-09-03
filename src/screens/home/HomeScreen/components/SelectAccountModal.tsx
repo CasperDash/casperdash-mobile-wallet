@@ -182,7 +182,7 @@ const SelectAccountModal = ({ connectionType, setShowAccountModal, showAccountMo
             {allAccount.map((walletDetails: IAccountInfo) => {
               return (
                 <AccountItem
-                  isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails.walletInfo?.uid}
+                  isCurrentAccount={selectedWallet?.walletInfo.uid === walletDetails?.walletInfo?.uid}
                   data={walletDetails}
                   key={walletDetails.walletInfo?.uid}
                   onSelectWallet={onSelectWallet}
