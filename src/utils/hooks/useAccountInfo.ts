@@ -176,3 +176,16 @@ export const useLedgerAccounts = (
 
   return { ...query, mergedData };
 };
+
+export const useSelectedAccount = () => {
+  const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
+
+  return selectedWallet;
+};
+
+export const useSelectedAccountInfo = () => {
+  const selectedWallet = useSelectedAccount();
+  const { massagedData } = useAccountInfo(selectedWallet.publicKey);
+
+  return massagedData;
+};
