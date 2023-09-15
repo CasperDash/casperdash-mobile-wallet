@@ -21,7 +21,7 @@ function NFTDetail({ route }: Props) {
   const { bottom } = useSafeAreaInsets();
   const data: INFTInfo = route.params;
 
-  const { image, contractAddress, metadata, nftName, contractName, totalSupply } = data;
+  const { image, contractAddress, metadata, nftName, contractName, totalSupply, tokenId } = data;
 
   const onOpenModal = () => {
     setOpen(!open);
@@ -93,6 +93,10 @@ function NFTDetail({ route }: Props) {
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Name:</Text>
               <Text style={styles.contractContent}> {contractName}</Text>
+            </View>
+            <View style={styles.flexStart}>
+              <Text style={styles.labelContract}>Token ID:</Text>
+              <Text style={styles.contractContent}> {tokenId}</Text>
             </View>
             <View style={styles.flexStart}>
               <Text style={styles.labelContract}>Contract Address:</Text>
