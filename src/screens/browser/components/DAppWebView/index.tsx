@@ -17,6 +17,7 @@ import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';
 import { web3Script } from 'screens/browser/scripts/web3';
 import { buildDebugConsole } from 'screens/browser/utils/jsInjector';
 import { getwebUrl } from 'utils/selectors';
+import AutoNoticeDomainModal from './AutoNoticeDomainModal';
 
 type Props = {};
 
@@ -124,6 +125,7 @@ const DAppWebView = (_props: Props, webRef: any) => {
           </View>
         </View>
       </View>
+      <AutoNoticeDomainModal />
     </View>
   );
 };
