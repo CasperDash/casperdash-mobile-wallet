@@ -69,7 +69,7 @@ const AboutCasperDash = () => {
   ];
 
   return (
-    <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
+    <CLayout bgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} statusBgColor={colors.cF8F8F8}>
       <CHeader title={'About CasperDash'} style={styles.header} />
       <View style={styles.container}>
         <View style={styles.information}>
