@@ -1,7 +1,22 @@
-import { CLKeyParameters, CLPublicKey, CLValueBuilder, RuntimeArgs } from 'casperdash-js-sdk';
+import { CLKeyParameters, CLPublicKey, CLValueBuilder, DeployUtil, RuntimeArgs } from 'casperdash-js-sdk';
 import { NETWORK_NAME } from 'utils/constants/key';
 import { callEntrypoint, callSessionWasm } from 'utils/services/casperServices';
 import TransferCallWasm from '../wasm/transfer_call.wasm';
+import { TokenStandards } from './token';
+import { BigNumberish } from '@ethersproject/bignumber';
+
+export interface TransferNFTParams {
+  contractHash: string;
+  tokenId: string | number;
+  toPublicKeyHex: string;
+  fromPublicKeyHex: string;
+  tokenStandardId: TokenStandards;
+  paymentAmount: BigNumberish;
+  image?: string;
+  name?: string;
+  isUsingSessionCode?: boolean;
+  wasmName?: string;
+}
 
 export interface TokenArgs {
   tokenId?: string;
@@ -32,6 +47,56 @@ const convertHashStrToHashBuff = (hashStr: string) => {
     hashHex = hashStr.slice(5);
   }
   return Buffer.from(hashHex, 'hex');
+};
+
+export const transferNFT = async ({
+  tokenStandardId,
+  contractHash,
+  fromPublicKeyHex,
+  toPublicKeyHex,
+  tokenId,
+  paymentAmount,
+  isUsingSessionCode,
+  wasmName,
+}: TransferNFTParams): Promise<DeployUtil.Deploy> => {
+  const clFromPublicKey = CLPublicKey.fromHex(fromPublicKeyHex);
+  const clToPublicKey = CLPublicKey.fromHex(toPublicKeyHex);
+
+  switch (tokenStandardId) {
+    case TokenStandards.CEP78:
+      let wasm: Uint8Array | undefined;
+      if (!wasmName || !MAP_WASM[wasmName]) {
+        throw new Error('Invalid wasm name');
+      }
+      wasm = MAP_WASM[wasmName];
+
+      return transferCEP78(
+        {
+          tokenId: tokenId.toString(),
+          source: clFromPublicKey,
+          target: clToPublicKey,
+          contractHash: `hash-${contractHash}`,
+        },
+        {
+          useSessionCode: !!isUsingSessionCode,
+        },
+        paymentAmount.toString(),
+        clFromPublicKey,
+        wasm,
+      );
+
+    case TokenStandards.CEP47:
+      return transferCEP47(
+        clToPublicKey,
+        clFromPublicKey,
+        [tokenId.toString()],
+        `hash-${contractHash}`,
+        paymentAmount.toString(),
+        clFromPublicKey,
+      );
+    default:
+      throw new Error('Invalid contract type');
+  }
 };
 
 export const transferCEP78 = (
