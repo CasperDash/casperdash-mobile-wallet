@@ -22,7 +22,7 @@ export interface INFTInfo {
   tokenStandardId: number;
   isTransfarable?: boolean;
   isUsingSessionCode?: boolean;
-  wasmUrl?: string;
+  wasmName?: string;
 }
 
 export const getNFTs = async (publicKey: string): Promise<INFTInfo[]> => {

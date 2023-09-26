@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { colors, IconSend } from 'assets';
 import { CHeader, CLayout } from 'components';
 import CButtonIcon from 'components/CButtonIcon';
@@ -12,6 +12,7 @@ import { useDisplayType } from '../hooks/useDisplayType';
 import { useUpdateDisplayType } from '../hooks/useUpdateDisplayType';
 import { DisplayTypes } from 'redux_manager/nft/nft_reducer';
 import TransferNFTForm from './TransferNFTForm';
+import { MAP_WASM } from '../utils/nft';
 
 interface Props {
   route: any;
@@ -33,18 +34,34 @@ function NFTDetail({ route }: Props) {
     tokenId,
     tokenStandardId,
     isTransfarable,
+    isUsingSessionCode,
+    wasmName,
   } = data;
 
   const handleOnSendPress = () => {
     updateDisplayType(DisplayTypes.SEND_FORM);
   };
 
+  const isShowSendButton = useMemo(() => {
+    // If displayType is not ATTRIBUTES or isTransfarable is false, don't show send button
+    if (displayType !== DisplayTypes.ATTRIBUTES || !isTransfarable) {
+      return false;
+    }
+
+    // If isUsingSessionCode is true but wasmName is not exist in MAP_WASM, don't show send button
+    if (isUsingSessionCode && (!wasmName || !MAP_WASM[wasmName])) {
+      return false;
+    }
+
+    return true;
+  }, [displayType, isTransfarable, isUsingSessionCode, wasmName]);
+
   return (
     <CLayout statusBgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} bgColor={colors.cF8F8F8}>
       <View style={styles.container}>
         <CHeader title={nftName} style={{ backgroundColor: colors.cF8F8F8 }} />
         <NFTImage name={nftName} tokenId={tokenId} image={image} />
-        {displayType === DisplayTypes.ATTRIBUTES && isTransfarable && (
+        {isShowSendButton && (
           <View style={styles.headerInformation}>
             <View style={styles.flex}>
               <CButtonIcon style={styles.button} icon={<IconSend width="18" />} onPress={handleOnSendPress} />

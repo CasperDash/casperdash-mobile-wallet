@@ -25,7 +25,7 @@ type Props = {
 };
 
 const ConfirmSendNFTScreen = ({ nft, fee, receivingAddress }: Props) => {
-  const { name, tokenId, contractAddress, tokenStandardId, image, isUsingSessionCode, wasmUrl } = nft;
+  const { name, tokenId, contractAddress, tokenStandardId, image, isUsingSessionCode, wasmName } = nft;
   const { bottom } = useSafeAreaInsets();
   const navigation = useStackNavigation();
   const updateViewType = useUpdateViewType();
@@ -83,7 +83,7 @@ const ConfirmSendNFTScreen = ({ nft, fee, receivingAddress }: Props) => {
       name,
       image,
       isUsingSessionCode,
-      wasmUrl,
+      wasmName,
     });
   };
 

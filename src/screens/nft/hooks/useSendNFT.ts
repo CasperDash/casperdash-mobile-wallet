@@ -7,12 +7,11 @@ import { CLPublicKey } from 'casperdash-js-sdk';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
 import { TokenStandards } from '../utils/token';
-import { transferCEP47, transferCEP78 } from '../utils/nft';
+import { MAP_WASM, transferCEP47, transferCEP78 } from '../utils/nft';
 import { useAddHistory } from './useAddHistory';
 import { Keys } from 'utils';
 import { DeployStatus } from 'utils/constants/key';
 import { getContractPackageInfo } from 'services/ContractPackages/contractPackagesApis';
-import { fetchWASM } from 'utils/helpers/request';
 import _get from 'lodash/get';
 import { BigNumberish } from '@ethersproject/bignumber';
 
@@ -30,7 +29,7 @@ type Params = {
   image?: string;
   name?: string;
   isUsingSessionCode?: boolean;
-  wasmUrl?: string;
+  wasmName?: string;
 };
 
 type Result = { deployHash: string; signedDeploy: any; contractHash: string };
@@ -63,9 +62,9 @@ export const useSendNFT = (options?: UseMutationOptions<unknown, unknown, Params
       tokenId,
       paymentAmount,
       isUsingSessionCode,
-      wasmUrl,
       name,
       image,
+      wasmName,
     }: Params): Promise<Result> => {
       let buildDeployFn;
       const clFromPublicKey = CLPublicKey.fromHex(selectedWallet.publicKey);
@@ -76,9 +75,10 @@ export const useSendNFT = (options?: UseMutationOptions<unknown, unknown, Params
       switch (tokenStandardId) {
         case TokenStandards.CEP78:
           let wasm: Uint8Array | undefined;
-          if (wasmUrl) {
-            wasm = await fetchWASM(wasmUrl);
+          if (!wasmName || !MAP_WASM[wasmName]) {
+            throw new Error('Invalid wasm name');
           }
+          wasm = MAP_WASM[wasmName];
 
           buildDeployFn = () => {
             return transferCEP78(

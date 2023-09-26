@@ -1,6 +1,7 @@
 import { CLKeyParameters, CLPublicKey, CLValueBuilder, RuntimeArgs } from 'casperdash-js-sdk';
 import { NETWORK_NAME } from 'utils/constants/key';
 import { callEntrypoint, callSessionWasm } from 'utils/services/casperServices';
+import TransferCallWasm from '../wasm/transfer_call.wasm';
 
 export interface TokenArgs {
   tokenId?: string;
@@ -20,6 +21,10 @@ export interface CallConfig {
 enum ERRORS {
   CONFLICT_CONFIG = 'Conflicting arguments provided',
 }
+
+export const MAP_WASM: Record<string, Uint8Array> = {
+  transfer_call: TransferCallWasm,
+};
 
 const convertHashStrToHashBuff = (hashStr: string) => {
   let hashHex = hashStr;
