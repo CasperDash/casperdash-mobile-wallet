@@ -3,17 +3,16 @@ import { UseMutationOptions, useMutation, useQueryClient } from 'react-query';
 import { useConfirmDeploy } from 'utils/hooks/useConfirmDeploy';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedWallet } from 'utils/selectors/user';
-import { CLPublicKey } from 'casperdash-js-sdk';
 import { MessageType } from 'components/CMessge/types';
 import { allActions } from 'redux_manager';
 import { TokenStandards } from '../utils/token';
-import { MAP_WASM, transferCEP47, transferCEP78 } from '../utils/nft';
+import { transferNFT } from '../utils/nft';
 import { useAddHistory } from './useAddHistory';
 import { Keys } from 'utils';
 import { DeployStatus } from 'utils/constants/key';
-import { getContractPackageInfo } from 'services/ContractPackages/contractPackagesApis';
 import _get from 'lodash/get';
 import { BigNumberish } from '@ethersproject/bignumber';
+import { getContractPackageInfo } from 'services/ContractPackages/contractPackagesApis';
 
 export enum ContractTypes {
   CEP78 = 'CEP78',
@@ -66,54 +65,20 @@ export const useSendNFT = (options?: UseMutationOptions<unknown, unknown, Params
       image,
       wasmName,
     }: Params): Promise<Result> => {
-      let buildDeployFn;
-      const clFromPublicKey = CLPublicKey.fromHex(selectedWallet.publicKey);
-      const clToPublicKey = CLPublicKey.fromHex(toPublicKeyHex);
-      showMessage('Please review the deploy');
       const { contract_hash: contractHash } = await getContractPackageInfo(contractAddress);
 
-      switch (tokenStandardId) {
-        case TokenStandards.CEP78:
-          let wasm: Uint8Array | undefined;
-          if (!wasmName || !MAP_WASM[wasmName]) {
-            throw new Error('Invalid wasm name');
-          }
-          wasm = MAP_WASM[wasmName];
-
-          buildDeployFn = () => {
-            return transferCEP78(
-              {
-                tokenId: tokenId.toString(),
-                source: clFromPublicKey,
-                target: clToPublicKey,
-                contractHash: `hash-${contractHash}`,
-              },
-              {
-                useSessionCode: !!isUsingSessionCode,
-              },
-              paymentAmount.toString(),
-              clFromPublicKey,
-              wasm,
-            );
-          };
-
-          break;
-        case TokenStandards.CEP47:
-          buildDeployFn = () => {
-            return transferCEP47(
-              clToPublicKey,
-              clFromPublicKey,
-              [tokenId.toString()],
-              `hash-${contractHash}`,
-              paymentAmount.toString(),
-              clFromPublicKey,
-            );
-          };
-
-          break;
-        default:
-          throw new Error('Invalid contract type');
-      }
+      let buildDeployFn = () => {
+        return transferNFT({
+          tokenStandardId,
+          contractHash,
+          fromPublicKeyHex: selectedWallet.publicKey,
+          toPublicKeyHex,
+          tokenId,
+          paymentAmount,
+          isUsingSessionCode,
+          wasmName,
+        });
+      };
 
       const { deployHash, signedDeploy } = await executeDeploy(buildDeployFn, showMessage);
       if (!deployHash) {

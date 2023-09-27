@@ -13,19 +13,35 @@ import { DisplayTypes, ViewTypes } from 'redux_manager/nft/nft_reducer';
 import { useUpdateDisplayType } from '../hooks/useUpdateDisplayType';
 import { useUpdateViewType } from '../hooks/useUpdateViewType';
 import { DeployTypes } from 'utils/helpers/parser';
-import { INFTInfo } from 'services/NFT/nftApis';
 import { useShowMessage } from 'utils/hooks/useShowMessage';
 import { MessageType } from 'components/CMessge/types';
-import { toMotes } from 'utils/helpers/currency';
+import { toCSPR } from 'utils/helpers/currency';
+import { BigNumber } from '@ethersproject/bignumber';
 
 type Props = {
-  nft: INFTInfo;
-  fee: number | string;
-  receivingAddress: string;
+  params: {
+    contractAddress: string;
+    tokenId: string;
+    toPublicKeyHex: string;
+    tokenStandardId: number;
+    paymentAmount: BigNumber;
+    name: string;
+    image?: string;
+    isUsingSessionCode?: boolean;
+    wasmName?: string;
+  };
 };
 
-const ConfirmSendNFTScreen = ({ nft, fee, receivingAddress }: Props) => {
-  const { name, tokenId, contractAddress, tokenStandardId, image, isUsingSessionCode, wasmName } = nft;
+const ConfirmSendNFTScreen = ({ params }: Props) => {
+  const {
+    contractAddress,
+    tokenId,
+    toPublicKeyHex: receivingAddress,
+    tokenStandardId,
+    paymentAmount,
+    name,
+    isUsingSessionCode,
+  } = params;
   const { bottom } = useSafeAreaInsets();
   const navigation = useStackNavigation();
   const updateViewType = useUpdateViewType();
@@ -69,21 +85,13 @@ const ConfirmSendNFTScreen = ({ nft, fee, receivingAddress }: Props) => {
     },
     {
       title: 'Network Fee',
-      value: `${fee} CSPR`,
+      value: `${toCSPR(paymentAmount.toNumber())} CSPR`,
     },
   ];
 
   const handleOnConfirm = () => {
     send({
-      contractAddress,
-      tokenId,
-      toPublicKeyHex: receivingAddress,
-      tokenStandardId,
-      paymentAmount: toMotes(fee),
-      name,
-      image,
-      isUsingSessionCode,
-      wasmName,
+      ...params,
     });
   };
 

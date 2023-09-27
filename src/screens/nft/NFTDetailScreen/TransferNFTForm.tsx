@@ -8,12 +8,14 @@ import * as yup from 'yup';
 import CTextButton from 'components/CTextButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isValidPublicKey } from 'utils/validator';
-import { TokenStandards } from '../utils/token';
 import { useSelectedAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useUpdateDisplayType } from '../hooks/useUpdateDisplayType';
 import { DisplayTypes } from 'redux_manager/nft/nft_reducer';
 import ConfirmSendNFTScreen from './ConfirmSendScreen';
 import { INFTInfo } from 'services/NFT/nftApis';
+import { useEstimateSendNFTFee } from 'screens/nft/hooks/useEstimateSendNFTFee';
+import { toCSPR, toMotes } from 'utils/helpers/currency';
+import { BigNumber } from '@ethersproject/bignumber';
 
 type Props = {
   nft: INFTInfo;
@@ -49,7 +51,14 @@ const validationSchema = yup.object().shape({
     .required('The entered amount is required.')
     .test('isValidFee', (value, context) => {
       if (!value) {
-        return false;
+        return context.createError({
+          message: 'The entered amount is invalid.',
+        });
+      }
+      if (value <= 0) {
+        return context.createError({
+          message: 'The entered amount is invalid.',
+        });
       }
 
       if (context.parent.balance < value) {
@@ -76,15 +85,38 @@ const TransferNFTForm = ({ nft }: Props) => {
       contractAddress,
       image,
       receivingAddress: '',
-      fee: tokenStandardId === TokenStandards.CEP78 ? 30 : 6,
       tokenStandardId,
       balance: 0,
+      fee: '0',
     },
     validationSchema,
     onSubmit: () => {
       setIsConfirm(true);
     },
   });
+
+  const params = {
+    contractAddress,
+    tokenId,
+    toPublicKeyHex: values.receivingAddress,
+    tokenStandardId,
+    name,
+    image,
+    isUsingSessionCode: nft.isUsingSessionCode,
+    wasmName: nft.wasmName,
+  };
+
+  const { data, isLoading: isEstimating } = useEstimateSendNFTFee({
+    ...params,
+  });
+
+  useEffect(() => {
+    if (!isEstimating) {
+      if (data?.execution_result?.Success?.cost) {
+        setFieldValue('fee', toCSPR(data.execution_result.Success.cost).toString());
+      }
+    }
+  }, [data, isEstimating, setFieldValue]);
 
   useEffect(() => {
     if (accountInfo) {
@@ -96,10 +128,17 @@ const TransferNFTForm = ({ nft }: Props) => {
     updateDisplayType(DisplayTypes.ATTRIBUTES);
   };
 
+  const paymentAmount = values.fee ? toMotes(values.fee.toString().replace(/,/, '.')) : BigNumber.from(0);
+
   return (
     <View style={styles.container}>
       {isConfirm ? (
-        <ConfirmSendNFTScreen nft={nft} receivingAddress={values.receivingAddress} fee={values.fee} />
+        <ConfirmSendNFTScreen
+          params={{
+            ...params,
+            paymentAmount,
+          }}
+        />
       ) : (
         <>
           <View>
@@ -114,7 +153,7 @@ const TransferNFTForm = ({ nft }: Props) => {
               />
             </View>
             <View>
-              <Text style={styles.title}>Network Fee</Text>
+              <Text style={styles.title}>{isEstimating ? 'Estimating...' : 'Network Fee'}</Text>
               <CInputFormik
                 name={'fee'}
                 inputStyle={styles.inputStyle}
@@ -171,6 +210,10 @@ const styles = StyleSheet.create({
     color: colors.N3,
     marginTop: scale(24),
     marginBottom: scale(16),
+  },
+  value: {
+    ...textStyles.Sub1,
+    // color: colors.G1,
   },
   footer: {
     flexDirection: 'row',
