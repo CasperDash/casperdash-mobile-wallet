@@ -84,7 +84,7 @@ function SettingsScreen() {
   }
 
   return (
-    <CLayout bgColor={colors.cF8F8F8} statusBgColor={colors.cF8F8F8}>
+    <CLayout bgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} statusBgColor={colors.cF8F8F8}>
       <CHeader title={'Settings'} style={{ backgroundColor: colors.cF8F8F8 }} />
       <Col mt={10} py={24} style={styles.container}>
         {listMenu
