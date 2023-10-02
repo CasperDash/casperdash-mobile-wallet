@@ -39,6 +39,7 @@ export interface IConfigurationResponse {
   DAPP_SUBMIT_URL?: string;
   TERMS_URL?: string;
   DELEGATE_TIME_NOTICE?: string;
+  DAPP_WHITELIST_DOMAINS: string[];
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
@@ -62,6 +63,7 @@ export const getConfigurations = async (): Promise<IConfigurationResponse> => {
       ENABLE_REDELEGATE: false,
       DISABLE_INCREASE_STAKE: false,
       TERMS_URL,
+      DAPP_WHITELIST_DOMAINS: [],
     }
   );
 };

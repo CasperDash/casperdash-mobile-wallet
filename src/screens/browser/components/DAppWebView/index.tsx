@@ -18,6 +18,7 @@ import { web3Script } from 'screens/browser/scripts/web3';
 import { buildDebugConsole } from 'screens/browser/utils/jsInjector';
 import { getwebUrl } from 'utils/selectors';
 import AutoNoticeDomainModal from './AutoNoticeDomainModal';
+import { useValidDomainUrl } from 'screens/browser/hooks/useValidDomainUrl';
 
 type Props = {};
 
@@ -27,6 +28,7 @@ const DAppWebView = (_props: Props, webRef: any) => {
   const [isCanForward, setIsCanForward] = useState(false);
   const [isCanBack, setIsCanBack] = useState(false);
   const { goForward, goBack } = useWebNavigate();
+  const { validUrl } = useValidDomainUrl();
 
   const { handleOnMessage } = useWatchBrowserMessage();
 
@@ -51,6 +53,7 @@ const DAppWebView = (_props: Props, webRef: any) => {
 
   const handleOnLoadStart = ({ nativeEvent }: WebViewNavigationEvent) => {
     dispatch(allActions.browser.updatewebUrl(nativeEvent.url));
+    validUrl(nativeEvent.url);
   };
 
   const handleOnLoad = ({ nativeEvent }: WebViewNavigationEvent) => {
@@ -125,7 +128,7 @@ const DAppWebView = (_props: Props, webRef: any) => {
           </View>
         </View>
       </View>
-      <AutoNoticeDomainModal />
+      <AutoNoticeDomainModal isCanBack={isCanBack} />
     </View>
   );
 };
