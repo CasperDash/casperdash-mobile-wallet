@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
-import { WHITELIST_DOMAINS } from '../constants/whitelistDomains';
 import { MessageType } from 'components/CMessge/types';
 import { useGetDApps } from 'utils/hooks/useGetDApps';
 import { getHostnameWithoutWWW } from '../utils/url';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
 
 export const useWatchUnvalidDomainWarning = (domainUrl: string) => {
   const [isValid, setIsValid] = useState(true);
   const dispatch = useDispatch();
   const { data: dApps = [] } = useGetDApps();
+  const { data: configurations } = useConfigurations();
 
   const showMessage = useCallback((message: string, type?: string) => {
     const messages = {
@@ -23,8 +24,7 @@ export const useWatchUnvalidDomainWarning = (domainUrl: string) => {
   useEffect(() => {
     if (domainUrl) {
       const hostname = getHostnameWithoutWWW(domainUrl);
-
-      const isValidDomain = WHITELIST_DOMAINS.some((domain) => {
+      const isValidDomain = configurations?.DAPP_WHITELIST_DOMAINS.some((domain) => {
         return hostname === domain;
       });
 
@@ -34,7 +34,7 @@ export const useWatchUnvalidDomainWarning = (domainUrl: string) => {
 
       setIsValid(isValidDomain || isValidDApp);
     }
-  }, [domainUrl, showMessage, dApps]);
+  }, [domainUrl, showMessage, dApps, configurations?.DAPP_WHITELIST_DOMAINS]);
 
   return {
     isValid,
