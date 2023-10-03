@@ -1768,6 +1768,11 @@
     style-value-types "^3.1.7"
     tslib "^1.10.0"
 
+"@ramp-network/react-native-sdk@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@ramp-network/react-native-sdk/-/react-native-sdk-1.0.2.tgz#a2d8279b924c6695819968e31a653a91b8511421"
+  integrity sha512-5/opXsTRHxEsQSNa/CzVv8EJMYhmUt/4LgSjjFbs7uTQHzHyy9aEo3w+ikSW3fbYx5lTJEHaN+sCspwudmKX8g==
+
 "@react-native-async-storage/async-storage@^1.13.4", "@react-native-async-storage/async-storage@^1.18.1":
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.19.1.tgz#09d35caaa31823b40fdfeebf95decf8f992a6274"

@@ -14,6 +14,8 @@ import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
 import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
+import { BuyButton } from 'components/BuyButton';
+import { useConfigurations } from 'utils/hooks/useConfigurations';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -28,6 +30,7 @@ function Account() {
   const { allTokenInfo, accountTotalBalanceInFiat: totalFiatBalance } = useTokenInfoByPublicKey(publicKey);
   const { navigate } = useStackNavigation();
   const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
+  const { data: configuration } = useConfigurations();
 
   /*TODO: follow the figma's design*/
   // const onToggleAmount = () => {
@@ -93,6 +96,7 @@ function Account() {
           {AccountActions.map((action, index) => {
             return <ButtonAction data={action} key={index} onPress={navigateSendReceive} />;
           })}
+          {configuration?.ENABLE_BUY && <BuyButton />}
         </Row.C>
       </Col>
       {showAccountModal && (

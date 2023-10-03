@@ -2,6 +2,9 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '13.0'
+inhibit_all_warnings!
+
+source 'https://github.com/CocoaPods/Specs.git'
 
 target 'CasperDash' do
   config = use_native_modules!
@@ -12,6 +15,7 @@ target 'CasperDash' do
     :hermes_enabled => false
   )
 
+  pod 'Ramp', :git => 'https://github.com/RampNetwork/ramp-sdk-ios', :tag => '4.0.1'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 #   pod 'FBSDKLoginKit'

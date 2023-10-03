@@ -39,6 +39,7 @@ export interface IConfigurationResponse {
   DAPP_SUBMIT_URL?: string;
   TERMS_URL?: string;
   DELEGATE_TIME_NOTICE?: string;
+  ENABLE_BUY?: boolean;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
