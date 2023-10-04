@@ -7,6 +7,7 @@ import { ERequestKeys } from 'utils/constants/requestKeys';
 
 const getMetadataByKey = (metadata: IMetadata[], key: string) => {
   const data = metadata.find((item) => item.key === key);
+
   return data?.value ?? '';
 };
 

@@ -8,6 +8,7 @@ const Keys = {
   deploysTransfer: 'deploys.transfers',
   nfts: 'nfts',
   deploysStakes: 'deploys.stakes',
+  deploysTransferNFT: 'deploys.transfersNft',
   selectedWallet: 'selectedWallet',
   touchIdEnabled: 'touchIdEnabled',
   masterPassword: 'masterPassword',

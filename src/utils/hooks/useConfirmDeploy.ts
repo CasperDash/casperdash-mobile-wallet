@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useSigner from './useSigner';
 import { IPutDeployRequest, putDeploy } from 'services/Deploy/deployApis';
 import { MessageType } from 'components/CMessge/types';
+import { DeployUtil } from 'casperdash-js-sdk';
 
 export const useConfirmDeploy = () => {
   const [isDeploying, setIsDeploying] = useState(false);
@@ -22,7 +23,7 @@ export const useConfirmDeploy = () => {
         return data.deployHash;
       }
       return null;
-    } catch (e) {
+    } catch (e: any) {
       throw e;
     }
   };
@@ -44,6 +45,11 @@ export const useConfirmDeploy = () => {
       showMessage('Please review the deploy');
       const signedDeploy = await signer.sign(deploy);
       showMessage('Putting deploy');
+
+      const isValidDeploy = DeployUtil.deployFromJson(signedDeploy);
+      if (isValidDeploy.err) {
+        throw Error('Invalid deploy');
+      }
 
       const deployHash = await putSignedDeploy(signedDeploy);
       showMessage(`Deploy hash: ${deployHash}`, MessageType.success);

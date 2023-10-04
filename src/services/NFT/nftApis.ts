@@ -4,6 +4,7 @@ import { TBalance } from 'utils/types/types';
 export interface IMetadata {
   key: string;
   value: string;
+  name?: string;
 }
 
 export interface INFTInfo {
@@ -18,6 +19,10 @@ export interface INFTInfo {
   image?: string;
   nftName?: string;
   background?: string;
+  tokenStandardId: number;
+  isTransfarable?: boolean;
+  isUsingSessionCode?: boolean;
+  wasmName?: string;
 }
 
 export const getNFTs = async (publicKey: string): Promise<INFTInfo[]> => {

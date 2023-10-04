@@ -7,11 +7,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { CFastImage } from 'components';
 import { INFTInfo } from 'services/NFT/nftApis';
+import { useUpdateDisplayType } from '../hooks/useUpdateDisplayType';
+import { DisplayTypes } from 'redux_manager/nft/nft_reducer';
 
 function NFTItem({ data, index }: { data: INFTInfo; index: number }) {
   const { image, nftName, contractName, tokenId } = data;
+  const updateDisplayType = useUpdateDisplayType();
 
   const onNavigationDetail = () => {
+    updateDisplayType(DisplayTypes.ATTRIBUTES);
     navigate(MainRouter.NFTDETAIL_SCREEN, data);
   };
 

@@ -1,15 +1,14 @@
 import { CButton, CInput, Row } from 'components';
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, StatusBar, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, StatusBar, ActivityIndicator } from 'react-native';
 import { colors, IconArrowUp, IconCloseFilledN2, IconLogo, IconSearch, textStyles } from 'assets';
 import { images } from 'assets';
 import { device, scale } from 'device';
-import NFTItem from './ListItem';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNFTsInfo } from 'utils/hooks/useNFTsInfo';
 import { getPublicKey } from 'utils/selectors';
-import { INFTInfo } from 'services/NFT/nftApis';
+import { NFTContent } from './NFTContent';
 
 const hitSlop = { top: 10, bottom: 10, right: 10 };
 
@@ -40,23 +39,10 @@ function NFTScreen() {
     inputRef.current?.blur();
   };
 
-  const renderItem = ({ item, index }: { item: INFTInfo; index: number }) => {
-    return <NFTItem data={item} key={`${index} - ${item.tokenId}`} index={index} />;
-  };
-
-  const renderNoData = () => {
-    return (
-      <View style={styles.noNFT}>
-        <Image source={images.nonft} style={styles.imageNoNFT} />
-        <Text style={styles.textNoNFT}>There are no item to display</Text>
-      </View>
-    );
-  };
-
   return (
     <View style={[styles.container, { paddingTop: top }]}>
       <StatusBar backgroundColor={'rgba(52, 52, 52, 0)'} translucent={true} barStyle="dark-content" animated={true} />
-      <Row ml={24} mt={10} mb={16} style={{ alignItems: 'center' }}>
+      <Row ml={24} mt={10} mb={16} style={styles.header}>
         <IconLogo width={scale(28)} height={scale(28)} />
         <Text style={[textStyles.H3, { marginLeft: scale(16) }]}>My Collection</Text>
       </Row>
@@ -104,21 +90,7 @@ function NFTScreen() {
             <ActivityIndicator size="small" color={colors.N2} />
           </View>
         ) : (
-          <View>
-            <Text style={styles.numNft}>{nfts.length + ` ${nfts.length < 2 ? 'Item' : 'Items'}`}</Text>
-            <FlatList
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.nftsList}
-              data={nfts}
-              refreshing={isFetching}
-              extraData={nfts}
-              onRefresh={refetch}
-              keyExtractor={(item, index) => `${index} - ${item.tokenId}`}
-              ListEmptyComponent={renderNoData}
-              renderItem={renderItem}
-            />
-          </View>
+          <NFTContent nfts={nfts} isFetching={isFetching} refetch={refetch} />
         )}
       </View>
       <Image source={images.bgnft2} style={styles.bg} />
@@ -135,6 +107,7 @@ const styles = StyleSheet.create({
     height: device.h,
     position: 'relative',
   },
+  header: { alignItems: 'center' },
   sortWrapper: {
     display: 'flex',
     flexDirection: 'row',
@@ -207,29 +180,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cFFFFFF,
     borderTopRightRadius: scale(40),
     borderTopLeftRadius: scale(40),
-  },
-  nftsList: {
-    paddingBottom: scale(330),
-  },
-  numNft: {
-    ...textStyles.Sub1,
-    marginBottom: scale(24),
-  },
-  noNFT: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: scale(60),
-    marginBottom: scale(20),
-  },
-  imageNoNFT: {
-    width: scale(200),
-    height: scale(200),
-  },
-  textNoNFT: {
-    ...textStyles.Body1,
-    color: colors.N4,
   },
   titleSelect: {
     ...textStyles.Body1,
