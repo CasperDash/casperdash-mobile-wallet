@@ -10,6 +10,9 @@ export const toFormattedDate = (
   locales?: string,
   options: any = { dateStyle: 'short', timeStyle: 'medium', hour12: false },
 ) => {
+  if (!dateString) {
+    return '';
+  }
   let date = new Date(dateString);
 
   if (!(date instanceof Date)) {
