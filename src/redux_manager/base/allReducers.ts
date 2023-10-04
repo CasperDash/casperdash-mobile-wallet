@@ -4,6 +4,7 @@ import Main from '../main/main_reducer';
 import Home from '../home/home_reducer';
 import Staking from '../staking/staking_reducer';
 import Browser from '../browser/browser_reducer';
+import NFT from '../nft/nft_reducer';
 
 export default combineReducers({
   user: User,
@@ -11,4 +12,5 @@ export default combineReducers({
   home: Home,
   staking: Staking,
   browser: Browser,
+  nft: NFT,
 });

@@ -13,6 +13,7 @@ import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { JailbreakAlert } from './JailbreakAlert';
 import { scale } from 'device';
 import ReleaseNotes from './ReleaseNotes';
+import * as Sentry from '@sentry/react-native';
 
 const SplashScreen = () => {
   const reStack = useRestack();
@@ -21,35 +22,41 @@ const SplashScreen = () => {
   const { isLoading } = useConfigurations();
 
   const setupNavigation = useCallback(async () => {
-    const overview = await Config.getItem(Keys.overview);
+    try {
+      const [overview, casperDashInfo, legacyPin] = await Promise.all([
+        Config.getItem(Keys.overview),
+        Config.getItem(Keys.casperdash),
+        Config.getItem(Keys.pinCode),
+      ]);
 
-    const casperDashInfo = await Config.getItem(Keys.casperdash);
-    const legacyPin = await Config.getItem(Keys.pinCode);
-    if (legacyPin) {
-      await createAndStoreMasterPassword(legacyPin);
+      if (legacyPin) {
+        await createAndStoreMasterPassword(legacyPin);
+      }
+
+      let screen = AuthenticationRouter.WELCOME_SCREEN;
+      if (overview === 1 && !casperDashInfo) {
+        screen = AuthenticationRouter.CREATE_NEW_WALLET;
+      }
+
+      if (!isEmpty(casperDashInfo)) {
+        screen = AuthenticationRouter.ENTER_PIN;
+      }
+
+      reStack(StackName.AuthenticationStack, screen);
+      Splash.hide();
+    } catch (error) {
+      Sentry.captureException(error);
     }
-
-    let screen = AuthenticationRouter.WELCOME_SCREEN;
-    if (overview === 1 && !casperDashInfo) {
-      screen = AuthenticationRouter.CREATE_NEW_WALLET;
-    }
-
-    if (!isEmpty(casperDashInfo)) {
-      screen = AuthenticationRouter.ENTER_PIN;
-    }
-
-    reStack(StackName.AuthenticationStack, screen);
-    Splash.hide();
   }, [reStack]);
 
-  const onFinishJailBreakCheck = useCallback(() => {
-    setupNavigation();
+  const onFinishJailBreakCheck = useCallback(async () => {
+    await setupNavigation();
   }, [setupNavigation]);
 
-  const onFinishReleaseNotes = useCallback(() => {
+  const onFinishReleaseNotes = useCallback(async () => {
     setIsCheckVersionFinished(true);
     if (__DEV__) {
-      setupNavigation();
+      await setupNavigation();
     }
   }, [setupNavigation]);
 

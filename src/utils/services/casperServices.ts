@@ -114,3 +114,38 @@ export const toCLMap = (map: any) => {
  * @param contractHash - The contract hash of the contract you want to get the bytecode of.
  */
 export const contractHashToByteArray = (contractHash: string) => Uint8Array.from(Buffer.from(contractHash, 'hex'));
+
+export const callSessionWasm = (
+  wasm: Uint8Array,
+  args: RuntimeArgs,
+  paymentAmount: string,
+  sender: CLPublicKey,
+  chainName: string,
+) => {
+  const deploy = DeployUtil.makeDeploy(
+    new DeployUtil.DeployParams(sender, chainName),
+    DeployUtil.ExecutableDeployItem.newModuleBytes(wasm, args),
+    DeployUtil.standardPayment(paymentAmount),
+  );
+
+  return deploy;
+};
+
+export const callEntrypoint = (
+  entryPoint: string,
+  args: RuntimeArgs,
+  sender: CLPublicKey,
+  chainName: string,
+  paymentAmount: string,
+  contractHash: string,
+) => {
+  const contractHashAsByteArray = contractHashToByteArray(contractHash.slice(5));
+
+  const deploy = DeployUtil.makeDeploy(
+    new DeployUtil.DeployParams(sender, chainName, 1, DEPLOY_TTL_MS),
+    DeployUtil.ExecutableDeployItem.newStoredContractByHash(contractHashAsByteArray, entryPoint, args),
+    DeployUtil.standardPayment(paymentAmount),
+  );
+
+  return deploy;
+};

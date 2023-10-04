@@ -1,6 +1,6 @@
 {
   "name": "CasperDash",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -32,7 +32,8 @@
     "fastlane:release:android": "cd android/fastlane && bundle exec fastlane internal --verbose",
     "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package && react-native setup-ios-permissions && pod-install",
     "sourcemaps:android": "node_modules/.bin/react-native bundle --platform android --entry-file index.js --dev false --reset-cache --bundle-output /tmp/bundle.android.js --assets-dest /tmp/ --sourcemap-output sourcemaps/android/index.js.map",
-    "sourcemaps:ios": "node_modules/.bin/react-native bundle --platform ios --entry-file index.js --dev false --reset-cache --bundle-output sourcemaps/ios/main.jsbundle  --sourcemap-output sourcemaps/ios/main.jsbundle.map"
+    "sourcemaps:ios": "node_modules/.bin/react-native bundle --platform ios --entry-file index.js --dev false --reset-cache --bundle-output sourcemaps/ios/main.jsbundle  --sourcemap-output sourcemaps/ios/main.jsbundle.map",
+    "prepare": "husky install"
   },
   "reactNativePermissionsIOS": [
     "Camera",
@@ -183,9 +184,12 @@
     "babel-jest": "^27.0.6",
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.44.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": ">=6",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.6.1",
+    "lint-staged": ">=10",
     "metro-react-native-babel-preset": "0.73.7",
     "react-native-svg-transformer": "^1.0.0",
     "rn-nodeify": "10.3.0",
@@ -215,5 +219,8 @@
     "hermes-engine": "0.11.0",
     "semver": "^7.5.2",
     "optionator": "^0.9.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,tsx,ts}": "eslint --cache --fix"
   }
 }

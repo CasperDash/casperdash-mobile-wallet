@@ -17,6 +17,7 @@ import {
 import NFTDetail from 'screens/nft/NFTDetailScreen';
 import SimpleWebViewScreen from 'screens/simple_web_view/SimpleWebViewScreen';
 import AboutCasperDash from 'screens/settings/AboutCasperDash';
+import TransferNFTHistoryScreen from 'screens/nft/TransferNFTHistoryScreen';
 
 const {
   SETTINGS_SCREEN,
@@ -35,6 +36,7 @@ const {
   SHOW_PRIVATE_KEY_SCREEN,
   SIMPLE_WEBVIEW_SCREEN,
   ABOUT_CASPERDASH,
+  TRANSFER_NFT_HISTORY_SCREEN,
 } = MainRouter;
 
 export const MainScreens = {
@@ -71,6 +73,9 @@ export const MainScreens = {
   },
   [TRANSFER_HISTORY_SCREEN]: {
     screen: TransferHistoryScreen,
+  },
+  [TRANSFER_NFT_HISTORY_SCREEN]: {
+    screen: TransferNFTHistoryScreen,
   },
   [VALIDATOR_SCREEN]: {
     screen: ValidatorScreen,
