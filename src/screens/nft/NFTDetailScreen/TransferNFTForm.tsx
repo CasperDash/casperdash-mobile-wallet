@@ -8,7 +8,6 @@ import * as yup from 'yup';
 import CTextButton from 'components/CTextButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isValidPublicKey } from 'utils/validator';
-import { TokenStandards } from '../utils/token';
 import { useSelectedAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useUpdateDisplayType } from '../hooks/useUpdateDisplayType';
 import { DisplayTypes } from 'redux_manager/nft/nft_reducer';
@@ -63,7 +62,7 @@ const validationSchema = yup.object().shape({
 });
 
 const TransferNFTForm = ({ nft }: Props) => {
-  const { tokenId, contractAddress, image, name, tokenStandardId } = nft;
+  const { tokenId, contractAddress, image, name, tokenStandardId, fee } = nft;
   const accountInfo = useSelectedAccountInfo();
   const updateDisplayType = useUpdateDisplayType();
   const [isConfirm, setIsConfirm] = useState(false);
@@ -76,7 +75,7 @@ const TransferNFTForm = ({ nft }: Props) => {
       contractAddress,
       image,
       receivingAddress: '',
-      fee: tokenStandardId === TokenStandards.CEP78 ? 30 : 6,
+      fee: fee || 0,
       tokenStandardId,
       balance: 0,
     },
