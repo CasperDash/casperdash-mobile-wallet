@@ -40,6 +40,8 @@ export interface IConfigurationResponse {
   TERMS_URL?: string;
   DELEGATE_TIME_NOTICE?: string;
   ENABLE_BUY?: boolean;
+  ENABLE_BUY_IOS?: boolean;
+  ENABLE_BUY_ANDROID?: boolean;
 }
 
 export const getConfigurations = async (): Promise<IConfigurationResponse> => {
