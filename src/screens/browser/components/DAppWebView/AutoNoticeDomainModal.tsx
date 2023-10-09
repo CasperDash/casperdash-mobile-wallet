@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { batch, useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, Text } from 'react-native';
 import { scale } from 'device';
 import { colors, fonts } from 'assets';
 import CAlert from 'components/CAlert';
-import { useWatchUnvalidDomainWarning } from 'screens/browser/hooks/useWatchUnvalidDomainWarning';
-import { getwebUrl } from 'utils/selectors';
 import { useWebNavigate } from 'screens/browser/hooks/useWebNavigate';
+import { getIsShowWarningDomain } from 'utils/selectors/browser';
+import { allActions } from 'redux_manager';
 
-const AutoNoticeDomainModal = () => {
+type Props = {
+  isCanBack?: boolean;
+};
+
+const AutoNoticeDomainModal = ({ isCanBack }: Props) => {
   const alertRef = useRef<any>();
-  const webUrl = useSelector(getwebUrl);
+  const isShowWarning = useSelector(getIsShowWarningDomain);
   const { goBack } = useWebNavigate();
-
-  const { isValid } = useWatchUnvalidDomainWarning(webUrl);
+  const dispatch = useDispatch();
 
   const showWarningMessage = useCallback(() => {
     const alert = {
@@ -33,16 +36,36 @@ const AutoNoticeDomainModal = () => {
   }, []);
 
   useEffect(() => {
-    if (!isValid) {
+    if (isShowWarning) {
       showWarningMessage();
     }
-  }, [isValid, showWarningMessage]);
+  }, [isShowWarning, showWarningMessage]);
+
+  const handleGoBack = () => {
+    if (isCanBack) {
+      goBack();
+      dispatch(allActions.browser.setIsShowWarningDomain(false));
+    } else {
+      batch(() => {
+        dispatch(allActions.browser.updatewebUrl(''));
+        dispatch(allActions.browser.setLoadingProgress(0));
+        dispatch(allActions.browser.setDisplayType('homepage'));
+        dispatch(allActions.browser.setIsShowWarningDomain(false));
+      });
+    }
+  };
+
+  const handleOnCancel = () => {
+    dispatch(allActions.browser.setIsShowWarningDomain(false));
+    alertRef.current.hide();
+  };
 
   return (
     <CAlert
       ref={alertRef}
       hideClose
-      onConfirm={goBack}
+      onConfirm={handleGoBack}
+      onCancel={handleOnCancel}
       buttonConfirmStyle={styles.confirmButton}
       buttonCancelStyle={{ width: scale(100) }}
       hideOnClickOutside={false}

@@ -11,3 +11,5 @@ export const getDisplayType = createSelector(selectBrowser, ({ displayType }) =>
 export const getLoadingProgress = createSelector(selectBrowser, ({ loadingProgress }) => loadingProgress);
 
 export const getConnectedSites = createSelector(selectBrowser, ({ connectedSites }) => connectedSites);
+
+export const getIsShowWarningDomain = createSelector(selectBrowser, ({ isShowWarningDomain }) => isShowWarningDomain);

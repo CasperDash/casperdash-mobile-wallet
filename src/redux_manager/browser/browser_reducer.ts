@@ -60,6 +60,7 @@ const initialState = {
   activeTab: undefined,
   loadingProgress: 0,
   connectedSites: {},
+  isShowWarningDomain: false,
 };
 
 export default function (state: InitialState = initialState, action = { type: '', payload: {} }) {
@@ -97,6 +98,12 @@ export default function (state: InitialState = initialState, action = { type: ''
       return {
         ...state,
         connectedSites: action.payload,
+      };
+    }
+    case types.SET_IS_SHOW_WARNING_DOMAIN: {
+      return {
+        ...state,
+        isShowWarningDomain: action.payload,
       };
     }
     default:
