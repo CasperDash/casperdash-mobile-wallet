@@ -75,10 +75,13 @@ export const useSendNFT = (options?: UseMutationOptions<unknown, unknown, Params
       switch (tokenStandardId) {
         case TokenStandards.CEP78:
           let wasm: Uint8Array | undefined;
-          if (!wasmName || !MAP_WASM[wasmName]) {
-            throw new Error('Invalid wasm name');
+          if (isUsingSessionCode) {
+            if (!wasmName || !MAP_WASM[wasmName]) {
+              throw new Error('Invalid wasm name');
+            }
+
+            wasm = MAP_WASM[wasmName];
           }
-          wasm = MAP_WASM[wasmName];
 
           buildDeployFn = () => {
             return transferCEP78(
