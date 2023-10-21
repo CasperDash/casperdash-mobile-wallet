@@ -8,6 +8,7 @@ export const types = {
   UPDATE_CONNECTED_SITES: 'UPDATE_CONNECTED_SITES',
   LOAD_CONNECTED_SITES: 'LOAD_CONNECTED_SITES',
   UPDATE_CONNECTED_SITES_SUCCESS: 'UPDATE_CONNECTED_SITES_SUCCESS',
+  SET_IS_SHOW_WARNING_DOMAIN: 'SET_IS_SHOW_WARNING_DOMAIN',
 };
 
 const updatewebUrl = (uri: string) => {
@@ -61,6 +62,13 @@ const loadConnectedSites = () => {
   };
 };
 
+const setIsShowWarningDomain = (isShow: boolean) => {
+  return {
+    type: types.SET_IS_SHOW_WARNING_DOMAIN,
+    payload: isShow,
+  };
+};
+
 export default {
   updatewebUrl,
   setRequestMessage,
@@ -69,4 +77,5 @@ export default {
   setLoadingProgress,
   updateConnectedSites,
   loadConnectedSites,
+  setIsShowWarningDomain,
 };

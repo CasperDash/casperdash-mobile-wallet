@@ -65,6 +65,7 @@ const InitAccountScreen: React.FC<
         type: MessageType.error,
       };
       dispatch(allActions.main.showMessage(message, 10000));
+      throw e;
     }
   }, [algorithm, dispatch, phrases, currentUser, derivationPath]);
 
@@ -91,6 +92,7 @@ const InitAccountScreen: React.FC<
           type: MessageType.error,
         };
         dispatch(allActions.main.showMessage(message, 10000));
+        throw e;
       }
     }
   }, [dispatch, currentUser]);

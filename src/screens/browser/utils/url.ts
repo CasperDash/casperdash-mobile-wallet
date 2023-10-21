@@ -47,3 +47,8 @@ export const compareUrls = (url1: string, url2: string) => {
 
   return parsedUrl1?.hostname === parsedUrl2?.hostname;
 };
+
+export const getHostnameWithoutWWW = (url: string) => {
+  const parsedUrl = new URL(url);
+  return parsedUrl?.hostname?.replace(/^www\./, '');
+};

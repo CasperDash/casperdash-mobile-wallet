@@ -16,6 +16,7 @@ import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
 import { BuyButton } from 'components/BuyButton';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
+import { isIos } from 'device';
 
 function Account() {
   if (Platform.OS === 'android') {
@@ -96,7 +97,8 @@ function Account() {
           {AccountActions.map((action, index) => {
             return <ButtonAction data={action} key={index} onPress={navigateSendReceive} />;
           })}
-          {configuration?.ENABLE_BUY && <BuyButton />}
+          {configuration?.ENABLE_BUY_IOS && isIos() && <BuyButton />}
+          {configuration?.ENABLE_BUY_ANDROID && !isIos() && <BuyButton />}
         </Row.C>
       </Col>
       {showAccountModal && (

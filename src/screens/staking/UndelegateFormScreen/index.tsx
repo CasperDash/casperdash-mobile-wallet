@@ -43,6 +43,7 @@ const UndelegateFormScreen: React.FC<ScreenProps<'UNDELEGATE_FORM_SCREEN'>> = ({
   const validationSchema = useYupUndelegateFormSchema({
     validatorPublicKey: selectedValidator?.validatorPublicKey,
     selectedValidator,
+    stakedAmount: toCSPR(stakedAmount).toNumber(),
   });
 
   const { getFeeByEntryPoint } = useGetFeeByEntryPoint();
