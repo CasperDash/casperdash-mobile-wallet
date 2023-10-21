@@ -45,6 +45,7 @@ export enum DeployStatus {
   failed = 'failed',
   completed = 'completed',
   undelegating = 'undelegating',
+  redelegating = 'redelegating',
 }
 
 export const DERIVATION_PATH = [

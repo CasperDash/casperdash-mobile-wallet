@@ -1,6 +1,6 @@
 {
   "name": "CasperDash",
-  "version": "2.2.1",
+  "version": "2.3.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -27,9 +27,9 @@
     "env:local": "node scripts/set-env.js local",
     "setup-env": "yarn env:mainnet && yarn env:testnet",
     "fastlane:beta": "yarn env:beta && cd ios/fastlane && fastlane beta",
-    "fastlane:release": "yarn env:mainnet && cd ios/fastlane && fastlane beta",
+    "fastlane:release": "cd ios/fastlane && fastlane beta",
     "fastlane:beta:android": "yarn env:beta && cd android/fastlane && fastlane internal",
-    "fastlane:release:android": "yarn env:mainnet && cd android/fastlane && bundle exec fastlane internal --verbose",
+    "fastlane:release:android": "cd android/fastlane && bundle exec fastlane internal --verbose",
     "postinstall": "rn-nodeify --install process,stream,crypto --hack --yarn && patch-package && react-native setup-ios-permissions && pod-install",
     "sourcemaps:android": "node_modules/.bin/react-native bundle --platform android --entry-file index.js --dev false --reset-cache --bundle-output /tmp/bundle.android.js --assets-dest /tmp/ --sourcemap-output sourcemaps/android/index.js.map",
     "sourcemaps:ios": "node_modules/.bin/react-native bundle --platform ios --entry-file index.js --dev false --reset-cache --bundle-output sourcemaps/ios/main.jsbundle  --sourcemap-output sourcemaps/ios/main.jsbundle.map",
@@ -48,6 +48,7 @@
     "@ledgerhq/hw-app-eth": "^6.23.0",
     "@ledgerhq/react-native-hw-transport-ble": "^6.20.0",
     "@popmotion/popcorn": "^0.4.4",
+    "@ramp-network/react-native-sdk": "^1.0.2",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-clipboard/clipboard": "1.8.4",
     "@react-native-community/datetimepicker": "^3.5.2",

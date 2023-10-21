@@ -54,7 +54,10 @@ export const useStakeFromValidators = (publicKey: string) => {
     getDeployStakes(state, { publicKey }),
   );
   const pendingItems = stakeDeployList.filter(
-    (stake: any) => stake.status === DeployStatus.pending || stake.status === DeployStatus.undelegating,
+    (stake: any) =>
+      stake.status === DeployStatus.pending ||
+      stake.status === DeployStatus.undelegating ||
+      stake.status === DeployStatus.redelegating,
   );
 
   const {

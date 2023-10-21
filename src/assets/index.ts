@@ -74,6 +74,7 @@ import IconSupport from './images/ic_support.svg';
 import IconDocument from './images/ic_document.svg';
 import IconProtection from './images/ic_protection.svg';
 import IconMaxDelegators from './images/ic_max_delegators.svg';
+import IconBuy from './images/ic_buy.svg';
 
 const images = {
   avatar: require('./images/avatar.png'),
@@ -302,4 +303,5 @@ export {
   IconDocument,
   IconProtection,
   IconMaxDelegators,
+  IconBuy,
 };

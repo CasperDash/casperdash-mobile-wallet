@@ -39,6 +39,9 @@ export interface IConfigurationResponse {
   DAPP_SUBMIT_URL?: string;
   TERMS_URL?: string;
   DELEGATE_TIME_NOTICE?: string;
+  ENABLE_BUY?: boolean;
+  ENABLE_BUY_IOS?: boolean;
+  ENABLE_BUY_ANDROID?: boolean;
   DAPP_WHITELIST_DOMAINS: string[];
 }
 
