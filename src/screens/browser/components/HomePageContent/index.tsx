@@ -62,7 +62,9 @@ const HomePageContent = () => {
               <Text style={styles.questionTitle}>Are you a developer?</Text>
               <Text style={styles.questionDescription}>
                 If you have dApp want to add to list, please submit{' '}
-                <Text onPress={handleOnSubmitAppPress} style={[styles.questionDescription, styles.questionLink]}>here.</Text>
+                <Text onPress={handleOnSubmitAppPress} style={[styles.questionDescription, styles.questionLink]}>
+                  here.
+                </Text>
               </Text>
             </View>
           )}

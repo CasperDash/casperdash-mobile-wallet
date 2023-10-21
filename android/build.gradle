@@ -6,8 +6,8 @@ buildscript {
 //         firebaseMessagingVersion = "+" // default: "21.1.0"
         buildToolsVersion = "30.0.2"
         minSdkVersion = 24
-        compileSdkVersion = 31
-        targetSdkVersion = 31
+        compileSdkVersion = 33
+        targetSdkVersion = 33
         ndkVersion = "21.4.7075529"
         googlePlayServicesAuthVersion = "19.2.0"
     }
@@ -50,7 +50,7 @@ subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
             android {
-                compileSdkVersion 31
+                compileSdkVersion 33
                 buildToolsVersion '30.0.2'
             }
         }
