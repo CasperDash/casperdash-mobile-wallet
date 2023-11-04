@@ -1,14 +1,12 @@
 import { useCallback, useContext } from 'react';
-import { WalletInfo } from 'react-native-casper-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { allActions } from 'redux_manager';
-import { getPublicKeyCache, isLedgerMode } from 'utils/helpers/account';
 import { getConnectedSites } from 'utils/selectors/browser';
 import { buildRawSender } from '../utils/jsInjector';
 import BrowserContext from '../context';
 import { RequestTypes } from 'redux_manager/browser/browser_reducer';
 import { useSendDAppEvent } from './useSendDAppEvent';
-import { getLedgerPublicKey, initLedgerApp } from 'utils/services/ledgerServices';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 
 export const useConnectWithAccount = () => {
   const dispatch = useDispatch();
@@ -17,22 +15,12 @@ export const useConnectWithAccount = () => {
   const { handleOnAccountChange, handleOnConnected } = useSendDAppEvent();
 
   const connectWithAccount = useCallback(
-    async (urlWithProtocol: string, walletInfo?: WalletInfo) => {
-      if (!walletInfo) {
+    async (urlWithProtocol: string, accountInfo?: IAccountInfo) => {
+      if (!accountInfo) {
         throw new Error('Wallet info is required');
       }
 
-      const { uid } = walletInfo;
-      let publicKey;
-      const isLedger = await isLedgerMode();
-      if (isLedger) {
-        const { casperApp, transport } = await initLedgerApp();
-        publicKey = await getLedgerPublicKey(casperApp, uid);
-
-        await transport.close();
-      } else {
-        publicKey = await getPublicKeyCache(uid);
-      }
+      const { publicKey, walletInfo } = accountInfo;
 
       if (connectedSites?.[urlWithProtocol]) {
         const { account } = connectedSites[urlWithProtocol];
@@ -48,12 +36,8 @@ export const useConnectWithAccount = () => {
             ...connectedSites,
             [urlWithProtocol]: {
               ...connectedSites[urlWithProtocol],
-              account: {
-                publicKey: publicKey,
-                uid,
-                walletInfo,
-              },
-              connectedUids: [...connectedSites[urlWithProtocol].connectedUids, uid],
+              account: accountInfo,
+              connectedUids: [...connectedSites[urlWithProtocol].connectedUids, walletInfo.uid],
             },
           }),
         );
@@ -65,10 +49,10 @@ export const useConnectWithAccount = () => {
               ...(connectedSites?.[urlWithProtocol] || []),
               account: {
                 publicKey: publicKey,
-                uid,
+                uid: walletInfo.uid,
                 walletInfo,
               },
-              connectedUids: [uid],
+              connectedUids: [walletInfo.uid],
             },
           }),
         );

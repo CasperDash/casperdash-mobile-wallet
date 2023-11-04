@@ -8,7 +8,7 @@ import { getwebUrl } from 'utils/selectors';
 import ListAccounts from './ListAccounts';
 import { getUrlWithProtocol, prefixUrlWithProtocol } from 'screens/browser/utils/url';
 import { useConnectWithAccount } from 'screens/browser/hooks/useConnectWithAccount';
-import { AccountInfo } from 'utils/hooks/useAccountInfo';
+import { IAccountInfo } from 'utils/hooks/useAccountInfo';
 import CTextButton from 'components/CTextButton';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 const ConnectContent = ({ onClose, url }: Props) => {
   const { connectWithAccount } = useConnectWithAccount();
   const webUrl = useSelector(getwebUrl);
-  const [selectedAccount, setSelectedAccount] = useState<AccountInfo>(null!);
+  const [selectedAccount, setSelectedAccount] = useState<IAccountInfo>(null!);
 
   const handleOnConnectPress = () => {
     if (!url) {
@@ -28,7 +28,7 @@ const ConnectContent = ({ onClose, url }: Props) => {
     const parsedUrl = new URL(url);
     const urlWithProtocol = prefixUrlWithProtocol(parsedUrl.hostname);
 
-    connectWithAccount(urlWithProtocol, selectedAccount.walletInfo);
+    connectWithAccount(urlWithProtocol, selectedAccount);
 
     onClose?.();
   };
@@ -37,7 +37,7 @@ const ConnectContent = ({ onClose, url }: Props) => {
     onClose?.();
   };
 
-  const handleOnSelectAccount = (account: AccountInfo) => {
+  const handleOnSelectAccount = (account: IAccountInfo) => {
     setSelectedAccount(account);
   };
 
