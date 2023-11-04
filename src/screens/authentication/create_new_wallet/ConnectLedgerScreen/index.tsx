@@ -104,7 +104,7 @@ const ConnectLedgerScreen = () => {
     <CLayout>
       <CHeader title={'Connect Ledger'} />
       {selectedDevice ? (
-        <GetPublicKeyScreen />
+        <GetPublicKeyScreen device={selectedDevice} />
       ) : (
         <FlatList
           extraData={error}

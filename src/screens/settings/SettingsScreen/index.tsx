@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Switch, Image, Text } from 'react-native';
-import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
+import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images, IconKey } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import DeviceInfo from 'react-native-device-info';
 import { scale } from 'device';
@@ -12,6 +12,7 @@ import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
+import { useViewPrivateKey } from '../ViewPrivateKey';
 import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
@@ -24,6 +25,7 @@ function SettingsScreen() {
   const loginOptions = useSelector(getLoginOptions);
 
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
+  const { ViewPrivateKeyComp, setShowConfirmPin: setShowConfirmPinPrivateKey } = useViewPrivateKey();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
 
   const lockScreen = () => {
@@ -58,6 +60,14 @@ function SettingsScreen() {
     },
     {
       id: 4,
+      title: 'View Private Key',
+      icon: () => <IconKey width={scale(32)} height={scale(32)} />,
+      onPress: () => setShowConfirmPinPrivateKey(true),
+      actionComp: ViewPrivateKeyComp,
+      show: loginOptions?.connectionType === CONNECTION_TYPES.passPhase,
+    },
+    {
+      id: 5,
       title: 'Version',
       icon: () => <Image source={images.version} style={{ width: scale(32), height: scale(32) }} />,
       actionComp: () => (

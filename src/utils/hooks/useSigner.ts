@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
-import { CONNECTION_TYPES } from '../constants/settings';
-import { getLoginOptions, getSelectedWallet, getUser } from '../selectors/user';
+import { getSelectedWallet, getUser } from '../selectors/user';
 import { signDeployByLedger } from '../services/ledgerServices';
 import { getWalletKeyPair } from 'utils/helpers/account';
 import { DeployUtil } from 'casperdash-js-sdk';
@@ -10,7 +9,6 @@ import * as Sentry from '@sentry/react-native';
  * @returns The signed deploy is being returned.
  */
 const useSigner = () => {
-  const loginOptions = useSelector(getLoginOptions);
   const selectedWallet = useSelector(getSelectedWallet);
   const user = useSelector(getUser);
   /**
@@ -21,19 +19,17 @@ const useSigner = () => {
    */
   const sign = async (deploy: DeployUtil.Deploy) => {
     try {
-      switch (loginOptions.connectionType) {
-        case CONNECTION_TYPES.ledger: {
-          return await signDeployByLedger(deploy, {
-            publicKey: selectedWallet.publicKey,
-            keyIndex: selectedWallet.ledgerKeyIndex,
-          });
-        }
-        default: {
-          const { uid, encryptionType } = selectedWallet.walletInfo;
-          const keyPair = await getWalletKeyPair(user, { uid, encryptionType });
-          return DeployUtil.deployToJson(DeployUtil.signDeploy(deploy, keyPair));
-        }
+      const isLedger = selectedWallet.isLedger;
+      if (isLedger) {
+        return await signDeployByLedger(deploy, {
+          publicKey: selectedWallet.publicKey,
+          keyIndex: selectedWallet.ledgerKeyIndex,
+          deviceId: selectedWallet.ledgerDeviceId,
+        });
       }
+      const { uid, encryptionType } = selectedWallet.walletInfo;
+      const keyPair = await getWalletKeyPair(user, { uid, encryptionType });
+      return DeployUtil.deployToJson(DeployUtil.signDeploy(deploy, keyPair));
     } catch (error: any) {
       console.error(error);
       Sentry.captureException(error);

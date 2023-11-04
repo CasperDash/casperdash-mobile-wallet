@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
@@ -8,7 +8,6 @@ import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { useSelector } from 'react-redux';
 import { getPublicKey, getLoginOptions } from 'utils/selectors/user';
 import { toFormattedCurrency } from 'utils/helpers/format';
-import SelectAccountModal from 'screens/home/HomeScreen/components/SelectAccountModal';
 import { copyToClipboard } from 'utils/hooks/useCopyClipboard';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
 import { useTokenInfoByPublicKey } from 'utils/hooks/useTokenInfo';
@@ -17,13 +16,12 @@ import { useStackNavigation } from 'utils/hooks/useNavigation';
 import { BuyButton } from 'components/BuyButton';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { isIos } from 'device';
+import MainRouter from 'navigation/stack/MainRouter';
 
 function Account() {
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-
-  const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
 
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
@@ -33,11 +31,6 @@ function Account() {
   const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
   const { data: configuration } = useConfigurations();
 
-  /*TODO: follow the figma's design*/
-  // const onToggleAmount = () => {
-  //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-  //   setIsShowAmount(i => !i);
-  // };
   const canEditAccount = useMemo(() => {
     return loginOptions?.connectionType === CONNECTION_TYPES.viewMode;
   }, [loginOptions]);
@@ -53,9 +46,9 @@ function Account() {
     navigate(screen, params);
   };
 
-  const onShowSelectAccountModal = () => {
+  const onEditAccount = () => {
     if (!canEditAccount) {
-      setShowAccountModal(true);
+      navigate(MainRouter.ACCOUNT_LIST_SCREEN);
     }
   };
 
@@ -63,7 +56,7 @@ function Account() {
     <View style={styles.container}>
       <Col px={16} py={16} style={styles.accountContainer}>
         <Row.LR>
-          <CButton onPress={onShowSelectAccountModal} style={{ maxWidth: scale(343 - 16) / 2 }}>
+          <CButton onPress={onEditAccount} style={{ maxWidth: scale(343 - 16) / 2 }}>
             <Row.C>
               <Text numberOfLines={1} style={styles.titleAccount}>
                 {loginOptions?.connectionType === CONNECTION_TYPES.viewMode
@@ -87,11 +80,6 @@ function Account() {
           <Text numberOfLines={1} style={[textStyles.H3, { marginRight: scale(8) }]}>
             {toFormattedCurrency(totalFiatBalance)}
           </Text>
-          {/*TODO: follow the figma's design*/}
-          {/*<CButton onPress={onToggleAmount}>
-                        {isShowAmount ? <IconEye width={scale(20)} height={scale(14)}/> :
-                            <IconEyeOff width={scale(20)} height={scale(19)}/>}
-                    </CButton>*/}
         </Row.C>
         <Row.C>
           {AccountActions.map((action, index) => {
@@ -101,13 +89,6 @@ function Account() {
           {configuration?.ENABLE_BUY_ANDROID && !isIos() && <BuyButton />}
         </Row.C>
       </Col>
-      {showAccountModal && (
-        <SelectAccountModal
-          setShowAccountModal={setShowAccountModal}
-          connectionType={loginOptions.connectionType}
-          showAccountModal={showAccountModal}
-        />
-      )}
     </View>
   );
 }

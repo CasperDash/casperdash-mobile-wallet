@@ -15,6 +15,7 @@ const Keys = {
   publicKeysCache: 'publicKeysCache',
   skipShowReleaseNotesVersion: 'skipShowReleaseNotesVersion',
   connectedSites: 'connectedSites',
+  ledgerWallets: 'ledgerWallets',
 };
 
 export default Keys;

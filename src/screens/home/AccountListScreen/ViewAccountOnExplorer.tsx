@@ -1,10 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { CButton, Row } from 'components';
 import { scale } from 'device';
-import { textStyles, IconBlock } from 'assets';
+import { IconBlock, colors } from 'assets';
 import { useNavigateSimpleWebView } from 'utils/hooks/useNavigateSimpleWebView';
 import config from 'utils/config';
+import CTextButton from 'components/CTextButton';
 
 type Props = {
   publicKey: string;
@@ -23,20 +22,15 @@ const ViewAccountOnExplorer = ({ publicKey, onPress }: Props) => {
   };
 
   return (
-    <CButton onPress={handleOnPress}>
-      <Row style={styles.rowItem}>
-        <IconBlock width={scale(17)} height={scale(17)} />
-        <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>View Account On Explorer</Text>
-      </Row>
-    </CButton>
+    <CTextButton
+      type="line"
+      textStyle={{ color: colors.N2 }}
+      onPress={handleOnPress}
+      icon={<IconBlock width={scale(17)} height={scale(17)} />}
+      text="View Account On Explorer"
+      style={{ borderColor: colors.N4 }}
+    />
   );
 };
 
 export default ViewAccountOnExplorer;
-
-const styles = StyleSheet.create({
-  rowItem: {
-    alignItems: 'center',
-    minHeight: scale(40),
-  },
-});

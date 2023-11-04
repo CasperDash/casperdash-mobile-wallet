@@ -16,8 +16,9 @@ import { IAccountInfo, useLedgerAccounts } from 'utils/hooks/useAccountInfo';
 import CTextButton from 'components/CTextButton';
 import { setSelectedWallet } from 'utils/helpers/account';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
+import MainRouter from 'navigation/stack/MainRouter';
 
-const GetPublicKeyScreen = () => {
+const GetPublicKeyScreen = ({ device }: { device: any }) => {
   const [error, setError] = useState<any>();
 
   const { mergedData, isLoading, fetchNextPage, isFetching } = useLedgerAccounts(
@@ -34,22 +35,37 @@ const GetPublicKeyScreen = () => {
   const insets = useSafeAreaInsets();
 
   const onSelectKey = async (wallet: IAccountInfo): Promise<void> => {
-    const info = {
-      publicKey: wallet.publicKey,
-      loginOptions: {
-        connectionType: CONNECTION_TYPES.ledger,
-        keyIndex: wallet.ledgerKeyIndex,
-      },
-    };
-    await Config.saveItem(Keys.casperdash, info);
-    await setSelectedWallet(wallet);
+    // get casperdash data info
+    const casperDashData = await Config.getItem(Keys.casperdash);
+    // if not exist, save ledger info and go to choose pin screen
+    if (!casperDashData) {
+      const info = {
+        publicKey: wallet.publicKey,
+        loginOptions: {
+          connectionType: CONNECTION_TYPES.ledger,
+          keyIndex: wallet.ledgerKeyIndex,
+        },
+      };
+      await Config.saveItem(Keys.casperdash, info);
+      await Config.saveItem<IAccountInfo[]>(Keys.ledgerWallets, [{ ...wallet, ledgerDeviceId: device.id }]);
+      await setSelectedWallet(wallet);
 
-    replace(AuthenticationRouter.CHOOSE_PIN, {
-      screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
-      params: {
-        showBack: false,
-      },
-    });
+      replace(AuthenticationRouter.CHOOSE_PIN, {
+        screen: ChoosePinRouter.CHOOSE_PIN_SCREEN,
+        params: {
+          showBack: false,
+        },
+      });
+      // if exist, add ledger account to list and go to accounts screen
+    } else {
+      const ledgerWallets: IAccountInfo[] = (await Config.getItem(Keys.ledgerWallets)) || [];
+      const found = ledgerWallets.find((item) => item.publicKey === wallet.publicKey);
+      if (!found) {
+        ledgerWallets.push({ ...wallet, ledgerDeviceId: device.id });
+        await Config.saveItem(Keys.ledgerWallets, ledgerWallets);
+      }
+      replace(MainRouter.ACCOUNT_LIST_SCREEN);
+    }
   };
 
   /**

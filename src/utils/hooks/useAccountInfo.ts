@@ -4,8 +4,9 @@ import { UseInfiniteQueryOptions, UseQueryOptions, useInfiniteQuery, useQuery } 
 import { useSelector } from 'react-redux';
 import { getAccountInfo, getListAccountInfo } from 'services/User/userApis';
 import { IAccountResponse } from 'services/User/userTypes';
+import { Config, Keys } from 'utils';
 import { ERequestKeys } from 'utils/constants/requestKeys';
-import { getWalletInfoWithPublicKey, isLedgerMode } from 'utils/helpers/account';
+import { getWalletInfoWithPublicKey } from 'utils/helpers/account';
 import { toCSPRFromHex } from 'utils/helpers/currency';
 import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
 import { getListKeys, initLedgerApp } from 'utils/services/ledgerServices';
@@ -30,6 +31,7 @@ export interface IAccountInfo extends IAccountResponse {
   walletInfo: WalletInfo;
   isLedger?: boolean;
   ledgerKeyIndex?: number;
+  ledgerDeviceId?: string;
 }
 
 export type AccountInfo = {
@@ -78,7 +80,7 @@ export const useListAccountInfo = (
 };
 
 export const useMyAccounts = (
-  options?: Omit<UseQueryOptions<AccountInfo[], any, AccountInfo[], any>, 'queryKey' | 'queryFn'>,
+  options?: Omit<UseQueryOptions<IAccountInfo[], any, IAccountInfo[], any>, 'queryKey' | 'queryFn'>,
 ) => {
   const user = useSelector(getUser);
   const publicKey = useSelector(getPublicKey);
@@ -96,28 +98,10 @@ export const useMyAccounts = (
       },
     ],
     queryFn: async () => {
-      if (await isLedgerMode()) {
-        const { casperApp, transport } = await initLedgerApp();
+      const ledgerWallets = ((await Config.getItem(Keys.ledgerWallets)) || []) as IAccountInfo[];
+      const wallets: IAccountInfo[] = (await getWalletInfoWithPublicKey(user, listWallets)) || [];
 
-        const accounts = await getListKeys(casperApp, 0, 10);
-
-        await transport.close();
-
-        return accounts.map((account: LedgerAccount) => {
-          const walletInfo = new WalletInfo(account.publicKey, EncryptionType.Secp256k1);
-
-          return {
-            publicKey: account.publicKey,
-            walletInfo: {
-              ...walletInfo,
-              uid: account.keyIndex,
-            } as unknown as WalletInfo,
-          };
-        });
-      }
-      const wallets: AccountInfo[] = await getWalletInfoWithPublicKey(user, listWallets);
-
-      return wallets;
+      return wallets.concat(ledgerWallets);
     },
     ...options,
     enabled: !!publicKey,
@@ -175,6 +159,20 @@ export const useLedgerAccounts = (
   }, [query.data]);
 
   return { ...query, mergedData };
+};
+
+export const useGetConnectedLedgerWallets = (
+  options?: Omit<UseQueryOptions<IAccountInfo[], any, IAccountInfo[], any>, 'queryKey' | 'queryFn'>,
+) => {
+  const query = useQuery({
+    queryKey: [ERequestKeys.getLedgerWallets],
+    queryFn: async () => {
+      // get ledger accounts from storage
+      return ((await Config.getItem(Keys.ledgerWallets)) || []) as IAccountInfo[];
+    },
+    ...options,
+  });
+  return { ...query };
 };
 
 export const useSelectedAccount = () => {

@@ -11,7 +11,8 @@ export { default as ReceiveScreen } from './home/ReceiveScreen';
 export { default as HistoriesScreen } from './home/HistoriesScreen';
 export { default as TransferHistoryScreen } from './home/TransferHistoryScreen';
 export { default as ImportAccountScreen } from './home/ImportAccountScreen';
-export { default as ShowPrivateKeyScreen } from './home/HomeScreen//components/PrivateKeyScreen';
+export { default as PrivateKeyScreen } from './home/PrivateKeyScreen';
+export { default as AccountListScreen } from './home/AccountListScreen';
 //Staking
 export { default as StakingScreen } from './staking/StakingScreen';
 export { default as ValidatorScreen } from './staking/ValidatorScreen';

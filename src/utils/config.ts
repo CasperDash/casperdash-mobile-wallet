@@ -69,7 +69,7 @@ const requestPermission = (permissions: any, data?: any, callback?: () => void) 
   return;
 };
 
-const saveItem = async (key: string, value: any, options?: any) => {
+const saveItem = async <T extends any>(key: string, value: T, options?: any) => {
   await SInfo.setItem(key, JSON.stringify(value), {
     ...options,
     sharedPreferencesName: 'casperdashSharedPrefs',

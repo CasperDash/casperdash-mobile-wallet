@@ -18,6 +18,7 @@ export enum ERequestKeys {
   dappParsedDeployData = 'dappParsedDeployData',
   dapps = 'dapps',
   ledgerAccounts = 'ledgerAccounts',
+  getLedgerWallets = 'getLedgerWallets',
 }
 
 export enum CustomError {

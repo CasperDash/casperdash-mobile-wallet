@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { CButton, Row } from 'components';
 import { scale } from 'device';
-import { textStyles, IconKey } from 'assets';
+import { IconKey, colors } from 'assets';
 import CConfirmPinModal from 'components/CConfirmPinModal';
 import MainRouter from 'navigation/stack/MainRouter';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
+import CTextButton from 'components/CTextButton';
 
 interface IProps {
   onConfirm: () => void;
+  style: any;
 }
 
-const ViewPrivateKeyButton = ({ onConfirm }: IProps) => {
+const ViewPrivateKeyButton = ({ onConfirm, style }: IProps) => {
   const { navigate } = useStackNavigation();
 
   const [showConfirmPin, setShowConfirmPin] = useState<boolean>(false);
@@ -23,12 +23,15 @@ const ViewPrivateKeyButton = ({ onConfirm }: IProps) => {
 
   return (
     <>
-      <CButton onPress={() => setShowConfirmPin(true)}>
-        <Row style={styles.rowItem}>
-          <IconKey width={scale(17)} height={scale(17)} />
-          <Text style={[textStyles.Sub1, { marginLeft: scale(16) }]}>View Private Key</Text>
-        </Row>
-      </CButton>
+      <CTextButton
+        type="line"
+        textStyle={{ color: colors.N2 }}
+        onPress={() => setShowConfirmPin(true)}
+        icon={<IconKey width={scale(17)} height={scale(17)} />}
+        text="View Private Key"
+        style={style}
+      />
+
       {showConfirmPin && (
         <CConfirmPinModal
           isShow={showConfirmPin}
@@ -41,10 +44,3 @@ const ViewPrivateKeyButton = ({ onConfirm }: IProps) => {
 };
 
 export default ViewPrivateKeyButton;
-
-const styles = StyleSheet.create({
-  rowItem: {
-    alignItems: 'center',
-    minHeight: scale(40),
-  },
-});
