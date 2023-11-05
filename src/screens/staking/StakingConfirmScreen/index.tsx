@@ -19,6 +19,16 @@ import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { getStakingForm } from 'utils/selectors/staking';
 import { STAKING_NOTE_MESSAGE, DELEGATE_TIME_NOTICE } from 'utils/constants/staking';
 import { useGetFeeByEntryPoint } from 'utils/hooks/useGetFeeByEntryPoint';
+import { ListItem } from '@rneui/base';
+import { usePrice } from 'utils/hooks/usePrice';
+
+const calculateRewards = (amount: number, hours: number, apy?: number, fee?: number): string => {
+  if (!apy) {
+    return 'N/A';
+  }
+  const rewards = ((amount * apy) / (365 * 24)) * hours;
+  return `${(rewards * (1 - (fee || 0))).toFixed(2)} CSPR`;
+};
 
 const StakingConfirmScreen = () => {
   const { validator: stakedValidator, name, amount, newValidator, entryPoint } = useSelector(getStakingForm);
@@ -26,10 +36,14 @@ const StakingConfirmScreen = () => {
   const publicKey = useSelector(getPublicKey)!;
   const { navigate } = useNavigation<any>();
   const dispatch = useDispatch();
+  const [showRewardsEst, setShowRewardsEst] = React.useState(false);
 
   const { executeDeploy, isDeploying } = useConfirmDeploy();
-
+  const { data: priceInfo } = usePrice();
   const { fee } = useGetFeeByEntryPoint(entryPoint);
+
+  const isRedelegate = name === StakingMode.Redelegate;
+  const validatorFee = (isRedelegate ? stakedValidator.fee : newValidator.fee) / 100;
 
   const showMessage = (message: string, type?: string) => {
     const messages = {
@@ -104,7 +118,31 @@ const StakingConfirmScreen = () => {
             <Text style={styles.notes}>{configurations?.UNDELEGATE_TIME_NOTICE || STAKING_NOTE_MESSAGE}</Text>
           )}
           {name === StakingMode.Delegate && (
-            <Text style={styles.notes}>{configurations?.DELEGATE_TIME_NOTICE || DELEGATE_TIME_NOTICE}</Text>
+            <>
+              <ListItem.Accordion
+                content={<Text style={styles.rewardsEstTitle}>Rewards Estimation</Text>}
+                isExpanded={showRewardsEst}
+                containerStyle={{ padding: scale(0) }}
+                onPress={() => setShowRewardsEst(!showRewardsEst)}
+              >
+                <Text style={styles.rewardsEstItem}>
+                  Per Era (~2 Hours): {calculateRewards(Number(amount), 2, priceInfo?.apy, validatorFee)}
+                </Text>
+                <Text style={styles.rewardsEstItem}>
+                  Per Day: {calculateRewards(Number(amount), 24, priceInfo?.apy, validatorFee)}
+                </Text>
+                <Text style={styles.rewardsEstItem}>
+                  Per Week: {calculateRewards(Number(amount), 24 * 7, priceInfo?.apy, validatorFee)}
+                </Text>
+                <Text style={styles.rewardsEstItem}>
+                  Per Month: {calculateRewards(Number(amount), 24 * 30, priceInfo?.apy, validatorFee)}
+                </Text>
+                <Text style={styles.rewardsEstItem}>
+                  Per Year: {calculateRewards(Number(amount), 24 * 365, priceInfo?.apy, validatorFee)}
+                </Text>
+              </ListItem.Accordion>
+              <Text style={styles.notes}>{configurations?.DELEGATE_TIME_NOTICE || DELEGATE_TIME_NOTICE}</Text>
+            </>
           )}
           <CTextButton onPress={onConfirm} text={'Confirm'} style={[styles.btnStaking]} />
         </KeyboardAwareScrollView>
@@ -139,5 +177,15 @@ const styles = StyleSheet.create({
     color: colors.N3,
     marginTop: scale(16),
     marginBottom: scale(16),
+  },
+  rewardsEstTitle: {
+    ...textStyles.Sub1,
+    color: colors.N3,
+  },
+  rewardsEstItem: {
+    ...textStyles.Sub1,
+    color: colors.N2,
+    marginTop: scale(4),
+    marginBottom: scale(4),
   },
 });

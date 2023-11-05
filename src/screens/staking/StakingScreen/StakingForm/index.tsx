@@ -21,6 +21,7 @@ import { useDispatch } from 'react-redux';
 import { allActions } from 'redux_manager';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
 import { VALIDATOR_REACHED_MAXIMUM } from 'utils/constants/staking';
+import { usePrice } from 'utils/hooks/usePrice';
 
 interface IStakingFormProps {
   isRefreshing: boolean;
@@ -53,6 +54,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
   const minCSPRDelegateToNewValidator = configurations?.MIN_CSPR_DELEGATE_TO_NEW_VALIDATOR || 0;
 
   const { data: stakedInfo } = useStakedInfo(publicKey);
+  const { data: priceData } = usePrice();
 
   const hasDelegated = React.useMemo(() => {
     return !!stakedInfo?.find((item) => item.validatorPublicKey === selectedValidator?.validatorPublicKey);
@@ -74,6 +76,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
           publicKey: values.validator,
           name: selectedValidator?.name || '',
           logo: selectedValidator?.logo || getBase64IdentIcon(values.validator),
+          fee: selectedValidator?.delegationRate || 0,
         },
       }),
     );
@@ -172,7 +175,7 @@ const StakingForm: React.FunctionComponent<IStakingFormProps> = ({
       <Col px={16} pt={isRefreshing && Platform.OS === 'ios' ? 16 : 0}>
         <Row.LR mb={16}>
           <Text style={styles.title}>Validator</Text>
-          <Text style={textStyles.Body1}>Network Fee: {fee} CSPR</Text>
+          <Text style={textStyles.Body1}>APY: {((priceData?.apy || 0) * 100).toFixed(2) || 'N/A'} %</Text>
         </Row.LR>
         <SelectValidatorButton
           name={selectedValidator?.name}
