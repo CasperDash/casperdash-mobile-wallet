@@ -59,7 +59,7 @@ const AccountListScreen = () => {
       const found = massagedData.find((item: { publicKey: string }) => item.publicKey === wallet.publicKey);
       return {
         ...wallet,
-        ...found!,
+        ...found,
       };
     });
   }, [massagedData, listWalletsDetails, ledgerWallets, isFetchedLedgerWallets]);
@@ -147,7 +147,7 @@ const AccountListScreen = () => {
     if (walletInfoDetails.isLedger) {
       const newLedgerWallets = ledgerWallets?.filter((item) => item.publicKey !== walletInfoDetails.publicKey);
       await Config.saveItem(Keys.ledgerWallets, newLedgerWallets);
-      refetchLedgerWallets();
+      await refetchLedgerWallets();
       return;
     }
     currentAccount.removeWalletInfo(walletInfoDetails.walletInfo.uid);
@@ -157,7 +157,11 @@ const AccountListScreen = () => {
 
   return (
     <CLayout bgColor={colors.cF8F8F8} edges={['right', 'top', 'left']} statusBgColor={colors.cF8F8F8}>
-      <CHeader title="Accounts" style={{ backgroundColor: colors.cF8F8F8 }} />
+      <CHeader
+        title="Accounts"
+        style={{ backgroundColor: colors.cF8F8F8 }}
+        onBack={() => navigate(MainRouter.HOME_TAB)}
+      />
       <Col style={styles.body}>
         <Col mb={8}>
           <ScrollView

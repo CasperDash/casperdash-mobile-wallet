@@ -6,6 +6,6 @@ export interface SettingMenu {
   icon: ReactNode;
   onPress?: () => void;
   subIcon?: any;
-  actionComp?: () => ReactNode;
+  actionComp?: ReactNode;
   show?: boolean;
 }

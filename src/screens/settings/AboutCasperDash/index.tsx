@@ -35,13 +35,13 @@ const AboutCasperDash = () => {
     {
       id: 1,
       title: 'Documentation',
-      icon: () => <IconDocument />,
+      icon: <IconDocument />,
       onPress: () => navigateTo(configurations?.DOCS_URL || DOCS_URL, 'Documentation'),
     },
     {
       id: 2,
       title: 'Support',
-      icon: () => <IconSupport />,
+      icon: <IconSupport />,
       onPress: () => {
         if (configurations?.SUPPORT_URL || SUPPORT_URL) {
           Linking.openURL(configurations?.SUPPORT_URL || SUPPORT_URL);
@@ -51,19 +51,19 @@ const AboutCasperDash = () => {
     {
       id: 3,
       title: 'Terms of Use',
-      icon: () => <IconHandShake style={{ width: scale(32), height: scale(32) }} />,
+      icon: <IconHandShake style={{ width: scale(32), height: scale(32) }} />,
       onPress: () => navigateTo(configurations?.TERMS_URL || TERMS_URL, 'Terms of Use'),
     },
     {
       id: 4,
       title: 'Privacy Policy',
-      icon: () => <IconProtection />,
+      icon: <IconProtection />,
       onPress: () => navigateTo(configurations?.PRIVACY_URL || PRIVACY_URL, 'Privacy Policy'),
     },
     {
       id: 5,
       title: 'About Us',
-      icon: () => <IconAbout width={scale(32)} height={scale(32)} />,
+      icon: <IconAbout width={scale(32)} height={scale(32)} />,
       onPress: () => navigateTo(CASPERDASH_URL, 'About Us'),
     },
   ];

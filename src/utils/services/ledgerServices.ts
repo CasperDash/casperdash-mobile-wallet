@@ -24,7 +24,7 @@ export const initLedgerApp = async (deviceId?: string) => {
     const device = await Config.getItem(Keys.ledger);
 
     const transport = await rejectAfterTimeout(
-      TransportBLE.open(deviceId || device?.id),
+      TransportBLE.open(deviceId ?? device?.id),
       4000,
       Error(CONNECT_ERROR_MESSAGE),
     );

@@ -172,7 +172,7 @@ export const useGetConnectedLedgerWallets = (
     },
     ...options,
   });
-  return { ...query };
+  return query;
 };
 
 export const useSelectedAccount = () => {
