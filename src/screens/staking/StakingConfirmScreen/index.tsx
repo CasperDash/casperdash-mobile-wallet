@@ -22,11 +22,13 @@ import { useGetFeeByEntryPoint } from 'utils/hooks/useGetFeeByEntryPoint';
 import { ListItem } from '@rneui/base';
 import { usePrice } from 'utils/hooks/usePrice';
 
+const HOUR_IN_YEAR = 365 * 24;
+
 const calculateRewards = (amount: number, hours: number, apy?: number, fee?: number): string => {
   if (!apy) {
     return 'N/A';
   }
-  const rewards = ((amount * apy) / (365 * 24)) * hours;
+  const rewards = ((amount * apy) / HOUR_IN_YEAR) * hours;
   return `${(rewards * (1 - (fee || 0))).toFixed(2)} CSPR`;
 };
 
