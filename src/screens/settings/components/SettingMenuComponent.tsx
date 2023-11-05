@@ -19,8 +19,8 @@ const SettingMenuComponent = ({ data }: Props) => {
           {icon}
           <Text style={styles.title}>{data.title}</Text>
         </Row.C>
-        {actionComp && actionComp}
-        {subIcon && subIcon}
+        {!!actionComp && actionComp}
+        {!!subIcon && subIcon}
       </Row.LR>
     </CButton>
   );
