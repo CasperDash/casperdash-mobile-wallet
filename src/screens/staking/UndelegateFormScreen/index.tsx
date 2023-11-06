@@ -86,6 +86,7 @@ const UndelegateFormScreen: React.FC<ScreenProps<'UNDELEGATE_FORM_SCREEN'>> = ({
             publicKey: selectedValidator.validatorPublicKey,
             logo: selectedValidator?.logo || getBase64IdentIcon(selectedValidator.validatorPublicKey),
             name: selectedValidator?.name || '',
+            fee: selectedValidator.delegationRate,
           },
         }),
       );

@@ -7,6 +7,7 @@ interface ILatestPrice {
   market_cap: number;
   circulating_supply?: number;
   total_supply: number;
+  apy: number;
 }
 
 export const getLatestPrice = async (): Promise<ILatestPrice> => {
