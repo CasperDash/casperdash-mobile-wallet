@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native
 import { colors, fonts, IconLogo, textStyles, IconUp, IconDown } from 'assets';
 import { CLayout, Row, Col } from 'components';
 import { scale } from 'device';
-import TransactionComponent from 'screens/market/components/TransactionComponent';
 import ChartComponent from 'screens/market/components/ChartComponent';
 import { useScrollToTop } from '@react-navigation/native';
 import { toFormattedCurrency, toFormattedNumber } from 'utils/helpers/format';

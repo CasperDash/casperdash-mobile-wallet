@@ -17,6 +17,8 @@ export interface ITokenInfo extends ITokenInfoResponse {
   totalValue: number;
   transferFee: number;
   minAmount?: number;
+  undelegatingAmount?: number;
+  totalStakedAmount?: number;
 }
 
 const CSPR_INFO = {
@@ -70,14 +72,18 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
     const tokenTransferFee = configurations?.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
     const CSPRBalance = accountDetails?.balance?.displayBalance ?? 0;
+    const undelegatingCSPRAmount = accountDetails?.undelegatingAmount ?? 0;
+    const totalStakedCSPRAmount = accountDetails?.totalStakedAmount ?? 0;
 
     const CSPRInfo = {
       ...CSPR_INFO,
       balance: { displayValue: CSPRBalance },
       price: CSPRPrice,
-      totalValue: CSPRBalance * CSPRPrice,
+      totalValue: (CSPRBalance + undelegatingCSPRAmount + totalStakedCSPRAmount) * CSPRPrice,
       transferFee: transferFee,
       minAmount: minAmount,
+      undelegatingAmount: undelegatingCSPRAmount,
+      totalStakedAmount: totalStakedCSPRAmount,
     };
     const tokenPrice = 0;
     const tokensInfo = tokensData?.length

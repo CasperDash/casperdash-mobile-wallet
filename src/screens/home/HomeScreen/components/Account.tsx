@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Platform, UIManager } from 'react-native';
+import { View, Text, StyleSheet, Platform, UIManager, TouchableOpacity } from 'react-native';
 import { CButton, Col, Row } from 'components';
 import { scale } from 'device';
-import { colors, textStyles, IconPencilFilled, IconCopy } from 'assets';
+import { colors, textStyles, IconPencilFilled, IconCopy, IconAbout } from 'assets';
 import { AccountActions } from 'screens/home/HomeScreen/data/data';
 import ButtonAction from 'screens/home/HomeScreen/components/ButtonAction';
 import { useSelector } from 'react-redux';
@@ -17,11 +17,14 @@ import { BuyButton } from 'components/BuyButton';
 import { useConfigurations } from 'utils/hooks/useConfigurations';
 import { isIos } from 'device';
 import MainRouter from 'navigation/stack/MainRouter';
+import { AccountDetailsChartModal } from './AccountDetailsChart/AccountDetailsChartModal';
 
 function Account() {
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
+
+  const [showAccountDetailsModal, setShowAccountDetailsModal] = React.useState<boolean>(false);
 
   const publicKey = useSelector(getPublicKey);
   const loginOptions = useSelector(getLoginOptions);
@@ -30,6 +33,8 @@ function Account() {
   const { navigate } = useStackNavigation();
   const selectedWallet = useSelector<any, IAccountInfo>((state: any) => state.user.selectedWallet || {});
   const { data: configuration } = useConfigurations();
+
+  const csprInfo = allTokenInfo.find((token) => token.address === 'CSPR');
 
   const canEditAccount = useMemo(() => {
     return loginOptions?.connectionType === CONNECTION_TYPES.viewMode;
@@ -80,6 +85,9 @@ function Account() {
           <Text numberOfLines={1} style={[textStyles.H3, { marginRight: scale(8) }]}>
             {toFormattedCurrency(totalFiatBalance)}
           </Text>
+          <TouchableOpacity onPress={() => setShowAccountDetailsModal(true)}>
+            <IconAbout width={scale(20)} height={scale(20)} />
+          </TouchableOpacity>
         </Row.C>
         <Row.C>
           {AccountActions.map((action, index) => {
@@ -89,6 +97,14 @@ function Account() {
           {configuration?.ENABLE_BUY_ANDROID && !isIos() && <BuyButton />}
         </Row.C>
       </Col>
+      <AccountDetailsChartModal
+        activeCSPRAmount={csprInfo?.balance.displayValue}
+        stakedCSPRAmount={csprInfo?.totalStakedAmount}
+        undelegatingCSPRAmount={csprInfo?.undelegatingAmount}
+        showModal={showAccountDetailsModal}
+        totalFiatBalance={totalFiatBalance}
+        onHideModal={() => setShowAccountDetailsModal(false)}
+      />
     </View>
   );
 }

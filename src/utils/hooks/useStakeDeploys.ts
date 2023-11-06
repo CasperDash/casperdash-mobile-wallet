@@ -17,7 +17,15 @@ export const useStakedInfo = (publicKey: string) => {
     queryFn: () => getAccountDelegation(publicKey),
     enabled: !!publicKey,
   });
-  return query;
+  const totalStakedAmount = useMemo(() => {
+    return (
+      query.data?.reduce<number>((acc, item: IAccountDelegationResponse) => {
+        return acc + parseFloat(item.stakedAmount);
+      }, 0) || 0
+    );
+  }, [query.data]);
+
+  return { ...query, totalStakedAmount };
 };
 
 /**

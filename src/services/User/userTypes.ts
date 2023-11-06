@@ -41,6 +41,7 @@ export interface IAccountResponse {
   actionThresholds?: IActionThresholds;
   balance?: IBalance;
   publicKey: string;
+  undelegating?: string;
 }
 
 export interface IAccountDelegationResponse {
