@@ -10,19 +10,17 @@ interface Props {
 }
 
 const SettingMenuComponent = ({ data }: Props) => {
-  const Icon = data.icon;
-  const SubIcon = data.subIcon;
-  const ActionComp = data.actionComp;
+  const { icon, subIcon, actionComp } = data;
 
   return (
     <CButton onPress={data.onPress}>
       <Row.LR px={16} pb={32} style={styles.container}>
         <Row.C>
-          <Icon />
+          {icon}
           <Text style={styles.title}>{data.title}</Text>
         </Row.C>
-        {ActionComp && <ActionComp />}
-        {SubIcon && <SubIcon />}
+        {!!actionComp && actionComp}
+        {!!subIcon && subIcon}
       </Row.LR>
     </CButton>
   );

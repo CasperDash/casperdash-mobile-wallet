@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { CLayout, CHeader } from 'components';
+import { CLayout, CHeader, Row, Col } from 'components';
+import CTextButton from 'components/CTextButton';
 import { colors, textStyles } from 'assets';
 import { scale } from 'device';
-import { Row, Col } from 'components';
-import CTextButton from 'components/CTextButton';
 import { useSelector } from 'react-redux';
 import { getUser, getSelectedWallet } from 'utils/selectors/user';
 import { User } from 'react-native-casper-storage';

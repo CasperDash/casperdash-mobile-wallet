@@ -21,7 +21,7 @@ import {
 } from 'utils/helpers/account';
 import { getSelectedWallet, getUser } from 'utils/selectors/user';
 import { useStackNavigation } from 'utils/hooks/useNavigation';
-import { getLedgerAccountInfo } from 'utils/hooks/useAccountInfo';
+import { IAccountInfo, getLedgerAccountInfo } from 'utils/hooks/useAccountInfo';
 
 const InitAccountScreen: React.FC<
   // @ts-ignore
@@ -112,10 +112,16 @@ const InitAccountScreen: React.FC<
     let selectedWallet = await Config.getItem(Keys.selectedWallet);
     if (!selectedWallet) {
       if (info?.loginOptions?.keyIndex !== undefined) {
-        const ledgerAccountInfo = getLedgerAccountInfo(info?.loginOptions?.keyIndex, info.publicKey);
+        selectedWallet = getLedgerAccountInfo(info?.loginOptions?.keyIndex, info.publicKey);
 
-        await setSelectedWallet(ledgerAccountInfo);
+        await setSelectedWallet(selectedWallet);
       }
+    }
+    let ledgerWallets = (await Config.getItem(Keys.ledgerWallets)) || [];
+    if (!ledgerWallets?.length) {
+      const device = await Config.getItem(Keys.ledger);
+      ledgerWallets = [{ ...selectedWallet, ledgerDeviceId: device?.id }];
+      await Config.saveItem<IAccountInfo[]>(Keys.ledgerWallets, ledgerWallets);
     }
   }, []);
 

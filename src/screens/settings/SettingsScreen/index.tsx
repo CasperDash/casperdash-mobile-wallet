@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Switch, Image, Text } from 'react-native';
-import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images } from 'assets';
+import { colors, IconLogo, IconCircleRight, IconLock, textStyles, images, IconKey } from 'assets';
 import { CHeader, CLayout, Col } from 'components';
 import DeviceInfo from 'react-native-device-info';
 import { scale } from 'device';
@@ -12,6 +12,7 @@ import { StackName } from 'navigation/ScreenProps';
 import DeleteAllDataButton from '../components/DeleteAllDataButton';
 import useBiometry, { BiometryType } from 'utils/hooks/useBiometry';
 import useShowRecoveryPhrase from '../ViewRecoveryPhraseScreen';
+import { useViewPrivateKey } from '../ViewPrivateKey';
 import { getLoginOptions } from 'utils/selectors/user';
 import { useSelector } from 'react-redux';
 import { CONNECTION_TYPES } from 'utils/constants/settings';
@@ -24,6 +25,7 @@ function SettingsScreen() {
   const loginOptions = useSelector(getLoginOptions);
 
   const { ShowRecoveryPhrase, setShowConfirmPin } = useShowRecoveryPhrase();
+  const { ViewPrivateKeyComp, setShowConfirmPin: setShowConfirmPinPrivateKey } = useViewPrivateKey();
   const { isBiometryEnabled, biometryType, onUpdateBiometryStatus } = useBiometry();
 
   const lockScreen = () => {
@@ -38,29 +40,37 @@ function SettingsScreen() {
     {
       id: 1,
       title: 'About CasperDash',
-      icon: () => <IconLogo width={scale(32)} height={scale(32)} />,
-      subIcon: () => <IconCircleRight width={scale(17)} height={scale(17)} />,
+      icon: <IconLogo width={scale(32)} height={scale(32)} />,
+      subIcon: <IconCircleRight width={scale(17)} height={scale(17)} />,
       onPress: () => navigate(MainRouter.ABOUT_CASPERDASH),
     },
     {
       id: 2,
       title: 'Lock',
-      icon: () => <IconLock width={scale(32)} height={scale(32)} />,
+      icon: <IconLock width={scale(32)} height={scale(32)} />,
       onPress: () => lockScreen(),
     },
     {
       id: 3,
       title: 'Recovery Phrase',
-      icon: () => <Image source={images.backup} style={{ width: scale(32), height: scale(32) }} />,
+      icon: <Image source={images.backup} style={{ width: scale(32), height: scale(32) }} />,
       onPress: () => setShowConfirmPin(true),
-      actionComp: ShowRecoveryPhrase,
+      actionComp: <ShowRecoveryPhrase />,
       show: loginOptions?.connectionType === CONNECTION_TYPES.passPhase,
     },
     {
       id: 4,
+      title: 'View Private Key',
+      icon: <IconKey width={scale(32)} height={scale(32)} />,
+      onPress: () => setShowConfirmPinPrivateKey(true),
+      actionComp: <ViewPrivateKeyComp />,
+      show: loginOptions?.connectionType === CONNECTION_TYPES.passPhase,
+    },
+    {
+      id: 5,
       title: 'Version',
-      icon: () => <Image source={images.version} style={{ width: scale(32), height: scale(32) }} />,
-      actionComp: () => (
+      icon: <Image source={images.version} style={{ width: scale(32), height: scale(32) }} />,
+      actionComp: (
         <Text>
           {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
         </Text>
@@ -72,14 +82,14 @@ function SettingsScreen() {
     listMenu.push({
       id: 1,
       title: biometryType,
-      icon: () => (
+      icon: (
         <Image
           source={biometryType === BiometryType.FaceID ? images.faceId : images.touchId}
           style={{ width: scale(32), height: scale(32) }}
         />
       ),
 
-      actionComp: () => <Switch value={isBiometryEnabled} onValueChange={onUpdateBiometryStatus} />,
+      actionComp: <Switch value={isBiometryEnabled} onValueChange={onUpdateBiometryStatus} />,
     });
   }
 

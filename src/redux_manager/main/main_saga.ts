@@ -23,12 +23,15 @@ export function* loadLocalStorage() {
   const deploysTransfer = yield Config.getItem(Keys.deploysTransfer);
   // @ts-ignore
   const deploysStakes = yield Config.getItem(Keys.deploysStakes);
+  // @ts-ignore
+  const ledgerAccounts = yield Config.getItem(Keys.ledgerAccounts);
 
   const data = {
     casperdash: casperdash,
     tokensAddressList: tokensAddressList,
     deploysTransfer: deploysTransfer,
     deploysStakes: deploysStakes,
+    ledgerAccounts: ledgerAccounts,
   };
   yield put({ type: types.LOAD_LOCAL_STORAGE_SUCCESS, payload: data });
 }

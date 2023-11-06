@@ -123,7 +123,7 @@ const ModalAccount = ({ isVisible, onClose }: Props) => {
                   onPress={
                     isConnected
                       ? () => disconnectWithAccount(urlWithProtocol, uid)
-                      : () => connectWithAccount(urlWithProtocol, item.account.walletInfo)
+                      : () => connectWithAccount(urlWithProtocol, item.account)
                   }
                   buttonText={isConnected ? 'Disconnect' : 'Connect'}
                   titleStyle={!isConnected ? styles.titleAccount : undefined}

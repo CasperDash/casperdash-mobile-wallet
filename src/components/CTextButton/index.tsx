@@ -43,9 +43,9 @@ const CTextButton = ({
       <Text
         style={[
           styles.title,
-          textStyle,
           type === 'line' && (variant === 'secondary' ? styles.textBorder : styles.textBorderPrimary),
           disabled && styles.textDisabled,
+          textStyle,
         ]}
       >
         {text}
@@ -67,11 +67,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.R1,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   title: {
     ...textStyles.Sub1,
     fontSize: scale(16),
     color: colors.W1,
+    marginLeft: scale(8),
   },
   textDisabled: {
     color: colors.N2,

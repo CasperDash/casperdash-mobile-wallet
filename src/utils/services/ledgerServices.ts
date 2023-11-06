@@ -12,17 +12,19 @@ let cacheKey: Record<number | string, string> = {};
 
 type LedgerOption = {
   keyIndex?: string | number;
+  publicKey?: string;
+  deviceId?: string;
 };
 
 /**
  * Initial ledger app
  */
-export const initLedgerApp = async () => {
+export const initLedgerApp = async (deviceId?: string) => {
   try {
     const device = await Config.getItem(Keys.ledger);
 
     const transport = await rejectAfterTimeout(
-      TransportBLE.open(device && device.id),
+      TransportBLE.open(deviceId ?? device?.id),
       4000,
       Error(CONNECT_ERROR_MESSAGE),
     );
@@ -39,8 +41,8 @@ export const initLedgerApp = async () => {
  * @param {object} deploy
  * @param {object} options
  */
-export const signDeployByLedger = async (deploy: DeployUtil.Deploy, options: any = {}) => {
-  const { casperApp, transport } = await initLedgerApp();
+export const signDeployByLedger = async (deploy: DeployUtil.Deploy, options: LedgerOption = {}) => {
+  const { casperApp, transport } = await initLedgerApp(options.deviceId);
 
   let responseDeploy;
   const deployType = getDeployType(deploy);
@@ -66,7 +68,7 @@ export const signDeployByLedger = async (deploy: DeployUtil.Deploy, options: any
   let signedDeploy: any = DeployUtil.setSignature(
     deploy,
     responseDeploy.signatureRS,
-    CLPublicKey.fromHex(options.publicKey),
+    CLPublicKey.fromHex(options.publicKey!),
   );
   signedDeploy = DeployUtil.validateDeploy(signedDeploy);
   if (signedDeploy.ok) {

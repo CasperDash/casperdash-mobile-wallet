@@ -4,12 +4,12 @@ import React from 'react';
 
 import { View, StyleSheet, ActivityIndicator, ScrollView, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
 import { getBase64IdentIcon } from 'utils/helpers/identicon';
-import { AccountInfo, useMyAccounts } from 'utils/hooks/useAccountInfo';
+import { IAccountInfo, useMyAccounts } from 'utils/hooks/useAccountInfo';
 import AccountItem from '../../ModalAccount/AccountItem';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  onSelectAccount?: (account: AccountInfo) => void;
+  onSelectAccount?: (account: IAccountInfo) => void;
   selectedUid?: string;
 };
 

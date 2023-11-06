@@ -12,7 +12,9 @@ import {
   StakingConfirmScreen,
   ImportAccountScreen,
   ShowRecoveryPhraseScreen,
-  ShowPrivateKeyScreen,
+  PrivateKeyScreen,
+  AccountListScreen,
+  ConnectLedgerScreen,
 } from 'screens';
 import NFTDetail from 'screens/nft/NFTDetailScreen';
 import SimpleWebViewScreen from 'screens/simple_web_view/SimpleWebViewScreen';
@@ -37,6 +39,8 @@ const {
   SIMPLE_WEBVIEW_SCREEN,
   ABOUT_CASPERDASH,
   TRANSFER_NFT_HISTORY_SCREEN,
+  ACCOUNT_LIST_SCREEN,
+  CONNECT_LEDGER_SCREEN,
 } = MainRouter;
 
 export const MainScreens = {
@@ -90,9 +94,15 @@ export const MainScreens = {
     screen: ShowRecoveryPhraseScreen,
   },
   [SHOW_PRIVATE_KEY_SCREEN]: {
-    screen: ShowPrivateKeyScreen,
+    screen: PrivateKeyScreen,
   },
   [SIMPLE_WEBVIEW_SCREEN]: {
     screen: SimpleWebViewScreen,
+  },
+  [ACCOUNT_LIST_SCREEN]: {
+    screen: AccountListScreen,
+  },
+  [CONNECT_LEDGER_SCREEN]: {
+    screen: ConnectLedgerScreen,
   },
 };
