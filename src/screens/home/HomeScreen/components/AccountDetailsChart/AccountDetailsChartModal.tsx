@@ -80,7 +80,7 @@ export const AccountDetailsChartModal = ({
                 symbol: { fill: 'orange' },
               },
               {
-                name: `Undelegating: ${toFormattedNumber(stakedCSPRAmount)} CSPR ~${toFormattedCurrency(
+                name: `Undelegating: ${toFormattedNumber(undelegatingCSPRAmount)} CSPR ~${toFormattedCurrency(
                   undelegatingCSPRFiat,
                 )}`,
                 symbol: { fill: 'gold' },
