@@ -10,6 +10,7 @@ import { getTokenInfoWithBalance } from 'services/User/userApis';
 import { useAccountInfo } from './useAccountInfo';
 import { useConfigurations } from './useConfigurations';
 import { getTokenInfo } from 'services/Token/tokenApis';
+import { colors } from 'assets';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;
@@ -19,13 +20,15 @@ export interface ITokenInfo extends ITokenInfoResponse {
   minAmount?: number;
   undelegatingAmount?: number;
   totalStakedAmount?: number;
+  backgroundColor?: string;
 }
 
 const CSPR_INFO = {
   symbol: 'CSPR',
   address: 'CSPR',
-  icon: 'https://assets.casperdash.io/ic_cspr.png',
+  icon: 'https://assets.casperdash.io/casper-icon.png',
   name: 'Casper',
+  backgroundColor: colors.R2,
 };
 
 export const useTokenInfoWithBalance = (publicKey: string) => {
