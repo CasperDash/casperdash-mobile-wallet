@@ -10,6 +10,7 @@ import { getTokenInfoWithBalance } from 'services/User/userApis';
 import { useAccountInfo } from './useAccountInfo';
 import { useConfigurations } from './useConfigurations';
 import { getTokenInfo } from 'services/Token/tokenApis';
+import { colors } from 'assets';
 
 export interface ITokenInfo extends ITokenInfoResponse {
   icon: string;
@@ -17,13 +18,17 @@ export interface ITokenInfo extends ITokenInfoResponse {
   totalValue: number;
   transferFee: number;
   minAmount?: number;
+  undelegatingAmount?: number;
+  totalStakedAmount?: number;
+  backgroundColor?: string;
 }
 
 const CSPR_INFO = {
   symbol: 'CSPR',
   address: 'CSPR',
-  icon: 'https://assets.casperdash.io/ic_cspr.png',
+  icon: 'https://assets.casperdash.io/casper-icon.png',
   name: 'Casper',
+  backgroundColor: colors.R2,
 };
 
 export const useTokenInfoWithBalance = (publicKey: string) => {
@@ -70,14 +75,18 @@ export const useTokenInfoByPublicKey = (publicKey: string) => {
     const tokenTransferFee = configurations?.TOKEN_TRANSFER_FEE || DEFAULT_CONFIG.TOKEN_TRANSFER_FEE;
 
     const CSPRBalance = accountDetails?.balance?.displayBalance ?? 0;
+    const undelegatingCSPRAmount = accountDetails?.undelegatingAmount ?? 0;
+    const totalStakedCSPRAmount = accountDetails?.totalStakedAmount ?? 0;
 
     const CSPRInfo = {
       ...CSPR_INFO,
       balance: { displayValue: CSPRBalance },
       price: CSPRPrice,
-      totalValue: CSPRBalance * CSPRPrice,
+      totalValue: (CSPRBalance + undelegatingCSPRAmount + totalStakedCSPRAmount) * CSPRPrice,
       transferFee: transferFee,
       minAmount: minAmount,
+      undelegatingAmount: undelegatingCSPRAmount,
+      totalStakedAmount: totalStakedCSPRAmount,
     };
     const tokenPrice = 0;
     const tokensInfo = tokensData?.length

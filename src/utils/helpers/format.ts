@@ -28,7 +28,10 @@ export const toFormattedCurrency = (num = 0, options = {}, locales = Config.defa
     style: 'currency',
     currency: 'USD',
   };
-  return new Intl.NumberFormat(locales, { ...defaultOpt, ...options }).format(num);
+  return new Intl.NumberFormat(locales, {
+    ...defaultOpt,
+    ...options,
+  }).format(num);
 };
 
 /**

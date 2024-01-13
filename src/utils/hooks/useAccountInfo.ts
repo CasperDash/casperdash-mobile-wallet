@@ -7,16 +7,19 @@ import { IAccountResponse } from 'services/User/userTypes';
 import { Config, Keys } from 'utils';
 import { ERequestKeys } from 'utils/constants/requestKeys';
 import { getWalletInfoWithPublicKey } from 'utils/helpers/account';
-import { toCSPRFromHex } from 'utils/helpers/currency';
+import { toCSPR, toCSPRFromHex } from 'utils/helpers/currency';
 import { getListWallets, getPublicKey, getUser } from 'utils/selectors/user';
 import { getListKeys, initLedgerApp } from 'utils/services/ledgerServices';
+import { useStakedInfo } from './useStakeDeploys';
 
 type LedgerAccount = {
   publicKey: string;
   keyIndex: number;
 };
 
-export const massageUserDetails = (userDetails: IAccountResponse): IAccountResponse => {
+type UserDetails = IAccountResponse & { totalStakedAmount?: number; undelegatingAmount?: number };
+
+export const massageUserDetails = (userDetails: UserDetails): UserDetails => {
   const hexBalance = userDetails?.balance?.hex ?? 0;
   return {
     ...userDetails,
@@ -24,6 +27,8 @@ export const massageUserDetails = (userDetails: IAccountResponse): IAccountRespo
       ...userDetails.balance,
       displayBalance: toCSPRFromHex(hexBalance).toNumber(),
     },
+    undelegatingAmount: toCSPR(userDetails.undelegating || 0).toNumber(),
+    totalStakedAmount: toCSPR(userDetails.totalStakedAmount || 0).toNumber(),
   };
 };
 
@@ -47,12 +52,14 @@ export const useAccountInfo = (publicKey: string) => {
     staleTime: 1000 * 60 * 5,
   });
 
+  const { totalStakedAmount } = useStakedInfo(publicKey);
+
   const massagedData = useMemo(() => {
     if (query.data) {
-      return massageUserDetails(query.data);
+      return massageUserDetails({ ...query.data, totalStakedAmount });
     }
     return undefined;
-  }, [query.data]);
+  }, [query.data, totalStakedAmount]);
 
   return { ...query, massagedData };
 };

@@ -6,6 +6,7 @@ export type Validator = {
   publicKey: string;
   name: string;
   logo: string;
+  fee: number;
 };
 
 export type StakingForm = {

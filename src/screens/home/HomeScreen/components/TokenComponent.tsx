@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, Image } from 'react-native';
+import { Text, StyleSheet, Image, View } from 'react-native';
 import { scale } from 'device';
 import { Row, Col, CButton } from 'components';
 import { colors, textStyles } from 'assets';
@@ -16,10 +16,19 @@ const TokenComponent = ({ value, onPress }: Props) => {
     <CButton onPress={() => onPress(value)}>
       <Row.LR mx={16} style={styles.container}>
         <Row>
-          {!!value.symbol && <Image source={{ uri: value.icon }} style={styles.symbol} />}
+          {!!value.symbol && (
+            <View style={{ ...styles.symbolContainer, backgroundColor: value.backgroundColor || colors.R2 }}>
+              <Image source={{ uri: value.icon }} style={styles.symbol} />
+            </View>
+          )}
           <Col mx={12}>
             <Text style={styles.sub1}>{value.symbol ?? ''}</Text>
-            <Text style={styles.body2}>{value.balance ? toFormattedNumber(value.balance.displayValue) : '0'}</Text>
+            <Text style={styles.body2}>
+              {value.balance ? toFormattedNumber(value.balance.displayValue) : '0'}{' '}
+              {value.totalStakedAmount || value.undelegatingAmount
+                ? `(${toFormattedNumber((value.undelegatingAmount ?? 0) + (value.totalStakedAmount ?? 0))})`
+                : ''}
+            </Text>
           </Col>
         </Row>
         <Col.R mx={12}>
@@ -46,9 +55,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: scale(1),
     borderColor: colors.N5,
   },
-  symbol: {
+  symbolContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     width: scale(40),
     height: scale(40),
+    borderRadius: scale(9999),
+  },
+  symbol: {
+    width: scale(18),
+    height: scale(18),
   },
   sub1: {
     ...textStyles.Sub1,

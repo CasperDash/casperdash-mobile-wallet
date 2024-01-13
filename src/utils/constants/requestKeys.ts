@@ -19,6 +19,7 @@ export enum ERequestKeys {
   dapps = 'dapps',
   ledgerAccounts = 'ledgerAccounts',
   getLedgerWallets = 'getLedgerWallets',
+  undelegatingValue = 'undelegatingValue',
 }
 
 export enum CustomError {
