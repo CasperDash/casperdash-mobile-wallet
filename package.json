@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 14 Pro'",
+    "ios": "react-native run-ios --simulator='iPhone 15 Pro Max'",
     "start": "react-native start",
     "ios:testnet": "yarn env:testnet && yarn ios",
     "ios:mainnet": "yarn env:mainnet && react-native run-ios",
